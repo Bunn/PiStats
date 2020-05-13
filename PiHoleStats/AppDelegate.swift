@@ -8,32 +8,58 @@
 
 import Cocoa
 import SwiftUI
+import SwiftHole
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
-
+    let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
     var window: NSWindow!
-
+    private lazy var popover = NSPopover()
+    private var summaryViewController = SummaryViewController()
+    
+    private var buttonImage: NSImage? {
+        let image = NSImage(named: .init("piHole"))
+        image?.isTemplate = true
+        return image
+    }
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Create the SwiftUI view that provides the window contents.
-        let contentView = ContentView()
-
-        // Create the window and set the content view. 
-        window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-            backing: .buffered, defer: false)
-        window.center()
-        window.setFrameAutosaveName("Main Window")
-        window.contentView = NSHostingView(rootView: contentView)
-        window.makeKeyAndOrderFront(nil)
+        popover.contentViewController = summaryViewController
+        updateButton()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
     }
+    
+    private func updateButton() {
+        guard let button = statusItem.button else { return }
+        button.image = buttonImage
+        button.image?.size = NSSize(width: 20, height: 20)
+        button.action = #selector(togglePopover)
+    }
+    
+    @objc func togglePopover(_ sender: Any?) {
+        if popover.isShown {
+            closePopover(sender: sender)
+        } else {
+            showPopover(sender: sender)
+        }
+    }
 
+    func showPopover(sender: Any?) {
+        guard let button = statusItem.button else { return }
+
+        popover.show(
+            relativeTo: button.bounds,
+            of: button,
+            preferredEdge: NSRectEdge.minY
+        )
+    }
+
+    func closePopover(sender: Any?) {
+        popover.performClose(sender)
+    }
 
 }
 

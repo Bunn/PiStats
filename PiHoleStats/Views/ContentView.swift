@@ -9,9 +9,15 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var navigationItem: NavigationViewModel
+
+    @ViewBuilder
     var body: some View {
-        Text("Hello, World!")
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        if navigationItem.currentNavigationItem == .settings {
+            SettingsView()
+        } else {
+            SummaryView()
+        }
     }
 }
 

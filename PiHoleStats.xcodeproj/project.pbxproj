@@ -3,18 +3,35 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		313278EA2469FD7C00520124 /* UIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313278E92469FD7C00520124 /* UIConstants.swift */; };
+		313278EE246A086000520124 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313278ED246A086000520124 /* Settings.swift */; };
+		313278F1246A08D700520124 /* PiHoleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313278F0246A08D700520124 /* PiHoleViewModel.swift */; };
+		313408DB24688456005D73E7 /* SummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313408DA24688456005D73E7 /* SummaryViewController.swift */; };
+		313408DD24689028005D73E7 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313408DC24689028005D73E7 /* SettingsView.swift */; };
+		31718236246B22E1003BBF0C /* SummaryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31718235246B22E1003BBF0C /* SummaryItem.swift */; };
+		317278892468AED900B5BE3D /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317278882468AED900B5BE3D /* SummaryView.swift */; };
+		3172788E2468B03D00B5BE3D /* NavigationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3172788D2468B03D00B5BE3D /* NavigationViewModel.swift */; };
 		319084BC2454920700D47980 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319084BB2454920700D47980 /* AppDelegate.swift */; };
 		319084BE2454920700D47980 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319084BD2454920700D47980 /* ContentView.swift */; };
 		319084C02454920900D47980 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 319084BF2454920900D47980 /* Assets.xcassets */; };
 		319084C32454920900D47980 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 319084C22454920900D47980 /* Preview Assets.xcassets */; };
 		319084C62454920900D47980 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 319084C42454920900D47980 /* Main.storyboard */; };
+		319084D02454945900D47980 /* SwiftHole in Frameworks */ = {isa = PBXBuildFile; productRef = 319084CF2454945900D47980 /* SwiftHole */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		313278E92469FD7C00520124 /* UIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIConstants.swift; sourceTree = "<group>"; };
+		313278ED246A086000520124 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		313278F0246A08D700520124 /* PiHoleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiHoleViewModel.swift; sourceTree = "<group>"; };
+		313408DA24688456005D73E7 /* SummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryViewController.swift; sourceTree = "<group>"; };
+		313408DC24689028005D73E7 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		31718235246B22E1003BBF0C /* SummaryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryItem.swift; sourceTree = "<group>"; };
+		317278882468AED900B5BE3D /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
+		3172788D2468B03D00B5BE3D /* NavigationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewModel.swift; sourceTree = "<group>"; };
 		319084B82454920700D47980 /* PiHoleStats.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PiHoleStats.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		319084BB2454920700D47980 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		319084BD2454920700D47980 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -23,6 +40,7 @@
 		319084C52454920900D47980 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		319084C72454920900D47980 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		319084C82454920900D47980 /* PiHoleStats.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PiHoleStats.entitlements; sourceTree = "<group>"; };
+		31A070DB24609F8B0057FCB5 /* SwiftHole */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SwiftHole; path = ../../SwiftHole; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -30,12 +48,57 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				319084D02454945900D47980 /* SwiftHole in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		313278EB246A079000520124 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				313278E92469FD7C00520124 /* UIConstants.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		313278EF246A08B900520124 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				3172788D2468B03D00B5BE3D /* NavigationViewModel.swift */,
+				313278F0246A08D700520124 /* PiHoleViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		3172788A2468AF1A00B5BE3D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				313408DC24689028005D73E7 /* SettingsView.swift */,
+				317278882468AED900B5BE3D /* SummaryView.swift */,
+				31718235246B22E1003BBF0C /* SummaryItem.swift */,
+				319084BD2454920700D47980 /* ContentView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		3172788B2468AF2600B5BE3D /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				313408DA24688456005D73E7 /* SummaryViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		3172788C2468B02B00B5BE3D /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				313278ED246A086000520124 /* Settings.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		319084AF2454920700D47980 = {
 			isa = PBXGroup;
 			children = (
@@ -55,10 +118,15 @@
 		319084BA2454920700D47980 /* PiHoleStats */ = {
 			isa = PBXGroup;
 			children = (
+				313278EF246A08B900520124 /* ViewModel */,
+				3172788C2468B02B00B5BE3D /* Model */,
+				3172788B2468AF2600B5BE3D /* ViewControllers */,
+				3172788A2468AF1A00B5BE3D /* Views */,
+				313278EB246A079000520124 /* Util */,
 				319084BB2454920700D47980 /* AppDelegate.swift */,
-				319084BD2454920700D47980 /* ContentView.swift */,
 				319084BF2454920900D47980 /* Assets.xcassets */,
 				319084C42454920900D47980 /* Main.storyboard */,
+				31A070DB24609F8B0057FCB5 /* SwiftHole */,
 				319084C72454920900D47980 /* Info.plist */,
 				319084C82454920900D47980 /* PiHoleStats.entitlements */,
 				319084C12454920900D47980 /* Preview Content */,
@@ -90,6 +158,9 @@
 			dependencies = (
 			);
 			name = PiHoleStats;
+			packageProductDependencies = (
+				319084CF2454945900D47980 /* SwiftHole */,
+			);
 			productName = PiHoleStats;
 			productReference = 319084B82454920700D47980 /* PiHoleStats.app */;
 			productType = "com.apple.product-type.application";
@@ -118,6 +189,9 @@
 				Base,
 			);
 			mainGroup = 319084AF2454920700D47980;
+			packageReferences = (
+				319084CE2454945900D47980 /* XCRemoteSwiftPackageReference "SwiftHole" */,
+			);
 			productRefGroup = 319084B92454920700D47980 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -145,8 +219,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3172788E2468B03D00B5BE3D /* NavigationViewModel.swift in Sources */,
 				319084BE2454920700D47980 /* ContentView.swift in Sources */,
+				313278EE246A086000520124 /* Settings.swift in Sources */,
+				31718236246B22E1003BBF0C /* SummaryItem.swift in Sources */,
+				313408DD24689028005D73E7 /* SettingsView.swift in Sources */,
+				313278EA2469FD7C00520124 /* UIConstants.swift in Sources */,
+				317278892468AED900B5BE3D /* SummaryView.swift in Sources */,
 				319084BC2454920700D47980 /* AppDelegate.swift in Sources */,
+				313278F1246A08D700520124 /* PiHoleViewModel.swift in Sources */,
+				313408DB24688456005D73E7 /* SummaryViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,6 +427,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		319084CE2454945900D47980 /* XCRemoteSwiftPackageReference "SwiftHole" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:Bunn/SwiftHole.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		319084CF2454945900D47980 /* SwiftHole */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 319084CE2454945900D47980 /* XCRemoteSwiftPackageReference "SwiftHole" */;
+			productName = SwiftHole;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 319084B02454920700D47980 /* Project object */;
 }
