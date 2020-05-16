@@ -100,7 +100,7 @@ class PiHoleViewModel: ObservableObject {
         case .malformedURL:
             self.errorMessage = "Invalid URL"
         case .invalidDecode(let decodeError):
-            self.errorMessage = "Can't decode response: \(decodeError.localizedDescription)\n You must be running Pi-hole 5.0 or later"
+            self.errorMessage = "Can't decode response: \(decodeError.localizedDescription)"
         case .noAPITokenProvided:
             self.errorMessage = "No API Token Provided"
         case .sessionError(let sessionError):
