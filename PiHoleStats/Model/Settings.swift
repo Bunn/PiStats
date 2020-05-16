@@ -11,30 +11,22 @@ import Combine
 
 private enum SettingsKey: String {
     case host = "SettingsKeyHost"
-    case apiToken = "SettingsKeyAPIToken"
 }
 
-class Settings {
-    private var didChange = PassthroughSubject<Void, Never>()
+class Settings: ObservableObject {
+    var keychainToken = APIToken()
 
     @Published var host: String = UserDefaults.standard.object(forKey: SettingsKey.host.rawValue) as? String ?? "" {
         didSet {
             UserDefaults.standard.set(host, forKey: SettingsKey.host.rawValue)
-            didUpdate()
         }
     }
     
-    @Published var apiToken: String = UserDefaults.standard.object(forKey: SettingsKey.apiToken.rawValue) as? String ?? "" {
-        didSet {
-            UserDefaults.standard.set(apiToken, forKey: SettingsKey.apiToken.rawValue)
-            didUpdate()
+    var apiToken: String  {
+        set {
+            keychainToken.token = newValue
+        } get {
+            keychainToken.token
         }
-    }
-}
-
-extension Settings: ObservableObject {
-
-    private func didUpdate() {
-        didChange.send()
     }
 }

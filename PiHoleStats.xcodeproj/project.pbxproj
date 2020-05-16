@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3124948C24701BD300634933 /* KeyChainPasswordItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3124948B24701BD300634933 /* KeyChainPasswordItem.swift */; };
+		3124948E24701D2800634933 /* APIToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3124948D24701D2800634933 /* APIToken.swift */; };
 		313278EA2469FD7C00520124 /* UIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313278E92469FD7C00520124 /* UIConstants.swift */; };
 		313278EE246A086000520124 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313278ED246A086000520124 /* Settings.swift */; };
 		313278F1246A08D700520124 /* PiHoleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313278F0246A08D700520124 /* PiHoleViewModel.swift */; };
@@ -24,6 +26,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3124948B24701BD300634933 /* KeyChainPasswordItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainPasswordItem.swift; sourceTree = "<group>"; };
+		3124948D24701D2800634933 /* APIToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIToken.swift; sourceTree = "<group>"; };
 		313278E92469FD7C00520124 /* UIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIConstants.swift; sourceTree = "<group>"; };
 		313278ED246A086000520124 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		313278F0246A08D700520124 /* PiHoleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiHoleViewModel.swift; sourceTree = "<group>"; };
@@ -59,6 +63,7 @@
 			isa = PBXGroup;
 			children = (
 				313278E92469FD7C00520124 /* UIConstants.swift */,
+				3124948B24701BD300634933 /* KeyChainPasswordItem.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -95,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				313278ED246A086000520124 /* Settings.swift */,
+				3124948D24701D2800634933 /* APIToken.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -223,12 +229,14 @@
 				319084BE2454920700D47980 /* ContentView.swift in Sources */,
 				313278EE246A086000520124 /* Settings.swift in Sources */,
 				31718236246B22E1003BBF0C /* SummaryItem.swift in Sources */,
+				3124948E24701D2800634933 /* APIToken.swift in Sources */,
 				313408DD24689028005D73E7 /* SettingsView.swift in Sources */,
 				313278EA2469FD7C00520124 /* UIConstants.swift in Sources */,
 				317278892468AED900B5BE3D /* SummaryView.swift in Sources */,
 				319084BC2454920700D47980 /* AppDelegate.swift in Sources */,
 				313278F1246A08D700520124 /* PiHoleViewModel.swift in Sources */,
 				313408DB24688456005D73E7 /* SummaryViewController.swift in Sources */,
+				3124948C24701BD300634933 /* KeyChainPasswordItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
