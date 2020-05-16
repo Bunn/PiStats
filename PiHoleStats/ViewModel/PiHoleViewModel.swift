@@ -59,6 +59,10 @@ class PiHoleViewModel: ObservableObject {
         timer?.invalidate()
     }
     
+    func resetErrorMessage() {
+        errorMessage = ""
+    }
+    
     func disablePiHole() {
         SwiftHole(host: settings.host, apiToken: settings.apiToken).disablePiHole() { result in
             switch result {
@@ -96,7 +100,7 @@ class PiHoleViewModel: ObservableObject {
         case .malformedURL:
             self.errorMessage = "Invalid URL"
         case .invalidDecode(let decodeError):
-            self.errorMessage = "Can't decode response: \(decodeError.localizedDescription)"
+            self.errorMessage = "Can't decode response: \(decodeError.localizedDescription)\n You must be running Pi-hole 5.0 or later"
         case .noAPITokenProvided:
             self.errorMessage = "No API Token Provided"
         case .sessionError(let sessionError):
@@ -118,7 +122,6 @@ class PiHoleViewModel: ObservableObject {
             switch result {
             case .success(let piholeSummary):
                 DispatchQueue.main.async {
-                    self.errorMessage = ""
                     self.updateData(summary: piholeSummary)
                 }
                 

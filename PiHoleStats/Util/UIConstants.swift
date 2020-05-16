@@ -30,6 +30,7 @@ struct UIConstants {
         static let percentBlocked = "Percent Blocked"
         static let domainsOnBlocklist = "Domains on Blocklist"
         static let buttonSettings = "Settings"
+        static let buttonOK = "OK"
         static let buttonQuit = "Quit"
         static let statusEnabled = "Active"
         static let statusDisabled = "Offline"
