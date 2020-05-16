@@ -41,6 +41,6 @@ struct UIConstants {
         static let apiToken = "API Token"
         static let apiTokenPlaceholder = "klaatubaradanikto"
         static let buttonClose = "Close"
-        static let findAPITokenInfo = "You can find the API Token on /etc/pihole/setupVars.conf under WEBPASSWORD"
+        static let findAPITokenInfo = "You can find the API Token on /etc/pihole/setupVars.conf under WEBPASSWORD or WebUI - Settings - Show API Token"
     }
 }

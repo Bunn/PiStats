@@ -31,7 +31,6 @@ struct SettingsView: View {
             }
             
             Divider()
-                .padding()
             
             Text(UIConstants.Strings.findAPITokenInfo)
                 .multilineTextAlignment(.center)
