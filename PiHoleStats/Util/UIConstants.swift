@@ -25,6 +25,16 @@ struct UIConstants {
     }
     
     struct Strings {
+        
+        struct Error {
+            static let invalidAPIToken = "Invalid API Token"
+            static let invalidResponse = "Invalid Response"
+            static let invalidURL = "Invalid URL"
+            static let decodeResponseError = "Can't decode response"
+            static let noAPITokenProvided = "No API Token Provided"
+            static let sessionError = "Session Error"
+        }
+        
         static let totalQueries = "Total Queries"
         static let queriesBlocked = "Queries Blocked"
         static let percentBlocked = "Percent Blocked"
@@ -42,5 +52,6 @@ struct UIConstants {
         static let apiTokenPlaceholder = "klaatubaradanikto"
         static let buttonClose = "Close"
         static let findAPITokenInfo = "You can find the API Token on /etc/pihole/setupVars.conf under WEBPASSWORD or WebUI - Settings - API - Show API Token"
+        static let openSettingsToConfigureHost = "Open Settings to configure your host address"
     }
 }

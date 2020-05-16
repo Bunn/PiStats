@@ -98,23 +98,26 @@ class PiHoleViewModel: ObservableObject {
     private func handleError(_ error: SwiftHoleError) {
         switch error {
         case .malformedURL:
-            self.errorMessage = "Invalid URL"
+            self.errorMessage = UIConstants.Strings.Error.invalidURL
         case .invalidDecode(let decodeError):
-            self.errorMessage = "Can't decode response: \(decodeError.localizedDescription)"
+            self.errorMessage = "\(UIConstants.Strings.Error.decodeResponseError): \(decodeError.localizedDescription)"
         case .noAPITokenProvided:
-            self.errorMessage = "No API Token Provided"
+            self.errorMessage = UIConstants.Strings.Error.noAPITokenProvided
         case .sessionError(let sessionError):
-            self.errorMessage = "Session error: \(sessionError.localizedDescription)"
+            self.errorMessage = "\(UIConstants.Strings.Error.sessionError): \(sessionError.localizedDescription)"
         case .invalidResponseCode(let responseCode):
-            self.errorMessage = "Session error: \(responseCode)"
+            self.errorMessage = "\(UIConstants.Strings.Error.sessionError): \(responseCode)"
         case .invalidResponse:
-            self.errorMessage = "Invalid Response"
+            self.errorMessage = UIConstants.Strings.Error.invalidResponse
+        case .invalidAPIToken:
+            self.errorMessage = UIConstants.Strings.Error.invalidAPIToken
+            
         }
     }
     
     private func fetchSummaryData() {
         if settings.host.isEmpty {
-            errorMessage = "Open Settings to configure your host address"
+            errorMessage = UIConstants.Strings.openSettingsToConfigureHost
             return
         }
         
