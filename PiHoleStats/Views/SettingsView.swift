@@ -21,7 +21,7 @@ struct SettingsView: View {
             
             HStack {
                 Text(UIConstants.Strings.apiToken)
-                TextField(UIConstants.Strings.apiTokenPlaceholder, text: self.$settings.apiToken)
+                SecureField(UIConstants.Strings.apiTokenPlaceholder, text: self.$settings.apiToken)
             }
             
             Button(action: {
