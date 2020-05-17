@@ -18,7 +18,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var summaryViewController = SummaryViewController()
     
     private var buttonImage: NSImage? {
-        let image = NSImage(named: .init("piHole"))
+        let image = NSImage(named: .init("shield"))
         image?.isTemplate = true
         return image
     }
