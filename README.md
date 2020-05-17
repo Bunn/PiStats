@@ -2,7 +2,8 @@
   <img width="130" src="./images/icon.png"">
 </p>
 
-#Hole Stats
+
+# Hole Stats
 
 Follow up and manage the status of your [Pi-hole](https://github.com/pi-hole/pi-hole) with this simple macOS app that lives in your menu bar.
 
@@ -15,11 +16,11 @@ There are two different ways to get your authentication token:
 - WebUI -> Settings -> API -> Show API Token
 
 
-##Screenshots
+## Screenshots
   <img src="./images/screenshot.png" width="400"> 
 
 
-##Requirement
+## Requirement
 This project uses SwiftUI which requires macOS Catalina.
 
 Tested with Pi-hole 4.4 and 5.0
