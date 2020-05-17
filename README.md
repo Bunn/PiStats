@@ -2,7 +2,8 @@
   <img width="130" src="./images/icon.png"">
 </p>
 
-#Hole Stats
+
+# Hole Stats
 
 Follow up and manage the status of your [Pi-hole](https://github.com/pi-hole/pi-hole) with this simple macOS app that lives in your menu bar.
 
