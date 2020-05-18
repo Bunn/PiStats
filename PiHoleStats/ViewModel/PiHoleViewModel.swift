@@ -26,6 +26,10 @@ class PiHoleViewModel: ObservableObject {
     @Published private (set) var changeStatusButtonTitle: String = ""
     @Published private (set) var status: String = ""
 
+    var isSettingsEmpty: Bool {
+        settings.host.isEmpty
+    }
+    
     private var timer: Timer?
     private let settings: Settings
     
@@ -116,7 +120,7 @@ class PiHoleViewModel: ObservableObject {
     }
     
     private func fetchSummaryData() {
-        if settings.host.isEmpty {
+        if isSettingsEmpty {
             errorMessage = UIConstants.Strings.openSettingsToConfigureHost
             return
         }

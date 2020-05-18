@@ -44,10 +44,12 @@ struct SummaryView: View {
             } else {
                 Text(viewModel.errorMessage)
                     .multilineTextAlignment(.center)
-                Button(action: {
-                    self.viewModel.resetErrorMessage()
-                }) {
-                    Text(UIConstants.Strings.buttonOK)
+                if !viewModel.isSettingsEmpty {
+                    Button(action: {
+                        self.viewModel.resetErrorMessage()
+                    }) {
+                        Text(UIConstants.Strings.buttonOK)
+                    }
                 }
             }
             
