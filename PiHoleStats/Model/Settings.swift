@@ -15,6 +15,10 @@ private enum SettingsKey: String {
 
 class Settings: ObservableObject {
     var keychainToken = APIToken()
+    
+    init() {
+        apiToken = keychainToken.token
+    }
 
     @Published var host: String = UserDefaults.standard.object(forKey: SettingsKey.host.rawValue) as? String ?? "" {
         didSet {
@@ -22,11 +26,9 @@ class Settings: ObservableObject {
         }
     }
     
-    var apiToken: String  {
-        set {
-            keychainToken.token = newValue
-        } get {
-            keychainToken.token
+    @Published var apiToken: String  {
+        didSet {
+            keychainToken.token = apiToken
         }
     }
 }
