@@ -10,7 +10,7 @@ import Foundation
 import Combine
 
 private enum SettingsKey: String {
-    case host = "SettingsKeyHost"
+    case address = "SettingsKeyHost"
 }
 
 class Settings: ObservableObject {
@@ -20,9 +20,9 @@ class Settings: ObservableObject {
         apiToken = keychainToken.token
     }
 
-    @Published var host: String = UserDefaults.standard.object(forKey: SettingsKey.host.rawValue) as? String ?? "" {
+    @Published var address: String = UserDefaults.standard.object(forKey: SettingsKey.address.rawValue) as? String ?? "" {
         didSet {
-            UserDefaults.standard.set(host, forKey: SettingsKey.host.rawValue)
+            UserDefaults.standard.set(address, forKey: SettingsKey.address.rawValue)
         }
     }
     
@@ -30,5 +30,19 @@ class Settings: ObservableObject {
         didSet {
             keychainToken.token = apiToken
         }
+    }
+    
+    var port: Int? {
+        getPort(address)
+    }
+    
+    var host: String {
+        address.components(separatedBy: ":").first ?? ""
+    }
+
+    private func getPort(_ address: String) -> Int? {
+        let split = address.components(separatedBy: ":")
+        guard let port = split.last else { return nil }
+        return Int(port)
     }
 }

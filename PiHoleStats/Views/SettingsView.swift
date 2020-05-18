@@ -16,7 +16,7 @@ struct SettingsView: View {
         VStack {
             HStack {
                 Text(UIConstants.Strings.host)
-                TextField(UIConstants.Strings.hostPlaceholder, text: self.$settings.host)
+                TextField(UIConstants.Strings.hostPlaceholder, text: self.$settings.address)
             }
             
             HStack {

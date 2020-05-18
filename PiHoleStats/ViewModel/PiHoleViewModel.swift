@@ -68,7 +68,7 @@ class PiHoleViewModel: ObservableObject {
     }
     
     func disablePiHole() {
-        SwiftHole(host: settings.host, apiToken: settings.apiToken).disablePiHole() { result in
+        SwiftHole(host: settings.host, port: settings.port, apiToken: settings.apiToken).disablePiHole() { result in
             switch result {
             case .success():
                 DispatchQueue.main.async {
@@ -84,7 +84,7 @@ class PiHoleViewModel: ObservableObject {
     }
     
     func enablePiHole() {
-        SwiftHole(host: settings.host, apiToken: settings.apiToken).enablePiHole() { result in
+        SwiftHole(host: settings.host, port: settings.port, apiToken: settings.apiToken).enablePiHole() { result in
             switch result {
             case .success():
                 DispatchQueue.main.async {
@@ -125,7 +125,7 @@ class PiHoleViewModel: ObservableObject {
             return
         }
         
-        SwiftHole(host: settings.host, apiToken: settings.apiToken).fetchSummary{ result in
+        SwiftHole(host: settings.host, port: settings.port, apiToken: settings.apiToken).fetchSummary{ result in
             switch result {
             case .success(let piholeSummary):
                 DispatchQueue.main.async {
