@@ -10,7 +10,7 @@ import Foundation
 
 struct APIToken {
     private static let serviceName = "PiHoleStatsService"
-    private static let accountName = "PiHoleStatsService"
+    private static let accountName = "PiHoleStatsAccount"
 
     private let passwordItem = KeychainPasswordItem(service: APIToken.serviceName, account: APIToken.accountName, accessGroup: nil)
     
@@ -24,7 +24,7 @@ struct APIToken {
             }
         }
         set {
-           try? passwordItem.savePassword(newValue)
+            try? passwordItem.savePassword(newValue)
         }
     }
 }
