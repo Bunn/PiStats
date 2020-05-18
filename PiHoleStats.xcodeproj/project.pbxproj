@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3114424124732D9D00042625 /* SwiftHole in Frameworks */ = {isa = PBXBuildFile; productRef = 3114424024732D9D00042625 /* SwiftHole */; };
 		3124948C24701BD300634933 /* KeyChainPasswordItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3124948B24701BD300634933 /* KeyChainPasswordItem.swift */; };
 		3124948E24701D2800634933 /* APIToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3124948D24701D2800634933 /* APIToken.swift */; };
 		313278EA2469FD7C00520124 /* UIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313278E92469FD7C00520124 /* UIConstants.swift */; };
@@ -22,7 +23,6 @@
 		319084C02454920900D47980 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 319084BF2454920900D47980 /* Assets.xcassets */; };
 		319084C32454920900D47980 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 319084C22454920900D47980 /* Preview Assets.xcassets */; };
 		319084C62454920900D47980 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 319084C42454920900D47980 /* Main.storyboard */; };
-		319084D02454945900D47980 /* SwiftHole in Frameworks */ = {isa = PBXBuildFile; productRef = 319084CF2454945900D47980 /* SwiftHole */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,7 +44,6 @@
 		319084C52454920900D47980 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		319084C72454920900D47980 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		319084C82454920900D47980 /* PiHoleStats.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PiHoleStats.entitlements; sourceTree = "<group>"; };
-		31A070DB24609F8B0057FCB5 /* SwiftHole */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SwiftHole; path = ../../SwiftHole; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,7 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				319084D02454945900D47980 /* SwiftHole in Frameworks */,
+				3114424124732D9D00042625 /* SwiftHole in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,7 +131,6 @@
 				319084BB2454920700D47980 /* AppDelegate.swift */,
 				319084BF2454920900D47980 /* Assets.xcassets */,
 				319084C42454920900D47980 /* Main.storyboard */,
-				31A070DB24609F8B0057FCB5 /* SwiftHole */,
 				319084C72454920900D47980 /* Info.plist */,
 				319084C82454920900D47980 /* PiHoleStats.entitlements */,
 				319084C12454920900D47980 /* Preview Content */,
@@ -165,7 +163,7 @@
 			);
 			name = PiHoleStats;
 			packageProductDependencies = (
-				319084CF2454945900D47980 /* SwiftHole */,
+				3114424024732D9D00042625 /* SwiftHole */,
 			);
 			productName = PiHoleStats;
 			productReference = 319084B82454920700D47980 /* Hole Stats.app */;
@@ -196,7 +194,7 @@
 			);
 			mainGroup = 319084AF2454920700D47980;
 			packageReferences = (
-				319084CE2454945900D47980 /* XCRemoteSwiftPackageReference "SwiftHole" */,
+				3114423F24732D9D00042625 /* XCRemoteSwiftPackageReference "SwiftHole" */,
 			);
 			productRefGroup = 319084B92454920700D47980 /* Products */;
 			projectDirPath = "";
@@ -441,20 +439,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		319084CE2454945900D47980 /* XCRemoteSwiftPackageReference "SwiftHole" */ = {
+		3114423F24732D9D00042625 /* XCRemoteSwiftPackageReference "SwiftHole" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "git@github.com:Bunn/SwiftHole.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
+				minimumVersion = 1.1.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		319084CF2454945900D47980 /* SwiftHole */ = {
+		3114424024732D9D00042625 /* SwiftHole */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 319084CE2454945900D47980 /* XCRemoteSwiftPackageReference "SwiftHole" */;
+			package = 3114423F24732D9D00042625 /* XCRemoteSwiftPackageReference "SwiftHole" */;
 			productName = SwiftHole;
 		};
 /* End XCSwiftPackageProductDependency section */

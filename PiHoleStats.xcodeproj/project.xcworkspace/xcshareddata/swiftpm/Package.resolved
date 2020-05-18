@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "SwiftHole",
+        "repositoryURL": "git@github.com:Bunn/SwiftHole.git",
+        "state": {
+          "branch": null,
+          "revision": "b3bb4e73f904edd9ec85f60d424a3d75fdf33a80",
+          "version": "1.1.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
