@@ -19,7 +19,7 @@ class SummaryViewController: NSViewController {
     
     override func loadView() {
         view = NSView()
-        preferredContentSize = NSSize(width: 320, height: 200)
+        preferredContentSize = NSSize(width: 320, height: 208)
         let contentView = ContentView()
             .environmentObject(navigationItem)
             .environmentObject(settings)

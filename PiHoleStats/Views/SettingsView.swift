@@ -24,6 +24,7 @@ struct SettingsView: View {
                 SecureField(UIConstants.Strings.apiTokenPlaceholder, text: self.$settings.apiToken)
             }
             
+            
             Button(action: {
                 self.navigationItem.currentNavigationItem = .summary
             }) {
@@ -33,7 +34,18 @@ struct SettingsView: View {
             Divider()
             
             Text(UIConstants.Strings.findAPITokenInfo)
+                .font(.caption)
                 .multilineTextAlignment(.center)
+                .layoutPriority(1)
+            
+            Spacer()
+            
+            Text(UIConstants.Strings.tokenStoredOnKeychainInfo)
+                .font(.footnote)
+                .multilineTextAlignment(.center)
+                .minimumScaleFactor(0.8)
+                .foregroundColor(.secondary)
+            
         }
         .padding()
     }

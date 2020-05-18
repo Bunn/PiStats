@@ -49,9 +49,10 @@ struct UIConstants {
         static let host = "Host"
         static let hostPlaceholder = "0.0.0.0"
         static let apiToken = "API Token"
-        static let apiTokenPlaceholder = "klaatubaradanikto"
+        static let apiTokenPlaceholder = "token"
         static let buttonClose = "Close"
         static let findAPITokenInfo = "You can find the API Token on /etc/pihole/setupVars.conf under WEBPASSWORD or WebUI - Settings - API - Show API Token"
         static let openSettingsToConfigureHost = "Open Settings to configure your host address"
+        static let tokenStoredOnKeychainInfo = "Token is securely stored in your Mac's Keychain"
     }
 }
