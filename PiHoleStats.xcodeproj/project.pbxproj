@@ -36,7 +36,7 @@
 		31718235246B22E1003BBF0C /* SummaryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryItem.swift; sourceTree = "<group>"; };
 		317278882468AED900B5BE3D /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
 		3172788D2468B03D00B5BE3D /* NavigationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewModel.swift; sourceTree = "<group>"; };
-		319084B82454920700D47980 /* Hole Stats.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hole Stats.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		319084B82454920700D47980 /* Pi Stats.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pi Stats.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		319084BB2454920700D47980 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		319084BD2454920700D47980 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		319084BF2454920900D47980 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -115,7 +115,7 @@
 		319084B92454920700D47980 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				319084B82454920700D47980 /* Hole Stats.app */,
+				319084B82454920700D47980 /* Pi Stats.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -166,7 +166,7 @@
 				3114424024732D9D00042625 /* SwiftHole */,
 			);
 			productName = PiHoleStats;
-			productReference = 319084B82454920700D47980 /* Hole Stats.app */;
+			productReference = 319084B82454920700D47980 /* Pi Stats.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -386,7 +386,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.holestats;
-				PRODUCT_NAME = "Hole Stats";
+				PRODUCT_NAME = "Pi Stats";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 			};
@@ -413,7 +413,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.holestats;
-				PRODUCT_NAME = "Hole Stats";
+				PRODUCT_NAME = "Pi Stats";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 			};
