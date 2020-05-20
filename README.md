@@ -26,6 +26,5 @@ This project uses SwiftUI which requires macOS Catalina.
 Tested with Pi-hole 4.4 and 5.0
 
 ## Download
-Pi Stats (and [SwiftHole](https://github.com/Bunn/SwiftHole)) is a free and open source project of mine. If you want to support its development you can pay any amount you want on Gumroad :)
+Pi Stats (and [SwiftHole](https://github.com/Bunn/SwiftHole)) is a free and open source hobby project of mine. If you want to support its development you can either pay whatever you want on [Gumroad](https://gum.co/iqhwv) or buy it on the [App Store](https://apps.apple.com/us/app/pi-stats/id1514075262?ls=1) for those nice automatic updates :)
 
-[Download the latest version here](https://gum.co/iqhwv)
