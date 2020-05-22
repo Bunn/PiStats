@@ -12,7 +12,8 @@ class MenuController: NSObject {
     private lazy var popover = NSPopover()
     private lazy var summaryViewController = SummaryViewController()
     private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
-    
+    var eventMonitor: EventMonitor?
+
     private var buttonImage: NSImage? {
         let image = NSImage(named: .init("shield"))
         image?.isTemplate = true
@@ -22,6 +23,12 @@ class MenuController: NSObject {
     public func setup() {
         updateButton()
         popover.contentViewController = summaryViewController
+        
+        eventMonitor = EventMonitor(mask: [.leftMouseDown, .rightMouseDown]) { [weak self] event in
+           if let strongSelf = self, strongSelf.popover.isShown {
+             strongSelf.closePopover(sender: event)
+           }
+         }
     }
     
     private func updateButton() {
@@ -42,6 +49,7 @@ class MenuController: NSObject {
     
     private func showPopover(sender: Any?) {
         guard let button = statusItem.button else { return }
+        eventMonitor?.start()
         popover.show(
             relativeTo: button.bounds,
             of: button,
@@ -51,5 +59,6 @@ class MenuController: NSObject {
     
     private func closePopover(sender: Any?) {
         popover.performClose(sender)
+        eventMonitor?.stop()
     }
 }
