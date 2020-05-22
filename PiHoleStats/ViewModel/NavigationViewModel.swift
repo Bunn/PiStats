@@ -32,6 +32,5 @@ class NavigationViewModel: ObservableObject {
              windowController = NSWindowController(window: window)
              windowController?.showWindow(self)
              windowController?.window?.makeKey()
-        
     }
 }

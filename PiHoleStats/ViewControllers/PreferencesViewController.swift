@@ -13,7 +13,6 @@ class PreferencesViewController: NSViewController {
     let preferences = Preferences()
     let navigationItem = NavigationViewModel()
     
-
     override func loadView() {
         view = NSView()
         preferredContentSize = NSSize(width: 390, height: 300)
