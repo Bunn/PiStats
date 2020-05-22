@@ -9,20 +9,20 @@
 import Foundation
 import Combine
 
-private enum SettingsKey: String {
+private enum PreferencesKey: String {
     case address = "SettingsKeyHost"
 }
 
-class Settings: ObservableObject {
+class Preferences: ObservableObject {
     var keychainToken = APIToken()
     
     init() {
         apiToken = keychainToken.token
     }
 
-    @Published var address: String = UserDefaults.standard.object(forKey: SettingsKey.address.rawValue) as? String ?? "" {
+    @Published var address: String = UserDefaults.standard.object(forKey: PreferencesKey.address.rawValue) as? String ?? "" {
         didSet {
-            UserDefaults.standard.set(address, forKey: SettingsKey.address.rawValue)
+            UserDefaults.standard.set(address, forKey: PreferencesKey.address.rawValue)
         }
     }
     

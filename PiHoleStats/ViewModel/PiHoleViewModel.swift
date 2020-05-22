@@ -27,11 +27,11 @@ class PiHoleViewModel: ObservableObject {
     @Published private (set) var status: String = ""
 
     var isSettingsEmpty: Bool {
-        settings.host.isEmpty
+        preferences.host.isEmpty
     }
     
     private var timer: Timer?
-    private let settings: Settings
+    private let preferences: Preferences
     
     private lazy var percentageFormatter: NumberFormatter = {
         let n = NumberFormatter()
@@ -48,8 +48,8 @@ class PiHoleViewModel: ObservableObject {
         return n
     }()
     
-    init(settings: Settings) {
-        self.settings = settings
+    init(preferences: Preferences) {
+        self.preferences = preferences
     }
     
     func startPolling() {
@@ -68,7 +68,7 @@ class PiHoleViewModel: ObservableObject {
     }
     
     func disablePiHole() {
-        SwiftHole(host: settings.host, port: settings.port, apiToken: settings.apiToken).disablePiHole() { result in
+        SwiftHole(host: preferences.host, port: preferences.port, apiToken: preferences.apiToken).disablePiHole() { result in
             switch result {
             case .success():
                 DispatchQueue.main.async {
@@ -84,7 +84,7 @@ class PiHoleViewModel: ObservableObject {
     }
     
     func enablePiHole() {
-        SwiftHole(host: settings.host, port: settings.port, apiToken: settings.apiToken).enablePiHole() { result in
+        SwiftHole(host: preferences.host, port: preferences.port, apiToken: preferences.apiToken).enablePiHole() { result in
             switch result {
             case .success():
                 DispatchQueue.main.async {
@@ -125,7 +125,7 @@ class PiHoleViewModel: ObservableObject {
             return
         }
         
-        SwiftHole(host: settings.host, port: settings.port, apiToken: settings.apiToken).fetchSummary{ result in
+        SwiftHole(host: preferences.host, port: preferences.port, apiToken: preferences.apiToken).fetchSummary{ result in
             switch result {
             case .success(let piholeSummary):
                 DispatchQueue.main.async {

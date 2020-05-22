@@ -13,7 +13,7 @@ struct AboutView: View {
         VStack(spacing: 4.0) {
             Image("shieldIcon")
             
-            Text(UIConstants.Strings.aboutTitle)
+            Text(UIConstants.Strings.piStatsName)
                 .font(.body)
             
             Text("\(UIConstants.Strings.version) 1.0.0")

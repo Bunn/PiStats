@@ -9,8 +9,23 @@
 import SwiftUI
 
 struct PreferencesView: View {
+    @State var selectedView = 1
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            TabView(selection: $selectedView) {
+                SettingsView()
+                    .padding().tabItem {
+                        Text(UIConstants.Strings.piHoleTabTitle)
+                }.tag(1)
+                
+                AboutView()
+                    .padding().tabItem {
+                        Text(UIConstants.Strings.aboutTabTitle)
+                }.tag(2)
+                
+            }.padding()
+        }
     }
 }
 

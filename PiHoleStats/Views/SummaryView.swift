@@ -12,7 +12,7 @@ import SwiftUI
 struct SummaryView: View {
     @EnvironmentObject var navigationItem: NavigationViewModel
     @EnvironmentObject var viewModel: PiHoleViewModel
-    @EnvironmentObject var settings: Settings
+    @EnvironmentObject var preferences: Preferences
     
     var body: some View {
         VStack {
@@ -25,7 +25,7 @@ struct SummaryView: View {
                     
                     Spacer()
                     
-                    if !settings.apiToken.isEmpty {
+                    if !preferences.apiToken.isEmpty {
                         Button(action: {
                             self.viewModel.active ? self.viewModel.disablePiHole() : self.viewModel.enablePiHole()
                         }) {
@@ -65,9 +65,9 @@ struct SummaryView: View {
                 Spacer()
                 
                 Button(action: {
-                    self.navigationItem.currentNavigationItem = .settings
+                    self.navigationItem.test()
                 }) {
-                    Text(UIConstants.Strings.buttonSettings)
+                    Text(UIConstants.Strings.buttonPreferences)
                 }
             }
             

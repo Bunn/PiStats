@@ -11,9 +11,9 @@ import SwiftUI
 
 class SummaryViewController: NSViewController {
     let navigationItem = NavigationViewModel()
-    let settings = Settings()
+    let preferences = Preferences()
     lazy var dataViewModel: PiHoleViewModel = {
-        let p = PiHoleViewModel(settings: settings)
+        let p = PiHoleViewModel(preferences: preferences)
         return p
     }()
     
@@ -22,7 +22,7 @@ class SummaryViewController: NSViewController {
         preferredContentSize = NSSize(width: 320, height: 208)
         let contentView = ContentView()
             .environmentObject(navigationItem)
-            .environmentObject(settings)
+            .environmentObject(preferences)
             .environmentObject(dataViewModel)
         
         let hostingController = NSHostingController(rootView: contentView)

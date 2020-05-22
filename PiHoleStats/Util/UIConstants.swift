@@ -39,7 +39,7 @@ struct UIConstants {
         static let queriesBlocked = "Queries Blocked"
         static let percentBlocked = "Percent Blocked"
         static let domainsOnBlocklist = "Domains on Blocklist"
-        static let buttonSettings = "Settings"
+        static let buttonPreferences = "Preferences"
         static let buttonOK = "OK"
         static let buttonQuit = "Quit"
         static let statusEnabled = "Active"
@@ -55,8 +55,10 @@ struct UIConstants {
         static let openSettingsToConfigureHost = "Open Settings to configure your host address"
         static let tokenStoredOnKeychainInfo = "Token is securely stored in your Mac's Keychain"
         static let copyright = "Copyright © Fernando Bunn"
-        static let aboutTitle = "Pi Stats"
+        static let aboutTabTitle = "About"
         static let version = "Version"
+        static let piStatsName = "Pi Stats"
+        static let piHoleTabTitle = "Pi Hole"
 
     }
 }
