@@ -10,8 +10,10 @@ import Cocoa
 
 class MenuController: NSObject {
     private lazy var popover = NSPopover()
-    private lazy var summaryViewController = SummaryViewController()
     private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+    private let preferences = Preferences()
+    private lazy var navigationController = NavigationController(preferences: preferences)
+    private lazy var summaryViewController = SummaryViewController(preferences: preferences, navigationController: navigationController)
     var eventMonitor: EventMonitor?
 
     private var buttonImage: NSImage? {

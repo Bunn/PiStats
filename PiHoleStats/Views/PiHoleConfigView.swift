@@ -9,7 +9,6 @@
 import SwiftUI
 
 struct PiHoleConfigView: View {
-    @EnvironmentObject var navigationItem: NavigationViewModel
     @EnvironmentObject var preferences: Preferences
 
     var body: some View {

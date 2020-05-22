@@ -10,7 +10,8 @@ import SwiftUI
 
 struct PreferencesView: View {
     @State var selectedView = 1
-    
+    @EnvironmentObject var preferences: Preferences
+
     var body: some View {
         VStack {
             TabView(selection: $selectedView) {

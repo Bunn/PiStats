@@ -23,7 +23,7 @@ class Preferences: ObservableObject {
     @Published var address: String = UserDefaults.standard.object(forKey: PreferencesKey.address.rawValue) as? String ?? "" {
         didSet {
             UserDefaults.standard.set(address, forKey: PreferencesKey.address.rawValue)
-        }
+        } 
     }
     
     @Published var apiToken: String  {

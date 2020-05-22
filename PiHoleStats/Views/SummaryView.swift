@@ -10,7 +10,7 @@ import SwiftUI
 
 
 struct SummaryView: View {
-    @EnvironmentObject var navigationItem: NavigationViewModel
+    @EnvironmentObject var navigationController: NavigationController
     @EnvironmentObject var viewModel: PiHoleViewModel
     @EnvironmentObject var preferences: Preferences
     
@@ -65,7 +65,7 @@ struct SummaryView: View {
                 Spacer()
                 
                 Button(action: {
-                    self.navigationItem.test()
+                    self.navigationController.openPreferences()
                 }) {
                     Text(UIConstants.Strings.buttonPreferences)
                 }

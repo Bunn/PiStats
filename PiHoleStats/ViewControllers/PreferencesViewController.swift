@@ -10,14 +10,21 @@ import Cocoa
 import SwiftUI
 
 class PreferencesViewController: NSViewController {
-    let preferences = Preferences()
-    let navigationItem = NavigationViewModel()
+    let preferences: Preferences
+
+    init(preferences: Preferences) {
+        self.preferences = preferences
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func loadView() {
         view = NSView()
         preferredContentSize = NSSize(width: 390, height: 300)
         let contentView = PreferencesView()
-            .environmentObject(navigationItem)
             .environmentObject(preferences)
         
         let hostingController = NSHostingController(rootView: contentView)

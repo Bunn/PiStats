@@ -10,18 +10,29 @@ import Cocoa
 import SwiftUI
 
 class SummaryViewController: NSViewController {
-    let navigationItem = NavigationViewModel()
-    let preferences = Preferences()
+    private let preferences: Preferences
+    private let navigationController: NavigationController
+    
     lazy var dataViewModel: PiHoleViewModel = {
         let p = PiHoleViewModel(preferences: preferences)
         return p
     }()
     
+    init(preferences: Preferences, navigationController: NavigationController) {
+        self.preferences = preferences
+        self.navigationController = navigationController
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func loadView() {
         view = NSView()
         preferredContentSize = NSSize(width: 320, height: 208)
         let contentView = SummaryView()
-            .environmentObject(navigationItem)
+            .environmentObject(navigationController)
             .environmentObject(preferences)
             .environmentObject(dataViewModel)
         
