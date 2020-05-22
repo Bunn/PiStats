@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct SettingsView: View {
+struct PiHoleConfigView: View {
     @EnvironmentObject var navigationItem: NavigationViewModel
     @EnvironmentObject var preferences: Preferences
 
@@ -45,8 +45,8 @@ struct SettingsView: View {
 }
 
 
-struct SettingsView_Previews: PreviewProvider {
+struct PiHoleConfigView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView()
+        PiHoleConfigView()
     }
 }

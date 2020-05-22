@@ -14,7 +14,7 @@ struct ContentView: View {
     @ViewBuilder
     var body: some View {
         if navigationItem.currentNavigationItem == .settings {
-            SettingsView()
+            PiHoleConfigView()
         } else {
             SummaryView()
         }

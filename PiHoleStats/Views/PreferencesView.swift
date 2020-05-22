@@ -14,7 +14,7 @@ struct PreferencesView: View {
     var body: some View {
         VStack {
             TabView(selection: $selectedView) {
-                SettingsView()
+                PiHoleConfigView()
                     .padding().tabItem {
                         Text(UIConstants.Strings.piHoleTabTitle)
                 }.tag(1)
