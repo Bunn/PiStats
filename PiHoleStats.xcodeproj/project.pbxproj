@@ -15,6 +15,7 @@
 		313278F1246A08D700520124 /* PiHoleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313278F0246A08D700520124 /* PiHoleViewModel.swift */; };
 		313408DB24688456005D73E7 /* SummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313408DA24688456005D73E7 /* SummaryViewController.swift */; };
 		313408DD24689028005D73E7 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313408DC24689028005D73E7 /* SettingsView.swift */; };
+		3160C4F5247875D600FAB226 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3160C4F4247875D600FAB226 /* MenuController.swift */; };
 		31718236246B22E1003BBF0C /* SummaryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31718235246B22E1003BBF0C /* SummaryItem.swift */; };
 		317278892468AED900B5BE3D /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317278882468AED900B5BE3D /* SummaryView.swift */; };
 		3172788E2468B03D00B5BE3D /* NavigationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3172788D2468B03D00B5BE3D /* NavigationViewModel.swift */; };
@@ -33,6 +34,7 @@
 		313278F0246A08D700520124 /* PiHoleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiHoleViewModel.swift; sourceTree = "<group>"; };
 		313408DA24688456005D73E7 /* SummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryViewController.swift; sourceTree = "<group>"; };
 		313408DC24689028005D73E7 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		3160C4F4247875D600FAB226 /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		31718235246B22E1003BBF0C /* SummaryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryItem.swift; sourceTree = "<group>"; };
 		317278882468AED900B5BE3D /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
 		3172788D2468B03D00B5BE3D /* NavigationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewModel.swift; sourceTree = "<group>"; };
@@ -74,6 +76,14 @@
 				313278F0246A08D700520124 /* PiHoleViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		3160C4F3247875C100FAB226 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				3160C4F4247875D600FAB226 /* MenuController.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		3172788A2468AF1A00B5BE3D /* Views */ = {
@@ -123,6 +133,7 @@
 		319084BA2454920700D47980 /* PiHoleStats */ = {
 			isa = PBXGroup;
 			children = (
+				3160C4F3247875C100FAB226 /* Controllers */,
 				313278EF246A08B900520124 /* ViewModel */,
 				3172788C2468B02B00B5BE3D /* Model */,
 				3172788B2468AF2600B5BE3D /* ViewControllers */,
@@ -234,6 +245,7 @@
 				319084BC2454920700D47980 /* AppDelegate.swift in Sources */,
 				313278F1246A08D700520124 /* PiHoleViewModel.swift in Sources */,
 				313408DB24688456005D73E7 /* SummaryViewController.swift in Sources */,
+				3160C4F5247875D600FAB226 /* MenuController.swift in Sources */,
 				3124948C24701BD300634933 /* KeyChainPasswordItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
