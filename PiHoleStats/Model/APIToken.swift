@@ -11,7 +11,6 @@ import Foundation
 struct APIToken {
     private static let serviceName = "PiHoleStatsService"
     private static let accountName = "PiHoleStatsAccount"
-
     private let passwordItem = KeychainPasswordItem(service: APIToken.serviceName, account: APIToken.accountName, accessGroup: nil)
     
     public var token: String {

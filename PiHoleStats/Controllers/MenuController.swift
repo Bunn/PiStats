@@ -25,10 +25,10 @@ class MenuController: NSObject {
         popover.contentViewController = summaryViewController
         
         eventMonitor = EventMonitor(mask: [.leftMouseDown, .rightMouseDown]) { [weak self] event in
-           if let strongSelf = self, strongSelf.popover.isShown {
-             strongSelf.closePopover(sender: event)
-           }
-         }
+            if let strongSelf = self, strongSelf.popover.isShown {
+                strongSelf.closePopover(sender: event)
+            }
+        }
     }
     
     private func updateButton() {

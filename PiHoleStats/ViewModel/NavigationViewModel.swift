@@ -27,10 +27,10 @@ class NavigationViewModel: ObservableObject {
     
     public func test() {
         NSApp.activate(ignoringOtherApps: true)
-             let settings = PreferencesViewController()
-             let window = NSWindow(contentViewController: settings)
-             windowController = NSWindowController(window: window)
-             windowController?.showWindow(self)
-             windowController?.window?.makeKey()
+        let settings = PreferencesViewController()
+        let window = NSWindow(contentViewController: settings)
+        windowController = NSWindowController(window: window)
+        windowController?.showWindow(self)
+        windowController?.window?.makeKey()
     }
 }

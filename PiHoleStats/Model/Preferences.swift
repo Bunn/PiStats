@@ -19,7 +19,7 @@ class Preferences: ObservableObject {
     init() {
         apiToken = keychainToken.token
     }
-
+    
     @Published var address: String = UserDefaults.standard.object(forKey: PreferencesKey.address.rawValue) as? String ?? "" {
         didSet {
             UserDefaults.standard.set(address, forKey: PreferencesKey.address.rawValue)
@@ -39,7 +39,7 @@ class Preferences: ObservableObject {
     var host: String {
         address.components(separatedBy: ":").first ?? ""
     }
-
+    
     private func getPort(_ address: String) -> Int? {
         let split = address.components(separatedBy: ":")
         guard let port = split.last else { return nil }
