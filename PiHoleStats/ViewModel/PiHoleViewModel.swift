@@ -11,27 +11,28 @@ import Combine
 import SwiftHole
 
 class PiHoleViewModel: ObservableObject {
-    let pollingTimeInterval: TimeInterval = 3
     @Published private (set) var totalQueries = ""
     @Published private (set) var queriesBlocked = ""
     @Published private (set) var percentBlocked = ""
     @Published private (set) var domainsOnBlocklist = ""
     @Published private (set) var errorMessage = ""
+    @Published private (set) var changeStatusButtonTitle = ""
+    @Published private (set) var status = ""
+    
+    private let pollingTimeInterval: TimeInterval = 3
+    private var timer: Timer?
+    private let preferences: Preferences
+
     @Published private (set) var active: Bool = false {
         didSet {
             changeStatusButtonTitle = active ? UIConstants.Strings.buttonDisable: UIConstants.Strings.buttonEnable
             status = active ? UIConstants.Strings.statusEnabled : UIConstants.Strings.statusDisabled
         }
     }
-    @Published private (set) var changeStatusButtonTitle = ""
-    @Published private (set) var status = ""
-
+    
     var isSettingsEmpty: Bool {
         preferences.host.isEmpty
     }
-    
-    private var timer: Timer?
-    private let preferences: Preferences
     
     private lazy var percentageFormatter: NumberFormatter = {
         let n = NumberFormatter()
@@ -115,13 +116,12 @@ class PiHoleViewModel: ObservableObject {
             self.errorMessage = UIConstants.Strings.Error.invalidResponse
         case .invalidAPIToken:
             self.errorMessage = UIConstants.Strings.Error.invalidAPIToken
-            
         }
     }
     
     private func fetchSummaryData() {
         if isSettingsEmpty {
-            errorMessage = UIConstants.Strings.openSettingsToConfigureHost
+            errorMessage = UIConstants.Strings.openPreferencesToConfigureHost
             return
         }
         
