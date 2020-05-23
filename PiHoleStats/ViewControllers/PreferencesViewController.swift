@@ -21,6 +21,11 @@ class PreferencesViewController: NSViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = UIConstants.Strings.preferencesWindowTitle
+    }
+    
     override func loadView() {
         view = NSView()
         preferredContentSize = NSSize(width: 390, height: 300)

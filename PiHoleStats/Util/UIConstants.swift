@@ -62,6 +62,7 @@ struct UIConstants {
         static let preferencesTabTitle = "Preferences"
         static let keepPopoverOpenPreference = "Keep popover open when clicking outside"
         static let launchAtLogonPreference = "Launch at login"
+        static let preferencesWindowTitle = "Pi Stats Preferences"
 
     }
 }
