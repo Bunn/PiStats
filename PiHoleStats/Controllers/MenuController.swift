@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import Combine
 
 class MenuController: NSObject {
     private lazy var popover = NSPopover()
@@ -15,6 +16,7 @@ class MenuController: NSObject {
     private lazy var navigationController = NavigationController(preferences: preferences)
     private lazy var summaryViewController = SummaryViewController(preferences: preferences, navigationController: navigationController)
     var eventMonitor: EventMonitor?
+    var eventCancellable: AnyCancellable?
 
     private var buttonImage: NSImage? {
         let image = NSImage(named: .init("shield"))
@@ -26,11 +28,25 @@ class MenuController: NSObject {
         updateButton()
         popover.contentViewController = summaryViewController
         
+        eventCancellable = preferences.$keepPopoverPanelOpen.receive(on: DispatchQueue.main).sink { [weak self] value in
+            if value {
+                self?.stopEventMonitor()
+            } else {
+                self?.startEventMonitor()
+            }
+        }
+    }
+    
+    private func startEventMonitor() {
         eventMonitor = EventMonitor(mask: [.leftMouseDown, .rightMouseDown]) { [weak self] event in
             if let strongSelf = self, strongSelf.popover.isShown {
                 strongSelf.closePopover(sender: event)
             }
         }
+    }
+    
+    private func stopEventMonitor() {
+        eventMonitor = nil
     }
     
     private func updateButton() {

@@ -15,9 +15,10 @@
 		313278F1246A08D700520124 /* PiHoleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313278F0246A08D700520124 /* PiHoleViewModel.swift */; };
 		313408DB24688456005D73E7 /* SummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313408DA24688456005D73E7 /* SummaryViewController.swift */; };
 		313408DD24689028005D73E7 /* PiHoleConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313408DC24689028005D73E7 /* PiHoleConfigView.swift */; };
+		315CA2D8247925A10079F555 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315CA2D7247925A10079F555 /* PreferencesView.swift */; };
 		3160C4F5247875D600FAB226 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3160C4F4247875D600FAB226 /* MenuController.swift */; };
 		3160C4F7247876AC00FAB226 /* EventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3160C4F6247876AC00FAB226 /* EventMonitor.swift */; };
-		3160C4FB2478790800FAB226 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3160C4FA2478790800FAB226 /* PreferencesView.swift */; };
+		3160C4FB2478790800FAB226 /* PreferencesContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3160C4FA2478790800FAB226 /* PreferencesContainerView.swift */; };
 		3160C4FD2478791000FAB226 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3160C4FC2478791000FAB226 /* AboutView.swift */; };
 		3160C50324787AF300FAB226 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3160C50224787AF300FAB226 /* PreferencesViewController.swift */; };
 		31718236246B22E1003BBF0C /* SummaryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31718235246B22E1003BBF0C /* SummaryItem.swift */; };
@@ -37,9 +38,10 @@
 		313278F0246A08D700520124 /* PiHoleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiHoleViewModel.swift; sourceTree = "<group>"; };
 		313408DA24688456005D73E7 /* SummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryViewController.swift; sourceTree = "<group>"; };
 		313408DC24689028005D73E7 /* PiHoleConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiHoleConfigView.swift; sourceTree = "<group>"; };
+		315CA2D7247925A10079F555 /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
 		3160C4F4247875D600FAB226 /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		3160C4F6247876AC00FAB226 /* EventMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMonitor.swift; sourceTree = "<group>"; };
-		3160C4FA2478790800FAB226 /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
+		3160C4FA2478790800FAB226 /* PreferencesContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesContainerView.swift; sourceTree = "<group>"; };
 		3160C4FC2478791000FAB226 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		3160C50224787AF300FAB226 /* PreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
 		31718235246B22E1003BBF0C /* SummaryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryItem.swift; sourceTree = "<group>"; };
@@ -88,7 +90,8 @@
 			isa = PBXGroup;
 			children = (
 				313408DC24689028005D73E7 /* PiHoleConfigView.swift */,
-				3160C4FA2478790800FAB226 /* PreferencesView.swift */,
+				3160C4FA2478790800FAB226 /* PreferencesContainerView.swift */,
+				315CA2D7247925A10079F555 /* PreferencesView.swift */,
 				3160C4FC2478791000FAB226 /* AboutView.swift */,
 			);
 			path = Preferences;
@@ -261,6 +264,7 @@
 			files = (
 				3160C4FD2478791000FAB226 /* AboutView.swift in Sources */,
 				3160C50324787AF300FAB226 /* PreferencesViewController.swift in Sources */,
+				315CA2D8247925A10079F555 /* PreferencesView.swift in Sources */,
 				313278EE246A086000520124 /* Preferences.swift in Sources */,
 				31718236246B22E1003BBF0C /* SummaryItem.swift in Sources */,
 				319044D824788C2D00BE4797 /* NavigationController.swift in Sources */,
@@ -270,7 +274,7 @@
 				317278892468AED900B5BE3D /* SummaryView.swift in Sources */,
 				319084BC2454920700D47980 /* AppDelegate.swift in Sources */,
 				313278F1246A08D700520124 /* PiHoleViewModel.swift in Sources */,
-				3160C4FB2478790800FAB226 /* PreferencesView.swift in Sources */,
+				3160C4FB2478790800FAB226 /* PreferencesContainerView.swift in Sources */,
 				313408DB24688456005D73E7 /* SummaryViewController.swift in Sources */,
 				3160C4F7247876AC00FAB226 /* EventMonitor.swift in Sources */,
 				3160C4F5247875D600FAB226 /* MenuController.swift in Sources */,

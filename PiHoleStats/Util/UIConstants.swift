@@ -59,6 +59,7 @@ struct UIConstants {
         static let version = "Version"
         static let piStatsName = "Pi Stats"
         static let piHoleTabTitle = "Pi Hole"
-
+        static let preferencesTabTitle = "Preferences"
+        static let keepPopoverOpenPreference = "Keep popover open when clicking outside"
     }
 }

@@ -11,6 +11,7 @@ import Combine
 
 private enum PreferencesKey: String {
     case address = "SettingsKeyHost"
+    case keepPopoverPanelOpen = "SettingsKeyKeepPopoverPanelOpen"
 }
 
 class Preferences: ObservableObject {
@@ -18,6 +19,12 @@ class Preferences: ObservableObject {
     
     init() {
         apiToken = keychainToken.token
+    }
+    
+    @Published var keepPopoverPanelOpen: Bool = UserDefaults.standard.object(forKey: PreferencesKey.keepPopoverPanelOpen.rawValue) as? Bool ?? false {
+        didSet {
+            UserDefaults.standard.set(keepPopoverPanelOpen, forKey: PreferencesKey.keepPopoverPanelOpen.rawValue)
+        }
     }
     
     @Published var address: String = UserDefaults.standard.object(forKey: PreferencesKey.address.rawValue) as? String ?? "" {

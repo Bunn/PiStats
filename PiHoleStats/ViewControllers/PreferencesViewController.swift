@@ -24,7 +24,7 @@ class PreferencesViewController: NSViewController {
     override func loadView() {
         view = NSView()
         preferredContentSize = NSSize(width: 390, height: 300)
-        let contentView = PreferencesView()
+        let contentView = PreferencesContainerView()
             .environmentObject(preferences)
         
         let hostingController = NSHostingController(rootView: contentView)
