@@ -23,6 +23,11 @@ struct APIToken {
             }
         }
         set {
+            /*
+             It might error out when trying to delete during development because of digital signing changing
+             which shouldn't be a problem on released version
+             https://forums.developer.apple.com/thread/69841
+             */
             try? passwordItem.savePassword(newValue)
         }
     }
