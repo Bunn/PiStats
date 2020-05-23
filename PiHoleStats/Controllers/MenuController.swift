@@ -27,12 +27,12 @@ class MenuController: NSObject {
     public func setup() {
         updateButton()
         popover.contentViewController = summaryViewController
+        setupEventMonitor()
         
         eventCancellable = preferences.$keepPopoverPanelOpen.receive(on: DispatchQueue.main).sink { [weak self] keepPopoverOpen in
             if keepPopoverOpen {
-                self?.destroyEventMonitor()
+                self?.eventMonitor?.stop()
             } else {
-                self?.setupEventMonitor()
                 self?.eventMonitor?.start()
             }
         }
@@ -47,6 +47,7 @@ class MenuController: NSObject {
     }
     
     private func destroyEventMonitor() {
+        eventMonitor?.stop()
         eventMonitor = nil
     }
     
@@ -68,7 +69,10 @@ class MenuController: NSObject {
     
     private func showPopover(sender: Any?) {
         guard let button = statusItem.button else { return }
-        eventMonitor?.start()
+        if !preferences.keepPopoverPanelOpen {
+            eventMonitor?.start()
+        }
+        
         popover.show(
             relativeTo: button.bounds,
             of: button,

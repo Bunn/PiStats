@@ -31,29 +31,39 @@
 //https://www.raywenderlich.com/450-menus-and-popovers-in-menu-bar-apps-for-macos
 
 import Cocoa
+import os.log
 
 public class EventMonitor {
-  private var monitor: Any?
-  private let mask: NSEvent.EventTypeMask
-  private let handler: (NSEvent?) -> Void
-  
-  public init(mask: NSEvent.EventTypeMask, handler: @escaping (NSEvent?) -> Void) {
-    self.mask = mask
-    self.handler = handler
-  }
-  
-  deinit {
-    stop()
-  }
-  
-  public func start() {
-    monitor = NSEvent.addGlobalMonitorForEvents(matching: mask, handler: handler)
-  }
-  
-  public func stop() {
-    if monitor != nil {
-      NSEvent.removeMonitor(monitor!)
-      monitor = nil
+    private let log = OSLog(subsystem: "PiStats", category: String(describing: EventMonitor.self))
+    
+    private var monitor: Any?
+    private let mask: NSEvent.EventTypeMask
+    private let handler: (NSEvent?) -> Void
+    
+    public init(mask: NSEvent.EventTypeMask, handler: @escaping (NSEvent?) -> Void) {
+        self.mask = mask
+        self.handler = handler
+        os_log("Event monitor init", log: self.log, type: .debug)
     }
-  }
+    
+    deinit {
+        os_log("Event monitor deinit", log: self.log, type: .debug)
+        stop()
+    }
+    
+    public func start() {
+        if monitor != nil {
+            return
+        }
+        os_log("Event monitor start", log: self.log, type: .debug)
+        monitor = NSEvent.addGlobalMonitorForEvents(matching: mask, handler: handler)
+    }
+    
+    public func stop() {
+        if monitor != nil {
+            os_log("Event monitor stop", log: self.log, type: .debug)
+            NSEvent.removeMonitor(monitor!)
+            monitor = nil
+        }
+    }
 }
