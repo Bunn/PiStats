@@ -146,5 +146,6 @@ class PiHoleViewModel: ObservableObject {
         percentBlocked = percentageFormatter.string(from:  NSNumber(value: summary.adsPercentageToday / 100.0)) ?? "-"
         domainsOnBlocklist = numberFormatter.string(from:  NSNumber(value: summary.domainsBeingBlocked)) ?? "-"
         active = summary.status.lowercased() == "enabled"
+        errorMessage = ""
     }
 }
