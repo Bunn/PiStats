@@ -84,6 +84,25 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		315CA2D5247925220079F555 /* Preferences */ = {
+			isa = PBXGroup;
+			children = (
+				313408DC24689028005D73E7 /* PiHoleConfigView.swift */,
+				3160C4FA2478790800FAB226 /* PreferencesView.swift */,
+				3160C4FC2478791000FAB226 /* AboutView.swift */,
+			);
+			path = Preferences;
+			sourceTree = "<group>";
+		};
+		315CA2D62479252E0079F555 /* Summary */ = {
+			isa = PBXGroup;
+			children = (
+				317278882468AED900B5BE3D /* SummaryView.swift */,
+				31718235246B22E1003BBF0C /* SummaryItem.swift */,
+			);
+			path = Summary;
+			sourceTree = "<group>";
+		};
 		3160C4F3247875C100FAB226 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -96,11 +115,8 @@
 		3172788A2468AF1A00B5BE3D /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				313408DC24689028005D73E7 /* PiHoleConfigView.swift */,
-				317278882468AED900B5BE3D /* SummaryView.swift */,
-				31718235246B22E1003BBF0C /* SummaryItem.swift */,
-				3160C4FA2478790800FAB226 /* PreferencesView.swift */,
-				3160C4FC2478791000FAB226 /* AboutView.swift */,
+				315CA2D62479252E0079F555 /* Summary */,
+				315CA2D5247925220079F555 /* Preferences */,
 			);
 			path = Views;
 			sourceTree = "<group>";
