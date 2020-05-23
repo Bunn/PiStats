@@ -12,6 +12,7 @@ import Combine
 private enum PreferencesKey: String {
     case address = "SettingsKeyHost"
     case keepPopoverPanelOpen = "SettingsKeyKeepPopoverPanelOpen"
+    case displayDisableTimeOptions = "SettingsDisplayDisableTimeOptions"
 }
 
 class Preferences: ObservableObject {
@@ -28,6 +29,12 @@ class Preferences: ObservableObject {
     @Published var keepPopoverPanelOpen: Bool = UserDefaults.standard.object(forKey: PreferencesKey.keepPopoverPanelOpen.rawValue) as? Bool ?? false {
         didSet {
             UserDefaults.standard.set(keepPopoverPanelOpen, forKey: PreferencesKey.keepPopoverPanelOpen.rawValue)
+        }
+    }
+    
+    @Published var displayDisableTimeOptions: Bool = UserDefaults.standard.object(forKey: PreferencesKey.displayDisableTimeOptions.rawValue) as? Bool ?? false {
+        didSet {
+            UserDefaults.standard.set(displayDisableTimeOptions, forKey: PreferencesKey.displayDisableTimeOptions.rawValue)
         }
     }
     

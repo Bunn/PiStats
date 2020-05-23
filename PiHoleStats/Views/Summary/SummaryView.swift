@@ -26,10 +26,33 @@ struct SummaryView: View {
                     Spacer()
                     
                     if !preferences.apiToken.isEmpty {
-                        Button(action: {
-                            self.viewModel.active ? self.viewModel.disablePiHole() : self.viewModel.enablePiHole()
-                        }) {
-                            Text(self.viewModel.changeStatusButtonTitle)
+                        if preferences.displayDisableTimeOptions && self.viewModel.active {
+                            MenuButton(label: Text(self.viewModel.changeStatusButtonTitle)) {
+                                Button(action: {
+                                    self.viewModel.disablePiHole()
+                                }, label: { Text(UIConstants.Strings.disableButtonOptionPermanently) })
+                                
+                                VStack { Divider() }
+                                
+                                Button(action: {
+                                    self.viewModel.disablePiHole(seconds: 10)
+                                }, label: { Text(UIConstants.Strings.disableButtonOption10Seconds) })
+                                
+                                Button(action: {
+                                    self.viewModel.disablePiHole(seconds: 30)
+                                }, label: { Text(UIConstants.Strings.disableButtonOption30Seconds) })
+                                
+                                Button(action: {
+                                    self.viewModel.disablePiHole(seconds: 300)
+                                }, label: { Text(UIConstants.Strings.disableButtonOption5Minutes) })
+                            }.frame(maxWidth: 80)
+                            
+                        } else {
+                            Button(action: {
+                                self.viewModel.active ? self.viewModel.disablePiHole() : self.viewModel.enablePiHole()
+                            }) {
+                                Text(self.viewModel.changeStatusButtonTitle)
+                            }
                         }
                     }
                 }

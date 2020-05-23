@@ -20,6 +20,10 @@ struct PreferencesView: View {
             Toggle(isOn: $preferences.launchAtLoginEnabled) {
                 Text(UIConstants.Strings.launchAtLogonPreference)
             }
+            
+            Toggle(isOn: $preferences.displayDisableTimeOptions) {
+                Text(UIConstants.Strings.disableTimeOptionsTitle)
+            }
         }
     }
 }

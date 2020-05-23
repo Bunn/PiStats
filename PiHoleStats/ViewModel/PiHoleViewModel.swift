@@ -67,8 +67,8 @@ class PiHoleViewModel: ObservableObject {
         errorMessage = ""
     }
     
-    func disablePiHole() {
-        SwiftHole(host: preferences.host, port: preferences.port, apiToken: preferences.apiToken).disablePiHole() { result in
+    func disablePiHole(seconds: Int = 0) {
+        SwiftHole(host: preferences.host, port: preferences.port, apiToken: preferences.apiToken).disablePiHole(seconds: seconds) { result in
             switch result {
             case .success():
                 DispatchQueue.main.async {
