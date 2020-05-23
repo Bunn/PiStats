@@ -28,16 +28,17 @@ class MenuController: NSObject {
         updateButton()
         popover.contentViewController = summaryViewController
         
-        eventCancellable = preferences.$keepPopoverPanelOpen.receive(on: DispatchQueue.main).sink { [weak self] value in
-            if value {
-                self?.stopEventMonitor()
+        eventCancellable = preferences.$keepPopoverPanelOpen.receive(on: DispatchQueue.main).sink { [weak self] keepPopoverOpen in
+            if keepPopoverOpen {
+                self?.destroyEventMonitor()
             } else {
-                self?.startEventMonitor()
+                self?.setupEventMonitor()
+                self?.eventMonitor?.start()
             }
         }
     }
     
-    private func startEventMonitor() {
+    private func setupEventMonitor() {
         eventMonitor = EventMonitor(mask: [.leftMouseDown, .rightMouseDown]) { [weak self] event in
             if let strongSelf = self, strongSelf.popover.isShown {
                 strongSelf.closePopover(sender: event)
@@ -45,7 +46,7 @@ class MenuController: NSObject {
         }
     }
     
-    private func stopEventMonitor() {
+    private func destroyEventMonitor() {
         eventMonitor = nil
     }
     
