@@ -9,6 +9,10 @@
 import SwiftUI
 
 struct AboutView: View {
+    var appVersion: String  {
+        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+    }
+    
     var body: some View {
         VStack(spacing: 4.0) {
             Image("shieldIcon")
@@ -16,7 +20,7 @@ struct AboutView: View {
             Text(UIConstants.Strings.piStatsName)
                 .font(.body)
             
-            Text("\(UIConstants.Strings.version) 1.0.0")
+            Text("\(UIConstants.Strings.version) \(appVersion)")
                 .font(.caption)
             
             Text(UIConstants.Strings.copyright)
