@@ -16,10 +16,14 @@ private enum PreferencesKey: String {
 
 class Preferences: ObservableObject {
     var keychainToken = APIToken()
-    
+    private var appURL: URL { Bundle.main.bundleURL }
+    static let didChangeNotification = Notification.Name("dev.bunn.holestats.PrefsChanged")
+    @Published private var _launchAtLoginEnabled: Bool = false
+
     init() {
         apiToken = keychainToken.token
     }
+    
     
     @Published var keepPopoverPanelOpen: Bool = UserDefaults.standard.object(forKey: PreferencesKey.keepPopoverPanelOpen.rawValue) as? Bool ?? false {
         didSet {
@@ -39,6 +43,23 @@ class Preferences: ObservableObject {
         }
     }
     
+    var launchAtLoginEnabled: Bool {
+          get {
+              _launchAtLoginEnabled || SharedFileList.sessionLoginItems().containsItem(appURL)
+          }
+          set {
+              _launchAtLoginEnabled = newValue
+
+              if newValue {
+                  SharedFileList.sessionLoginItems().addItem(appURL)
+              } else {
+                  SharedFileList.sessionLoginItems().removeItem(appURL)
+              }
+
+            didChange()
+          }
+      }
+    
     var port: Int? {
         getPort(address)
     }
@@ -51,5 +72,9 @@ class Preferences: ObservableObject {
         let split = address.components(separatedBy: ":")
         guard let port = split.last else { return nil }
         return Int(port)
+    }
+    
+    private func didChange() {
+        NotificationCenter.default.post(name: Self.didChangeNotification, object: self)
     }
 }

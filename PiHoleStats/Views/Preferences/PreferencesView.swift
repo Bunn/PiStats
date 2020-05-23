@@ -16,6 +16,10 @@ struct PreferencesView: View {
             Toggle(isOn: $preferences.keepPopoverPanelOpen) {
                 Text(UIConstants.Strings.keepPopoverOpenPreference)
             }
+            
+            Toggle(isOn: $preferences.launchAtLoginEnabled) {
+                Text(UIConstants.Strings.launchAtLogonPreference)
+            }
         }
     }
 }

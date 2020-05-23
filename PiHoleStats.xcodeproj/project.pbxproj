@@ -16,6 +16,7 @@
 		313408DB24688456005D73E7 /* SummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313408DA24688456005D73E7 /* SummaryViewController.swift */; };
 		313408DD24689028005D73E7 /* PiHoleConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313408DC24689028005D73E7 /* PiHoleConfigView.swift */; };
 		315CA2D8247925A10079F555 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315CA2D7247925A10079F555 /* PreferencesView.swift */; };
+		315CA2DC247931FE0079F555 /* SharedFileList.m in Sources */ = {isa = PBXBuildFile; fileRef = 315CA2DB247931FE0079F555 /* SharedFileList.m */; };
 		3160C4F5247875D600FAB226 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3160C4F4247875D600FAB226 /* MenuController.swift */; };
 		3160C4F7247876AC00FAB226 /* EventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3160C4F6247876AC00FAB226 /* EventMonitor.swift */; };
 		3160C4FB2478790800FAB226 /* PreferencesContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3160C4FA2478790800FAB226 /* PreferencesContainerView.swift */; };
@@ -39,6 +40,9 @@
 		313408DA24688456005D73E7 /* SummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryViewController.swift; sourceTree = "<group>"; };
 		313408DC24689028005D73E7 /* PiHoleConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiHoleConfigView.swift; sourceTree = "<group>"; };
 		315CA2D7247925A10079F555 /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
+		315CA2D9247931FE0079F555 /* PiHoleStats-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PiHoleStats-Bridging-Header.h"; sourceTree = "<group>"; };
+		315CA2DA247931FE0079F555 /* SharedFileList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SharedFileList.h; sourceTree = "<group>"; };
+		315CA2DB247931FE0079F555 /* SharedFileList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SharedFileList.m; sourceTree = "<group>"; };
 		3160C4F4247875D600FAB226 /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		3160C4F6247876AC00FAB226 /* EventMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMonitor.swift; sourceTree = "<group>"; };
 		3160C4FA2478790800FAB226 /* PreferencesContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesContainerView.swift; sourceTree = "<group>"; };
@@ -74,6 +78,9 @@
 				313278E92469FD7C00520124 /* UIConstants.swift */,
 				3124948B24701BD300634933 /* KeyChainPasswordItem.swift */,
 				3160C4F6247876AC00FAB226 /* EventMonitor.swift */,
+				315CA2DA247931FE0079F555 /* SharedFileList.h */,
+				315CA2DB247931FE0079F555 /* SharedFileList.m */,
+				315CA2D9247931FE0079F555 /* PiHoleStats-Bridging-Header.h */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -220,6 +227,7 @@
 				TargetAttributes = {
 					319084B72454920700D47980 = {
 						CreatedOnToolsVersion = 11.4.1;
+						LastSwiftMigration = 1150;
 					};
 				};
 			};
@@ -276,6 +284,7 @@
 				313278F1246A08D700520124 /* PiHoleViewModel.swift in Sources */,
 				3160C4FB2478790800FAB226 /* PreferencesContainerView.swift in Sources */,
 				313408DB24688456005D73E7 /* SummaryViewController.swift in Sources */,
+				315CA2DC247931FE0079F555 /* SharedFileList.m in Sources */,
 				3160C4F7247876AC00FAB226 /* EventMonitor.swift in Sources */,
 				3160C4F5247875D600FAB226 /* MenuController.swift in Sources */,
 				3124948C24701BD300634933 /* KeyChainPasswordItem.swift in Sources */,
@@ -413,6 +422,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = PiHoleStats/PiHoleStats.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -432,6 +442,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.holestats;
 				PRODUCT_NAME = "Pi Stats";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "PiHoleStats/Util/PiHoleStats-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -440,6 +452,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = PiHoleStats/PiHoleStats.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -459,6 +472,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.holestats;
 				PRODUCT_NAME = "Pi Stats";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "PiHoleStats/Util/PiHoleStats-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
