@@ -12,19 +12,19 @@ import SwiftHole
 
 class PiHoleViewModel: ObservableObject {
     let pollingTimeInterval: TimeInterval = 3
-    @Published private (set) var totalQueries: String = ""
-    @Published private (set) var queriesBlocked: String = ""
-    @Published private (set) var percentBlocked: String = ""
-    @Published private (set) var domainsOnBlocklist: String = ""
-    @Published private (set) var errorMessage: String = ""
+    @Published private (set) var totalQueries = ""
+    @Published private (set) var queriesBlocked = ""
+    @Published private (set) var percentBlocked = ""
+    @Published private (set) var domainsOnBlocklist = ""
+    @Published private (set) var errorMessage = ""
     @Published private (set) var active: Bool = false {
         didSet {
             changeStatusButtonTitle = active ? UIConstants.Strings.buttonDisable: UIConstants.Strings.buttonEnable
             status = active ? UIConstants.Strings.statusEnabled : UIConstants.Strings.statusDisabled
         }
     }
-    @Published private (set) var changeStatusButtonTitle: String = ""
-    @Published private (set) var status: String = ""
+    @Published private (set) var changeStatusButtonTitle = ""
+    @Published private (set) var status = ""
 
     var isSettingsEmpty: Bool {
         preferences.host.isEmpty
