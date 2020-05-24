@@ -11,15 +11,21 @@
 		3124948C24701BD300634933 /* KeyChainPasswordItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3124948B24701BD300634933 /* KeyChainPasswordItem.swift */; };
 		3124948E24701D2800634933 /* APIToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3124948D24701D2800634933 /* APIToken.swift */; };
 		313278EA2469FD7C00520124 /* UIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313278E92469FD7C00520124 /* UIConstants.swift */; };
-		313278EE246A086000520124 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313278ED246A086000520124 /* Settings.swift */; };
+		313278EE246A086000520124 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313278ED246A086000520124 /* Preferences.swift */; };
 		313278F1246A08D700520124 /* PiHoleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313278F0246A08D700520124 /* PiHoleViewModel.swift */; };
 		313408DB24688456005D73E7 /* SummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313408DA24688456005D73E7 /* SummaryViewController.swift */; };
-		313408DD24689028005D73E7 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313408DC24689028005D73E7 /* SettingsView.swift */; };
+		313408DD24689028005D73E7 /* PiHoleConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313408DC24689028005D73E7 /* PiHoleConfigView.swift */; };
+		315CA2D8247925A10079F555 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315CA2D7247925A10079F555 /* PreferencesView.swift */; };
+		315CA2DC247931FE0079F555 /* SharedFileList.m in Sources */ = {isa = PBXBuildFile; fileRef = 315CA2DB247931FE0079F555 /* SharedFileList.m */; };
+		3160C4F5247875D600FAB226 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3160C4F4247875D600FAB226 /* MenuController.swift */; };
+		3160C4F7247876AC00FAB226 /* EventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3160C4F6247876AC00FAB226 /* EventMonitor.swift */; };
+		3160C4FB2478790800FAB226 /* PreferencesContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3160C4FA2478790800FAB226 /* PreferencesContainerView.swift */; };
+		3160C4FD2478791000FAB226 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3160C4FC2478791000FAB226 /* AboutView.swift */; };
+		3160C50324787AF300FAB226 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3160C50224787AF300FAB226 /* PreferencesViewController.swift */; };
 		31718236246B22E1003BBF0C /* SummaryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31718235246B22E1003BBF0C /* SummaryItem.swift */; };
 		317278892468AED900B5BE3D /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317278882468AED900B5BE3D /* SummaryView.swift */; };
-		3172788E2468B03D00B5BE3D /* NavigationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3172788D2468B03D00B5BE3D /* NavigationViewModel.swift */; };
+		319044D824788C2D00BE4797 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319044D724788C2D00BE4797 /* NavigationController.swift */; };
 		319084BC2454920700D47980 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319084BB2454920700D47980 /* AppDelegate.swift */; };
-		319084BE2454920700D47980 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319084BD2454920700D47980 /* ContentView.swift */; };
 		319084C02454920900D47980 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 319084BF2454920900D47980 /* Assets.xcassets */; };
 		319084C32454920900D47980 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 319084C22454920900D47980 /* Preview Assets.xcassets */; };
 		319084C62454920900D47980 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 319084C42454920900D47980 /* Main.storyboard */; };
@@ -29,16 +35,24 @@
 		3124948B24701BD300634933 /* KeyChainPasswordItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainPasswordItem.swift; sourceTree = "<group>"; };
 		3124948D24701D2800634933 /* APIToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIToken.swift; sourceTree = "<group>"; };
 		313278E92469FD7C00520124 /* UIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIConstants.swift; sourceTree = "<group>"; };
-		313278ED246A086000520124 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		313278ED246A086000520124 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		313278F0246A08D700520124 /* PiHoleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiHoleViewModel.swift; sourceTree = "<group>"; };
 		313408DA24688456005D73E7 /* SummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryViewController.swift; sourceTree = "<group>"; };
-		313408DC24689028005D73E7 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		313408DC24689028005D73E7 /* PiHoleConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiHoleConfigView.swift; sourceTree = "<group>"; };
+		315CA2D7247925A10079F555 /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
+		315CA2D9247931FE0079F555 /* PiHoleStats-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PiHoleStats-Bridging-Header.h"; sourceTree = "<group>"; };
+		315CA2DA247931FE0079F555 /* SharedFileList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SharedFileList.h; sourceTree = "<group>"; };
+		315CA2DB247931FE0079F555 /* SharedFileList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SharedFileList.m; sourceTree = "<group>"; };
+		3160C4F4247875D600FAB226 /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
+		3160C4F6247876AC00FAB226 /* EventMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMonitor.swift; sourceTree = "<group>"; };
+		3160C4FA2478790800FAB226 /* PreferencesContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesContainerView.swift; sourceTree = "<group>"; };
+		3160C4FC2478791000FAB226 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		3160C50224787AF300FAB226 /* PreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
 		31718235246B22E1003BBF0C /* SummaryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryItem.swift; sourceTree = "<group>"; };
 		317278882468AED900B5BE3D /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
-		3172788D2468B03D00B5BE3D /* NavigationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewModel.swift; sourceTree = "<group>"; };
+		319044D724788C2D00BE4797 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		319084B82454920700D47980 /* Pi Stats.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pi Stats.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		319084BB2454920700D47980 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		319084BD2454920700D47980 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		319084BF2454920900D47980 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		319084C22454920900D47980 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		319084C52454920900D47980 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -63,6 +77,10 @@
 			children = (
 				313278E92469FD7C00520124 /* UIConstants.swift */,
 				3124948B24701BD300634933 /* KeyChainPasswordItem.swift */,
+				3160C4F6247876AC00FAB226 /* EventMonitor.swift */,
+				315CA2DA247931FE0079F555 /* SharedFileList.h */,
+				315CA2DB247931FE0079F555 /* SharedFileList.m */,
+				315CA2D9247931FE0079F555 /* PiHoleStats-Bridging-Header.h */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -70,19 +88,45 @@
 		313278EF246A08B900520124 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				3172788D2468B03D00B5BE3D /* NavigationViewModel.swift */,
 				313278F0246A08D700520124 /* PiHoleViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		315CA2D5247925220079F555 /* Preferences */ = {
+			isa = PBXGroup;
+			children = (
+				313408DC24689028005D73E7 /* PiHoleConfigView.swift */,
+				3160C4FA2478790800FAB226 /* PreferencesContainerView.swift */,
+				315CA2D7247925A10079F555 /* PreferencesView.swift */,
+				3160C4FC2478791000FAB226 /* AboutView.swift */,
+			);
+			path = Preferences;
+			sourceTree = "<group>";
+		};
+		315CA2D62479252E0079F555 /* Summary */ = {
+			isa = PBXGroup;
+			children = (
+				317278882468AED900B5BE3D /* SummaryView.swift */,
+				31718235246B22E1003BBF0C /* SummaryItem.swift */,
+			);
+			path = Summary;
+			sourceTree = "<group>";
+		};
+		3160C4F3247875C100FAB226 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				3160C4F4247875D600FAB226 /* MenuController.swift */,
+				319044D724788C2D00BE4797 /* NavigationController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		3172788A2468AF1A00B5BE3D /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				313408DC24689028005D73E7 /* SettingsView.swift */,
-				317278882468AED900B5BE3D /* SummaryView.swift */,
-				31718235246B22E1003BBF0C /* SummaryItem.swift */,
-				319084BD2454920700D47980 /* ContentView.swift */,
+				315CA2D62479252E0079F555 /* Summary */,
+				315CA2D5247925220079F555 /* Preferences */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -91,6 +135,7 @@
 			isa = PBXGroup;
 			children = (
 				313408DA24688456005D73E7 /* SummaryViewController.swift */,
+				3160C50224787AF300FAB226 /* PreferencesViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -98,7 +143,7 @@
 		3172788C2468B02B00B5BE3D /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				313278ED246A086000520124 /* Settings.swift */,
+				313278ED246A086000520124 /* Preferences.swift */,
 				3124948D24701D2800634933 /* APIToken.swift */,
 			);
 			path = Model;
@@ -123,6 +168,7 @@
 		319084BA2454920700D47980 /* PiHoleStats */ = {
 			isa = PBXGroup;
 			children = (
+				3160C4F3247875C100FAB226 /* Controllers */,
 				313278EF246A08B900520124 /* ViewModel */,
 				3172788C2468B02B00B5BE3D /* Model */,
 				3172788B2468AF2600B5BE3D /* ViewControllers */,
@@ -181,6 +227,7 @@
 				TargetAttributes = {
 					319084B72454920700D47980 = {
 						CreatedOnToolsVersion = 11.4.1;
+						LastSwiftMigration = 1150;
 					};
 				};
 			};
@@ -223,17 +270,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3172788E2468B03D00B5BE3D /* NavigationViewModel.swift in Sources */,
-				319084BE2454920700D47980 /* ContentView.swift in Sources */,
-				313278EE246A086000520124 /* Settings.swift in Sources */,
+				3160C4FD2478791000FAB226 /* AboutView.swift in Sources */,
+				3160C50324787AF300FAB226 /* PreferencesViewController.swift in Sources */,
+				315CA2D8247925A10079F555 /* PreferencesView.swift in Sources */,
+				313278EE246A086000520124 /* Preferences.swift in Sources */,
 				31718236246B22E1003BBF0C /* SummaryItem.swift in Sources */,
+				319044D824788C2D00BE4797 /* NavigationController.swift in Sources */,
 				3124948E24701D2800634933 /* APIToken.swift in Sources */,
-				313408DD24689028005D73E7 /* SettingsView.swift in Sources */,
+				313408DD24689028005D73E7 /* PiHoleConfigView.swift in Sources */,
 				313278EA2469FD7C00520124 /* UIConstants.swift in Sources */,
 				317278892468AED900B5BE3D /* SummaryView.swift in Sources */,
 				319084BC2454920700D47980 /* AppDelegate.swift in Sources */,
 				313278F1246A08D700520124 /* PiHoleViewModel.swift in Sources */,
+				3160C4FB2478790800FAB226 /* PreferencesContainerView.swift in Sources */,
 				313408DB24688456005D73E7 /* SummaryViewController.swift in Sources */,
+				315CA2DC247931FE0079F555 /* SharedFileList.m in Sources */,
+				3160C4F7247876AC00FAB226 /* EventMonitor.swift in Sources */,
+				3160C4F5247875D600FAB226 /* MenuController.swift in Sources */,
 				3124948C24701BD300634933 /* KeyChainPasswordItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -369,11 +422,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = PiHoleStats/PiHoleStats.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"PiHoleStats/Preview Content\"";
 				DEVELOPMENT_TEAM = B2RUA6XMHC;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -384,10 +438,12 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.holestats;
 				PRODUCT_NAME = "Pi Stats";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "PiHoleStats/Util/PiHoleStats-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -396,11 +452,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = PiHoleStats/PiHoleStats.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"PiHoleStats/Preview Content\"";
 				DEVELOPMENT_TEAM = B2RUA6XMHC;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -411,10 +468,11 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.holestats;
 				PRODUCT_NAME = "Pi Stats";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "PiHoleStats/Util/PiHoleStats-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

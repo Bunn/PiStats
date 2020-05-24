@@ -8,11 +8,22 @@
 
 import SwiftUI
 
+private struct DisableButtonOption {
+    let seconds: Int
+    let text: String
+    let id = UUID()
+}
 
 struct SummaryView: View {
-    @EnvironmentObject var navigationItem: NavigationViewModel
+    @EnvironmentObject var navigationController: NavigationController
     @EnvironmentObject var viewModel: PiHoleViewModel
-    @EnvironmentObject var settings: Settings
+    @EnvironmentObject var preferences: Preferences
+    
+    private var disableButtonOptions: [DisableButtonOption] {
+        [DisableButtonOption(seconds: 10, text: UIConstants.Strings.disableButtonOption10Seconds),
+         DisableButtonOption(seconds: 30, text: UIConstants.Strings.disableButtonOption30Seconds),
+         DisableButtonOption(seconds: 300, text: UIConstants.Strings.disableButtonOption5Minutes)]
+    }
     
     var body: some View {
         VStack {
@@ -25,11 +36,31 @@ struct SummaryView: View {
                     
                     Spacer()
                     
-                    if !settings.apiToken.isEmpty {
-                        Button(action: {
-                            self.viewModel.active ? self.viewModel.disablePiHole() : self.viewModel.enablePiHole()
-                        }) {
-                            Text(self.viewModel.changeStatusButtonTitle)
+                    if !preferences.apiToken.isEmpty {
+                        if preferences.displayDisableTimeOptions && self.viewModel.active {
+                           
+                            MenuButton(label: Text(self.viewModel.changeStatusButtonTitle)) {
+                                Button(action: {
+                                    self.viewModel.disablePiHole()
+                                }, label: { Text(UIConstants.Strings.disableButtonOptionPermanently) })
+                                
+                                VStack {
+                                    Divider()
+                                }
+                                
+                                ForEach(disableButtonOptions, id: \.id) { option in
+                                    Button(action: {
+                                        self.viewModel.disablePiHole(seconds: option.seconds)
+                                    }, label: { Text(option.text) })
+                                }
+                            }.frame(maxWidth: 80)
+                            
+                        } else {
+                            Button(action: {
+                                self.viewModel.active ? self.viewModel.disablePiHole() : self.viewModel.enablePiHole()
+                            }) {
+                                Text(self.viewModel.changeStatusButtonTitle)
+                            }
                         }
                     }
                 }
@@ -65,9 +96,9 @@ struct SummaryView: View {
                 Spacer()
                 
                 Button(action: {
-                    self.navigationItem.currentNavigationItem = .settings
+                    self.navigationController.openPreferences()
                 }) {
-                    Text(UIConstants.Strings.buttonSettings)
+                    Text(UIConstants.Strings.buttonPreferences)
                 }
             }
             

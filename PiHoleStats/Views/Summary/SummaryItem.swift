@@ -11,14 +11,14 @@ import SwiftUI
 struct SummaryItem: View {
     var value: String
     var type: SummaryItemType
-
+    
     enum SummaryItemType {
         case totalQuery
         case queryBlocked
         case percentBlocked
         case domainsOnBlocklist
     }
-        
+    
     private var circleColor: Color {
         get {
             switch type {

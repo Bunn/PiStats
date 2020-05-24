@@ -11,27 +11,28 @@ import Combine
 import SwiftHole
 
 class PiHoleViewModel: ObservableObject {
-    let pollingTimeInterval: TimeInterval = 3
-    @Published private (set) var totalQueries: String = ""
-    @Published private (set) var queriesBlocked: String = ""
-    @Published private (set) var percentBlocked: String = ""
-    @Published private (set) var domainsOnBlocklist: String = ""
-    @Published private (set) var errorMessage: String = ""
+    @Published private (set) var totalQueries = ""
+    @Published private (set) var queriesBlocked = ""
+    @Published private (set) var percentBlocked = ""
+    @Published private (set) var domainsOnBlocklist = ""
+    @Published private (set) var errorMessage = ""
+    @Published private (set) var changeStatusButtonTitle = ""
+    @Published private (set) var status = ""
+    
+    private let pollingTimeInterval: TimeInterval = 3
+    private var timer: Timer?
+    private let preferences: Preferences
+
     @Published private (set) var active: Bool = false {
         didSet {
             changeStatusButtonTitle = active ? UIConstants.Strings.buttonDisable: UIConstants.Strings.buttonEnable
             status = active ? UIConstants.Strings.statusEnabled : UIConstants.Strings.statusDisabled
         }
     }
-    @Published private (set) var changeStatusButtonTitle: String = ""
-    @Published private (set) var status: String = ""
-
-    var isSettingsEmpty: Bool {
-        settings.host.isEmpty
-    }
     
-    private var timer: Timer?
-    private let settings: Settings
+    var isSettingsEmpty: Bool {
+        preferences.host.isEmpty
+    }
     
     private lazy var percentageFormatter: NumberFormatter = {
         let n = NumberFormatter()
@@ -48,8 +49,8 @@ class PiHoleViewModel: ObservableObject {
         return n
     }()
     
-    init(settings: Settings) {
-        self.settings = settings
+    init(preferences: Preferences) {
+        self.preferences = preferences
     }
     
     func startPolling() {
@@ -67,8 +68,8 @@ class PiHoleViewModel: ObservableObject {
         errorMessage = ""
     }
     
-    func disablePiHole() {
-        SwiftHole(host: settings.host, port: settings.port, apiToken: settings.apiToken).disablePiHole() { result in
+    func disablePiHole(seconds: Int = 0) {
+        SwiftHole(host: preferences.host, port: preferences.port, apiToken: preferences.apiToken).disablePiHole(seconds: seconds) { result in
             switch result {
             case .success():
                 DispatchQueue.main.async {
@@ -84,7 +85,7 @@ class PiHoleViewModel: ObservableObject {
     }
     
     func enablePiHole() {
-        SwiftHole(host: settings.host, port: settings.port, apiToken: settings.apiToken).enablePiHole() { result in
+        SwiftHole(host: preferences.host, port: preferences.port, apiToken: preferences.apiToken).enablePiHole() { result in
             switch result {
             case .success():
                 DispatchQueue.main.async {
@@ -115,17 +116,16 @@ class PiHoleViewModel: ObservableObject {
             self.errorMessage = UIConstants.Strings.Error.invalidResponse
         case .invalidAPIToken:
             self.errorMessage = UIConstants.Strings.Error.invalidAPIToken
-            
         }
     }
     
     private func fetchSummaryData() {
         if isSettingsEmpty {
-            errorMessage = UIConstants.Strings.openSettingsToConfigureHost
+            errorMessage = UIConstants.Strings.openPreferencesToConfigureHost
             return
         }
         
-        SwiftHole(host: settings.host, port: settings.port, apiToken: settings.apiToken).fetchSummary{ result in
+        SwiftHole(host: preferences.host, port: preferences.port, apiToken: preferences.apiToken).fetchSummary{ result in
             switch result {
             case .success(let piholeSummary):
                 DispatchQueue.main.async {
@@ -146,5 +146,6 @@ class PiHoleViewModel: ObservableObject {
         percentBlocked = percentageFormatter.string(from:  NSNumber(value: summary.adsPercentageToday / 100.0)) ?? "-"
         domainsOnBlocklist = numberFormatter.string(from:  NSNumber(value: summary.domainsBeingBlocked)) ?? "-"
         active = summary.status.lowercased() == "enabled"
+        errorMessage = ""
     }
 }

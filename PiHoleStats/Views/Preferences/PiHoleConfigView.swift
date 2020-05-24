@@ -8,27 +8,19 @@
 
 import SwiftUI
 
-struct SettingsView: View {
-    @EnvironmentObject var navigationItem: NavigationViewModel
-    @EnvironmentObject var settings: Settings
+struct PiHoleConfigView: View {
+    @EnvironmentObject var preferences: Preferences
 
     var body: some View {
         VStack {
             HStack {
                 Text(UIConstants.Strings.host)
-                TextField(UIConstants.Strings.hostPlaceholder, text: self.$settings.address)
+                TextField(UIConstants.Strings.hostPlaceholder, text: self.$preferences.address)
             }
             
             HStack {
                 Text(UIConstants.Strings.apiToken)
-                SecureField(UIConstants.Strings.apiTokenPlaceholder, text: self.$settings.apiToken)
-            }
-            
-            
-            Button(action: {
-                self.navigationItem.currentNavigationItem = .summary
-            }) {
-                Text(UIConstants.Strings.buttonClose)
+                SecureField(UIConstants.Strings.apiTokenPlaceholder, text: self.$preferences.apiToken)
             }
             
             Divider()
@@ -52,8 +44,8 @@ struct SettingsView: View {
 }
 
 
-struct SettingsView_Previews: PreviewProvider {
+struct PiHoleConfigView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView()
+        PiHoleConfigView()
     }
 }
