@@ -58,9 +58,9 @@ struct SummaryView: View {
                         } else {
                             Button(action: {
                                 self.viewModel.active ? self.viewModel.disablePiHole() : self.viewModel.enablePiHole()
-                            }) {
+                            }, label: {
                                 Text(self.viewModel.changeStatusButtonTitle)
-                            }
+                            })
                         }
                     }
                 }
@@ -78,9 +78,9 @@ struct SummaryView: View {
                 if !viewModel.isSettingsEmpty {
                     Button(action: {
                         self.viewModel.resetErrorMessage()
-                    }) {
+                    }, label: {
                         Text(UIConstants.Strings.buttonOK)
-                    }
+                    })
                 }
             }
             
@@ -89,17 +89,17 @@ struct SummaryView: View {
             HStack {
                 Button(action: {
                     NSApplication.shared.terminate(self)
-                }) {
+                }, label: {
                     Text(UIConstants.Strings.buttonQuit)
-                }
+                })
                 
                 Spacer()
                 
                 Button(action: {
                     self.navigationController.openPreferences()
-                }) {
+                }, label: {
                     Text(UIConstants.Strings.buttonPreferences)
-                }
+                })
             }
             
         }.padding()

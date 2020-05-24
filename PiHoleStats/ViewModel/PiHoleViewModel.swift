@@ -55,7 +55,7 @@ class PiHoleViewModel: ObservableObject {
     
     func startPolling() {
         self.fetchSummaryData()
-        timer = Timer.scheduledTimer(withTimeInterval: pollingTimeInterval, repeats: true) { timer in
+        timer = Timer.scheduledTimer(withTimeInterval: pollingTimeInterval, repeats: true) { _ in
             self.fetchSummaryData()
         }
     }
@@ -71,7 +71,7 @@ class PiHoleViewModel: ObservableObject {
     func disablePiHole(seconds: Int = 0) {
         SwiftHole(host: preferences.host, port: preferences.port, apiToken: preferences.apiToken).disablePiHole(seconds: seconds) { result in
             switch result {
-            case .success():
+            case .success:
                 DispatchQueue.main.async {
                     self.active = false
                 }
@@ -85,9 +85,9 @@ class PiHoleViewModel: ObservableObject {
     }
     
     func enablePiHole() {
-        SwiftHole(host: preferences.host, port: preferences.port, apiToken: preferences.apiToken).enablePiHole() { result in
+        SwiftHole(host: preferences.host, port: preferences.port, apiToken: preferences.apiToken).enablePiHole { result in
             switch result {
-            case .success():
+            case .success:
                 DispatchQueue.main.async {
                     self.active = true
                 }
@@ -125,7 +125,7 @@ class PiHoleViewModel: ObservableObject {
             return
         }
         
-        SwiftHole(host: preferences.host, port: preferences.port, apiToken: preferences.apiToken).fetchSummary{ result in
+        SwiftHole(host: preferences.host, port: preferences.port, apiToken: preferences.apiToken).fetchSummary { result in
             switch result {
             case .success(let piholeSummary):
                 DispatchQueue.main.async {
@@ -141,10 +141,10 @@ class PiHoleViewModel: ObservableObject {
     }
     
     private func updateData(summary: Summary) {
-        totalQueries = numberFormatter.string(from:  NSNumber(value: summary.dnsQueriesToday)) ?? "-"
-        queriesBlocked = numberFormatter.string(from:  NSNumber(value: summary.adsBlockedToday)) ?? "-"
-        percentBlocked = percentageFormatter.string(from:  NSNumber(value: summary.adsPercentageToday / 100.0)) ?? "-"
-        domainsOnBlocklist = numberFormatter.string(from:  NSNumber(value: summary.domainsBeingBlocked)) ?? "-"
+        totalQueries = numberFormatter.string(from: NSNumber(value: summary.dnsQueriesToday)) ?? "-"
+        queriesBlocked = numberFormatter.string(from: NSNumber(value: summary.adsBlockedToday)) ?? "-"
+        percentBlocked = percentageFormatter.string(from: NSNumber(value: summary.adsPercentageToday / 100.0)) ?? "-"
+        domainsOnBlocklist = numberFormatter.string(from: NSNumber(value: summary.domainsBeingBlocked)) ?? "-"
         active = summary.status.lowercased() == "enabled"
         errorMessage = ""
     }

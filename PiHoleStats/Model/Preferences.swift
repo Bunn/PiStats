@@ -25,7 +25,6 @@ class Preferences: ObservableObject {
         apiToken = keychainToken.token
     }
     
-    
     @Published var keepPopoverPanelOpen: Bool = UserDefaults.standard.object(forKey: PreferencesKey.keepPopoverPanelOpen.rawValue) as? Bool ?? false {
         didSet {
             UserDefaults.standard.set(keepPopoverPanelOpen, forKey: PreferencesKey.keepPopoverPanelOpen.rawValue)
@@ -41,10 +40,10 @@ class Preferences: ObservableObject {
     @Published var address: String = UserDefaults.standard.object(forKey: PreferencesKey.address.rawValue) as? String ?? "" {
         didSet {
             UserDefaults.standard.set(address, forKey: PreferencesKey.address.rawValue)
-        } 
+        }
     }
     
-    @Published var apiToken: String  {
+    @Published var apiToken: String {
         didSet {
             keychainToken.token = apiToken
         }

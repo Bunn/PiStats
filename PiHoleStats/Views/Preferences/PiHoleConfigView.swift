@@ -43,7 +43,6 @@ struct PiHoleConfigView: View {
     }
 }
 
-
 struct PiHoleConfigView_Previews: PreviewProvider {
     static var previews: some View {
         PiHoleConfigView()

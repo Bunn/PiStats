@@ -10,11 +10,9 @@ import Foundation
 import SwiftUI
 
 struct UIConstants {
-    
     struct Geometry {
         static let circleSize: CGFloat = 10.0
     }
-    
     struct Colors {
         static let offline = Color("offline")
         static let active = Color("active")
@@ -34,7 +32,7 @@ struct UIConstants {
             static let noAPITokenProvided = "No API Token Provided"
             static let sessionError = "Session Error"
         }
-        
+
         static let totalQueries = "Total Queries"
         static let queriesBlocked = "Queries Blocked"
         static let percentBlocked = "Percent Blocked"

@@ -17,11 +17,11 @@ struct APIToken {
         get {
             do {
                 return try passwordItem.readPassword()
-            }
-            catch {
+            } catch {
                 return ""
             }
         }
+        
         set {
             /*
              It might error out when trying to delete during development because of digital signing changing

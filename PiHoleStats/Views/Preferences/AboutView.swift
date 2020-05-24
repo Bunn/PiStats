@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct AboutView: View {
-    var appVersion: String  {
+    var appVersion: String {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
     }
     
