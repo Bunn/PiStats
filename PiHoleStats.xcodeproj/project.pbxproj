@@ -29,6 +29,8 @@
 		319084C02454920900D47980 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 319084BF2454920900D47980 /* Assets.xcassets */; };
 		319084C32454920900D47980 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 319084C22454920900D47980 /* Preview Assets.xcassets */; };
 		319084C62454920900D47980 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 319084C42454920900D47980 /* Main.storyboard */; };
+		31ABD138247B14B700D76618 /* PiHoleDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31ABD137247B14B700D76618 /* PiHoleDataProvider.swift */; };
+		31ABD13A247B14C200D76618 /* PiHole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31ABD139247B14C200D76618 /* PiHole.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +60,8 @@
 		319084C52454920900D47980 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		319084C72454920900D47980 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		319084C82454920900D47980 /* PiHoleStats.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PiHoleStats.entitlements; sourceTree = "<group>"; };
+		31ABD137247B14B700D76618 /* PiHoleDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiHoleDataProvider.swift; sourceTree = "<group>"; };
+		31ABD139247B14C200D76618 /* PiHole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiHole.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +172,7 @@
 		319084BA2454920700D47980 /* PiHoleStats */ = {
 			isa = PBXGroup;
 			children = (
+				31ABD136247B14A700D76618 /* Core */,
 				3160C4F3247875C100FAB226 /* Controllers */,
 				313278EF246A08B900520124 /* ViewModel */,
 				3172788C2468B02B00B5BE3D /* Model */,
@@ -190,6 +195,15 @@
 				319084C22454920900D47980 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		31ABD136247B14A700D76618 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				31ABD137247B14B700D76618 /* PiHoleDataProvider.swift */,
+				31ABD139247B14C200D76618 /* PiHole.swift */,
+			);
+			path = Core;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -295,6 +309,8 @@
 				3160C50324787AF300FAB226 /* PreferencesViewController.swift in Sources */,
 				315CA2D8247925A10079F555 /* PreferencesView.swift in Sources */,
 				313278EE246A086000520124 /* Preferences.swift in Sources */,
+				31ABD13A247B14C200D76618 /* PiHole.swift in Sources */,
+				31ABD138247B14B700D76618 /* PiHoleDataProvider.swift in Sources */,
 				31718236246B22E1003BBF0C /* SummaryItem.swift in Sources */,
 				319044D824788C2D00BE4797 /* NavigationController.swift in Sources */,
 				3124948E24701D2800634933 /* APIToken.swift in Sources */,

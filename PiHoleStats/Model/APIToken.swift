@@ -9,9 +9,15 @@
 import Foundation
 
 struct APIToken {
+    internal init(accountName: String) {
+        self.accountName = accountName
+        self.passwordItem = KeychainPasswordItem(service: APIToken.serviceName, account: accountName, accessGroup: nil)
+    }
+    
     private static let serviceName = "PiHoleStatsService"
-    private static let accountName = "PiHoleStatsAccount"
-    private let passwordItem = KeychainPasswordItem(service: APIToken.serviceName, account: APIToken.accountName, accessGroup: nil)
+    let accountName: String
+    
+    private let passwordItem: KeychainPasswordItem
     
     public var token: String {
         get {
