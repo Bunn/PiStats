@@ -28,3 +28,5 @@ Tested with Pi-hole 4.4 and 5.0
 ## Download
 Pi Stats (and [SwiftHole](https://github.com/Bunn/SwiftHole)) is a free and open source hobby project of mine. If you want to support its development you can either pay whatever you want on [Gumroad](https://gum.co/iqhwv) or buy it on the [App Store](https://apps.apple.com/us/app/pi-stats/id1514075262?ls=1) for those nice automatic updates :)
 
+ps.
+100% of the proceeds so far (May 29 2020) were donated to the Portuguese League Against Cancer, more information [here](https://twitter.com/fcbunn/status/1266364615186714626?s=21) 
