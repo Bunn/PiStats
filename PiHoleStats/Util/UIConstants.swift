@@ -56,7 +56,7 @@ struct UIConstants {
         static let aboutTabTitle = "About"
         static let version = "Version"
         static let piStatsName = "Pi Stats"
-        static let piHoleTabTitle = "Pi Hole"
+        static let piHoleTabTitle = "Pi-hole"
         static let preferencesTabTitle = "Preferences"
         static let keepPopoverOpenPreference = "Keep popover open when clicking outside"
         static let launchAtLogonPreference = "Launch at login"

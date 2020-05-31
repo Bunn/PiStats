@@ -10,12 +10,12 @@ import SwiftUI
 
 struct PreferencesContainerView: View {
     @State var selectedView = 1
-    @EnvironmentObject var preferences: Preferences
+    @EnvironmentObject var piHoleController: PiholeController
 
     var body: some View {
         VStack {
             TabView(selection: $selectedView) {
-                PiHoleConfigView()
+                PiholeConfigView()
                     .padding().tabItem {
                         Text(UIConstants.Strings.piHoleTabTitle)
                 }.tag(1)

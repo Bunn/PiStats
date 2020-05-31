@@ -1,8 +1,8 @@
 //
-//  PiHoleViewModel.swift
+//  PiHoleService.swift
 //  PiHoleStats
 //
-//  Created by Fernando Bunn on 11/05/2020.
+//  Created by Fernando Bunn on 24/05/2020.
 //  Copyright © 2020 Fernando Bunn. All rights reserved.
 //
 
@@ -10,7 +10,11 @@ import Foundation
 import Combine
 import SwiftHole
 
-class PiHoleViewModel: ObservableObject {
+class PiholeDataProvider: ObservableObject {
+    let piHoles: [Pihole]
+    private let pollingTimeInterval: TimeInterval = 3
+    private var timer: Timer?
+
     @Published private (set) var totalQueries = ""
     @Published private (set) var queriesBlocked = ""
     @Published private (set) var percentBlocked = ""
@@ -18,11 +22,6 @@ class PiHoleViewModel: ObservableObject {
     @Published private (set) var errorMessage = ""
     @Published private (set) var changeStatusButtonTitle = ""
     @Published private (set) var status = ""
-    
-    private let pollingTimeInterval: TimeInterval = 3
-    private var timer: Timer?
-    private let preferences: Preferences
-
     @Published private (set) var active: Bool = false {
         didSet {
             changeStatusButtonTitle = active ? UIConstants.Strings.buttonDisable: UIConstants.Strings.buttonEnable
@@ -30,27 +29,23 @@ class PiHoleViewModel: ObservableObject {
         }
     }
     
-    var isSettingsEmpty: Bool {
-        preferences.host.isEmpty
-    }
-    
     private lazy var percentageFormatter: NumberFormatter = {
-        let n = NumberFormatter()
-        n.numberStyle = .percent
-        n.minimumFractionDigits = 2
-        n.maximumFractionDigits = 2
-        return n
-    }()
+          let n = NumberFormatter()
+          n.numberStyle = .percent
+          n.minimumFractionDigits = 2
+          n.maximumFractionDigits = 2
+          return n
+      }()
+      
+      private lazy var numberFormatter: NumberFormatter = {
+          let n = NumberFormatter()
+          n.numberStyle = .decimal
+          n.maximumFractionDigits = 0
+          return n
+      }()
     
-    private lazy var numberFormatter: NumberFormatter = {
-        let n = NumberFormatter()
-        n.numberStyle = .decimal
-        n.maximumFractionDigits = 0
-        return n
-    }()
-    
-    init(preferences: Preferences) {
-        self.preferences = preferences
+    init(piHoles: [Pihole]) {
+        self.piHoles = piHoles
     }
     
     func startPolling() {
@@ -69,32 +64,36 @@ class PiHoleViewModel: ObservableObject {
     }
     
     func disablePiHole(seconds: Int = 0) {
-        SwiftHole(host: preferences.host, port: preferences.port, apiToken: preferences.apiToken).disablePiHole(seconds: seconds) { result in
-            switch result {
-            case .success:
-                DispatchQueue.main.async {
-                    self.active = false
-                }
-                
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self.handleError(error)
+        piHoles.forEach {
+            $0.disablePiHole(seconds: seconds) { result in
+                switch result {
+                case .success:
+                    DispatchQueue.main.async {
+                        self.active = false
+                    }
+                    
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        self.handleError(error)
+                    }
                 }
             }
         }
     }
     
     func enablePiHole() {
-        SwiftHole(host: preferences.host, port: preferences.port, apiToken: preferences.apiToken).enablePiHole { result in
-            switch result {
-            case .success:
-                DispatchQueue.main.async {
-                    self.active = true
-                }
-                
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self.handleError(error)
+        piHoles.forEach {
+            $0.enablePiHole { result in
+                switch result {
+                case .success:
+                    DispatchQueue.main.async {
+                        self.active = true
+                    }
+                    
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        self.handleError(error)
+                    }
                 }
             }
         }
@@ -120,21 +119,18 @@ class PiHoleViewModel: ObservableObject {
     }
     
     private func fetchSummaryData() {
-        if isSettingsEmpty {
-            errorMessage = UIConstants.Strings.openPreferencesToConfigureHost
-            return
-        }
-        
-        SwiftHole(host: preferences.host, port: preferences.port, apiToken: preferences.apiToken).fetchSummary { result in
-            switch result {
-            case .success(let piholeSummary):
-                DispatchQueue.main.async {
-                    self.updateData(summary: piholeSummary)
-                }
-                
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self.handleError(error)
+        piHoles.forEach {
+            $0.fetchSummary { result in
+                switch result {
+                case .success(let piholeSummary):
+                    DispatchQueue.main.async {
+                        self.updateData(summary: piholeSummary)
+                    }
+                    
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        self.handleError(error)
+                    }
                 }
             }
         }

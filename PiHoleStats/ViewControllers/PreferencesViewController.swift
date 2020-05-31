@@ -10,10 +10,12 @@ import Cocoa
 import SwiftUI
 
 class PreferencesViewController: NSViewController {
+    let piHoleController: PiholeController
     let preferences: Preferences
-
-    init(preferences: Preferences) {
+    
+    init(preferences: Preferences, piHoleController: PiholeController) {
         self.preferences = preferences
+        self.piHoleController = piHoleController
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -28,9 +30,10 @@ class PreferencesViewController: NSViewController {
     
     override func loadView() {
         view = NSView()
-        preferredContentSize = NSSize(width: 390, height: 300)
+        preferredContentSize = NSSize(width: 510, height: 350)
         let contentView = PreferencesContainerView()
             .environmentObject(preferences)
+            .environmentObject(piHoleController)
         
         let hostingController = NSHostingController(rootView: contentView)
         addChild(hostingController)

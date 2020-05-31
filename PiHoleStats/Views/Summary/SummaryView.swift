@@ -16,7 +16,7 @@ private struct DisableButtonOption {
 
 struct SummaryView: View {
     @EnvironmentObject var navigationController: NavigationController
-    @EnvironmentObject var viewModel: PiHoleViewModel
+    @EnvironmentObject var dataProvider: PiholeDataProvider
     @EnvironmentObject var preferences: Preferences
     
     private var disableButtonOptions: [DisableButtonOption] {
@@ -27,21 +27,21 @@ struct SummaryView: View {
     
     var body: some View {
         VStack {
-            if viewModel.errorMessage.isEmpty {
+            if dataProvider.errorMessage.isEmpty {
                 HStack {
                     Circle()
-                        .fill(self.viewModel.active ? UIConstants.Colors.active : UIConstants.Colors.offline)
+                        .fill(self.dataProvider.active ? UIConstants.Colors.active : UIConstants.Colors.offline)
                         .frame(width: UIConstants.Geometry.circleSize, height: UIConstants.Geometry.circleSize)
-                    Text(self.viewModel.status)
+                    Text(self.dataProvider.status)
                     
                     Spacer()
                     
                     if !preferences.apiToken.isEmpty {
-                        if preferences.displayDisableTimeOptions && self.viewModel.active {
+                        if preferences.displayDisableTimeOptions && self.dataProvider.active {
                            
-                            MenuButton(label: Text(self.viewModel.changeStatusButtonTitle)) {
+                            MenuButton(label: Text(self.dataProvider.changeStatusButtonTitle)) {
                                 Button(action: {
-                                    self.viewModel.disablePiHole()
+                                    self.dataProvider.disablePiHole()
                                 }, label: { Text(UIConstants.Strings.disableButtonOptionPermanently) })
                                 
                                 VStack {
@@ -50,16 +50,16 @@ struct SummaryView: View {
                                 
                                 ForEach(disableButtonOptions, id: \.id) { option in
                                     Button(action: {
-                                        self.viewModel.disablePiHole(seconds: option.seconds)
+                                        self.dataProvider.disablePiHole(seconds: option.seconds)
                                     }, label: { Text(option.text) })
                                 }
                             }.frame(maxWidth: 80)
                             
                         } else {
                             Button(action: {
-                                self.viewModel.active ? self.viewModel.disablePiHole() : self.viewModel.enablePiHole()
+                                self.dataProvider.active ? self.dataProvider.disablePiHole() : self.dataProvider.enablePiHole()
                             }, label: {
-                                Text(self.viewModel.changeStatusButtonTitle)
+                                Text(self.dataProvider.changeStatusButtonTitle)
                             })
                         }
                     }
@@ -67,17 +67,17 @@ struct SummaryView: View {
                 
                 Divider()
                 
-                SummaryItem(value: self.viewModel.totalQueries, type: .totalQuery)
-                SummaryItem(value: self.viewModel.queriesBlocked, type: .queryBlocked)
-                SummaryItem(value: self.viewModel.percentBlocked, type: .percentBlocked)
-                SummaryItem(value: self.viewModel.domainsOnBlocklist, type: .domainsOnBlocklist)
+                SummaryItem(value: self.dataProvider.totalQueries, type: .totalQuery)
+                SummaryItem(value: self.dataProvider.queriesBlocked, type: .queryBlocked)
+                SummaryItem(value: self.dataProvider.percentBlocked, type: .percentBlocked)
+                SummaryItem(value: self.dataProvider.domainsOnBlocklist, type: .domainsOnBlocklist)
                 
             } else {
-                Text(viewModel.errorMessage)
+                Text(dataProvider.errorMessage)
                     .multilineTextAlignment(.center)
-                if !viewModel.isSettingsEmpty {
+                if !preferences.host.isEmpty {
                     Button(action: {
-                        self.viewModel.resetErrorMessage()
+                        self.dataProvider.resetErrorMessage()
                     }, label: {
                         Text(UIConstants.Strings.buttonOK)
                     })

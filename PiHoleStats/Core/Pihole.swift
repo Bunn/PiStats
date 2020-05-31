@@ -9,10 +9,10 @@
 import Foundation
 import SwiftHole
 
-class PiHole: Codable {
+class Pihole: Identifiable, Codable, ObservableObject {
     var address: String
-    let piHoleID: UUID
-    private lazy var keychainToken = APIToken(accountName: self.piHoleID.uuidString)
+    let id: UUID
+    private lazy var keychainToken = APIToken(accountName: self.id.uuidString)
     var apiToken: String {
         keychainToken.token
     }
@@ -24,13 +24,30 @@ class PiHole: Codable {
     }
     private lazy var service = SwiftHole(host: host, port: port, apiToken: apiToken)
     
+    enum CodingKeys: CodingKey {
+        case id
+        case address
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(UUID.self, forKey: .id)
+        address = try container.decode(String.self, forKey: .address)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(address, forKey: .address)
+    }
+    
     public init(address: String, apiToken: String? = nil, piHoleID: UUID? = nil) {
         self.address = address
         
         if let piHoleID = piHoleID {
-            self.piHoleID = piHoleID
+            self.id = piHoleID
         } else {
-            self.piHoleID = UUID()
+            self.id = UUID()
         }
         
         if let apiToken = apiToken {
@@ -47,7 +64,7 @@ class PiHole: Codable {
 
 // MARK: Network Methods
 
-extension PiHole {
+extension Pihole {
     public func fetchSummary(completion: @escaping (Result<Summary, SwiftHoleError>) -> Void) {
         service.fetchSummary(completion: completion)
     }
@@ -63,12 +80,12 @@ extension PiHole {
 
 // MARK: I/O Methods
 
-extension PiHole {
+extension Pihole {
     private static let piHoleListKey = "PiHoleStatsPiHoleList"
     
     public func save() {
-        var piHoleList = PiHole.restoreAll()
-        if let index = piHoleList.firstIndex(where: { $0.piHoleID == self.piHoleID }) {
+        var piHoleList = Pihole.restoreAll()
+        if let index = piHoleList.firstIndex(where: { $0.id == self.id }) {
             piHoleList[index] = self
         } else {
             piHoleList.append(self)
@@ -77,25 +94,41 @@ extension PiHole {
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(piHoleList) {
             let defaults = UserDefaults.standard
-            defaults.set(encoded, forKey: PiHole.piHoleListKey)
+            defaults.set(encoded, forKey: Pihole.piHoleListKey)
         }
     }
     
-    static func restoreAll() -> [PiHole] {
-        if let piHoleList = UserDefaults.standard.object(forKey: PiHole.piHoleListKey) as? Data {
+    static func restoreAll() -> [Pihole] {
+        if let piHoleList = UserDefaults.standard.object(forKey: Pihole.piHoleListKey) as? Data {
             let decoder = JSONDecoder()
             
-            if let list = try? decoder.decode([PiHole].self, from: piHoleList) {
+            if let list = try? decoder.decode([Pihole].self, from: piHoleList) {
                 return list
             } else {
-                return [PiHole]()
+                return [Pihole]()
             }
         } else {
-            return [PiHole]()
+            return [Pihole]()
         }
     }
     
-    static func restore(_ uuid: UUID) -> PiHole? {
-        return PiHole.restoreAll().filter { $0.piHoleID == uuid }.first
+    static func restore(_ uuid: UUID) -> Pihole? {
+        return Pihole.restoreAll().filter { $0.id == uuid }.first
     }
 }
+
+extension Pihole: Hashable {
+    static func == (lhs: Pihole, rhs: Pihole) -> Bool {
+         return lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}
+
+//extension PiHole: Identifiable {
+//    static func == (lhs: PiHole, rhs: PiHole) -> Bool {
+//        return lhs.id == rhs.id
+//    }
+//}
