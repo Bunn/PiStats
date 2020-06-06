@@ -42,7 +42,7 @@ struct PiholeConfigView: View {
                     }
                 }
                 if selectedItem != nil {
-                    PiholeItemConfig(piholeViewModel: PiholeViewModel(piHole: selectedItem!))
+                    PiholeItemConfigView(piholeViewModel: PiholeViewModel(piHole: selectedItem!))
                 } else {
                     Text("Select an item")
                     Spacer()

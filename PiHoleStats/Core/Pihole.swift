@@ -14,8 +14,14 @@ class Pihole: Identifiable, Codable, ObservableObject {
     let id: UUID
     private lazy var keychainToken = APIToken(accountName: self.id.uuidString)
     var apiToken: String {
-        keychainToken.token
+        get {
+            keychainToken.token
+        }
+        set {
+            keychainToken.token = newValue
+        }
     }
+    
     var port: Int? {
         getPort(address)
     }

@@ -8,9 +8,8 @@
 
 import SwiftUI
 
-struct PiholeItemConfig: View {
+struct PiholeItemConfigView: View {
     @EnvironmentObject var piHoleController: PiholeController
-    
     @ObservedObject var piholeViewModel: PiholeViewModel
     
     var body: some View {
@@ -26,10 +25,7 @@ struct PiholeItemConfig: View {
             }
             
             Button(action: {
-                self.piholeViewModel.save()
-                //self.pihole.save()
-                self.piHoleController.objectWillChange.send()
-                // self.savePiHole()
+                self.save()
             }, label: {
                 Text("Save")
             })
@@ -48,8 +44,13 @@ struct PiholeItemConfig: View {
                 .multilineTextAlignment(.center)
                 .minimumScaleFactor(0.8)
                 .foregroundColor(.secondary)
-            
-        }    }
+        }
+    }
+    
+    private func save() {
+        self.piHoleController.objectWillChange.send()
+        self.piholeViewModel.save()
+    }
 }
 
 //struct PiHoleItemConfig_Previews: PreviewProvider {

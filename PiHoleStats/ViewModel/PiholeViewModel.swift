@@ -11,17 +11,18 @@ import SwiftUI
 
 class PiholeViewModel: ObservableObject {
     @Published var address: String
-    //@Published var token: String
+    @Published var token: String
     var piHole: Pihole
     
     internal init(piHole: Pihole) {
         self.piHole = piHole
         self.address = piHole.address
-        //_address = State(initialValue: piHole.address)
+        self.token = piHole.apiToken
     }
     
     func save() {
-        self.piHole.address = address
+        piHole.address = address
+        piHole.apiToken = token
+        piHole.save()
     }
-    
 }
