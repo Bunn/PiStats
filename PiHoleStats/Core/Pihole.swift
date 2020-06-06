@@ -89,16 +89,29 @@ extension Pihole {
 extension Pihole {
     private static let piHoleListKey = "PiHoleStatsPiHoleList"
     
-    public func save() {
-        var piHoleList = Pihole.restoreAll()
-        if let index = piHoleList.firstIndex(where: { $0.id == self.id }) {
-            piHoleList[index] = self
-        } else {
-            piHoleList.append(self)
-        }
+    public func delete() {
+        var piholeList = Pihole.restoreAll()
         
+        if let index = piholeList.firstIndex(of: self) {
+            piholeList.remove(at: index)
+        }
+        save(piholeList)
+        self.keychainToken.delete()
+    }
+    
+    public func save() {
+        var piholeList = Pihole.restoreAll()
+        if let index = piholeList.firstIndex(where: { $0.id == self.id }) {
+            piholeList[index] = self
+        } else {
+            piholeList.append(self)
+        }
+        save(piholeList)
+    }
+    
+    private func save(_ list: [Pihole]) {
         let encoder = JSONEncoder()
-        if let encoded = try? encoder.encode(piHoleList) {
+        if let encoded = try? encoder.encode(list) {
             let defaults = UserDefaults.standard
             defaults.set(encoded, forKey: Pihole.piHoleListKey)
         }
@@ -132,9 +145,3 @@ extension Pihole: Hashable {
         hasher.combine(id)
     }
 }
-
-//extension PiHole: Identifiable {
-//    static func == (lhs: PiHole, rhs: PiHole) -> Bool {
-//        return lhs.id == rhs.id
-//    }
-//}

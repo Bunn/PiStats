@@ -37,4 +37,12 @@ struct APIToken {
             try? passwordItem.savePassword(newValue)
         }
     }
+    
+    public func delete() {
+        do {
+            try passwordItem.deleteItem()
+        } catch {
+            print("Keychain delete error \(error)")
+        }
+    }
 }

@@ -17,25 +17,20 @@ struct PiholeConfigView: View {
             HStack {
                 VStack(alignment: .leading, spacing: 0) {
                     List(selection: $selectedItem) {
-                        ForEach(piHoleController.piHoles) { pihole in
+                        ForEach(piHoleController.piholes) { pihole in
                             Text(pihole.address).tag(pihole)
                         }
                     }
                     
                     HStack(spacing: 0) {
                         Button(action: {
-                            let pihole = self.piHoleController.addStubPihole()
-                            self.items.append(pihole.id.uuidString)
+                            self.addStubPihole()
                         }, label: {
                             Text("Add")
                         })
                         
                         Button(action: {
-                            if let item = self.selectedItem {
-                                //remove Item
-                                print(item)
-                            }
-                            self.selectedItem = nil
+                            self.removeSelectedPihole()
                         }, label: {
                             Text("Remove")
                         }).disabled(selectedItem == nil)
@@ -49,9 +44,24 @@ struct PiholeConfigView: View {
 
                 }
             }.onAppear {
-                self.selectedItem = self.piHoleController.piHoles.first
+                self.selectedItem = self.piHoleController.piholes.first
         }
+    }
     
+    private func addStubPihole() {
+        let pihole = piHoleController.addStubPihole()
+        items.append(pihole.id.uuidString)
+    }
+    
+    private func removeSelectedPihole() {
+        if let pihole = self.selectedItem {
+            remove(pihole)
+        }
+        self.selectedItem = nil
+    }
+    
+    private func remove(_ pihole: Pihole) {
+        piHoleController.remove(pihole)
     }
 }
 

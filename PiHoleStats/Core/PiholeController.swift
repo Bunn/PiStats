@@ -9,10 +9,10 @@
 import Foundation
 
 class PiholeController: ObservableObject {
-    @Published var piHoles = Pihole.restoreAll()
+    @Published var piholes = Pihole.restoreAll()
     
     func getCurrentPiHole() -> Pihole? {
-        piHoles.first
+        piholes.first
     }
     
     func saveNewPiHole(address: String, token: String) {        
@@ -25,11 +25,14 @@ class PiholeController: ObservableObject {
     
     func addStubPihole() -> Pihole {
         let piHole = Pihole(address: "127.0.0.1")
-        piHoles.append(piHole)
+        piholes.append(piHole)
         return piHole
     }
     
-    func deletePihole(_ pihole: Pihole) {
-        
+    func remove(_ pihole: Pihole) {
+        if let index = piholes.firstIndex(of: pihole) {
+            piholes.remove(at: index)
+        }
+        pihole.delete()
     }
 }

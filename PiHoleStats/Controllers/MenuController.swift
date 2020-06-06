@@ -15,7 +15,7 @@ class MenuController: NSObject {
     private let preferences = Preferences()
     private lazy var navigationController = NavigationController(preferences: preferences, piHoleController: piHoleController)
     private lazy var dataProvider: PiholeDataProvider = {
-        let d = PiholeDataProvider(piHoles: piHoleController.piHoles)
+        let d = PiholeDataProvider(piHoles: piHoleController.piholes)
         return d
     }()
     private let piHoleController = PiholeController()
