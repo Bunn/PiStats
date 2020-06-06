@@ -12,7 +12,7 @@ import Combine
 class MenuController: NSObject {
     private lazy var popover = NSPopover()
     private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
-    private let preferences = Preferences()
+    private let preferences = UserPreferences()
     private lazy var navigationController = NavigationController(preferences: preferences, piHoleController: piHoleController)
     private lazy var dataProvider: PiholeDataProvider = {
         let d = PiholeDataProvider(piHoles: piHoleController.piholes)

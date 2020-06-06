@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Preferences
 
 struct AboutView: View {
     var appVersion: String {
@@ -14,17 +15,14 @@ struct AboutView: View {
     }
     
     var body: some View {
-        VStack(spacing: 4.0) {
-            Image("shieldIcon")
-            
-            Text(UIConstants.Strings.piStatsName)
-                .font(.body)
-            
-            Text("\(UIConstants.Strings.version) \(appVersion)")
-                .font(.caption)
-            
-            Text(UIConstants.Strings.copyright)
-                .font(.caption)
+        Preferences.Container(contentWidth: 300) {
+            [Preferences.Section(title: "") {
+                Text(UIConstants.Strings.piStatsName)
+                Text("\(UIConstants.Strings.version) \(self.appVersion)")
+                Divider()
+                Text(UIConstants.Strings.copyright)
+                    .font(.caption)
+            }]
         }
     }
 }

@@ -7,23 +7,25 @@
 //
 
 import SwiftUI
+import Preferences
 
 struct PreferencesView: View {
-    @EnvironmentObject var preferences: Preferences
-
+    @EnvironmentObject var preferences: UserPreferences
+    
     var body: some View {
-        Form {
-            Toggle(isOn: $preferences.keepPopoverPanelOpen) {
-                Text(UIConstants.Strings.keepPopoverOpenPreference)
-            }
-            
-            Toggle(isOn: $preferences.launchAtLoginEnabled) {
-                Text(UIConstants.Strings.launchAtLogonPreference)
-            }
-            
-            Toggle(isOn: $preferences.displayDisableTimeOptions) {
-                Text(UIConstants.Strings.disableTimeOptionsTitle)
-            }
+        Preferences.Container(contentWidth: 300) {
+            [Preferences.Section(title: "") {
+                Toggle(isOn: self.$preferences.keepPopoverPanelOpen) {
+                    Text(UIConstants.Strings.keepPopoverOpenPreference)
+                }
+                Toggle(isOn: self.$preferences.launchAtLoginEnabled) {
+                    Text(UIConstants.Strings.launchAtLogonPreference)
+                }
+                Toggle(isOn: self.$preferences.displayDisableTimeOptions) {
+                    Text(UIConstants.Strings.disableTimeOptionsTitle)
+                }
+                }
+            ]
         }
     }
 }

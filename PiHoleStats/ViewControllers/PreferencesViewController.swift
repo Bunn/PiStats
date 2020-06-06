@@ -7,38 +7,55 @@
 //
 
 import Cocoa
+import Preferences
 import SwiftUI
 
-class PreferencesViewController: NSViewController {
+/*
+ I've decided to use this third party library (Preferences)
+ because there's an annoying bug with SwiftUI TabBar + List
+ that breaks the rendering and state of the selected item
+ More info here:
+ https://twitter.com/fcbunn/status/1269301540923363333?s=21
+ */
+
+class PreferencesViewController {
     let piHoleController: PiholeController
-    let preferences: Preferences
+    let preferences: UserPreferences
     
-    init(preferences: Preferences, piHoleController: PiholeController) {
+    init(preferences: UserPreferences, piHoleController: PiholeController) {
         self.preferences = preferences
         self.piHoleController = piHoleController
-        super.init(nibName: nil, bundle: nil)
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    lazy var preferencesWindowController = PreferencesWindowController(
+        panes: [
+            Preferences.Pane(
+                identifier: Preferences.PaneIdentifier(rawValue: "piholes"),
+                title: "Pi-holes",
+                toolbarIcon: NSImage(named: NSImage.userAccountsName)!
+            ) {
+                PiholeConfigView().environmentObject(self.piHoleController)
+            },
+            
+            Preferences.Pane(
+                identifier: Preferences.PaneIdentifier(rawValue: "preferences"),
+                title: "Preferences",
+                toolbarIcon: NSImage(named: NSImage.preferencesGeneralName)!
+            ) {
+                PreferencesView().environmentObject(self.preferences)
+            },
+            
+            Preferences.Pane(
+                identifier: Preferences.PaneIdentifier(rawValue: "about"),
+                title: "About",
+                toolbarIcon: NSImage(named: NSImage.applicationIconName)!
+            ) {
+                AboutView()
+            }
+        ], animated: false
+    )
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        title = UIConstants.Strings.preferencesWindowTitle
-    }
-    
-    override func loadView() {
-        view = NSView()
-        preferredContentSize = NSSize(width: 510, height: 350)
-        let contentView = PreferencesContainerView()
-            .environmentObject(preferences)
-            .environmentObject(piHoleController)
-        
-        let hostingController = NSHostingController(rootView: contentView)
-        addChild(hostingController)
-        hostingController.view.autoresizingMask = [.width, .height]
-        hostingController.view.frame = view.bounds
-        view.addSubview(hostingController.view)
+    func show() {
+        preferencesWindowController.show()
     }
 }

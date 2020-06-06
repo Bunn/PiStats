@@ -17,7 +17,7 @@ private struct DisableButtonOption {
 struct SummaryView: View {
     @EnvironmentObject var navigationController: NavigationController
     @EnvironmentObject var dataProvider: PiholeDataProvider
-    @EnvironmentObject var preferences: Preferences
+    @EnvironmentObject var preferences: UserPreferences
     
     private var disableButtonOptions: [DisableButtonOption] {
         [DisableButtonOption(seconds: 10, text: UIConstants.Strings.disableButtonOption10Seconds),

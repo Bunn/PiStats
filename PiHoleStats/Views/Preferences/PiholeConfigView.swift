@@ -50,7 +50,10 @@ struct PiholeConfigView: View {
                 }.padding()
                 Spacer()
             }
-        }.onAppear {
+        }
+        .frame(width: 480, height: 250)
+        .padding()
+        .onAppear {
             self.selectedItem = self.piHoleController.piholes.first
         }
     }

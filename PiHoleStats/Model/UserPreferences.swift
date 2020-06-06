@@ -15,7 +15,7 @@ private enum PreferencesKey: String {
     case displayDisableTimeOptions = "SettingsDisplayDisableTimeOptions"
 }
 
-class Preferences: ObservableObject {
+class UserPreferences: ObservableObject {
     var keychainToken = APIToken(accountName: "PiHoleStatsAccount")
     private var appURL: URL { Bundle.main.bundleURL }
     static let didChangeNotification = Notification.Name("dev.bunn.holestats.PrefsChanged")

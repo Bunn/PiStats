@@ -10,11 +10,11 @@ import Cocoa
 import SwiftUI
 
 class SummaryViewController: NSViewController {
-    private let preferences: Preferences
+    private let preferences: UserPreferences
     private let navigationController: NavigationController
     private let piHoleDataProvider: PiholeDataProvider
 
-    init(preferences: Preferences, piHoleDataProvider: PiholeDataProvider, navigationController: NavigationController) {
+    init(preferences: UserPreferences, piHoleDataProvider: PiholeDataProvider, navigationController: NavigationController) {
         self.preferences = preferences
         self.piHoleDataProvider = piHoleDataProvider
         self.navigationController = navigationController

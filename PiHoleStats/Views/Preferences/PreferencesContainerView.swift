@@ -10,7 +10,6 @@ import SwiftUI
 
 struct PreferencesContainerView: View {
     @State var selectedView = 1
-    @EnvironmentObject var piHoleController: PiholeController
 
     var body: some View {
         VStack {
