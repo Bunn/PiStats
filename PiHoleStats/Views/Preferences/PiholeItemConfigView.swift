@@ -36,9 +36,7 @@ struct PiholeItemConfigView: View {
                 .font(.caption)
                 .multilineTextAlignment(.center)
                 .layoutPriority(1)
-            
-            Spacer()
-            
+            Divider()
             Text(UIConstants.Strings.tokenStoredOnKeychainInfo)
                 .font(.footnote)
                 .multilineTextAlignment(.center)
