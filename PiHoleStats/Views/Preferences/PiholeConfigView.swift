@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct PiholeConfigView: View {
-    @EnvironmentObject var piHoleController: PiholeController
+    @EnvironmentObject var piholeListProvider: PiholeListProvider
     @State private var selectedItem: Pihole?
     @State var items = [Pihole]()
     
@@ -17,7 +17,7 @@ struct PiholeConfigView: View {
         HStack {
             VStack(alignment: .leading, spacing: 0) {
                 List(selection: $selectedItem) {
-                    ForEach(piHoleController.piholes) { pihole in
+                    ForEach(piholeListProvider.piholes) { pihole in
                         Text(pihole.address).tag(pihole)
                     }
                 }
@@ -40,7 +40,7 @@ struct PiholeConfigView: View {
             } else {
                 Spacer()
                 VStack {
-                    if piHoleController.piholes.count > 0 {
+                    if piholeListProvider.piholes.count > 0 {
                         Text("Select a pi-hole on the left or click Add to setup a new pi-hole.")
                             .multilineTextAlignment(.center)
                     } else {
@@ -54,12 +54,12 @@ struct PiholeConfigView: View {
         .frame(width: 480, height: 250)
         .padding()
         .onAppear {
-            self.selectedItem = self.piHoleController.piholes.first
+            self.selectedItem = self.piholeListProvider.piholes.first
         }
     }
     
     private func addStubPihole() {
-        let pihole = piHoleController.addStubPihole()
+        let pihole = piholeListProvider.addStubPihole()
         items.append(pihole)
         selectedItem = pihole
     }
@@ -72,7 +72,7 @@ struct PiholeConfigView: View {
     }
     
     private func remove(_ pihole: Pihole) {
-        piHoleController.remove(pihole)
+        piholeListProvider.remove(pihole)
     }
 }
 

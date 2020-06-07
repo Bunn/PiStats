@@ -33,7 +33,7 @@
 		319F10952483F04A003EB3CD /* PiholeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319F10942483F04A003EB3CD /* PiholeViewModel.swift */; };
 		31ABD138247B14B700D76618 /* PiholeDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31ABD137247B14B700D76618 /* PiholeDataProvider.swift */; };
 		31ABD13A247B14C200D76618 /* Pihole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31ABD139247B14C200D76618 /* Pihole.swift */; };
-		31C56758247C72A500B9E5F3 /* PiholeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C56757247C72A500B9E5F3 /* PiholeController.swift */; };
+		31C56758247C72A500B9E5F3 /* PiholeListProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C56757247C72A500B9E5F3 /* PiholeListProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,7 +66,7 @@
 		319F10942483F04A003EB3CD /* PiholeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiholeViewModel.swift; sourceTree = "<group>"; };
 		31ABD137247B14B700D76618 /* PiholeDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiholeDataProvider.swift; sourceTree = "<group>"; };
 		31ABD139247B14C200D76618 /* Pihole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pihole.swift; sourceTree = "<group>"; };
-		31C56757247C72A500B9E5F3 /* PiholeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiholeController.swift; sourceTree = "<group>"; };
+		31C56757247C72A500B9E5F3 /* PiholeListProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiholeListProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -209,7 +209,7 @@
 			children = (
 				31ABD137247B14B700D76618 /* PiholeDataProvider.swift */,
 				31ABD139247B14C200D76618 /* Pihole.swift */,
-				31C56757247C72A500B9E5F3 /* PiholeController.swift */,
+				31C56757247C72A500B9E5F3 /* PiholeListProvider.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -332,7 +332,7 @@
 				319084BC2454920700D47980 /* AppDelegate.swift in Sources */,
 				3160C4FB2478790800FAB226 /* PreferencesContainerView.swift in Sources */,
 				313408DB24688456005D73E7 /* SummaryViewController.swift in Sources */,
-				31C56758247C72A500B9E5F3 /* PiholeController.swift in Sources */,
+				31C56758247C72A500B9E5F3 /* PiholeListProvider.swift in Sources */,
 				315CA2DC247931FE0079F555 /* SharedFileList.m in Sources */,
 				3160C4F7247876AC00FAB226 /* EventMonitor.swift in Sources */,
 				3160C4F5247875D600FAB226 /* MenuController.swift in Sources */,

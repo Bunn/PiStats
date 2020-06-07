@@ -11,19 +11,19 @@ import Cocoa
 class NavigationController: ObservableObject {
     private var windowController: NSWindowController?
     let preferences: UserPreferences
-    let piHoleController: PiholeController
+    let piholeListProvider: PiholeListProvider
     
-    init(preferences: UserPreferences, piHoleController: PiholeController) {
+    init(preferences: UserPreferences, piholeListProvider: PiholeListProvider) {
         self.preferences = preferences
-        self.piHoleController = piHoleController
+        self.piholeListProvider = piholeListProvider
     }
     
     public func openPreferences() {
         NSApp.activate(ignoringOtherApps: true)
-        let controller = PreferencesViewController(preferences: preferences, piHoleController: piHoleController)
+        let controller = PreferencesViewController(preferences: preferences, piholeListProvider: piholeListProvider)
         controller.show()
 //        
-//        let settings = PreferencesViewController(preferences: preferences, piHoleController: piHoleController)
+//        let settings = PreferencesViewController(preferences: preferences, piholeListProvider: piholeListProvider)
 //        let window = NSWindow(contentViewController: settings)
 //        windowController = NSWindowController(window: window)
 //        windowController?.showWindow(self)

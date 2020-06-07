@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct PiholeItemConfigView: View {
-    @EnvironmentObject var piHoleController: PiholeController
+    @EnvironmentObject var piholeListProvider: PiholeListProvider
     @ObservedObject var piholeViewModel: PiholeViewModel
     
     var body: some View {
@@ -46,7 +46,7 @@ struct PiholeItemConfigView: View {
     }
     
     private func save() {
-        self.piHoleController.objectWillChange.send()
+        self.piholeListProvider.objectWillChange.send()
         self.piholeViewModel.save()
     }
 }

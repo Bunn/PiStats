@@ -8,7 +8,7 @@
 
 import Foundation
 
-class PiholeController: ObservableObject {
+class PiholeListProvider: ObservableObject {
     @Published var piholes = Pihole.restoreAll()
     
     func getCurrentPiHole() -> Pihole? {
