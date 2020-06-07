@@ -14,8 +14,9 @@ struct UIConstants {
         static let circleSize: CGFloat = 10.0
     }
     struct Colors {
-        static let offline = Color("offline")
-        static let active = Color("active")
+        static let disabled = Color("disabled")
+        static let enabled = Color("enabled")
+        static let enabledAndDisabled = Color("enabledAndDisabled")
         static let totalQuery = Color("totalQuery")
         static let domainBlocked = Color("domainBlocked")
         static let queryBlocked = Color("queryBlocked")
@@ -42,6 +43,7 @@ struct UIConstants {
         static let buttonQuit = "Quit"
         static let statusEnabled = "Active"
         static let statusDisabled = "Offline"
+        static let statusEnabledAndDisabled = "Partially Active"
         static let buttonEnable = "Enable"
         static let buttonDisable = "Disable"
         static let host = "Host"

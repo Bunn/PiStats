@@ -12,6 +12,17 @@ import SwiftHole
 class Pihole: Identifiable, Codable, ObservableObject {
     var address: String
     let id: UUID
+    private(set) var summary: Summary? {
+        didSet {
+            if summary?.status.lowercased() == "disabled" {
+                active = false
+            } else {
+                active = true
+            }
+        }
+    }
+    private(set) var active = false
+
     private lazy var keychainToken = APIToken(accountName: self.id.uuidString)
     var apiToken: String {
         get {
@@ -71,8 +82,17 @@ class Pihole: Identifiable, Codable, ObservableObject {
 // MARK: Network Methods
 
 extension Pihole {
-    public func fetchSummary(completion: @escaping (Result<Summary, SwiftHoleError>) -> Void) {
-        service.fetchSummary(completion: completion)
+    public func updateSummary(completion: @escaping (SwiftHoleError?) -> Void) {
+        service.fetchSummary { result in
+            switch result {
+            case .success(let summary):
+                self.summary = summary
+                completion(nil)
+            case .failure(let error):
+                self.summary = nil
+                completion(error)
+            }
+        }
     }
     
     public func enablePiHole(completion: @escaping (Result<Void, SwiftHoleError>) -> Void) {

@@ -30,39 +30,39 @@ struct SummaryView: View {
             if dataProvider.errorMessage.isEmpty {
                 HStack {
                     Circle()
-                        .fill(self.dataProvider.active ? UIConstants.Colors.active : UIConstants.Colors.offline)
+                        .fill(self.dataProvider.statusColor)
                         .frame(width: UIConstants.Geometry.circleSize, height: UIConstants.Geometry.circleSize)
-                    Text(self.dataProvider.status)
+                    Text(self.dataProvider.statusText)
                     
                     Spacer()
                     
-                    if !preferences.apiToken.isEmpty {
-                        if preferences.displayDisableTimeOptions && self.dataProvider.active {
-                           
-                            MenuButton(label: Text(self.dataProvider.changeStatusButtonTitle)) {
-                                Button(action: {
-                                    self.dataProvider.disablePiHole()
-                                }, label: { Text(UIConstants.Strings.disableButtonOptionPermanently) })
-                                
-                                VStack {
-                                    Divider()
-                                }
-                                
-                                ForEach(disableButtonOptions, id: \.id) { option in
-                                    Button(action: {
-                                        self.dataProvider.disablePiHole(seconds: option.seconds)
-                                    }, label: { Text(option.text) })
-                                }
-                            }.frame(maxWidth: 80)
-                            
-                        } else {
-                            Button(action: {
-                                self.dataProvider.active ? self.dataProvider.disablePiHole() : self.dataProvider.enablePiHole()
-                            }, label: {
-                                Text(self.dataProvider.changeStatusButtonTitle)
-                            })
-                        }
-                    }
+//                    if !preferences.apiToken.isEmpty {
+//                        if preferences.displayDisableTimeOptions && self.dataProvider.active {
+//                           
+//                            MenuButton(label: Text(self.dataProvider.changeStatusButtonTitle)) {
+//                                Button(action: {
+//                                    self.dataProvider.disablePiHole()
+//                                }, label: { Text(UIConstants.Strings.disableButtonOptionPermanently) })
+//                                
+//                                VStack {
+//                                    Divider()
+//                                }
+//                                
+//                                ForEach(disableButtonOptions, id: \.id) { option in
+//                                    Button(action: {
+//                                        self.dataProvider.disablePiHole(seconds: option.seconds)
+//                                    }, label: { Text(option.text) })
+//                                }
+//                            }.frame(maxWidth: 80)
+//                            
+//                        } else {
+//                            Button(action: {
+//                                self.dataProvider.active ? self.dataProvider.disablePiHole() : self.dataProvider.enablePiHole()
+//                            }, label: {
+//                                Text(self.dataProvider.changeStatusButtonTitle)
+//                            })
+//                        }
+//                    }
                 }
                 
                 Divider()

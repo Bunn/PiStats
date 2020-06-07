@@ -7,27 +7,46 @@
 //
 
 import Foundation
-import Combine
+//import Combine
 import SwiftHole
+import SwiftUI
 
 class PiholeDataProvider: ObservableObject {
+    enum PiholeStatus {
+        case allEnabled
+        case allDisabled
+        case enabledAndDisabled
+    }
+    
     let piHoles: [Pihole]
     private let pollingTimeInterval: TimeInterval = 3
     private var timer: Timer?
-
-    @Published private (set) var totalQueries = ""
-    @Published private (set) var queriesBlocked = ""
-    @Published private (set) var percentBlocked = ""
-    @Published private (set) var domainsOnBlocklist = ""
-    @Published private (set) var errorMessage = ""
-    @Published private (set) var changeStatusButtonTitle = ""
-    @Published private (set) var status = ""
-    @Published private (set) var active: Bool = false {
-        didSet {
-            changeStatusButtonTitle = active ? UIConstants.Strings.buttonDisable: UIConstants.Strings.buttonEnable
-            status = active ? UIConstants.Strings.statusEnabled : UIConstants.Strings.statusDisabled
+    @Published private(set) var totalQueries = ""
+    @Published private(set) var queriesBlocked = ""
+    @Published private(set) var percentBlocked = ""
+    @Published private(set) var domainsOnBlocklist = ""
+    @Published private(set) var errorMessage = ""
+    @Published private(set) var status: PiholeStatus = .allDisabled
+    var statusColor: Color {
+        switch status {
+        case .allDisabled:
+            return UIConstants.Colors.disabled
+        case .allEnabled:
+            return UIConstants.Colors.enabled
+        case .enabledAndDisabled:
+            return UIConstants.Colors.enabledAndDisabled
         }
     }
+    var statusText: String {
+          switch status {
+          case .allDisabled:
+            return UIConstants.Strings.statusDisabled
+          case .allEnabled:
+            return UIConstants.Strings.statusEnabled
+          case .enabledAndDisabled:
+              return UIConstants.Strings.statusEnabledAndDisabled
+          }
+      }
     
     private lazy var percentageFormatter: NumberFormatter = {
           let n = NumberFormatter()
@@ -66,14 +85,11 @@ class PiholeDataProvider: ObservableObject {
     func disablePiHole(seconds: Int = 0) {
         piHoles.forEach {
             $0.disablePiHole(seconds: seconds) { result in
-                switch result {
-                case .success:
-                    DispatchQueue.main.async {
-                        self.active = false
-                    }
-                    
-                case .failure(let error):
-                    DispatchQueue.main.async {
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success:
+                        self.updateStatus()
+                    case .failure(let error):
                         self.handleError(error)
                     }
                 }
@@ -84,14 +100,11 @@ class PiholeDataProvider: ObservableObject {
     func enablePiHole() {
         piHoles.forEach {
             $0.enablePiHole { result in
-                switch result {
-                case .success:
-                    DispatchQueue.main.async {
-                        self.active = true
-                    }
-                    
-                case .failure(let error):
-                    DispatchQueue.main.async {
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success:
+                        self.updateStatus()
+                    case .failure(let error):
                         self.handleError(error)
                     }
                 }
@@ -119,29 +132,44 @@ class PiholeDataProvider: ObservableObject {
     }
     
     private func fetchSummaryData() {
-        piHoles.forEach {
-            $0.fetchSummary { result in
-                switch result {
-                case .success(let piholeSummary):
-                    DispatchQueue.main.async {
-                        self.updateData(summary: piholeSummary)
-                    }
-                    
-                case .failure(let error):
-                    DispatchQueue.main.async {
+        piHoles.forEach { pihole in
+            pihole.updateSummary { error in
+                DispatchQueue.main.async {
+                    if let error = error {
                         self.handleError(error)
+                    } else {
+                        self.updateData()
                     }
                 }
             }
         }
     }
     
-    private func updateData(summary: Summary) {
-        totalQueries = numberFormatter.string(from: NSNumber(value: summary.dnsQueriesToday)) ?? "-"
-        queriesBlocked = numberFormatter.string(from: NSNumber(value: summary.adsBlockedToday)) ?? "-"
-        percentBlocked = percentageFormatter.string(from: NSNumber(value: summary.adsPercentageToday / 100.0)) ?? "-"
-        domainsOnBlocklist = numberFormatter.string(from: NSNumber(value: summary.domainsBeingBlocked)) ?? "-"
-        active = summary.status.lowercased() == "enabled"
+    private func updateData() {
+        let sumDNSQueries = piHoles.compactMap { $0.summary }.reduce(0) { value, pihole in value + pihole.dnsQueriesToday }
+        totalQueries = numberFormatter.string(from: NSNumber(value: sumDNSQueries)) ?? "-"
+        
+        let sumQueriesBlocked = piHoles.compactMap { $0.summary }.reduce(0) { value, pihole in value + pihole.adsBlockedToday }
+        queriesBlocked = numberFormatter.string(from: NSNumber(value: sumQueriesBlocked)) ?? "-"
+        
+        let sumDomainOnBlocklist = piHoles.compactMap { $0.summary }.reduce(0) { value, pihole in value + pihole.domainsBeingBlocked }
+        domainsOnBlocklist = numberFormatter.string(from: NSNumber(value: sumDomainOnBlocklist)) ?? "-"
+        
+        let percentage = Double(sumQueriesBlocked) / Double(sumDNSQueries)
+        percentBlocked = percentageFormatter.string(from: NSNumber(value: percentage)) ?? "-"
         errorMessage = ""
+        
+        updateStatus()
+    }
+    
+    private func updateStatus() {
+        let allStatus = Set(piHoles.map { $0.active })
+        if allStatus.count > 1 {
+            status = .enabledAndDisabled
+        } else if allStatus.randomElement() == false {
+            status = .allDisabled
+        } else {
+            status = .allEnabled
+        }
     }
 }
