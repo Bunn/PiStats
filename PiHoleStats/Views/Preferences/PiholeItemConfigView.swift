@@ -48,6 +48,7 @@ struct PiholeItemConfigView: View {
     private func save() {
         self.piholeListProvider.objectWillChange.send()
         self.piholeViewModel.save()
+        self.piholeListProvider.updateData()
     }
 }
 

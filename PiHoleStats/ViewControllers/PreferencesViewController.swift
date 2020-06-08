@@ -34,7 +34,7 @@ class PreferencesViewController {
                 title: "Pi-holes",
                 toolbarIcon: NSImage(named: NSImage.userAccountsName)!
             ) {
-                PiholeConfigView().environmentObject(self.piholeListProvider)
+                PiholeConfigView(piholeListViewModel: PiholeListViewModel(piholeListProvider: self.piholeListProvider)).environmentObject(self.piholeListProvider)
             },
             
             Preferences.Pane(

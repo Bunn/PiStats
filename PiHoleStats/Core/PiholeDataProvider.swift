@@ -17,7 +17,12 @@ class PiholeDataProvider: ObservableObject {
         case enabledAndDisabled
     }
     
-    let piHoles: [Pihole]
+    private var piHoles: [Pihole] {
+        piholeListProvider.piholes
+    }
+    
+    let piholeListProvider: PiholeListProvider
+    
     private let pollingTimeInterval: TimeInterval = 3
     private var timer: Timer?
     @Published private(set) var totalQueries = ""
@@ -76,8 +81,8 @@ class PiholeDataProvider: ObservableObject {
           return n
       }()
     
-    init(piHoles: [Pihole]) {
-        self.piHoles = piHoles
+    init(piholeListProvider: PiholeListProvider) {
+        self.piholeListProvider = piholeListProvider
     }
     
     func startPolling() {

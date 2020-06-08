@@ -9,15 +9,14 @@
 import SwiftUI
 
 struct PiholeConfigView: View {
-    @EnvironmentObject var piholeListProvider: PiholeListProvider
     @State private var selectedItem: Pihole?
-    @State var items = [Pihole]()
-    
+    @ObservedObject var piholeListViewModel: PiholeListViewModel
+
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 0) {
                 List(selection: $selectedItem) {
-                    ForEach(piholeListProvider.piholes) { pihole in
+                    ForEach(piholeListViewModel.piholes) { pihole in
                         Text(pihole.address).tag(pihole)
                     }
                 }
@@ -40,7 +39,7 @@ struct PiholeConfigView: View {
             } else {
                 Spacer()
                 VStack {
-                    if piholeListProvider.piholes.count > 0 {
+                    if piholeListViewModel.piholes.count > 0 {
                         Text("Select a pi-hole on the left or click Add to setup a new pi-hole.")
                             .multilineTextAlignment(.center)
                     } else {
@@ -54,13 +53,12 @@ struct PiholeConfigView: View {
         .frame(width: 480, height: 250)
         .padding()
         .onAppear {
-            self.selectedItem = self.piholeListProvider.piholes.first
+            self.selectedItem = self.piholeListViewModel.piholes.first
         }
     }
     
     private func addStubPihole() {
-        let pihole = piholeListProvider.addStubPihole()
-        items.append(pihole)
+        let pihole = piholeListViewModel.addStubPihole()
         selectedItem = pihole
     }
     
@@ -72,12 +70,6 @@ struct PiholeConfigView: View {
     }
     
     private func remove(_ pihole: Pihole) {
-        piholeListProvider.remove(pihole)
-    }
-}
-
-struct PiHoleConfigView_Previews: PreviewProvider {
-    static var previews: some View {
-        PiholeConfigView()
+        piholeListViewModel.remove(pihole)
     }
 }
