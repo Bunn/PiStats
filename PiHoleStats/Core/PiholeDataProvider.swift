@@ -7,7 +7,6 @@
 //
 
 import Foundation
-//import Combine
 import SwiftHole
 import SwiftUI
 
@@ -27,6 +26,19 @@ class PiholeDataProvider: ObservableObject {
     @Published private(set) var domainsOnBlocklist = ""
     @Published private(set) var errorMessage = ""
     @Published private(set) var status: PiholeStatus = .allDisabled
+    
+    var canDisplayEnableDisableButton: Bool {
+        return piHoles.allSatisfy { $0.apiToken.isEmpty == false }
+    }
+    
+    var changeStatusButtonTitle: String {
+        if status != .allDisabled {
+            return UIConstants.Strings.buttonDisable
+        } else {
+            return UIConstants.Strings.buttonEnable
+        }
+    }
+    
     var statusColor: Color {
         switch status {
         case .allDisabled:
@@ -37,6 +49,7 @@ class PiholeDataProvider: ObservableObject {
             return UIConstants.Colors.enabledAndDisabled
         }
     }
+    
     var statusText: String {
           switch status {
           case .allDisabled:

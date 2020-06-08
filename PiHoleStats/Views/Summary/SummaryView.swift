@@ -36,33 +36,33 @@ struct SummaryView: View {
                     
                     Spacer()
                     
-//                    if !preferences.apiToken.isEmpty {
-//                        if preferences.displayDisableTimeOptions && self.dataProvider.active {
-//                           
-//                            MenuButton(label: Text(self.dataProvider.changeStatusButtonTitle)) {
-//                                Button(action: {
-//                                    self.dataProvider.disablePiHole()
-//                                }, label: { Text(UIConstants.Strings.disableButtonOptionPermanently) })
-//                                
-//                                VStack {
-//                                    Divider()
-//                                }
-//                                
-//                                ForEach(disableButtonOptions, id: \.id) { option in
-//                                    Button(action: {
-//                                        self.dataProvider.disablePiHole(seconds: option.seconds)
-//                                    }, label: { Text(option.text) })
-//                                }
-//                            }.frame(maxWidth: 80)
-//                            
-//                        } else {
-//                            Button(action: {
-//                                self.dataProvider.active ? self.dataProvider.disablePiHole() : self.dataProvider.enablePiHole()
-//                            }, label: {
-//                                Text(self.dataProvider.changeStatusButtonTitle)
-//                            })
-//                        }
-//                    }
+                    if self.dataProvider.canDisplayEnableDisableButton {
+                        if preferences.displayDisableTimeOptions && self.dataProvider.status != .allDisabled {
+                            
+                            MenuButton(label: Text(self.dataProvider.changeStatusButtonTitle)) {
+                                Button(action: {
+                                    self.dataProvider.disablePiHole()
+                                }, label: { Text(UIConstants.Strings.disableButtonOptionPermanently) })
+                                
+                                VStack {
+                                    Divider()
+                                }
+                                
+                                ForEach(disableButtonOptions, id: \.id) { option in
+                                    Button(action: {
+                                        self.dataProvider.disablePiHole(seconds: option.seconds)
+                                    }, label: { Text(option.text) })
+                                }
+                            }.frame(maxWidth: 80)
+                            
+                        } else {
+                            Button(action: {
+                                self.dataProvider.status != .allDisabled ? self.dataProvider.disablePiHole() : self.dataProvider.enablePiHole()
+                            }, label: {
+                                Text(self.dataProvider.changeStatusButtonTitle)
+                            })
+                        }
+                    }
                 }
                 
                 Divider()
