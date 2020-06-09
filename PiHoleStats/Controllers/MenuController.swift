@@ -13,12 +13,8 @@ class MenuController: NSObject {
     private lazy var popover = NSPopover()
     private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
     private let preferences = UserPreferences()
-    private lazy var navigationController = NavigationController(preferences: preferences, piholeListProvider: piholeListProvider)
-    private lazy var dataProvider: PiholeDataProvider = {
-        let d = PiholeDataProvider(piholeListProvider: piholeListProvider)
-        return d
-    }()
-    private let piholeListProvider = PiholeListProvider()
+    private lazy var navigationController = NavigationController(preferences: preferences, piholeDataProvider: dataProvider)
+    private lazy var dataProvider = PiholeDataProvider(piholes: Pihole.restoreAll())
     private lazy var summaryViewController = SummaryViewController(preferences: preferences, piHoleDataProvider: dataProvider, navigationController: navigationController)
     var eventMonitor: EventMonitor?
     var eventCancellable: AnyCancellable?

@@ -9,7 +9,6 @@
 import SwiftUI
 
 struct PiholeItemConfigView: View {
-    @EnvironmentObject var piholeListProvider: PiholeListProvider
     @ObservedObject var piholeViewModel: PiholeViewModel
     
     var body: some View {
@@ -25,7 +24,7 @@ struct PiholeItemConfigView: View {
             }
             
             Button(action: {
-                self.save()
+                self.piholeViewModel.save()
             }, label: {
                 Text("Save")
             })
@@ -44,16 +43,4 @@ struct PiholeItemConfigView: View {
                 .foregroundColor(.secondary)
         }
     }
-    
-    private func save() {
-        self.piholeListProvider.objectWillChange.send()
-        self.piholeViewModel.save()
-        self.piholeListProvider.updateData()
-    }
 }
-
-//struct PiHoleItemConfig_Previews: PreviewProvider {
-//    static var previews: some View {
-//        PiHoleItemConfig()
-//    }
-//}

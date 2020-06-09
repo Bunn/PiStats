@@ -1,6 +1,6 @@
 //
-//  PiHoleService.swift
-//  PiHoleStats
+//  piholeservice.swift
+//  piholestats
 //
 //  Created by Fernando Bunn on 24/05/2020.
 //  Copyright © 2020 Fernando Bunn. All rights reserved.
@@ -17,12 +17,6 @@ class PiholeDataProvider: ObservableObject {
         case enabledAndDisabled
     }
     
-    private var piHoles: [Pihole] {
-        piholeListProvider.piholes
-    }
-    
-    let piholeListProvider: PiholeListProvider
-    
     private let pollingTimeInterval: TimeInterval = 3
     private var timer: Timer?
     @Published private(set) var totalQueries = ""
@@ -33,7 +27,7 @@ class PiholeDataProvider: ObservableObject {
     @Published private(set) var status: PiholeStatus = .allDisabled
     
     var canDisplayEnableDisableButton: Bool {
-        return piHoles.allSatisfy { $0.apiToken.isEmpty == false }
+        return piholes.allSatisfy { $0.apiToken.isEmpty == false }
     }
     
     var changeStatusButtonTitle: String {
@@ -81,8 +75,10 @@ class PiholeDataProvider: ObservableObject {
           return n
       }()
     
-    init(piholeListProvider: PiholeListProvider) {
-        self.piholeListProvider = piholeListProvider
+    var piholes: [Pihole]
+    
+    init(piholes: [Pihole]) {
+        self.piholes = piholes
     }
     
     func startPolling() {
@@ -101,7 +97,7 @@ class PiholeDataProvider: ObservableObject {
     }
     
     func disablePiHole(seconds: Int = 0) {
-        piHoles.forEach {
+        piholes.forEach {
             $0.disablePiHole(seconds: seconds) { result in
                 DispatchQueue.main.async {
                     switch result {
@@ -116,7 +112,7 @@ class PiholeDataProvider: ObservableObject {
     }
     
     func enablePiHole() {
-        piHoles.forEach {
+        piholes.forEach {
             $0.enablePiHole { result in
                 DispatchQueue.main.async {
                     switch result {
@@ -150,7 +146,7 @@ class PiholeDataProvider: ObservableObject {
     }
     
     private func fetchSummaryData() {
-        piHoles.forEach { pihole in
+        piholes.forEach { pihole in
             pihole.updateSummary { error in
                 DispatchQueue.main.async {
                     if let error = error {
@@ -164,13 +160,13 @@ class PiholeDataProvider: ObservableObject {
     }
     
     private func updateData() {
-        let sumDNSQueries = piHoles.compactMap { $0.summary }.reduce(0) { value, pihole in value + pihole.dnsQueriesToday }
+        let sumDNSQueries = piholes.compactMap { $0.summary }.reduce(0) { value, pihole in value + pihole.dnsQueriesToday }
         totalQueries = numberFormatter.string(from: NSNumber(value: sumDNSQueries)) ?? "-"
         
-        let sumQueriesBlocked = piHoles.compactMap { $0.summary }.reduce(0) { value, pihole in value + pihole.adsBlockedToday }
+        let sumQueriesBlocked = piholes.compactMap { $0.summary }.reduce(0) { value, pihole in value + pihole.adsBlockedToday }
         queriesBlocked = numberFormatter.string(from: NSNumber(value: sumQueriesBlocked)) ?? "-"
         
-        let sumDomainOnBlocklist = piHoles.compactMap { $0.summary }.reduce(0) { value, pihole in value + pihole.domainsBeingBlocked }
+        let sumDomainOnBlocklist = piholes.compactMap { $0.summary }.reduce(0) { value, pihole in value + pihole.domainsBeingBlocked }
         domainsOnBlocklist = numberFormatter.string(from: NSNumber(value: sumDomainOnBlocklist)) ?? "-"
         
         let percentage = Double(sumQueriesBlocked) / Double(sumDNSQueries)
@@ -181,7 +177,7 @@ class PiholeDataProvider: ObservableObject {
     }
     
     private func updateStatus() {
-        let allStatus = Set(piHoles.map { $0.active })
+        let allStatus = Set(piholes.map { $0.active })
         if allStatus.count > 1 {
             status = .enabledAndDisabled
         } else if allStatus.randomElement() == false {

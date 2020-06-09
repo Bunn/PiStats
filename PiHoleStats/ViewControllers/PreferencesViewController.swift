@@ -19,12 +19,12 @@ import SwiftUI
  */
 
 class PreferencesViewController {
-    let piholeListProvider: PiholeListProvider
+    let piholeListViewModel: PiholeListViewModel
     let preferences: UserPreferences
     
-    init(preferences: UserPreferences, piholeListProvider: PiholeListProvider) {
+    init(preferences: UserPreferences, piholeListViewModel: PiholeListViewModel) {
         self.preferences = preferences
-        self.piholeListProvider = piholeListProvider
+        self.piholeListViewModel = piholeListViewModel
     }
     
     lazy var preferencesWindowController = PreferencesWindowController(
@@ -34,7 +34,7 @@ class PreferencesViewController {
                 title: "Pi-holes",
                 toolbarIcon: NSImage(named: NSImage.userAccountsName)!
             ) {
-                PiholeConfigView(piholeListViewModel: PiholeListViewModel(piholeListProvider: self.piholeListProvider)).environmentObject(self.piholeListProvider)
+                PiholeListConfigView(piholeListViewModel: piholeListViewModel)
             },
             
             Preferences.Pane(

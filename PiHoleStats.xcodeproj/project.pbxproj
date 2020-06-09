@@ -13,7 +13,7 @@
 		313278EA2469FD7C00520124 /* UIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313278E92469FD7C00520124 /* UIConstants.swift */; };
 		313278EE246A086000520124 /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313278ED246A086000520124 /* UserPreferences.swift */; };
 		313408DB24688456005D73E7 /* SummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313408DA24688456005D73E7 /* SummaryViewController.swift */; };
-		313408DD24689028005D73E7 /* PiholeConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313408DC24689028005D73E7 /* PiholeConfigView.swift */; };
+		313408DD24689028005D73E7 /* PiholeListConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313408DC24689028005D73E7 /* PiholeListConfigView.swift */; };
 		3150BE8B2483149400EF0EF6 /* PiholeItemConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3150BE8A2483149400EF0EF6 /* PiholeItemConfigView.swift */; };
 		315CA2D8247925A10079F555 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315CA2D7247925A10079F555 /* PreferencesView.swift */; };
 		315CA2DC247931FE0079F555 /* SharedFileList.m in Sources */ = {isa = PBXBuildFile; fileRef = 315CA2DB247931FE0079F555 /* SharedFileList.m */; };
@@ -24,6 +24,7 @@
 		31653448248C261B00733357 /* Preferences in Frameworks */ = {isa = PBXBuildFile; productRef = 31653447248C261B00733357 /* Preferences */; };
 		31718236246B22E1003BBF0C /* SummaryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31718235246B22E1003BBF0C /* SummaryItem.swift */; };
 		317278892468AED900B5BE3D /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317278882468AED900B5BE3D /* SummaryView.swift */; };
+		3173B1D6248F8A97000343BB /* PiholeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3173B1D5248F8A97000343BB /* PiholeListViewModel.swift */; };
 		319044D824788C2D00BE4797 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319044D724788C2D00BE4797 /* NavigationController.swift */; };
 		319084BC2454920700D47980 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319084BB2454920700D47980 /* AppDelegate.swift */; };
 		319084C02454920900D47980 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 319084BF2454920900D47980 /* Assets.xcassets */; };
@@ -32,8 +33,6 @@
 		319F10952483F04A003EB3CD /* PiholeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319F10942483F04A003EB3CD /* PiholeViewModel.swift */; };
 		31ABD138247B14B700D76618 /* PiholeDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31ABD137247B14B700D76618 /* PiholeDataProvider.swift */; };
 		31ABD13A247B14C200D76618 /* Pihole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31ABD139247B14C200D76618 /* Pihole.swift */; };
-		31C56758247C72A500B9E5F3 /* PiholeListProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C56757247C72A500B9E5F3 /* PiholeListProvider.swift */; };
-		31D72F85248EE2AD003AEE6D /* PiholeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D72F84248EE2AD003AEE6D /* PiholeListViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,7 +41,7 @@
 		313278E92469FD7C00520124 /* UIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIConstants.swift; sourceTree = "<group>"; };
 		313278ED246A086000520124 /* UserPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreferences.swift; sourceTree = "<group>"; };
 		313408DA24688456005D73E7 /* SummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryViewController.swift; sourceTree = "<group>"; };
-		313408DC24689028005D73E7 /* PiholeConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiholeConfigView.swift; sourceTree = "<group>"; };
+		313408DC24689028005D73E7 /* PiholeListConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiholeListConfigView.swift; sourceTree = "<group>"; };
 		3150BE8A2483149400EF0EF6 /* PiholeItemConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiholeItemConfigView.swift; sourceTree = "<group>"; };
 		315CA2D7247925A10079F555 /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
 		315CA2D9247931FE0079F555 /* PiHoleStats-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PiHoleStats-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -54,6 +53,7 @@
 		3160C50224787AF300FAB226 /* PreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
 		31718235246B22E1003BBF0C /* SummaryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryItem.swift; sourceTree = "<group>"; };
 		317278882468AED900B5BE3D /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
+		3173B1D5248F8A97000343BB /* PiholeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiholeListViewModel.swift; sourceTree = "<group>"; };
 		319044D724788C2D00BE4797 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		319084B82454920700D47980 /* Pi Stats.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pi Stats.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		319084BB2454920700D47980 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -65,8 +65,6 @@
 		319F10942483F04A003EB3CD /* PiholeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiholeViewModel.swift; sourceTree = "<group>"; };
 		31ABD137247B14B700D76618 /* PiholeDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiholeDataProvider.swift; sourceTree = "<group>"; };
 		31ABD139247B14C200D76618 /* Pihole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pihole.swift; sourceTree = "<group>"; };
-		31C56757247C72A500B9E5F3 /* PiholeListProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiholeListProvider.swift; sourceTree = "<group>"; };
-		31D72F84248EE2AD003AEE6D /* PiholeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiholeListViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,7 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				319F10942483F04A003EB3CD /* PiholeViewModel.swift */,
-				31D72F84248EE2AD003AEE6D /* PiholeListViewModel.swift */,
+				3173B1D5248F8A97000343BB /* PiholeListViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -107,9 +105,9 @@
 		315CA2D5247925220079F555 /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
-				313408DC24689028005D73E7 /* PiholeConfigView.swift */,
 				315CA2D7247925A10079F555 /* PreferencesView.swift */,
 				3160C4FC2478791000FAB226 /* AboutView.swift */,
+				313408DC24689028005D73E7 /* PiholeListConfigView.swift */,
 				3150BE8A2483149400EF0EF6 /* PiholeItemConfigView.swift */,
 			);
 			path = Preferences;
@@ -209,7 +207,6 @@
 			children = (
 				31ABD137247B14B700D76618 /* PiholeDataProvider.swift */,
 				31ABD139247B14C200D76618 /* Pihole.swift */,
-				31C56757247C72A500B9E5F3 /* PiholeListProvider.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -319,20 +316,19 @@
 				3160C50324787AF300FAB226 /* PreferencesViewController.swift in Sources */,
 				315CA2D8247925A10079F555 /* PreferencesView.swift in Sources */,
 				313278EE246A086000520124 /* UserPreferences.swift in Sources */,
-				31D72F85248EE2AD003AEE6D /* PiholeListViewModel.swift in Sources */,
 				31ABD13A247B14C200D76618 /* Pihole.swift in Sources */,
 				3150BE8B2483149400EF0EF6 /* PiholeItemConfigView.swift in Sources */,
 				31ABD138247B14B700D76618 /* PiholeDataProvider.swift in Sources */,
+				3173B1D6248F8A97000343BB /* PiholeListViewModel.swift in Sources */,
 				31718236246B22E1003BBF0C /* SummaryItem.swift in Sources */,
 				319044D824788C2D00BE4797 /* NavigationController.swift in Sources */,
 				3124948E24701D2800634933 /* APIToken.swift in Sources */,
-				313408DD24689028005D73E7 /* PiholeConfigView.swift in Sources */,
+				313408DD24689028005D73E7 /* PiholeListConfigView.swift in Sources */,
 				313278EA2469FD7C00520124 /* UIConstants.swift in Sources */,
 				317278892468AED900B5BE3D /* SummaryView.swift in Sources */,
 				319F10952483F04A003EB3CD /* PiholeViewModel.swift in Sources */,
 				319084BC2454920700D47980 /* AppDelegate.swift in Sources */,
 				313408DB24688456005D73E7 /* SummaryViewController.swift in Sources */,
-				31C56758247C72A500B9E5F3 /* PiholeListProvider.swift in Sources */,
 				315CA2DC247931FE0079F555 /* SharedFileList.m in Sources */,
 				3160C4F7247876AC00FAB226 /* EventMonitor.swift in Sources */,
 				3160C4F5247875D600FAB226 /* MenuController.swift in Sources */,

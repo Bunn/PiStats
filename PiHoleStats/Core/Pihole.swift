@@ -39,7 +39,9 @@ class Pihole: Identifiable, Codable, ObservableObject {
     var host: String {
         address.components(separatedBy: ":").first ?? ""
     }
-    private lazy var service = SwiftHole(host: host, port: port, apiToken: apiToken)
+    private var service: SwiftHole {
+      SwiftHole(host: host, port: port, apiToken: apiToken)
+    }
     
     enum CodingKeys: CodingKey {
         case id

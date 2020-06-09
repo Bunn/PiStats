@@ -10,13 +10,13 @@ import SwiftUI
 
 struct PiholeListConfigView: View {
     @State private var selectedItem: Pihole?
-    @EnvironmentObject var piholeDataProvider: PiholeDataProvider
+    @ObservedObject var piholeListViewModel: PiholeListViewModel
 
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 0) {
                 List(selection: $selectedItem) {
-                    ForEach(piholeDataProvider.piholes) { pihole in
+                    ForEach(piholeListViewModel.piholes) { pihole in
                         Text(pihole.address).tag(pihole)
                     }
                 }
@@ -35,11 +35,11 @@ struct PiholeListConfigView: View {
                 }
             }
             if selectedItem != nil {
-                PiholeItemConfigView(piholeViewModel: PiholeViewModel(piHole: selectedItem!))
+                PiholeItemConfigView(piholeViewModel: piholeListViewModel.itemViewModel(selectedItem!))
             } else {
                 Spacer()
                 VStack {
-                    if piholeDataProvider.piholes.count > 0 {
+                    if piholeListViewModel.piholes.count > 0 {
                         Text("Select a pi-hole on the left or click Add to setup a new pi-hole.")
                             .multilineTextAlignment(.center)
                     } else {
@@ -53,12 +53,12 @@ struct PiholeListConfigView: View {
         .frame(width: 480, height: 250)
         .padding()
         .onAppear {
-            self.selectedItem = self.piholeDataProvider.piholes.first
+            self.selectedItem = self.piholeListViewModel.piholes.first
         }
     }
     
     private func addStubPihole() {
-        let pihole = piholeDataProvider.addStubPihole()
+        let pihole = piholeListViewModel.addStubPihole()
         selectedItem = pihole
     }
     
@@ -70,6 +70,6 @@ struct PiholeListConfigView: View {
     }
     
     private func remove(_ pihole: Pihole) {
-        piholeDataProvider.remove(pihole)
+        piholeListViewModel.remove(pihole)
     }
 }
