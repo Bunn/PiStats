@@ -18,6 +18,7 @@ struct SummaryView: View {
     @EnvironmentObject var navigationController: NavigationController
     @EnvironmentObject var dataProvider: PiholeDataProvider
     @EnvironmentObject var preferences: UserPreferences
+    @State private var isErrorMessagePresented = false
     
     private var disableButtonOptions: [DisableButtonOption] {
         [DisableButtonOption(seconds: 10, text: UIConstants.Strings.disableButtonOption10Seconds),
@@ -27,62 +28,73 @@ struct SummaryView: View {
     
     var body: some View {
         VStack {
-            if dataProvider.errorMessage.isEmpty {
-                HStack {
-                    Circle()
-                        .fill(self.dataProvider.statusColor)
-                        .frame(width: UIConstants.Geometry.circleSize, height: UIConstants.Geometry.circleSize)
-                    Text(self.dataProvider.statusText)
-                    
-                    Spacer()
-                    
-                    if self.dataProvider.canDisplayEnableDisableButton {
-                        if preferences.displayDisableTimeOptions && self.dataProvider.status != .allDisabled {
-                            
-                            MenuButton(label: Text(self.dataProvider.changeStatusButtonTitle)) {
+            HStack {
+                Circle()
+                    .fill(self.dataProvider.statusColor)
+                    .frame(width: UIConstants.Geometry.circleSize, height: UIConstants.Geometry.circleSize)
+                Text(self.dataProvider.statusText)
+                
+                if self.dataProvider.hasErrorMessages {
+                    Button(action: {
+                        self.isErrorMessagePresented.toggle()
+                    }, label: {
+                        Text("⚠️")
+                    }).popover(isPresented: $isErrorMessagePresented) {
+                        VStack {
+                            ForEach(self.dataProvider.piholes) {pihole in
+                                if pihole.error != nil {
+                                    Text("\(pihole.address): \(pihole.error!)")
+                                }
+                            }
+                            HStack {
                                 Button(action: {
-                                    self.dataProvider.disablePiHole()
-                                }, label: { Text(UIConstants.Strings.disableButtonOptionPermanently) })
-                                
-                                VStack {
-                                    Divider()
-                                }
-                                
-                                ForEach(disableButtonOptions, id: \.id) { option in
-                                    Button(action: {
-                                        self.dataProvider.disablePiHole(seconds: option.seconds)
-                                    }, label: { Text(option.text) })
-                                }
-                            }.frame(maxWidth: 80)
-                            
-                        } else {
-                            Button(action: {
-                                self.dataProvider.status != .allDisabled ? self.dataProvider.disablePiHole() : self.dataProvider.enablePiHole()
-                            }, label: {
-                                Text(self.dataProvider.changeStatusButtonTitle)
-                            })
-                        }
+                                    self.dataProvider.resetErrorMessage()
+                                    self.isErrorMessagePresented.toggle()
+                                }, label: {
+                                    Text("Clear")
+                                })
+                            }
+                        }.padding()
                     }
                 }
                 
-                Divider()
+                Spacer()
                 
-                SummaryItem(value: self.dataProvider.totalQueries, type: .totalQuery)
-                SummaryItem(value: self.dataProvider.queriesBlocked, type: .queryBlocked)
-                SummaryItem(value: self.dataProvider.percentBlocked, type: .percentBlocked)
-                SummaryItem(value: self.dataProvider.domainsOnBlocklist, type: .domainsOnBlocklist)
-                
-            } else {
-                Text(dataProvider.errorMessage)
-                    .multilineTextAlignment(.center)
-                if !preferences.host.isEmpty {
-                    Button(action: {
-                        self.dataProvider.resetErrorMessage()
-                    }, label: {
-                        Text(UIConstants.Strings.buttonOK)
-                    })
+                if self.dataProvider.canDisplayEnableDisableButton {
+                    if preferences.displayDisableTimeOptions && self.dataProvider.status != .allDisabled {
+                        
+                        MenuButton(label: Text(self.dataProvider.changeStatusButtonTitle)) {
+                            Button(action: {
+                                self.dataProvider.disablePiHole()
+                            }, label: { Text(UIConstants.Strings.disableButtonOptionPermanently) })
+                            
+                            VStack {
+                                Divider()
+                            }
+                            
+                            ForEach(disableButtonOptions, id: \.id) { option in
+                                Button(action: {
+                                    self.dataProvider.disablePiHole(seconds: option.seconds)
+                                }, label: { Text(option.text) })
+                            }
+                        }.frame(maxWidth: 80)
+                        
+                    } else {
+                        Button(action: {
+                            self.dataProvider.status != .allDisabled ? self.dataProvider.disablePiHole() : self.dataProvider.enablePiHole()
+                        }, label: {
+                            Text(self.dataProvider.changeStatusButtonTitle)
+                        })
+                    }
                 }
             }
+            
+            Divider()
+            
+            SummaryItem(value: self.dataProvider.totalQueries, type: .totalQuery)
+            SummaryItem(value: self.dataProvider.queriesBlocked, type: .queryBlocked)
+            SummaryItem(value: self.dataProvider.percentBlocked, type: .percentBlocked)
+            SummaryItem(value: self.dataProvider.domainsOnBlocklist, type: .domainsOnBlocklist)
             
             Divider()
             

@@ -19,15 +19,19 @@ class PiholeDataProvider: ObservableObject {
     
     private let pollingTimeInterval: TimeInterval = 3
     private var timer: Timer?
+    private(set) var piholes: [Pihole]
     @Published private(set) var totalQueries = ""
     @Published private(set) var queriesBlocked = ""
     @Published private(set) var percentBlocked = ""
     @Published private(set) var domainsOnBlocklist = ""
-    @Published private(set) var errorMessage = ""
+    @Published private(set) var hasErrorMessages = false
     @Published private(set) var status: PiholeStatus = .allDisabled
     
-    var canDisplayEnableDisableButton: Bool {
-        return piholes.allSatisfy { $0.apiToken.isEmpty == false }
+     var canDisplayEnableDisableButton: Bool {
+        return !piholes.allSatisfy {
+            return $0.apiToken.isEmpty == true
+            
+        }
     }
     
     var changeStatusButtonTitle: String {
@@ -39,6 +43,9 @@ class PiholeDataProvider: ObservableObject {
     }
     
     var statusColor: Color {
+        if hasErrorMessages {
+            return UIConstants.Colors.enabledAndDisabled
+        }
         switch status {
         case .allDisabled:
             return UIConstants.Colors.disabled
@@ -50,6 +57,9 @@ class PiholeDataProvider: ObservableObject {
     }
     
     var statusText: String {
+        if hasErrorMessages {
+            return UIConstants.Strings.statusNeedsAttention
+        }
           switch status {
           case .allDisabled:
             return UIConstants.Strings.statusDisabled
@@ -75,8 +85,6 @@ class PiholeDataProvider: ObservableObject {
           return n
       }()
     
-    var piholes: [Pihole]
-    
     init(piholes: [Pihole]) {
         self.piholes = piholes
     }
@@ -93,18 +101,39 @@ class PiholeDataProvider: ObservableObject {
     }
     
     func resetErrorMessage() {
-        errorMessage = ""
+        piholes.forEach { pihole in
+            pihole.error = nil
+        }
+        updateErrorMessage()
+    }
+    
+    func add(_ pihole: Pihole) {
+        objectWillChange.send()
+        piholes.append(pihole)
+        updateStatus()
+        updateErrorMessage()
+
+    }
+    
+    func remove(_ pihole: Pihole) {
+        objectWillChange.send()
+        if let index = piholes.firstIndex(of: pihole) {
+            piholes.remove(at: index)
+        }
+        updateStatus()
+        updateErrorMessage()
     }
     
     func disablePiHole(seconds: Int = 0) {
-        piholes.forEach {
-            $0.disablePiHole(seconds: seconds) { result in
+        piholes.forEach { pihole in
+            pihole.disablePiHole(seconds: seconds) { result in
                 DispatchQueue.main.async {
                     switch result {
                     case .success:
                         self.updateStatus()
+                        pihole.error = nil
                     case .failure(let error):
-                        self.handleError(error)
+                        pihole.error = self.errorMessage(error)
                     }
                 }
             }
@@ -112,36 +141,37 @@ class PiholeDataProvider: ObservableObject {
     }
     
     func enablePiHole() {
-        piholes.forEach {
-            $0.enablePiHole { result in
+        piholes.forEach { pihole in
+            pihole.enablePiHole { result in
                 DispatchQueue.main.async {
                     switch result {
                     case .success:
                         self.updateStatus()
+                        pihole.error = nil
                     case .failure(let error):
-                        self.handleError(error)
+                        pihole.error = self.errorMessage(error)
                     }
                 }
             }
         }
     }
     
-    private func handleError(_ error: SwiftHoleError) {
+    private func errorMessage(_ error: SwiftHoleError) -> String {
         switch error {
         case .malformedURL:
-            self.errorMessage = UIConstants.Strings.Error.invalidURL
+            return UIConstants.Strings.Error.invalidURL
         case .invalidDecode(let decodeError):
-            self.errorMessage = "\(UIConstants.Strings.Error.decodeResponseError): \(decodeError.localizedDescription)"
+            return  "\(UIConstants.Strings.Error.decodeResponseError): \(decodeError.localizedDescription)"
         case .noAPITokenProvided:
-            self.errorMessage = UIConstants.Strings.Error.noAPITokenProvided
+            return  UIConstants.Strings.Error.noAPITokenProvided
         case .sessionError(let sessionError):
-            self.errorMessage = "\(UIConstants.Strings.Error.sessionError): \(sessionError.localizedDescription)"
+            return  "\(UIConstants.Strings.Error.sessionError): \(sessionError.localizedDescription)"
         case .invalidResponseCode(let responseCode):
-            self.errorMessage = "\(UIConstants.Strings.Error.sessionError): \(responseCode)"
+            return  "\(UIConstants.Strings.Error.sessionError): \(responseCode)"
         case .invalidResponse:
-            self.errorMessage = UIConstants.Strings.Error.invalidResponse
+            return  UIConstants.Strings.Error.invalidResponse
         case .invalidAPIToken:
-            self.errorMessage = UIConstants.Strings.Error.invalidAPIToken
+            return  UIConstants.Strings.Error.invalidAPIToken
         }
     }
     
@@ -150,9 +180,10 @@ class PiholeDataProvider: ObservableObject {
             pihole.updateSummary { error in
                 DispatchQueue.main.async {
                     if let error = error {
-                        self.handleError(error)
+                        pihole.error = self.errorMessage(error)
                     } else {
                         self.updateData()
+                        pihole.error = nil
                     }
                 }
             }
@@ -171,9 +202,9 @@ class PiholeDataProvider: ObservableObject {
         
         let percentage = Double(sumQueriesBlocked) / Double(sumDNSQueries)
         percentBlocked = percentageFormatter.string(from: NSNumber(value: percentage)) ?? "-"
-        errorMessage = ""
         
         updateStatus()
+        updateErrorMessage()
     }
     
     private func updateStatus() {
@@ -185,5 +216,9 @@ class PiholeDataProvider: ObservableObject {
         } else {
             status = .allEnabled
         }
+    }
+    
+    private func updateErrorMessage() {
+        hasErrorMessages =  !piholes.allSatisfy { $0.error == nil }
     }
 }

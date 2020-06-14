@@ -11,13 +11,14 @@ import SwiftHole
 
 class Pihole: Identifiable, Codable, ObservableObject {
     var address: String
+    var error: String?
     let id: UUID
     private(set) var summary: Summary? {
         didSet {
-            if summary?.status.lowercased() == "disabled" {
-                active = false
-            } else {
+            if summary?.status.lowercased() == "enabled" {
                 active = true
+            } else {
+                active = false
             }
         }
     }
@@ -98,11 +99,27 @@ extension Pihole {
     }
     
     public func enablePiHole(completion: @escaping (Result<Void, SwiftHoleError>) -> Void) {
-        service.enablePiHole(completion)
+        service.enablePiHole { result in
+            switch result {
+            case .success:
+                self.active = true
+                completion(result)
+            case .failure:
+                completion(result)
+            }
+        }
     }
     
     public func disablePiHole(seconds: Int = 0, completion: @escaping (Result<Void, SwiftHoleError>) -> Void) {
-        service.disablePiHole(seconds: seconds, completion: completion)
+        service.disablePiHole { result in
+            switch result {
+            case .success:
+                self.active = false
+                completion(result)
+            case .failure:
+                completion(result)
+            }
+        }
     }
 }
 

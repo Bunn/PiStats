@@ -43,6 +43,7 @@ struct UIConstants {
         static let buttonQuit = "Quit"
         static let statusEnabled = "Active"
         static let statusDisabled = "Offline"
+        static let statusNeedsAttention = "Needs Attention"
         static let statusEnabledAndDisabled = "Partially Active"
         static let buttonEnable = "Enable"
         static let buttonDisable = "Disable"

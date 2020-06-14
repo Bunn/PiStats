@@ -19,17 +19,15 @@ class PiholeListViewModel: ObservableObject {
      }
     
     func addStubPihole() -> Pihole {
-         let piHole = Pihole(address: "127.0.0.1")
-         piholeDataProvider.piholes.append(piHole)
-         return piHole
-     }
-     
-     func remove(_ pihole: Pihole) {
-         if let index = piholeDataProvider.piholes.firstIndex(of: pihole) {
-             piholeDataProvider.piholes.remove(at: index)
-         }
-         pihole.delete()
-     }
+        let pihole = Pihole(address: "127.0.0.1")
+        piholeDataProvider.add(pihole)
+        return pihole
+    }
+    
+    func remove(_ pihole: Pihole) {
+        piholeDataProvider.remove(pihole)
+        pihole.delete()
+    }
     
     func itemViewModel(_ pihole: Pihole) -> PiholeViewModel {
         let model = PiholeViewModel(piHole: pihole)
