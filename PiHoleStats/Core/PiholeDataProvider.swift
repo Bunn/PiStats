@@ -30,7 +30,6 @@ class PiholeDataProvider: ObservableObject {
      var canDisplayEnableDisableButton: Bool {
         return !piholes.allSatisfy {
             return $0.apiToken.isEmpty == true
-            
         }
     }
     
@@ -102,16 +101,17 @@ class PiholeDataProvider: ObservableObject {
     
     func resetErrorMessage() {
         piholes.forEach { pihole in
-            pihole.error = nil
+            pihole.actionError = nil
+            pihole.pollingError = nil
         }
-        updateErrorMessage()
+        updateErrorMessageStatus()
     }
     
     func add(_ pihole: Pihole) {
         objectWillChange.send()
         piholes.append(pihole)
         updateStatus()
-        updateErrorMessage()
+        updateErrorMessageStatus()
 
     }
     
@@ -121,7 +121,7 @@ class PiholeDataProvider: ObservableObject {
             piholes.remove(at: index)
         }
         updateStatus()
-        updateErrorMessage()
+        updateErrorMessageStatus()
     }
     
     func disablePiHole(seconds: Int = 0) {
@@ -131,9 +131,9 @@ class PiholeDataProvider: ObservableObject {
                     switch result {
                     case .success:
                         self.updateStatus()
-                        pihole.error = nil
+                        pihole.actionError = nil
                     case .failure(let error):
-                        pihole.error = self.errorMessage(error)
+                        pihole.actionError = self.errorMessage(error)
                     }
                 }
             }
@@ -147,9 +147,9 @@ class PiholeDataProvider: ObservableObject {
                     switch result {
                     case .success:
                         self.updateStatus()
-                        pihole.error = nil
+                        pihole.actionError = nil
                     case .failure(let error):
-                        pihole.error = self.errorMessage(error)
+                        pihole.actionError = self.errorMessage(error)
                     }
                 }
             }
@@ -180,10 +180,10 @@ class PiholeDataProvider: ObservableObject {
             pihole.updateSummary { error in
                 DispatchQueue.main.async {
                     if let error = error {
-                        pihole.error = self.errorMessage(error)
+                        pihole.pollingError = self.errorMessage(error)
                     } else {
                         self.updateData()
-                        pihole.error = nil
+                        pihole.pollingError = nil
                     }
                 }
             }
@@ -204,7 +204,7 @@ class PiholeDataProvider: ObservableObject {
         percentBlocked = percentageFormatter.string(from: NSNumber(value: percentage)) ?? "-"
         
         updateStatus()
-        updateErrorMessage()
+        updateErrorMessageStatus()
     }
     
     private func updateStatus() {
@@ -218,7 +218,7 @@ class PiholeDataProvider: ObservableObject {
         }
     }
     
-    private func updateErrorMessage() {
-        hasErrorMessages =  !piholes.allSatisfy { $0.error == nil }
+    private func updateErrorMessageStatus() {
+        hasErrorMessages =  !piholes.allSatisfy { $0.pollingError == nil && $0.actionError == nil}
     }
 }

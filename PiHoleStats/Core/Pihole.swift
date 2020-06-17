@@ -8,17 +8,22 @@
 
 import Foundation
 import SwiftHole
+import os.log
 
 class Pihole: Identifiable, Codable, ObservableObject {
+    private let log = OSLog(subsystem: "PiStats", category: String(describing: Pihole.self))
     var address: String
-    var error: String?
+    var actionError: String?
+    var pollingError: String?
     let id: UUID
     private(set) var summary: Summary? {
         didSet {
             if summary?.status.lowercased() == "enabled" {
                 active = true
+                os_log("summary has enabled status", log: self.log, type: .debug)
             } else {
                 active = false
+                os_log("summary has disabled status", log: self.log, type: .debug)
             }
         }
     }
@@ -37,9 +42,11 @@ class Pihole: Identifiable, Codable, ObservableObject {
     var port: Int? {
         getPort(address)
     }
+    
     var host: String {
         address.components(separatedBy: ":").first ?? ""
     }
+    
     private var service: SwiftHole {
       SwiftHole(host: host, port: port, apiToken: apiToken)
     }
@@ -103,8 +110,10 @@ extension Pihole {
             switch result {
             case .success:
                 self.active = true
+                os_log("enable request success", log: self.log, type: .debug)
                 completion(result)
             case .failure:
+                os_log("enable request failure", log: self.log, type: .debug)
                 completion(result)
             }
         }
@@ -115,8 +124,10 @@ extension Pihole {
             switch result {
             case .success:
                 self.active = false
+                os_log("disable request success", log: self.log, type: .debug)
                 completion(result)
             case .failure:
+                os_log("disable request failure", log: self.log, type: .debug)
                 completion(result)
             }
         }

@@ -42,8 +42,11 @@ struct SummaryView: View {
                     }).popover(isPresented: $isErrorMessagePresented) {
                         VStack {
                             ForEach(self.dataProvider.piholes) {pihole in
-                                if pihole.error != nil {
-                                    Text("\(pihole.address): \(pihole.error!)")
+                                if pihole.pollingError != nil {
+                                    Text("\(pihole.address): \(pihole.pollingError!)")
+                                }
+                                if pihole.actionError != nil {
+                                    Text("\(pihole.address): \(pihole.actionError!)")
                                 }
                             }
                             HStack {
