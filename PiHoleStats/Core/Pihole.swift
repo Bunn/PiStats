@@ -20,10 +20,10 @@ class Pihole: Identifiable, Codable, ObservableObject {
         didSet {
             if summary?.status.lowercased() == "enabled" {
                 active = true
-                os_log("summary has enabled status", log: self.log, type: .debug)
+                os_log("%@ summary has enabled status", log: self.log, type: .debug, address)
             } else {
                 active = false
-                os_log("summary has disabled status", log: self.log, type: .debug)
+                os_log("%@ summary has disabled status", log: self.log, type: .debug, address)
             }
         }
     }
@@ -110,10 +110,10 @@ extension Pihole {
             switch result {
             case .success:
                 self.active = true
-                os_log("enable request success", log: self.log, type: .debug)
+                os_log("%@ enable request success", log: self.log, type: .debug, self.address)
                 completion(result)
             case .failure:
-                os_log("enable request failure", log: self.log, type: .debug)
+                os_log("%@ enable request failure", log: self.log, type: .debug, self.address)
                 completion(result)
             }
         }
@@ -124,10 +124,10 @@ extension Pihole {
             switch result {
             case .success:
                 self.active = false
-                os_log("disable request success", log: self.log, type: .debug)
+                os_log("%@ disable request success", log: self.log, type: .debug, self.address)
                 completion(result)
             case .failure:
-                os_log("disable request failure", log: self.log, type: .debug)
+                os_log("%@ disable request failure", log: self.log, type: .debug, self.address)
                 completion(result)
             }
         }
