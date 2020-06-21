@@ -19,7 +19,17 @@ struct AboutView: View {
             [Preferences.Section(title: "") {
                 Text(UIConstants.Strings.piStatsName)
                 Text("\(UIConstants.Strings.version) \(self.appVersion)")
+                
                 Divider()
+                
+                Button(action: {
+                    if let url = URL(string: "https://github.com/Bunn/PiStats") {
+                        NSWorkspace.shared.open(url)
+                    }
+                }, label: {
+                    Text(UIConstants.Strings.openProjectWebsiteButton)
+                })
+
                 Text(UIConstants.Strings.copyright)
                     .font(.caption)
             }]

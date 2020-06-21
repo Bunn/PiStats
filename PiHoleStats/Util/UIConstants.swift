@@ -76,5 +76,6 @@ struct UIConstants {
         static let noSelectedPiholeMessage = "Select a pi-hole on the left or click Add to setup a new pi-hole"
         static let noAvailablePiholeToSelectMessage = "No pi-holes available, click Add to setup a new pi-hole"
         static let warningButton = "⚠️"
+        static let openProjectWebsiteButton = "Project Website"
     }
 }
