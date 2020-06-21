@@ -28,19 +28,25 @@ struct SummaryView: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Circle()
-                    .fill(self.dataProvider.statusColor)
-                    .frame(width: UIConstants.Geometry.circleSize, height: UIConstants.Geometry.circleSize)
-                Text(self.dataProvider.statusText)
+            if dataProvider.piholes.count > 0 {
+                HStack {
+                    Circle()
+                        .fill(self.dataProvider.statusColor)
+                        .frame(width: UIConstants.Geometry.circleSize, height: UIConstants.Geometry.circleSize)
+                    Text(self.dataProvider.statusText)
+                    
+                    conditionalErrorMessageButton()
+                    Spacer()
+                    conditionalEnableDisableButtons()
+                }
+                Divider()
                 
-                conditionalErrorMessageButton()
-                Spacer()
-                conditionalEnableDisableButtons()
+                summaryItems()
+            } else {
+                Text(UIConstants.Strings.openPreferencesToConfigureFirstPihole)
+                    .multilineTextAlignment(.center)
             }
             
-            Divider()
-            summaryItems()
             Divider()
             
             HStack {
