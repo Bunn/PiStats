@@ -35,6 +35,9 @@ struct APIToken {
              https://forums.developer.apple.com/thread/69841
              */
             try? passwordItem.savePassword(newValue)
+            if newValue.isEmpty {
+                delete()
+            }
         }
     }
     
