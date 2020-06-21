@@ -10,7 +10,6 @@ import Foundation
 import Combine
 
 private enum PreferencesKey: String {
-    case address = "SettingsKeyHost"
     case keepPopoverPanelOpen = "SettingsKeyKeepPopoverPanelOpen"
     case displayDisableTimeOptions = "SettingsDisplayDisableTimeOptions"
 }
@@ -20,7 +19,7 @@ class UserPreferences: ObservableObject {
     private var appURL: URL { Bundle.main.bundleURL }
     static let didChangeNotification = Notification.Name("dev.bunn.holestats.PrefsChanged")
     @Published private var _launchAtLoginEnabled: Bool = false
-
+    
     init() {
         apiToken = keychainToken.token
     }
@@ -37,12 +36,6 @@ class UserPreferences: ObservableObject {
         }
     }
     
-    @Published var address: String = UserDefaults.standard.object(forKey: PreferencesKey.address.rawValue) as? String ?? "" {
-        didSet {
-            UserDefaults.standard.set(address, forKey: PreferencesKey.address.rawValue)
-        }
-    }
-    
     @Published var apiToken: String {
         didSet {
             keychainToken.token = apiToken
@@ -50,34 +43,20 @@ class UserPreferences: ObservableObject {
     }
     
     var launchAtLoginEnabled: Bool {
-          get {
-              _launchAtLoginEnabled || SharedFileList.sessionLoginItems().containsItem(appURL)
-          }
-          set {
-              _launchAtLoginEnabled = newValue
-
-              if newValue {
-                  SharedFileList.sessionLoginItems().addItem(appURL)
-              } else {
-                  SharedFileList.sessionLoginItems().removeItem(appURL)
-              }
-
+        get {
+            _launchAtLoginEnabled || SharedFileList.sessionLoginItems().containsItem(appURL)
+        }
+        set {
+            _launchAtLoginEnabled = newValue
+            
+            if newValue {
+                SharedFileList.sessionLoginItems().addItem(appURL)
+            } else {
+                SharedFileList.sessionLoginItems().removeItem(appURL)
+            }
+            
             didChange()
-          }
-      }
-    
-    var port: Int? {
-        getPort(address)
-    }
-    
-    var host: String {
-        address.components(separatedBy: ":").first ?? ""
-    }
-    
-    private func getPort(_ address: String) -> Int? {
-        let split = address.components(separatedBy: ":")
-        guard let port = split.last else { return nil }
-        return Int(port)
+        }
     }
     
     private func didChange() {

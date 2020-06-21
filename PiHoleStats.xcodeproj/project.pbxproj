@@ -34,6 +34,7 @@
 		31ABD138247B14B700D76618 /* PiholeDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31ABD137247B14B700D76618 /* PiholeDataProvider.swift */; };
 		31ABD13A247B14C200D76618 /* Pihole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31ABD139247B14C200D76618 /* Pihole.swift */; };
 		31CC8174249F8072008DA24C /* DataMigrationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CC8173249F8072008DA24C /* DataMigrationManager.swift */; };
+		31CC8176249FA290008DA24C /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CC8175249FA290008DA24C /* Logger.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +68,7 @@
 		31ABD137247B14B700D76618 /* PiholeDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiholeDataProvider.swift; sourceTree = "<group>"; };
 		31ABD139247B14C200D76618 /* Pihole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pihole.swift; sourceTree = "<group>"; };
 		31CC8173249F8072008DA24C /* DataMigrationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataMigrationManager.swift; sourceTree = "<group>"; };
+		31CC8175249FA290008DA24C /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,10 +90,11 @@
 				313278E92469FD7C00520124 /* UIConstants.swift */,
 				3124948B24701BD300634933 /* KeyChainPasswordItem.swift */,
 				3160C4F6247876AC00FAB226 /* EventMonitor.swift */,
+				31CC8173249F8072008DA24C /* DataMigrationManager.swift */,
 				315CA2DA247931FE0079F555 /* SharedFileList.h */,
 				315CA2DB247931FE0079F555 /* SharedFileList.m */,
 				315CA2D9247931FE0079F555 /* PiHoleStats-Bridging-Header.h */,
-				31CC8173249F8072008DA24C /* DataMigrationManager.swift */,
+				31CC8175249FA290008DA24C /* Logger.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -324,6 +327,7 @@
 				31CC8174249F8072008DA24C /* DataMigrationManager.swift in Sources */,
 				31ABD138247B14B700D76618 /* PiholeDataProvider.swift in Sources */,
 				3173B1D6248F8A97000343BB /* PiholeListViewModel.swift in Sources */,
+				31CC8176249FA290008DA24C /* Logger.swift in Sources */,
 				31718236246B22E1003BBF0C /* SummaryItem.swift in Sources */,
 				319044D824788C2D00BE4797 /* NavigationController.swift in Sources */,
 				3124948E24701D2800634933 /* APIToken.swift in Sources */,

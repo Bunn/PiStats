@@ -11,7 +11,7 @@ import SwiftHole
 import os.log
 
 class Pihole: Identifiable, Codable, ObservableObject {
-    private let log = OSLog(subsystem: "PiStats", category: String(describing: Pihole.self))
+    private let log = Logger().osLog(describing: Pihole.self)
     var address: String
     var actionError: String?
     var pollingError: String?
