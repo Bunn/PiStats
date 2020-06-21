@@ -26,7 +26,7 @@ struct PiholeItemConfigView: View {
             Button(action: {
                 self.piholeViewModel.save()
             }, label: {
-                Text("Save")
+                Text(UIConstants.Strings.savePiholeButton)
             })
             
             Divider()

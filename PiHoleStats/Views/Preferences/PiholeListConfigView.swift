@@ -24,13 +24,13 @@ struct PiholeListConfigView: View {
                     Button(action: {
                         self.addStubPihole()
                     }, label: {
-                        Text("Add")
+                        Text(UIConstants.Strings.addPiholeButton)
                     })
                     
                     Button(action: {
                         self.removeSelectedPihole()
                     }, label: {
-                        Text("Remove")
+                        Text(UIConstants.Strings.removePiholeButton)
                     }).disabled(selectedItem == nil)
                 }
             }
@@ -40,10 +40,10 @@ struct PiholeListConfigView: View {
                 Spacer()
                 VStack {
                     if piholeListViewModel.piholes.count > 0 {
-                        Text("Select a pi-hole on the left or click Add to setup a new pi-hole.")
+                        Text(UIConstants.Strings.noSelectedPiholeMessage)
                             .multilineTextAlignment(.center)
                     } else {
-                        Text("No pi-holes available, click Add to setup a new pi-hole")
+                        Text(UIConstants.Strings.noAvailablePiholeToSelectMessage)
                             .multilineTextAlignment(.center)
                     }
                 }.padding()

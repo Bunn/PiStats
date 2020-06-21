@@ -56,11 +56,8 @@ struct UIConstants {
         static let openPreferencesToConfigureHost = "Open Preferences to configure your host address"
         static let tokenStoredOnKeychainInfo = "Token is securely stored in your Mac's Keychain"
         static let copyright = "Copyright © Fernando Bunn"
-        static let aboutTabTitle = "About"
         static let version = "Version"
         static let piStatsName = "Pi Stats"
-        static let piHoleTabTitle = "Pi-hole"
-        static let preferencesTabTitle = "Preferences"
         static let keepPopoverOpenPreference = "Keep popover open when clicking outside"
         static let launchAtLogonPreference = "Launch at login"
         static let preferencesWindowTitle = "Pi Stats Preferences"
@@ -69,6 +66,14 @@ struct UIConstants {
         static let disableButtonOption10Seconds = "For 10 seconds"
         static let disableButtonOption30Seconds = "For 30 seconds"
         static let disableButtonOption5Minutes = "For 5 minutes"
-
+        static let buttonClearErrorMessages = "Clear"
+        static let preferencesPiholesTabTitle = "Pi-holes"
+        static let preferencesPreferencesTabTitle = "Preferences"
+        static let preferencesAboutTabTitle = "About"
+        static let addPiholeButton = "Add"
+        static let removePiholeButton = "Remove"
+        static let savePiholeButton = "Save"
+        static let noSelectedPiholeMessage = "Select a pi-hole on the left or click Add to setup a new pi-hole"
+        static let noAvailablePiholeToSelectMessage = "No pi-holes available, click Add to setup a new pi-hole"
     }
 }

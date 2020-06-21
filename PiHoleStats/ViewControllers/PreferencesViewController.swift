@@ -18,6 +18,12 @@ import SwiftUI
  https://twitter.com/fcbunn/status/1269301540923363333?s=21
  */
 
+private enum PaneIdentifier: String {
+    case piholes
+    case preferences
+    case about
+}
+
 class PreferencesViewController {
     let piholeListViewModel: PiholeListViewModel
     let preferences: UserPreferences
@@ -30,24 +36,24 @@ class PreferencesViewController {
     lazy var preferencesWindowController = PreferencesWindowController(
         panes: [
             Preferences.Pane(
-                identifier: Preferences.PaneIdentifier(rawValue: "piholes"),
-                title: "Pi-holes",
+                identifier: Preferences.PaneIdentifier(rawValue: PaneIdentifier.piholes.rawValue),
+                title: UIConstants.Strings.preferencesPiholesTabTitle,
                 toolbarIcon: NSImage(named: NSImage.userAccountsName)!
             ) {
                 PiholeListConfigView(piholeListViewModel: piholeListViewModel)
             },
             
             Preferences.Pane(
-                identifier: Preferences.PaneIdentifier(rawValue: "preferences"),
-                title: "Preferences",
+                identifier: Preferences.PaneIdentifier(rawValue: PaneIdentifier.preferences.rawValue),
+                title: UIConstants.Strings.preferencesPreferencesTabTitle,
                 toolbarIcon: NSImage(named: NSImage.preferencesGeneralName)!
             ) {
                 PreferencesView().environmentObject(self.preferences)
             },
             
             Preferences.Pane(
-                identifier: Preferences.PaneIdentifier(rawValue: "about"),
-                title: "About",
+                identifier: Preferences.PaneIdentifier(rawValue: PaneIdentifier.about.rawValue),
+                title: UIConstants.Strings.preferencesAboutTabTitle,
                 toolbarIcon: NSImage(named: NSImage.applicationIconName)!
             ) {
                 AboutView()

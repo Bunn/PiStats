@@ -54,7 +54,7 @@ struct SummaryView: View {
                                     self.dataProvider.resetErrorMessage()
                                     self.isErrorMessagePresented.toggle()
                                 }, label: {
-                                    Text("Clear")
+                                    Text(UIConstants.Strings.buttonClearErrorMessages)
                                 })
                             }
                         }.padding()
