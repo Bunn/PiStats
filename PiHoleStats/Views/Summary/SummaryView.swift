@@ -19,6 +19,7 @@ struct SummaryView: View {
     @EnvironmentObject var dataProvider: PiholeDataProvider
     @EnvironmentObject var preferences: UserPreferences
     @State private var isErrorMessagePresented = false
+    @State private var isStatusAlertPresented = false
     
     private var disableButtonOptions: [DisableButtonOption] {
         [DisableButtonOption(seconds: 10, text: UIConstants.Strings.disableButtonOption10Seconds),
@@ -35,7 +36,7 @@ struct SummaryView: View {
                         .frame(width: UIConstants.Geometry.circleSize, height: UIConstants.Geometry.circleSize)
                     Text(self.dataProvider.statusText)
                     
-                    conditionalErrorMessageButton()
+                    conditionalAlertMessageButton()
                     Spacer()
                     conditionalEnableDisableButtons()
                 }
@@ -117,11 +118,32 @@ struct SummaryView: View {
         })
     }
     
-    private func conditionalErrorMessageButton() -> some View {
+    private func conditionalAlertMessageButton() -> some View {
         Group {
             if self.dataProvider.hasErrorMessages {
                 errorMessageButton()
+            } else if self.dataProvider.status == .enabledAndDisabled {
+                statusListWarningButton()
             }
+        }
+    }
+    
+    private func statusListWarningButton() -> some View {
+        Button(action: {
+            self.isStatusAlertPresented.toggle()
+        }, label: {
+            Text(UIConstants.Strings.warningButton)
+        }).popover(isPresented: $isStatusAlertPresented) {
+            VStack(alignment: .leading) {
+                ForEach(self.dataProvider.piholes) {pihole in
+                    HStack {
+                        Circle()
+                            .fill(pihole.active ? UIConstants.Colors.enabled : UIConstants.Colors.disabled)
+                            .frame(width: UIConstants.Geometry.circleSize, height: UIConstants.Geometry.circleSize)
+                        Text(pihole.address)
+                    }
+                }
+            }.padding()
         }
     }
     
@@ -129,7 +151,7 @@ struct SummaryView: View {
         Button(action: {
             self.isErrorMessagePresented.toggle()
         }, label: {
-            Text("⚠️")
+            Text(UIConstants.Strings.warningButton)
         }).popover(isPresented: $isErrorMessagePresented) {
             VStack {
                 ForEach(self.dataProvider.piholes) {pihole in
@@ -151,6 +173,7 @@ struct SummaryView: View {
             }.padding()
         }
     }
+    
 }
 
 struct SummaryView_Previews: PreviewProvider {
