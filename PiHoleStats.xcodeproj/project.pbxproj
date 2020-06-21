@@ -33,6 +33,7 @@
 		319F10952483F04A003EB3CD /* PiholeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319F10942483F04A003EB3CD /* PiholeViewModel.swift */; };
 		31ABD138247B14B700D76618 /* PiholeDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31ABD137247B14B700D76618 /* PiholeDataProvider.swift */; };
 		31ABD13A247B14C200D76618 /* Pihole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31ABD139247B14C200D76618 /* Pihole.swift */; };
+		31CC8174249F8072008DA24C /* DataMigrationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CC8173249F8072008DA24C /* DataMigrationManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,6 +66,7 @@
 		319F10942483F04A003EB3CD /* PiholeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiholeViewModel.swift; sourceTree = "<group>"; };
 		31ABD137247B14B700D76618 /* PiholeDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiholeDataProvider.swift; sourceTree = "<group>"; };
 		31ABD139247B14C200D76618 /* Pihole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pihole.swift; sourceTree = "<group>"; };
+		31CC8173249F8072008DA24C /* DataMigrationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataMigrationManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 				315CA2DA247931FE0079F555 /* SharedFileList.h */,
 				315CA2DB247931FE0079F555 /* SharedFileList.m */,
 				315CA2D9247931FE0079F555 /* PiHoleStats-Bridging-Header.h */,
+				31CC8173249F8072008DA24C /* DataMigrationManager.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -318,6 +321,7 @@
 				313278EE246A086000520124 /* UserPreferences.swift in Sources */,
 				31ABD13A247B14C200D76618 /* Pihole.swift in Sources */,
 				3150BE8B2483149400EF0EF6 /* PiholeItemConfigView.swift in Sources */,
+				31CC8174249F8072008DA24C /* DataMigrationManager.swift in Sources */,
 				31ABD138247B14B700D76618 /* PiholeDataProvider.swift in Sources */,
 				3173B1D6248F8A97000343BB /* PiholeListViewModel.swift in Sources */,
 				31718236246B22E1003BBF0C /* SummaryItem.swift in Sources */,

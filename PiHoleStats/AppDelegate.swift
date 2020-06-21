@@ -14,6 +14,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let menuController = MenuController()
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        DataMigrationManager().migrateIfNecessary()
         menuController.setup()
     }
 }
