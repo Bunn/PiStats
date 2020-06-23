@@ -20,32 +20,28 @@ struct SummaryItem: View {
     }
     
     private var circleColor: Color {
-        get {
-            switch type {
-            case .domainsOnBlocklist:
-                return UIConstants.Colors.domainBlocked
-            case .percentBlocked:
-                return UIConstants.Colors.percentBlocked
-            case .queryBlocked:
-                return UIConstants.Colors.queryBlocked
-            case .totalQuery:
-                return UIConstants.Colors.totalQuery
-            }
+        switch type {
+        case .domainsOnBlocklist:
+            return UIConstants.Colors.domainBlocked
+        case .percentBlocked:
+            return UIConstants.Colors.percentBlocked
+        case .queryBlocked:
+            return UIConstants.Colors.queryBlocked
+        case .totalQuery:
+            return UIConstants.Colors.totalQuery
         }
     }
     
     private var text: String {
-        get {
-            switch type {
-            case .domainsOnBlocklist:
-                return UIConstants.Strings.domainsOnBlocklist
-            case .percentBlocked:
-                return UIConstants.Strings.percentBlocked
-            case .queryBlocked:
-                return UIConstants.Strings.queriesBlocked
-            case .totalQuery:
-                return UIConstants.Strings.totalQueries
-            }
+        switch type {
+        case .domainsOnBlocklist:
+            return UIConstants.Strings.domainsOnBlocklist
+        case .percentBlocked:
+            return UIConstants.Strings.percentBlocked
+        case .queryBlocked:
+            return UIConstants.Strings.queriesBlocked
+        case .totalQuery:
+            return UIConstants.Strings.totalQueries
         }
     }
     

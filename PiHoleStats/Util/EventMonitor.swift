@@ -34,8 +34,7 @@ import Cocoa
 import os.log
 
 public class EventMonitor {
-    private let log = OSLog(subsystem: "PiStats", category: String(describing: EventMonitor.self))
-    
+    private let log = Logger().osLog(describing: EventMonitor.self)
     private var monitor: Any?
     private let mask: NSEvent.EventTypeMask
     private let handler: (NSEvent?) -> Void

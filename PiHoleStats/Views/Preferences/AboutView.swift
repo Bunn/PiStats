@@ -7,24 +7,32 @@
 //
 
 import SwiftUI
+import Preferences
 
 struct AboutView: View {
-    var appVersion: String  {
+    var appVersion: String {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
     }
     
     var body: some View {
-        VStack(spacing: 4.0) {
-            Image("shieldIcon")
-            
-            Text(UIConstants.Strings.piStatsName)
-                .font(.body)
-            
-            Text("\(UIConstants.Strings.version) \(appVersion)")
-                .font(.caption)
-            
-            Text(UIConstants.Strings.copyright)
-                .font(.caption)
+        Preferences.Container(contentWidth: 300) {
+            [Preferences.Section(title: "") {
+                Text(UIConstants.Strings.piStatsName)
+                Text("\(UIConstants.Strings.version) \(self.appVersion)")
+                
+                Divider()
+                
+                Button(action: {
+                    if let url = URL(string: "https://github.com/Bunn/PiStats") {
+                        NSWorkspace.shared.open(url)
+                    }
+                }, label: {
+                    Text(UIConstants.Strings.openProjectWebsiteButton)
+                })
+
+                Text(UIConstants.Strings.copyright)
+                    .font(.caption)
+            }]
         }
     }
 }

@@ -9,19 +9,25 @@
 import Foundation
 
 struct APIToken {
+    internal init(accountName: String) {
+        self.accountName = accountName
+        self.passwordItem = KeychainPasswordItem(service: APIToken.serviceName, account: accountName, accessGroup: nil)
+    }
+    
     private static let serviceName = "PiHoleStatsService"
-    private static let accountName = "PiHoleStatsAccount"
-    private let passwordItem = KeychainPasswordItem(service: APIToken.serviceName, account: APIToken.accountName, accessGroup: nil)
+    let accountName: String
+    
+    private let passwordItem: KeychainPasswordItem
     
     public var token: String {
         get {
             do {
                 return try passwordItem.readPassword()
-            }
-            catch {
+            } catch {
                 return ""
             }
         }
+        
         set {
             /*
              It might error out when trying to delete during development because of digital signing changing
@@ -29,6 +35,17 @@ struct APIToken {
              https://forums.developer.apple.com/thread/69841
              */
             try? passwordItem.savePassword(newValue)
+            if newValue.isEmpty {
+                delete()
+            }
+        }
+    }
+    
+    public func delete() {
+        do {
+            try passwordItem.deleteItem()
+        } catch {
+            print("Keychain delete error \(error)")
         }
     }
 }

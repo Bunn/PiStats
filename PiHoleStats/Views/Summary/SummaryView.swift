@@ -16,8 +16,10 @@ private struct DisableButtonOption {
 
 struct SummaryView: View {
     @EnvironmentObject var navigationController: NavigationController
-    @EnvironmentObject var viewModel: PiHoleViewModel
-    @EnvironmentObject var preferences: Preferences
+    @EnvironmentObject var dataProvider: PiholeDataProvider
+    @EnvironmentObject var preferences: UserPreferences
+    @State private var isErrorMessagePresented = false
+    @State private var isStatusAlertPresented = false
     
     private var disableButtonOptions: [DisableButtonOption] {
         [DisableButtonOption(seconds: 10, text: UIConstants.Strings.disableButtonOption10Seconds),
@@ -27,61 +29,23 @@ struct SummaryView: View {
     
     var body: some View {
         VStack {
-            if viewModel.errorMessage.isEmpty {
+            if dataProvider.piholes.count > 0 {
                 HStack {
                     Circle()
-                        .fill(self.viewModel.active ? UIConstants.Colors.active : UIConstants.Colors.offline)
+                        .fill(self.dataProvider.statusColor)
                         .frame(width: UIConstants.Geometry.circleSize, height: UIConstants.Geometry.circleSize)
-                    Text(self.viewModel.status)
+                    Text(self.dataProvider.statusText)
                     
+                    conditionalAlertMessageButton()
                     Spacer()
-                    
-                    if !preferences.apiToken.isEmpty {
-                        if preferences.displayDisableTimeOptions && self.viewModel.active {
-                           
-                            MenuButton(label: Text(self.viewModel.changeStatusButtonTitle)) {
-                                Button(action: {
-                                    self.viewModel.disablePiHole()
-                                }, label: { Text(UIConstants.Strings.disableButtonOptionPermanently) })
-                                
-                                VStack {
-                                    Divider()
-                                }
-                                
-                                ForEach(disableButtonOptions, id: \.id) { option in
-                                    Button(action: {
-                                        self.viewModel.disablePiHole(seconds: option.seconds)
-                                    }, label: { Text(option.text) })
-                                }
-                            }.frame(maxWidth: 80)
-                            
-                        } else {
-                            Button(action: {
-                                self.viewModel.active ? self.viewModel.disablePiHole() : self.viewModel.enablePiHole()
-                            }) {
-                                Text(self.viewModel.changeStatusButtonTitle)
-                            }
-                        }
-                    }
+                    conditionalEnableDisableButtons()
                 }
-                
                 Divider()
                 
-                SummaryItem(value: self.viewModel.totalQueries, type: .totalQuery)
-                SummaryItem(value: self.viewModel.queriesBlocked, type: .queryBlocked)
-                SummaryItem(value: self.viewModel.percentBlocked, type: .percentBlocked)
-                SummaryItem(value: self.viewModel.domainsOnBlocklist, type: .domainsOnBlocklist)
-                
+                summaryItems()
             } else {
-                Text(viewModel.errorMessage)
+                Text(UIConstants.Strings.openPreferencesToConfigureFirstPihole)
                     .multilineTextAlignment(.center)
-                if !viewModel.isSettingsEmpty {
-                    Button(action: {
-                        self.viewModel.resetErrorMessage()
-                    }) {
-                        Text(UIConstants.Strings.buttonOK)
-                    }
-                }
             }
             
             Divider()
@@ -89,21 +53,127 @@ struct SummaryView: View {
             HStack {
                 Button(action: {
                     NSApplication.shared.terminate(self)
-                }) {
+                }, label: {
                     Text(UIConstants.Strings.buttonQuit)
-                }
+                })
                 
                 Spacer()
                 
                 Button(action: {
                     self.navigationController.openPreferences()
-                }) {
+                }, label: {
                     Text(UIConstants.Strings.buttonPreferences)
-                }
+                })
             }
             
         }.padding()
     }
+    
+    // MARK: - UI Components
+    
+    private func summaryItems() -> some View {
+        Group {
+            SummaryItem(value: self.dataProvider.totalQueries, type: .totalQuery)
+            SummaryItem(value: self.dataProvider.queriesBlocked, type: .queryBlocked)
+            SummaryItem(value: self.dataProvider.percentBlocked, type: .percentBlocked)
+            SummaryItem(value: self.dataProvider.domainsOnBlocklist, type: .domainsOnBlocklist)
+        }
+    }
+    
+    private func conditionalEnableDisableButtons() -> some View {
+        Group {
+            if self.dataProvider.canDisplayEnableDisableButton {
+                if preferences.displayDisableTimeOptions && self.dataProvider.status != .allDisabled {
+                    enableDisableMenuButton()
+                } else {
+                    enableDisableButton()
+                }
+            }
+        }
+    }
+    
+    private func enableDisableMenuButton() -> some View {
+        MenuButton(label: Text(self.dataProvider.changeStatusButtonTitle)) {
+            Button(action: {
+                self.dataProvider.disablePiHole()
+            }, label: { Text(UIConstants.Strings.disableButtonOptionPermanently) })
+            
+            VStack {
+                Divider()
+            }
+            
+            ForEach(disableButtonOptions, id: \.id) { option in
+                Button(action: {
+                    self.dataProvider.disablePiHole(seconds: option.seconds)
+                }, label: { Text(option.text) })
+            }
+        }.frame(maxWidth: 80)
+    }
+    
+    private func enableDisableButton() -> some View {
+        Button(action: {
+            self.dataProvider.status != .allDisabled ? self.dataProvider.disablePiHole() : self.dataProvider.enablePiHole()
+        }, label: {
+            Text(self.dataProvider.changeStatusButtonTitle)
+        })
+    }
+    
+    private func conditionalAlertMessageButton() -> some View {
+        Group {
+            if self.dataProvider.hasErrorMessages {
+                errorMessageButton()
+            } else if self.dataProvider.status == .enabledAndDisabled {
+                statusListWarningButton()
+            }
+        }
+    }
+    
+    private func statusListWarningButton() -> some View {
+        Button(action: {
+            self.isStatusAlertPresented.toggle()
+        }, label: {
+            Text(UIConstants.Strings.warningButton)
+        }).popover(isPresented: $isStatusAlertPresented) {
+            VStack(alignment: .leading) {
+                ForEach(self.dataProvider.piholes) {pihole in
+                    HStack {
+                        Circle()
+                            .fill(pihole.active ? UIConstants.Colors.enabled : UIConstants.Colors.disabled)
+                            .frame(width: UIConstants.Geometry.circleSize, height: UIConstants.Geometry.circleSize)
+                        Text(pihole.address)
+                    }
+                }
+            }.padding()
+        }
+    }
+    
+    private func errorMessageButton() -> some View {
+        Button(action: {
+            self.isErrorMessagePresented.toggle()
+        }, label: {
+            Text(UIConstants.Strings.warningButton)
+        }).popover(isPresented: $isErrorMessagePresented) {
+            VStack {
+                ForEach(self.dataProvider.piholes) {pihole in
+                    if pihole.pollingError != nil {
+                        Text("\(pihole.address): \(pihole.pollingError!)")
+                    }
+                    if pihole.actionError != nil {
+                        Text("\(pihole.address): \(pihole.actionError!)")
+                    }
+                }
+                HStack {
+                    Button(action: {
+                        self.dataProvider.resetErrorMessage()
+                        self.isErrorMessagePresented.toggle()
+                    }, label: {
+                        Text(UIConstants.Strings.buttonClearErrorMessages)
+                    })
+                }
+            }.padding()
+        }
+    }
+    
 }
 
 struct SummaryView_Previews: PreviewProvider {

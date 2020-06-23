@@ -10,18 +10,18 @@ import Cocoa
 
 class NavigationController: ObservableObject {
     private var windowController: NSWindowController?
-    let preferences: Preferences
-
-      init(preferences: Preferences) {
-          self.preferences = preferences
-      }
+    let preferences: UserPreferences
+    let piholeDataProvider: PiholeDataProvider
+    
+    init(preferences: UserPreferences, piholeDataProvider: PiholeDataProvider) {
+        self.preferences = preferences
+        self.piholeDataProvider = piholeDataProvider
+    }
     
     public func openPreferences() {
         NSApp.activate(ignoringOtherApps: true)
-        let settings = PreferencesViewController(preferences: preferences)
-        let window = NSWindow(contentViewController: settings)
-        windowController = NSWindowController(window: window)
-        windowController?.showWindow(self)
-        windowController?.window?.makeKey()
+        
+        let controller = PreferencesViewController(preferences: preferences, piholeListViewModel: PiholeListViewModel(piholeDataProvider: piholeDataProvider))
+        controller.show()
     }
 }

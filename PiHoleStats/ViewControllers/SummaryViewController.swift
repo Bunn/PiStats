@@ -10,16 +10,13 @@ import Cocoa
 import SwiftUI
 
 class SummaryViewController: NSViewController {
-    private let preferences: Preferences
+    private let preferences: UserPreferences
     private let navigationController: NavigationController
-    
-    lazy var dataViewModel: PiHoleViewModel = {
-        let p = PiHoleViewModel(preferences: preferences)
-        return p
-    }()
-    
-    init(preferences: Preferences, navigationController: NavigationController) {
+    private let piHoleDataProvider: PiholeDataProvider
+
+    init(preferences: UserPreferences, piHoleDataProvider: PiholeDataProvider, navigationController: NavigationController) {
         self.preferences = preferences
+        self.piHoleDataProvider = piHoleDataProvider
         self.navigationController = navigationController
         super.init(nibName: nil, bundle: nil)
     }
@@ -34,7 +31,7 @@ class SummaryViewController: NSViewController {
         let contentView = SummaryView()
             .environmentObject(navigationController)
             .environmentObject(preferences)
-            .environmentObject(dataViewModel)
+            .environmentObject(piHoleDataProvider)
         
         let hostingController = NSHostingController(rootView: contentView)
         addChild(hostingController)
@@ -45,11 +42,11 @@ class SummaryViewController: NSViewController {
     
     override func viewDidAppear() {
         super.viewDidAppear()
-        dataViewModel.startPolling()
+        piHoleDataProvider.startPolling()
     }
     
     override func viewDidDisappear() {
         super.viewDidDisappear()
-        dataViewModel.stopPolling()
+        piHoleDataProvider.stopPolling()
     }
 }

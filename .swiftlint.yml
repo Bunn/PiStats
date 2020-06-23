@@ -1,0 +1,16 @@
+disabled_rules:
+  - line_length
+  - nesting
+  - trailing_whitespace
+  - identifier_name
+  - orphaned_doc_comment
+
+force_cast: warning
+force_try:
+  severity: warning
+
+file_length:
+  warning: 500
+  error: 1200
+
+reporter: "xcode"
