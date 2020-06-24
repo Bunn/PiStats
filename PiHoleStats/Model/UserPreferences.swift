@@ -12,6 +12,8 @@ import Combine
 private enum PreferencesKey: String {
     case keepPopoverPanelOpen = "SettingsKeyKeepPopoverPanelOpen"
     case displayDisableTimeOptions = "SettingsDisplayDisableTimeOptions"
+    case displayStatusColorWhenPiholeIsOffline = "SettingsDisplayStatusColorWhenPiholeIsOffline"
+
 }
 
 class UserPreferences: ObservableObject {
@@ -33,6 +35,12 @@ class UserPreferences: ObservableObject {
     @Published var displayDisableTimeOptions: Bool = UserDefaults.standard.object(forKey: PreferencesKey.displayDisableTimeOptions.rawValue) as? Bool ?? false {
         didSet {
             UserDefaults.standard.set(displayDisableTimeOptions, forKey: PreferencesKey.displayDisableTimeOptions.rawValue)
+        }
+    }
+    
+    @Published var displayStatusColorWhenPiholeIsOffline: Bool = UserDefaults.standard.object(forKey: PreferencesKey.displayStatusColorWhenPiholeIsOffline.rawValue) as? Bool ?? false {
+        didSet {
+            UserDefaults.standard.set(displayStatusColorWhenPiholeIsOffline, forKey: PreferencesKey.displayStatusColorWhenPiholeIsOffline.rawValue)
         }
     }
     

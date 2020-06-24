@@ -24,6 +24,9 @@ struct PreferencesView: View {
                 Toggle(isOn: self.$preferences.displayDisableTimeOptions) {
                     Text(UIConstants.Strings.disableTimeOptionsTitle)
                 }
+                Toggle(isOn: self.$preferences.displayStatusColorWhenPiholeIsOffline) {
+                    Text(UIConstants.Strings.displayStatusColorWhenPiholeIsOffline)
+                }
                 }
             ]
         }
