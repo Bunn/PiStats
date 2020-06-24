@@ -10,6 +10,7 @@ import Cocoa
 import Combine
 
 class MenuController: NSObject {
+
     private lazy var popover = NSPopover()
     private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
     private let preferences = UserPreferences()
@@ -17,7 +18,6 @@ class MenuController: NSObject {
     private lazy var dataProvider = PiholeDataProvider(piholes: Pihole.restoreAll())
     private lazy var summaryViewController = SummaryViewController(preferences: preferences, piHoleDataProvider: dataProvider, navigationController: navigationController)
     private var eventMonitor: EventMonitor?
-    
     private var eventCancellable: AnyCancellable?
     private var statusPreferenceCancellable: AnyCancellable?
     private var statusCancellable: AnyCancellable?
@@ -38,6 +38,7 @@ class MenuController: NSObject {
         popover.contentViewController = summaryViewController
         setupEventMonitor()
         dataProvider.startPolling()
+        dataProvider.updatePollingMode(.background)
         updateButtonStatus()
         setupCancellables()
     }
@@ -120,10 +121,13 @@ class MenuController: NSObject {
             of: button,
             preferredEdge: NSRectEdge.minY
         )
+        dataProvider.updatePollingMode(.foreground)
     }
     
     private func closePopover(sender: Any?) {
         popover.performClose(sender)
         eventMonitor?.stop()
+        dataProvider.updatePollingMode(.background)
+
     }
 }
