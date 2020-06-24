@@ -39,14 +39,4 @@ class SummaryViewController: NSViewController {
         hostingController.view.frame = view.bounds
         view.addSubview(hostingController.view)
     }
-    
-    override func viewDidAppear() {
-        super.viewDidAppear()
-        piHoleDataProvider.startPolling()
-    }
-    
-    override func viewDidDisappear() {
-        super.viewDidDisappear()
-        piHoleDataProvider.stopPolling()
-    }
 }

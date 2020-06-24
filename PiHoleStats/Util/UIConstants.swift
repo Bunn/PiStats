@@ -22,6 +22,10 @@ struct UIConstants {
         static let queryBlocked = Color("queryBlocked")
         static let percentBlocked = Color("percentBlocked")
     }
+    struct NSColors {
+           static let disabled = NSColor(named: "disabled")
+           static let enabledAndDisabled = NSColor(named: "enabledAndDisabled")
+       }
     
     struct Strings {
         
@@ -62,9 +66,10 @@ struct UIConstants {
         static let launchAtLogonPreference = "Launch at login"
         static let preferencesWindowTitle = "Pi Stats Preferences"
         static let disableTimeOptionsTitle = "Display disable time options"
+        static let displayStatusColorWhenPiholeIsOffline = "Display status color on menu bar icon when pi-hole is offline"
         static let disableButtonOptionPermanently = "Permanently"
-        static let disableButtonOption10Seconds = "For 10 seconds"
         static let disableButtonOption30Seconds = "For 30 seconds"
+        static let disableButtonOption1Minute = "For 1 minute"
         static let disableButtonOption5Minutes = "For 5 minutes"
         static let buttonClearErrorMessages = "Clear"
         static let preferencesPiholesTabTitle = "Pi-holes"

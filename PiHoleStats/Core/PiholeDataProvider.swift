@@ -17,7 +17,12 @@ class PiholeDataProvider: ObservableObject {
         case enabledAndDisabled
     }
     
-    private let pollingTimeInterval: TimeInterval = 3
+    enum PollingMode {
+        case foreground
+        case background
+    }
+    
+    private(set) var pollingTimeInterval: TimeInterval = 3
     private var timer: Timer?
     private(set) var piholes: [Pihole]
     @Published private(set) var totalQueries = ""
@@ -88,8 +93,19 @@ class PiholeDataProvider: ObservableObject {
         self.piholes = piholes
     }
     
+    func updatePollingMode(_ pollingMode: PollingMode) {
+        switch pollingMode {
+        case .background:
+            pollingTimeInterval = 10
+        case .foreground:
+            pollingTimeInterval = 3
+        }
+        startPolling()
+    }
+    
     func startPolling() {
         self.fetchSummaryData()
+        timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: pollingTimeInterval, repeats: true) { _ in
             self.fetchSummaryData()
         }

@@ -120,7 +120,7 @@ extension Pihole {
     }
     
     public func disablePiHole(seconds: Int = 0, completion: @escaping (Result<Void, SwiftHoleError>) -> Void) {
-        service.disablePiHole { result in
+        service.disablePiHole(seconds: seconds) { result in
             switch result {
             case .success:
                 self.active = false

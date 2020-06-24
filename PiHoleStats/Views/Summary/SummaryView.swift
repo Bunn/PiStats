@@ -22,8 +22,8 @@ struct SummaryView: View {
     @State private var isStatusAlertPresented = false
     
     private var disableButtonOptions: [DisableButtonOption] {
-        [DisableButtonOption(seconds: 10, text: UIConstants.Strings.disableButtonOption10Seconds),
-         DisableButtonOption(seconds: 30, text: UIConstants.Strings.disableButtonOption30Seconds),
+        [DisableButtonOption(seconds: 30, text: UIConstants.Strings.disableButtonOption30Seconds),
+         DisableButtonOption(seconds: 60, text: UIConstants.Strings.disableButtonOption1Minute),
          DisableButtonOption(seconds: 300, text: UIConstants.Strings.disableButtonOption5Minutes)]
     }
     
