@@ -36,10 +36,12 @@ struct PiholeItemConfigView: View {
             
             HStack {
                 Button(action: {
-                    print("a")
+                    print("Display QRCode")
                 }, label: {
                     HStack {
                         Image("qrcode")
+                            .resizable().aspectRatio(contentMode: .fit)
+                            .frame(width: 10)
                     }
                 })
                 Button(action: {
