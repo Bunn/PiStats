@@ -10,7 +10,9 @@ import SwiftUI
 
 struct PiholeItemConfigView: View {
     @ObservedObject var piholeViewModel: PiholeViewModel
-    @State var width: CGFloat?
+    @State private var width: CGFloat?
+    @State private var presentingQRCodePopOver = false
+    private let qrcodeSize: CGFloat = 300
     
     enum LabelWidth: Preference {}
     let labelWidth = GeometryPreferenceReader(
@@ -36,14 +38,19 @@ struct PiholeItemConfigView: View {
             
             HStack {
                 Button(action: {
-                    print("Display QRCode")
+                    self.presentingQRCodePopOver.toggle()
                 }, label: {
                     HStack {
                         Image("qrcode")
                             .resizable().aspectRatio(contentMode: .fit)
                             .frame(width: 10)
                     }
-                })
+                }).popover(isPresented: $presentingQRCodePopOver) {
+                    Image(nsImage: QRCodeGenerator().generateQRCode(from: self.piholeViewModel.json, with: NSSize(width: self.qrcodeSize, height: self.qrcodeSize)))
+                        .interpolation(.none)
+                        .frame(width: self.qrcodeSize, height: self.qrcodeSize)
+                }
+                
                 Button(action: {
                     self.piholeViewModel.save()
                 }, label: {
