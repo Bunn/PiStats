@@ -10,24 +10,44 @@ import SwiftUI
 
 struct PiholeItemConfigView: View {
     @ObservedObject var piholeViewModel: PiholeViewModel
+    @State var width: CGFloat?
+    
+    enum LabelWidth: Preference {}
+    let labelWidth = GeometryPreferenceReader(
+        key: AppendValue<LabelWidth>.self,
+        value: { [$0.size.width] }
+    )
     
     var body: some View {
-        VStack {
+        VStack(alignment: .trailing) {
             HStack {
                 Text(UIConstants.Strings.host)
+                    .read(labelWidth)
+                    .frame(width: width, alignment: .leading)
                 TextField(UIConstants.Strings.hostPlaceholder, text: $piholeViewModel.address)
             }
             
             HStack {
                 Text(UIConstants.Strings.apiToken)
+                    .read(labelWidth)
+                    .frame(width: width, alignment: .leading)
                 SecureField(UIConstants.Strings.apiTokenPlaceholder, text: $piholeViewModel.token)
             }
             
-            Button(action: {
-                self.piholeViewModel.save()
-            }, label: {
-                Text(UIConstants.Strings.savePiholeButton)
-            })
+            HStack {
+                Button(action: {
+                    print("a")
+                }, label: {
+                    HStack {
+                        Image("qrcode")
+                    }
+                })
+                Button(action: {
+                    self.piholeViewModel.save()
+                }, label: {
+                    Text(UIConstants.Strings.savePiholeButton)
+                })
+            }
             
             Divider()
             
@@ -41,6 +61,6 @@ struct PiholeItemConfigView: View {
                 .multilineTextAlignment(.center)
                 .minimumScaleFactor(0.8)
                 .foregroundColor(.secondary)
-        }
+        } .assignMaxPreference(for: labelWidth.key, to: $width)
     }
 }
