@@ -14,7 +14,16 @@ struct PiholeItemConfigView: View {
     @State private var width: CGFloat?
     @State private var presentingQRCodePopOver = false
     private let qrcodeSize: CGFloat = 300
-    @State private var qrcodeString = ""
+
+    private var qrcodeValue: String {
+        switch preferences.qrcodeFormat {
+        case .piStats:
+            return piholeViewModel.json
+        case .webInterface:
+            return piholeViewModel.token
+        }
+    }
+    
     private var selectedQRCodeFormatLabel: String {
         switch preferences.qrcodeFormat {
         case .webInterface:
@@ -57,7 +66,7 @@ struct PiholeItemConfigView: View {
                     }
                 }).popover(isPresented: $presentingQRCodePopOver) {
                     VStack {
-                        Image(nsImage: QRCodeGenerator().generateQRCode(from: self.qrcodeString, with: NSSize(width: self.qrcodeSize, height: self.qrcodeSize)))
+                        Image(nsImage: QRCodeGenerator().generateQRCode(from: self.qrcodeValue, with: NSSize(width: self.qrcodeSize, height: self.qrcodeSize)))
                         .interpolation(.none)
                         .padding()
                         
@@ -66,11 +75,9 @@ struct PiholeItemConfigView: View {
                             MenuButton(label: Text(self.selectedQRCodeFormatLabel)) {
                                 Button(action: {
                                     self.preferences.qrcodeFormat = .webInterface
-                                    self.updateQRCodeString()
                                 }, label: { Text(UIConstants.Strings.preferencesQRCodeFormatWebInterface) })
                                 Button(action: {
                                     self.preferences.qrcodeFormat = .piStats
-                                    self.updateQRCodeString()
                                 }, label: { Text(UIConstants.Strings.preferencesQRCodeFormatPiStats) })
                             }
                         }
@@ -99,17 +106,5 @@ struct PiholeItemConfigView: View {
                 .minimumScaleFactor(0.8)
                 .foregroundColor(.secondary)
         } .assignMaxPreference(for: labelWidth.key, to: $width)
-            .onAppear {
-                self.updateQRCodeString()
-        }
-    }
-    
-    private func updateQRCodeString() {
-        switch preferences.qrcodeFormat {
-        case .piStats:
-            qrcodeString = piholeViewModel.json
-        case .webInterface:
-            qrcodeString = piholeViewModel.token
-        }
     }
 }
