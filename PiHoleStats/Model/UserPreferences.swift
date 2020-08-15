@@ -13,10 +13,16 @@ private enum PreferencesKey: String {
     case keepPopoverPanelOpen = "SettingsKeyKeepPopoverPanelOpen"
     case displayDisableTimeOptions = "SettingsDisplayDisableTimeOptions"
     case displayStatusColorWhenPiholeIsOffline = "SettingsDisplayStatusColorWhenPiholeIsOffline"
+    case qrcodeFormat = "SettingsqrcodeFormat"
 
 }
 
 class UserPreferences: ObservableObject {
+    enum QRCodeFormat: Int {
+        case webInterface
+        case piStats
+    }
+    
     var keychainToken = APIToken(accountName: "PiHoleStatsAccount")
     private var appURL: URL { Bundle.main.bundleURL }
     static let didChangeNotification = Notification.Name("dev.bunn.holestats.PrefsChanged")
@@ -35,6 +41,12 @@ class UserPreferences: ObservableObject {
     @Published var displayDisableTimeOptions: Bool = UserDefaults.standard.object(forKey: PreferencesKey.displayDisableTimeOptions.rawValue) as? Bool ?? false {
         didSet {
             UserDefaults.standard.set(displayDisableTimeOptions, forKey: PreferencesKey.displayDisableTimeOptions.rawValue)
+        }
+    }
+    
+    @Published var qrcodeFormat: QRCodeFormat = UserDefaults.standard.object(forKey: PreferencesKey.qrcodeFormat.rawValue) as? QRCodeFormat ?? .webInterface {
+        didSet {
+            UserDefaults.standard.set(qrcodeFormat.rawValue, forKey: PreferencesKey.qrcodeFormat.rawValue)
         }
     }
     
