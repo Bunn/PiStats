@@ -82,7 +82,7 @@ struct UIConstants {
         static let noAvailablePiholeToSelectMessage = "No pi-holes available, click Add to setup a new pi-hole"
         static let warningButton = "⚠️"
         static let openProjectWebsiteButton = "Project Website"
-        static let preferencesQRCodeFormat = "QRCode Format:"
+        static let preferencesQRCodeFormat = "QR Code Format:"
         static let preferencesQRCodeFormatWebInterface = "Web Interface"
         static let preferencesQRCodeFormatPiStats = "Pi Stats"
 
