@@ -19,6 +19,18 @@ class PiholeViewModel: ObservableObject {
     weak var delegate: PiholeViewModelDelegate?
     let piHole: Pihole
     
+    var json: String {
+        return """
+        {
+            "pihole": {
+                "host": "\(piHole.address)",
+                "port": \(piHole.port ?? 80),
+                "token": "\(piHole.apiToken)"
+            }
+        }
+        """
+    }
+    
     internal init(piHole: Pihole) {
         self.piHole = piHole
         self.address = piHole.address

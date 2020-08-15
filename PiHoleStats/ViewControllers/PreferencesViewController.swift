@@ -41,6 +41,7 @@ class PreferencesViewController {
                 toolbarIcon: NSImage(named: NSImage.userAccountsName)!
             ) {
                 PiholeListConfigView(piholeListViewModel: piholeListViewModel)
+                .environmentObject(self.preferences)
             },
             
             Preferences.Pane(

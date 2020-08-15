@@ -10,24 +10,88 @@ import SwiftUI
 
 struct PiholeItemConfigView: View {
     @ObservedObject var piholeViewModel: PiholeViewModel
+    @EnvironmentObject var preferences: UserPreferences
+    @State private var width: CGFloat?
+    @State private var presentingQRCodePopOver = false
+    private let qrcodeSize: CGFloat = 300
+
+    private var qrcodeValue: String {
+        switch preferences.qrcodeFormat {
+        case .piStats:
+            return piholeViewModel.json
+        case .webInterface:
+            return piholeViewModel.token
+        }
+    }
+    
+    private var selectedQRCodeFormatLabel: String {
+        switch preferences.qrcodeFormat {
+        case .webInterface:
+            return UIConstants.Strings.preferencesQRCodeFormatWebInterface
+        case .piStats:
+            return UIConstants.Strings.preferencesQRCodeFormatPiStats
+        }
+    }
+    
+    enum LabelWidth: Preference {}
+    let labelWidth = GeometryPreferenceReader(
+        key: AppendValue<LabelWidth>.self,
+        value: { [$0.size.width] }
+    )
     
     var body: some View {
-        VStack {
+        VStack(alignment: .trailing) {
             HStack {
                 Text(UIConstants.Strings.host)
+                    .read(labelWidth)
+                    .frame(width: width, alignment: .leading)
                 TextField(UIConstants.Strings.hostPlaceholder, text: $piholeViewModel.address)
             }
             
             HStack {
                 Text(UIConstants.Strings.apiToken)
+                    .read(labelWidth)
+                    .frame(width: width, alignment: .leading)
                 SecureField(UIConstants.Strings.apiTokenPlaceholder, text: $piholeViewModel.token)
             }
             
-            Button(action: {
-                self.piholeViewModel.save()
-            }, label: {
-                Text(UIConstants.Strings.savePiholeButton)
-            })
+            HStack {
+                Button(action: {
+                    self.presentingQRCodePopOver.toggle()
+                }, label: {
+                    HStack {
+                        Image("qrcode")
+                            .resizable().aspectRatio(contentMode: .fit)
+                            .frame(width: 10)
+                    }
+                }).popover(isPresented: $presentingQRCodePopOver) {
+                    VStack {
+                        Image(nsImage: QRCodeGenerator().generateQRCode(from: self.qrcodeValue, with: NSSize(width: self.qrcodeSize, height: self.qrcodeSize)))
+                        .interpolation(.none)
+                        .padding()
+                        
+                        HStack {
+                            Text(UIConstants.Strings.preferencesQRCodeFormat)
+                            MenuButton(label: Text(self.selectedQRCodeFormatLabel)) {
+                                Button(action: {
+                                    self.preferences.qrcodeFormat = .webInterface
+                                }, label: { Text(UIConstants.Strings.preferencesQRCodeFormatWebInterface) })
+                                Button(action: {
+                                    self.preferences.qrcodeFormat = .piStats
+                                }, label: { Text(UIConstants.Strings.preferencesQRCodeFormatPiStats) })
+                            }
+                        }
+                        .padding(.bottom)
+                        .padding(.horizontal)
+                    }
+                }
+                
+                Button(action: {
+                    self.piholeViewModel.save()
+                }, label: {
+                    Text(UIConstants.Strings.savePiholeButton)
+                })
+            }
             
             Divider()
             
@@ -41,6 +105,6 @@ struct PiholeItemConfigView: View {
                 .multilineTextAlignment(.center)
                 .minimumScaleFactor(0.8)
                 .foregroundColor(.secondary)
-        }
+        } .assignMaxPreference(for: labelWidth.key, to: $width)
     }
 }
