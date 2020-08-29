@@ -22,10 +22,16 @@ struct UIConstants {
         static let queryBlocked = Color("queryBlocked")
         static let percentBlocked = Color("percentBlocked")
     }
+    
     struct NSColors {
            static let disabled = NSColor(named: "disabled")
            static let enabledAndDisabled = NSColor(named: "enabledAndDisabled")
        }
+    
+    struct Images {
+        static let globe = "globe"
+        static let QRCode = "qrcode"
+    }
     
     struct Strings {
         
@@ -85,6 +91,8 @@ struct UIConstants {
         static let preferencesQRCodeFormat = "QR Code Format:"
         static let preferencesQRCodeFormatWebInterface = "Web Interface"
         static let preferencesQRCodeFormatPiStats = "Pi Stats"
+        static let preferencesQRCodeToolTip = "Display Pi-hole Settings as QR Code"
+        static let preferencesWebToolTip = "Open Pi-hole Web Interface"
 
     }
 }

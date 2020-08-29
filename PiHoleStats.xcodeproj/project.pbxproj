@@ -10,6 +10,7 @@
 		3114424124732D9D00042625 /* SwiftHole in Frameworks */ = {isa = PBXBuildFile; productRef = 3114424024732D9D00042625 /* SwiftHole */; };
 		3124948C24701BD300634933 /* KeyChainPasswordItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3124948B24701BD300634933 /* KeyChainPasswordItem.swift */; };
 		3124948E24701D2800634933 /* APIToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3124948D24701D2800634933 /* APIToken.swift */; };
+		3129E20224F2B79800473269 /* ToolTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3129E20124F2B79800473269 /* ToolTip.swift */; };
 		313278EA2469FD7C00520124 /* UIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313278E92469FD7C00520124 /* UIConstants.swift */; };
 		313278EE246A086000520124 /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313278ED246A086000520124 /* UserPreferences.swift */; };
 		313408DB24688456005D73E7 /* SummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313408DA24688456005D73E7 /* SummaryViewController.swift */; };
@@ -42,6 +43,7 @@
 /* Begin PBXFileReference section */
 		3124948B24701BD300634933 /* KeyChainPasswordItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainPasswordItem.swift; sourceTree = "<group>"; };
 		3124948D24701D2800634933 /* APIToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIToken.swift; sourceTree = "<group>"; };
+		3129E20124F2B79800473269 /* ToolTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolTip.swift; sourceTree = "<group>"; };
 		313278E92469FD7C00520124 /* UIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIConstants.swift; sourceTree = "<group>"; };
 		313278ED246A086000520124 /* UserPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreferences.swift; sourceTree = "<group>"; };
 		313408DA24688456005D73E7 /* SummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryViewController.swift; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 				315CA2D9247931FE0079F555 /* PiHoleStats-Bridging-Header.h */,
 				31CC8175249FA290008DA24C /* Logger.swift */,
 				31DC927824D7103500C6E8F7 /* QRCodeGenerator.swift */,
+				3129E20124F2B79800473269 /* ToolTip.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -335,6 +338,7 @@
 				31CC8174249F8072008DA24C /* DataMigrationManager.swift in Sources */,
 				31ABD138247B14B700D76618 /* PiholeDataProvider.swift in Sources */,
 				3173B1D6248F8A97000343BB /* PiholeListViewModel.swift in Sources */,
+				3129E20224F2B79800473269 /* ToolTip.swift in Sources */,
 				31CC8176249FA290008DA24C /* Logger.swift in Sources */,
 				31718236246B22E1003BBF0C /* SummaryItem.swift in Sources */,
 				319044D824788C2D00BE4797 /* NavigationController.swift in Sources */,
@@ -488,7 +492,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_ASSET_PATHS = "\"PiHoleStats/Preview Content\"";
 				DEVELOPMENT_TEAM = B2RUA6XMHC;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -499,7 +503,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.2.0;
+				MARKETING_VERSION = 2.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.holestats;
 				PRODUCT_NAME = "Pi Stats";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -518,7 +522,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_ASSET_PATHS = "\"PiHoleStats/Preview Content\"";
 				DEVELOPMENT_TEAM = B2RUA6XMHC;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -529,7 +533,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.2.0;
+				MARKETING_VERSION = 2.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.holestats;
 				PRODUCT_NAME = "Pi Stats";
 				PROVISIONING_PROFILE_SPECIFIER = "";

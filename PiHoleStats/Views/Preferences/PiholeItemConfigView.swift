@@ -56,15 +56,30 @@ struct PiholeItemConfigView: View {
             }
             
             HStack {
+                
+                Button(action: {
+                    if let url = URL(string: "http://\(self.piholeViewModel.address)/admin/") {
+                        NSWorkspace.shared.open(url) }
+                }, label: {
+                        HStack {
+                            Image(UIConstants.Images.globe)
+                                .resizable().aspectRatio(contentMode: .fit)
+                                .frame(width: 15)
+                        }
+                })
+                    .overlay(Tooltip(tooltip: UIConstants.Strings.preferencesWebToolTip))
+                
                 Button(action: {
                     self.presentingQRCodePopOver.toggle()
                 }, label: {
                     HStack {
-                        Image("qrcode")
+                        Image(UIConstants.Images.QRCode)
                             .resizable().aspectRatio(contentMode: .fit)
-                            .frame(width: 10)
+                            .frame(width: 13)
                     }
-                }).popover(isPresented: $presentingQRCodePopOver) {
+                })
+                    .overlay(Tooltip(tooltip: UIConstants.Strings.preferencesQRCodeToolTip))
+                    .popover(isPresented: $presentingQRCodePopOver) {
                     VStack {
                         Image(nsImage: QRCodeGenerator().generateQRCode(from: self.qrcodeValue, with: NSSize(width: self.qrcodeSize, height: self.qrcodeSize)))
                         .interpolation(.none)
