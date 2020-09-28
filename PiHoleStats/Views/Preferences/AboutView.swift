@@ -16,7 +16,7 @@ struct AboutView: View {
     
     var body: some View {
         Preferences.Container(contentWidth: 300) {
-            [Preferences.Section(title: "") {
+            Preferences.Section(title: "") {
                 Text(UIConstants.Strings.piStatsName)
                 Text("\(UIConstants.Strings.version) \(self.appVersion)")
                 
@@ -29,10 +29,10 @@ struct AboutView: View {
                 }, label: {
                     Text(UIConstants.Strings.openProjectWebsiteButton)
                 })
-
+                
                 Text(UIConstants.Strings.copyright)
                     .font(.caption)
-            }]
+            }
         }
     }
 }
