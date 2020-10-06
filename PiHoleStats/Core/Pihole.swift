@@ -62,7 +62,13 @@ class Pihole: Identifiable, Codable, ObservableObject {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(UUID.self, forKey: .id)
         address = try container.decode(String.self, forKey: .address)
-        secure = try container.decode(Bool.self, forKey: .secure)
+        
+        //New properties that might break decoded from older versions
+        do {
+            secure = try container.decode(Bool.self, forKey: .secure)
+        } catch {
+            secure = false
+        }
     }
     
     func encode(to encoder: Encoder) throws {
