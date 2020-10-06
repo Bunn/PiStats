@@ -49,7 +49,7 @@ class Pihole: Identifiable, Codable, ObservableObject {
     }
     
     private var service: SwiftHole {
-      SwiftHole(host: host, port: port, apiToken: apiToken)
+      SwiftHole(host: host, port: port, apiToken: apiToken, secure: secure)
     }
     
     enum CodingKeys: CodingKey {
