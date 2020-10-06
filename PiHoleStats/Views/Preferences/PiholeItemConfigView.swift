@@ -14,7 +14,6 @@ struct PiholeItemConfigView: View {
     @State private var width: CGFloat?
     @State private var presentingQRCodePopOver = false
     private let qrcodeSize: CGFloat = 300
-    @State private var selectedProtocol = 0
 
     private var qrcodeValue: String {
         switch preferences.qrcodeFormat {
@@ -60,9 +59,9 @@ struct PiholeItemConfigView: View {
                 Text(UIConstants.Strings.preferencesProtocol)
                     .read(labelWidth)
                 
-                Picker(selection: $selectedColor, label: Text("")) {
-                    Text(UIConstants.Strings.preferencesProtocolHTTP).tag(0)
-                    Text(UIConstants.Strings.preferencesProtocolHTTPS).tag(1)
+                Picker(selection: $piholeViewModel.secureTag, label: Text("")) {
+                    Text(UIConstants.Strings.preferencesProtocolHTTP).tag(SecureTag.unsecure)
+                    Text(UIConstants.Strings.preferencesProtocolHTTPS).tag(SecureTag.secure)
                 }
             }
             
