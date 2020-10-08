@@ -9,13 +9,25 @@
 import Foundation
 import SwiftUI
 
+enum SecureTag: Int {
+    case unsecure
+    case secure
+}
+
 protocol PiholeViewModelDelegate: AnyObject {
-    func piholeViewModelDidSave(_ piholeViewModel: PiholeViewModel, address: String, token: String)
+    func piholeViewModelDidSave(_ piholeViewModel: PiholeViewModel, address: String, token: String, secure: Bool)
 }
 
 class PiholeViewModel: ObservableObject {
     @Published var address: String
     @Published var token: String
+    @Published var secure: Bool
+    @Published var secureTag: SecureTag {
+        didSet {
+            secure = secureTag == SecureTag.secure
+        }
+    }
+
     weak var delegate: PiholeViewModelDelegate?
     let piHole: Pihole
     
@@ -26,6 +38,7 @@ class PiholeViewModel: ObservableObject {
                 "host": "\(piHole.address)",
                 "port": \(piHole.port ?? 80),
                 "token": "\(piHole.apiToken)"
+                "secure": "\(piHole.secure)"
             }
         }
         """
@@ -35,9 +48,11 @@ class PiholeViewModel: ObservableObject {
         self.piHole = piHole
         self.address = piHole.address
         self.token = piHole.apiToken
+        self.secure = piHole.secure
+        self.secureTag = piHole.secure ? SecureTag.secure : SecureTag.unsecure
     }
     
     func save() {
-        delegate?.piholeViewModelDidSave(self, address: address, token: token)
+        delegate?.piholeViewModelDidSave(self, address: address, token: token, secure: secure)
     }
 }

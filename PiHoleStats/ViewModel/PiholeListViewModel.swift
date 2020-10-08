@@ -37,11 +37,12 @@ class PiholeListViewModel: ObservableObject {
 }
 
 extension PiholeListViewModel: PiholeViewModelDelegate {
-    func piholeViewModelDidSave(_ piholeViewModel: PiholeViewModel, address: String, token: String) {
+    func piholeViewModelDidSave(_ piholeViewModel: PiholeViewModel, address: String, token: String, secure: Bool) {
             objectWillChange.send()
             if let index = piholeDataProvider.piholes.firstIndex(where: {$0.id == piholeViewModel.piHole.id}) {
                 piholeDataProvider.piholes[index].address = address
                 piholeDataProvider.piholes[index].apiToken = token
+                piholeDataProvider.piholes[index].secure = secure
                 piholeDataProvider.piholes[index].save()
             }
     }

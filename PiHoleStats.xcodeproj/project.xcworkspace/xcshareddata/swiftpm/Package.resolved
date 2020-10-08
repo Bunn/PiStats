@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/sindresorhus/Preferences",
         "state": {
           "branch": null,
-          "revision": "73664ff9f9faeb40f4b8f2c02d21b4486c82cce9",
-          "version": "2.0.0"
+          "revision": "dfb7457dc26891b0e9eb55d602f49c54b8e771fd",
+          "version": "2.0.1"
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "git@github.com:Bunn/SwiftHole.git",
         "state": {
           "branch": null,
-          "revision": "b3bb4e73f904edd9ec85f60d424a3d75fdf33a80",
-          "version": "1.1.0"
+          "revision": "920aa94aa521a60926ac09a06f343918b97168cc",
+          "version": "1.4.0"
         }
       }
     ]

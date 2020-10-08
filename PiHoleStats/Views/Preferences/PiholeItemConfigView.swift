@@ -56,6 +56,16 @@ struct PiholeItemConfigView: View {
             }
             
             HStack {
+                Text(UIConstants.Strings.preferencesProtocol)
+                    .read(labelWidth)
+                
+                Picker(selection: $piholeViewModel.secureTag, label: Text("")) {
+                    Text(UIConstants.Strings.preferencesProtocolHTTP).tag(SecureTag.unsecure)
+                    Text(UIConstants.Strings.preferencesProtocolHTTPS).tag(SecureTag.secure)
+                }
+            }
+            
+            HStack {
                 
                 Button(action: {
                     if let url = URL(string: "http://\(self.piholeViewModel.address)/admin/") {

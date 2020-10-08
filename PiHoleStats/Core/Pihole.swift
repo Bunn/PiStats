@@ -13,6 +13,7 @@ import os.log
 class Pihole: Identifiable, Codable, ObservableObject {
     private let log = Logger().osLog(describing: Pihole.self)
     var address: String
+    var secure: Bool
     var actionError: String?
     var pollingError: String?
     let id: UUID
@@ -48,35 +49,45 @@ class Pihole: Identifiable, Codable, ObservableObject {
     }
     
     private var service: SwiftHole {
-      SwiftHole(host: host, port: port, apiToken: apiToken)
+      SwiftHole(host: host, port: port, apiToken: apiToken, secure: secure)
     }
     
     enum CodingKeys: CodingKey {
         case id
         case address
+        case secure
     }
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(UUID.self, forKey: .id)
         address = try container.decode(String.self, forKey: .address)
+        
+        //New properties that might break decoded from older versions
+        do {
+            secure = try container.decode(Bool.self, forKey: .secure)
+        } catch {
+            secure = false
+        }
     }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
         try container.encode(address, forKey: .address)
+        try container.encode(secure, forKey: .secure)
     }
     
-    public init(address: String, apiToken: String? = nil, piHoleID: UUID? = nil) {
+    public init(address: String, apiToken: String? = nil, piHoleID: UUID? = nil, secure: Bool = false) {
         self.address = address
-        
+        self.secure = secure
+
         if let piHoleID = piHoleID {
             self.id = piHoleID
         } else {
             self.id = UUID()
         }
-        
+
         if let apiToken = apiToken {
             keychainToken.token = apiToken
         }

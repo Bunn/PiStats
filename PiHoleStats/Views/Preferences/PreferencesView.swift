@@ -14,7 +14,7 @@ struct PreferencesView: View {
     
     var body: some View {
         Preferences.Container(contentWidth: 300) {
-            [Preferences.Section(title: "") {
+            Preferences.Section(title: "") {
                 Toggle(isOn: self.$preferences.keepPopoverPanelOpen) {
                     Text(UIConstants.Strings.keepPopoverOpenPreference)
                 }
@@ -28,7 +28,7 @@ struct PreferencesView: View {
                     Text(UIConstants.Strings.displayStatusColorWhenPiholeIsOffline)
                 }
                 }
-            ]
+            
         }
     }
 }

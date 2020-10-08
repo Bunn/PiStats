@@ -16,23 +16,32 @@ struct AboutView: View {
     
     var body: some View {
         Preferences.Container(contentWidth: 300) {
-            [Preferences.Section(title: "") {
+            Preferences.Section(title: "") {
                 Text(UIConstants.Strings.piStatsName)
                 Text("\(UIConstants.Strings.version) \(self.appVersion)")
                 
                 Divider()
                 
-                Button(action: {
-                    if let url = URL(string: "https://github.com/Bunn/PiStats") {
-                        NSWorkspace.shared.open(url)
-                    }
-                }, label: {
-                    Text(UIConstants.Strings.openProjectWebsiteButton)
-                })
-
+                HStack {
+                    Button(action: {
+                        if let url = URL(string: "https://github.com/Bunn/PiStats") {
+                            NSWorkspace.shared.open(url)
+                        }
+                    }, label: {
+                        Text(UIConstants.Strings.openProjectWebsiteButton)
+                    })
+                    
+                    Button(action: {
+                        if let url = URL(string: "https://apps.apple.com/us/app/id1523024268") {
+                            NSWorkspace.shared.open(url)
+                        }
+                    }, label: {
+                        Text(UIConstants.Strings.piStatsForMobileButton)
+                    })
+                }
                 Text(UIConstants.Strings.copyright)
                     .font(.caption)
-            }]
+            }
         }
     }
 }
