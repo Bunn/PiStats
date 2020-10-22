@@ -37,8 +37,8 @@ class PiholeViewModel: ObservableObject {
             "pihole": {
                 "host": "\(piHole.address)",
                 "port": \(piHole.port ?? 80),
-                "token": "\(piHole.apiToken)"
-                "secure": "\(piHole.secure)"
+                "token": "\(piHole.apiToken)",
+                "secure": \(piHole.secure)
             }
         }
         """
