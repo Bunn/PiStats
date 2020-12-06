@@ -20,19 +20,15 @@ struct PiholeListConfigView: View {
                         Text(pihole.address).tag(pihole)
                     }
                 }
-                HStack(spacing: 0) {
-                    Button(action: {
-                        self.addStubPihole()
-                    }, label: {
-                        Text(UIConstants.Strings.addPiholeButton)
-                    })
                     
-                    Button(action: {
-                        self.removeSelectedPihole()
-                    }, label: {
-                        Text(UIConstants.Strings.removePiholeButton)
-                    }).disabled(selectedItem == nil)
+                AddRemoveButton(removeEnabled: selectedItem != nil) { isAdd in
+                    if isAdd {
+                        addStubPihole()
+                    } else {
+                        removeSelectedPihole()
+                    }
                 }
+                .padding(.top, 8)
             }
             if selectedItem != nil {
                 PiholeItemConfigView(piholeViewModel: piholeListViewModel.itemViewModel(selectedItem!))

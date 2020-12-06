@@ -84,8 +84,6 @@ struct UIConstants {
         static let preferencesPiholesTabTitle = "Pi-holes"
         static let preferencesPreferencesTabTitle = "Preferences"
         static let preferencesAboutTabTitle = "About"
-        static let addPiholeButton = "Add"
-        static let removePiholeButton = "Remove"
         static let savePiholeButton = "Save"
         static let noSelectedPiholeMessage = "Select a pi-hole on the left or click Add to setup a new pi-hole"
         static let noAvailablePiholeToSelectMessage = "No pi-holes available, click Add to setup a new pi-hole"
