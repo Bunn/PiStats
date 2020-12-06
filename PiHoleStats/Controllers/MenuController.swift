@@ -17,7 +17,8 @@ class MenuController: NSObject {
     private lazy var navigationController = NavigationController(preferences: preferences, piholeDataProvider: dataProvider)
     private lazy var dataProvider = PiholeDataProvider(piholes: Pihole.restoreAll())
     private lazy var summaryViewController = SummaryViewController(preferences: preferences, piHoleDataProvider: dataProvider, navigationController: navigationController)
-    private var eventMonitor: EventMonitor?
+    private var globalEventMonitor: EventMonitor?
+    private var localEventMonitor: EventMonitor?
     private var eventCancellable: AnyCancellable?
     private var statusPreferenceCancellable: AnyCancellable?
     private var statusCancellable: AnyCancellable?
@@ -36,7 +37,7 @@ class MenuController: NSObject {
     public func setup() {
         updateButton()
         popover.contentViewController = summaryViewController
-        setupEventMonitor()
+        setupEventMonitors()
         dataProvider.startPolling()
         dataProvider.updatePollingMode(.background)
         updateButtonStatus()
@@ -46,9 +47,11 @@ class MenuController: NSObject {
     private func setupCancellables() {
         eventCancellable = preferences.$keepPopoverPanelOpen.receive(on: DispatchQueue.main).sink { [weak self] keepPopoverOpen in
             if keepPopoverOpen {
-                self?.eventMonitor?.stop()
+                self?.globalEventMonitor?.stop()
+                self?.localEventMonitor?.stop()
             } else {
-                self?.eventMonitor?.start()
+                self?.globalEventMonitor?.start()
+                self?.localEventMonitor?.start()
             }
         }
         statusPreferenceCancellable = preferences.$displayStatusColorWhenPiholeIsOffline.receive(on: DispatchQueue.main).sink { [weak self] _ in
@@ -60,17 +63,30 @@ class MenuController: NSObject {
         }
     }
     
-    private func setupEventMonitor() {
-        eventMonitor = EventMonitor(mask: [.leftMouseDown, .rightMouseDown]) { [weak self] event in
+    private func setupEventMonitors() {
+        globalEventMonitor = EventMonitor(mask: [.leftMouseDown, .rightMouseDown], scope: .global) { [weak self] event in
             if let strongSelf = self, strongSelf.popover.isShown {
                 strongSelf.closePopover(sender: event)
+            }
+        }
+        
+        localEventMonitor = EventMonitor(mask: [.leftMouseDown, .rightMouseDown], scope: .local) { [weak self] event in
+            guard let self = self else { return }
+            
+            let popoverWindow = self.popover.contentViewController?.view.window
+            
+            if event?.window != popoverWindow && self.popover.isShown {
+                self.closePopover(sender: event)
             }
         }
     }
     
     private func destroyEventMonitor() {
-        eventMonitor?.stop()
-        eventMonitor = nil
+        globalEventMonitor?.stop()
+        globalEventMonitor = nil
+        
+        localEventMonitor?.stop()
+        localEventMonitor = nil
     }
     
     private func updateButtonStatus() {
@@ -113,7 +129,8 @@ class MenuController: NSObject {
     private func showPopover(sender: Any?) {
         guard let button = statusItem.button else { return }
         if !preferences.keepPopoverPanelOpen {
-            eventMonitor?.start()
+            globalEventMonitor?.start()
+            localEventMonitor?.start()
         }
         
         popover.show(
@@ -126,7 +143,8 @@ class MenuController: NSObject {
     
     private func closePopover(sender: Any?) {
         popover.performClose(sender)
-        eventMonitor?.stop()
+        globalEventMonitor?.stop()
+        localEventMonitor?.stop()
         dataProvider.updatePollingMode(.background)
 
     }

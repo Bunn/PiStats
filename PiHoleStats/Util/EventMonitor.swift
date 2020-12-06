@@ -34,13 +34,20 @@ import Cocoa
 import os.log
 
 public class EventMonitor {
+    public enum EventScope {
+        case global
+        case local
+    }
+
     private let log = Logger().osLog(describing: EventMonitor.self)
     private var monitor: Any?
     private let mask: NSEvent.EventTypeMask
+    private let scope: EventScope
     private let handler: (NSEvent?) -> Void
     
-    public init(mask: NSEvent.EventTypeMask, handler: @escaping (NSEvent?) -> Void) {
+    public init(mask: NSEvent.EventTypeMask, scope: EventScope, handler: @escaping (NSEvent?) -> Void) {
         self.mask = mask
+        self.scope = scope
         self.handler = handler
         os_log("Event monitor init", log: self.log, type: .debug)
     }
@@ -55,7 +62,17 @@ public class EventMonitor {
             return
         }
         os_log("Event monitor start", log: self.log, type: .debug)
-        monitor = NSEvent.addGlobalMonitorForEvents(matching: mask, handler: handler)
+        
+        switch scope {
+        case .global:
+            monitor = NSEvent.addGlobalMonitorForEvents(matching: mask, handler: handler)
+        case .local:
+            monitor = NSEvent.addLocalMonitorForEvents(matching: mask) { event in
+                self.handler(event)
+                
+                return event
+            }
+        }
     }
     
     public func stop() {
