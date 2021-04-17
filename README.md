@@ -31,6 +31,6 @@ If you want to run Pi Stats on your iPhone or iPad you can download [Pi Stats fo
 ## Download
 Pi Stats (and [SwiftHole](https://github.com/Bunn/SwiftHole)) is a free and open source hobby project of mine. If you want to support its development you can either pay whatever you want on [Gumroad](https://gum.co/iqhwv) or buy it on the [App Store](https://apps.apple.com/us/app/pi-stats/id1514075262?ls=1) for those nice automatic updates :)
 
-<p align="center">
-  <img width="100" src="./images/macstadium.png"">
+<p align="left">
+  <img width="130" src="./images/macstadium.png"">
 </p>
