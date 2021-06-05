@@ -26,7 +26,7 @@ final class StatusBarMenuWindowController: NSWindowController {
         
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 344, height: 320),
-            styleMask: [.fullSizeContentView, .titled],
+            styleMask: [.fullSizeContentView],
             backing: .buffered,
             defer: false,
             screen: statusItem?.button?.window?.screen
@@ -37,7 +37,7 @@ final class StatusBarMenuWindowController: NSWindowController {
         window.titlebarAppearsTransparent = true
         window.level = .statusBar
         window.contentViewController = contentViewController
-        
+
         // This doesn't look quite right on macOS < 11, hence the conditional.
         if #available(macOS 11.0, *) {
             window.isOpaque = false
@@ -45,7 +45,6 @@ final class StatusBarMenuWindowController: NSWindowController {
         }
         
         super.init(window: window)
-        
         window.delegate = self
         setupContentSizeObservation()
     }
@@ -189,3 +188,31 @@ extension StatusBarMenuWindowController: NSWindowDelegate {
     
 }
 
+
+final class StatusBarFlowBackgroundView: NSView {
+    private lazy var vfxView: NSVisualEffectView = {
+        let v = NSVisualEffectView(frame: bounds)
+        v.autoresizingMask = [.width, .height]
+        v.material = .windowBackground
+        v.blendingMode = .behindWindow
+        return v
+    }()
+    override var wantsUpdateLayer: Bool { true }
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+        wantsLayer = true
+        setup()
+    }
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
+    private func setup() {
+        vfxView.frame = bounds
+        addSubview(vfxView)
+        layer?.masksToBounds = true
+        layer?.cornerRadius = 14
+        if #available(macOS 10.15, *) {
+            layer?.cornerCurve = .continuous
+        }
+    }
+}

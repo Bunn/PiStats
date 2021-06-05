@@ -15,7 +15,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         statusItem = NSStatusBar.system.statusItem(withLength: 28)
-        statusItem.button?.title = "😊"
+        statusItem.button?.title = "🛑"
         statusItem.button?.action = #selector(toggleUIVisible)
     }
     
@@ -47,25 +47,25 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 final class DummyContentViewController: NSViewController {
     
+    
     convenience init() {
         self.init(nibName: nil, bundle: nil)
         
-        preferredContentSize = NSSize(width: 290, height: 300)
+        preferredContentSize = NSSize(width: 320, height: 250)
     }
     
     override func loadView() {
-        view = NSView()
+        view = StatusBarFlowBackgroundView()
         view.wantsLayer = true
         view.layer?.backgroundColor = NSColor.windowBackgroundColor.cgColor
         
-        preferredContentSize = NSSize(width: 320, height: 300)
         let contentView = ContentView()
-        
         let hostingController = NSHostingController(rootView: contentView)
         addChild(hostingController)
         hostingController.view.autoresizingMask = [.width, .height]
         hostingController.view.frame = view.bounds
         view.addSubview(hostingController.view)
+        
     }
     
 }
