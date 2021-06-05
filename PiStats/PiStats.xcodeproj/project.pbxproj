@@ -7,14 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		310AE21F266B7F4F005F0F17 /* PiStatsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 310AE21E266B7F4F005F0F17 /* PiStatsCore */; };
+		310AE221266B7F52005F0F17 /* SwiftHole in Frameworks */ = {isa = PBXBuildFile; productRef = 310AE220266B7F52005F0F17 /* SwiftHole */; };
+		310AE223266B7F56005F0F17 /* PiMonitor in Frameworks */ = {isa = PBXBuildFile; productRef = 310AE222266B7F56005F0F17 /* PiMonitor */; };
+		310AE225266B7F7B005F0F17 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310AE224266B7F7B005F0F17 /* Test.swift */; };
+		310AE22A266B7FCD005F0F17 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310AE229266B7FCD005F0F17 /* ContentView.swift */; };
+		310AE22B266B7FCD005F0F17 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310AE229266B7FCD005F0F17 /* ContentView.swift */; };
+		310AE22D266B8031005F0F17 /* PiStatsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310AE22C266B8031005F0F17 /* PiStatsApp.swift */; };
+		310AE22E266B8031005F0F17 /* PiStatsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310AE22C266B8031005F0F17 /* PiStatsApp.swift */; };
 		317B4EA0266B7CEB00CC0566 /* SwiftHole in Frameworks */ = {isa = PBXBuildFile; productRef = 317B4E9F266B7CEB00CC0566 /* SwiftHole */; };
 		317B4EA3266B7D2000CC0566 /* PiMonitor in Frameworks */ = {isa = PBXBuildFile; productRef = 317B4EA2266B7D2000CC0566 /* PiMonitor */; };
 		31B26818266AE4FE0053927F /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B26817266AE4FE0053927F /* Tests_iOS.swift */; };
 		31B26823266AE4FE0053927F /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B26822266AE4FE0053927F /* Tests_macOS.swift */; };
 		31B26825266AE4FE0053927F /* PiStatsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B267FC266AE4FD0053927F /* PiStatsApp.swift */; };
-		31B26826266AE4FE0053927F /* PiStatsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B267FC266AE4FD0053927F /* PiStatsApp.swift */; };
 		31B26827266AE4FE0053927F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B267FD266AE4FD0053927F /* ContentView.swift */; };
-		31B26828266AE4FE0053927F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B267FD266AE4FD0053927F /* ContentView.swift */; };
 		31B26829266AE4FE0053927F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 31B267FE266AE4FE0053927F /* Assets.xcassets */; };
 		31B2682A266AE4FE0053927F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 31B267FE266AE4FE0053927F /* Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -37,6 +43,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		310AE224266B7F7B005F0F17 /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
+		310AE229266B7FCD005F0F17 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		310AE22C266B8031005F0F17 /* PiStatsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiStatsApp.swift; sourceTree = "<group>"; };
+		3194B424266B7EFA008408EE /* PiStatsCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PiStatsCore; path = ../../Personal/PiHoleStatsApp/PiStatsCore/PiStatsCore; sourceTree = "<group>"; };
+		3194B425266B7F05008408EE /* SwiftHole */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SwiftHole; path = ../../Personal/PiHoleStatsApp/SwiftHole; sourceTree = "<group>"; };
 		31B267FC266AE4FD0053927F /* PiStatsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiStatsApp.swift; sourceTree = "<group>"; };
 		31B267FD266AE4FD0053927F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		31B267FE266AE4FE0053927F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -67,6 +78,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				310AE223266B7F56005F0F17 /* PiMonitor in Frameworks */,
+				310AE221266B7F52005F0F17 /* SwiftHole in Frameworks */,
+				310AE21F266B7F4F005F0F17 /* PiStatsCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,23 +101,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		310AE21D266B7F4F005F0F17 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		31B267F6266AE4FD0053927F = {
 			isa = PBXGroup;
 			children = (
+				3194B424266B7EFA008408EE /* PiStatsCore */,
+				3194B425266B7F05008408EE /* SwiftHole */,
 				31B267FB266AE4FD0053927F /* Shared */,
 				31B26805266AE4FE0053927F /* iOS */,
 				31B2680C266AE4FE0053927F /* macOS */,
 				31B26816266AE4FE0053927F /* Tests iOS */,
 				31B26821266AE4FE0053927F /* Tests macOS */,
 				31B26804266AE4FE0053927F /* Products */,
+				310AE21D266B7F4F005F0F17 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		31B267FB266AE4FD0053927F /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				31B267FC266AE4FD0053927F /* PiStatsApp.swift */,
-				31B267FD266AE4FD0053927F /* ContentView.swift */,
 				31B267FE266AE4FE0053927F /* Assets.xcassets */,
 			);
 			path = Shared;
@@ -123,6 +145,8 @@
 		31B26805266AE4FE0053927F /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				31B267FC266AE4FD0053927F /* PiStatsApp.swift */,
+				31B267FD266AE4FD0053927F /* ContentView.swift */,
 				31B26806266AE4FE0053927F /* Info.plist */,
 			);
 			path = iOS;
@@ -133,6 +157,9 @@
 			children = (
 				31B2680D266AE4FE0053927F /* Info.plist */,
 				31B2680E266AE4FE0053927F /* macOS.entitlements */,
+				310AE224266B7F7B005F0F17 /* Test.swift */,
+				310AE229266B7FCD005F0F17 /* ContentView.swift */,
+				310AE22C266B8031005F0F17 /* PiStatsApp.swift */,
 			);
 			path = macOS;
 			sourceTree = "<group>";
@@ -192,6 +219,11 @@
 			dependencies = (
 			);
 			name = "PiStats (macOS)";
+			packageProductDependencies = (
+				310AE21E266B7F4F005F0F17 /* PiStatsCore */,
+				310AE220266B7F52005F0F17 /* SwiftHole */,
+				310AE222266B7F56005F0F17 /* PiMonitor */,
+			);
 			productName = "PiStats (macOS)";
 			productReference = 31B2680B266AE4FE0053927F /* PiStats.app */;
 			productType = "com.apple.product-type.application";
@@ -329,8 +361,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				31B26828266AE4FE0053927F /* ContentView.swift in Sources */,
-				31B26826266AE4FE0053927F /* PiStatsApp.swift in Sources */,
+				310AE22D266B8031005F0F17 /* PiStatsApp.swift in Sources */,
+				310AE22A266B7FCD005F0F17 /* ContentView.swift in Sources */,
+				310AE225266B7F7B005F0F17 /* Test.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -346,7 +379,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				310AE22E266B8031005F0F17 /* PiStatsApp.swift in Sources */,
 				31B26823266AE4FE0053927F /* Tests_macOS.swift in Sources */,
+				310AE22B266B7FCD005F0F17 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -729,6 +764,19 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		310AE21E266B7F4F005F0F17 /* PiStatsCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PiStatsCore;
+		};
+		310AE220266B7F52005F0F17 /* SwiftHole */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SwiftHole;
+		};
+		310AE222266B7F56005F0F17 /* PiMonitor */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 317B4EA1266B7D2000CC0566 /* XCRemoteSwiftPackageReference "PiMonitor" */;
+			productName = PiMonitor;
+		};
 		317B4E9F266B7CEB00CC0566 /* SwiftHole */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 317B4E9E266B7CEB00CC0566 /* XCRemoteSwiftPackageReference "SwiftHole" */;
