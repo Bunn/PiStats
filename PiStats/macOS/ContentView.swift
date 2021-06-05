@@ -6,17 +6,21 @@
 //
 
 import SwiftUI
+import PiStatsCore
+
 
 struct ContentView: View {
     @State private var favoriteColor = 0
     private let itemPadding: CGFloat = 15
-    
+    @EnvironmentObject var summaryDataProvider: SummaryDataProvider
+
     var body: some View {
         VStack {
             
             HStack {
                 Picker(selection: $favoriteColor, label: HStack {
                     Circle().frame(width: 10, height: 10)
+                        .foregroundColor(Color("statusOnline"))
                     Text("Enabled")
                 }) {
                     Text("All").tag(0)
@@ -27,6 +31,7 @@ struct ContentView: View {
                 
                 Spacer()
                 
+           
                 Button(action: {
                     print("A")
                 }) {
@@ -34,13 +39,14 @@ struct ContentView: View {
                 }
             }
             
+            
+          
             Divider()
-
-            VStack {
-                SummaryItemRowView(itemType: .totalQuery)
-                SummaryItemRowView(itemType: .queryBlocked)
-                SummaryItemRowView(itemType: .percentBlocked)
-                SummaryItemRowView(itemType: .domainsOnBlocklist)
+            
+            if let summary = summaryDataProvider.summaryDisplay {
+                SummaryItemsList(summaryDisplay: summary)
+            } else {
+                Text("Error")
             }
             
             Divider()

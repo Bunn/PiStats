@@ -7,6 +7,7 @@
 
 import Cocoa
 import SwiftUI
+import PiStatsCore
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -45,8 +46,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 }
 
+
 final class DummyContentViewController: NSViewController {
     
+    let summaryProvider = SummaryDataProvider(piholes: [Pihole(address: "10.0.0.113")])
     
     convenience init() {
         self.init(nibName: nil, bundle: nil)
@@ -60,12 +63,19 @@ final class DummyContentViewController: NSViewController {
         view.layer?.backgroundColor = NSColor.windowBackgroundColor.cgColor
         
         let contentView = ContentView()
+            .environmentObject(summaryProvider)
+        
         let hostingController = NSHostingController(rootView: contentView)
         addChild(hostingController)
         hostingController.view.autoresizingMask = [.width, .height]
         hostingController.view.frame = view.bounds
         view.addSubview(hostingController.view)
-        
+
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        summaryProvider.startPolling()
     }
     
 }

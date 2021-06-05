@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SummaryItemRowView: View {
     let itemType: SummaryItemType
+    let value: String
     
     var body: some View {
         HStack {
@@ -17,13 +18,13 @@ struct SummaryItemRowView: View {
                 .foregroundColor(itemType.color)
             Text(itemType.name)
             Spacer()
-            Text("1234")
+            Text(value)
         }
     }
 }
 
 struct SwiftUIView_Previews: PreviewProvider {
     static var previews: some View {
-        SummaryItemRowView(itemType: .domainsOnBlocklist)
+        SummaryItemRowView(itemType: .domainsOnBlocklist, value: "1234")
     }
 }

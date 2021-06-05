@@ -39,6 +39,8 @@
 		310AE28C266BB6F1005F0F17 /* MonitorGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310AE28A266BB6F1005F0F17 /* MonitorGridView.swift */; };
 		310AE28D266BB6F1005F0F17 /* MonitorGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310AE28A266BB6F1005F0F17 /* MonitorGridView.swift */; };
 		310AE28E266BB6F1005F0F17 /* MonitorGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310AE28A266BB6F1005F0F17 /* MonitorGridView.swift */; };
+		31140B5E266C14AE005B9866 /* SummaryItemsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31140B5D266C14AE005B9866 /* SummaryItemsList.swift */; };
+		31140B5F266C14AE005B9866 /* SummaryItemsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31140B5D266C14AE005B9866 /* SummaryItemsList.swift */; };
 		317B4EA0266B7CEB00CC0566 /* SwiftHole in Frameworks */ = {isa = PBXBuildFile; productRef = 317B4E9F266B7CEB00CC0566 /* SwiftHole */; };
 		317B4EA3266B7D2000CC0566 /* PiMonitor in Frameworks */ = {isa = PBXBuildFile; productRef = 317B4EA2266B7D2000CC0566 /* PiMonitor */; };
 		31B26818266AE4FE0053927F /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B26817266AE4FE0053927F /* Tests_iOS.swift */; };
@@ -78,6 +80,7 @@
 		310AE27F266BADE3005F0F17 /* SummaryItemRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryItemRowView.swift; sourceTree = "<group>"; };
 		310AE285266BB652005F0F17 /* MonitorItemType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorItemType.swift; sourceTree = "<group>"; };
 		310AE28A266BB6F1005F0F17 /* MonitorGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorGridView.swift; sourceTree = "<group>"; };
+		31140B5D266C14AE005B9866 /* SummaryItemsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryItemsList.swift; sourceTree = "<group>"; };
 		3194B424266B7EFA008408EE /* PiStatsCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PiStatsCore; path = ../../Personal/PiHoleStatsApp/PiStatsCore/PiStatsCore; sourceTree = "<group>"; };
 		3194B425266B7F05008408EE /* SwiftHole */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SwiftHole; path = ../../Personal/PiHoleStatsApp/SwiftHole; sourceTree = "<group>"; };
 		31B267FC266AE4FD0053927F /* PiStatsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiStatsApp.swift; sourceTree = "<group>"; };
@@ -153,6 +156,7 @@
 			isa = PBXGroup;
 			children = (
 				310AE27F266BADE3005F0F17 /* SummaryItemRowView.swift */,
+				31140B5D266C14AE005B9866 /* SummaryItemsList.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -431,6 +435,7 @@
 				310AE27B266BADBE005F0F17 /* SummaryItemType.swift in Sources */,
 				310AE23C266B844F005F0F17 /* AppDelegate.swift in Sources */,
 				310AE239266B8375005F0F17 /* StatusBarMenuWindowController.swift in Sources */,
+				31140B5E266C14AE005B9866 /* SummaryItemsList.swift in Sources */,
 				310AE231266B822F005F0F17 /* EventMonitor.swift in Sources */,
 				310AE287266BB652005F0F17 /* MonitorItemType.swift in Sources */,
 			);
@@ -460,6 +465,7 @@
 				310AE27D266BADBE005F0F17 /* SummaryItemType.swift in Sources */,
 				310AE23D266B844F005F0F17 /* AppDelegate.swift in Sources */,
 				310AE23A266B8375005F0F17 /* StatusBarMenuWindowController.swift in Sources */,
+				31140B5F266C14AE005B9866 /* SummaryItemsList.swift in Sources */,
 				310AE232266B822F005F0F17 /* EventMonitor.swift in Sources */,
 				310AE289266BB652005F0F17 /* MonitorItemType.swift in Sources */,
 			);
