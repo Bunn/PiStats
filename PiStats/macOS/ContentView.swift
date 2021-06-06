@@ -76,6 +76,6 @@ struct ContentView: View {
 
 struct MacContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView().environmentObject(SummaryDataProvider.preview())
     }
 }
