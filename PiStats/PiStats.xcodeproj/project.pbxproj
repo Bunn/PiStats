@@ -81,6 +81,7 @@
 		310AE285266BB652005F0F17 /* MonitorItemType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorItemType.swift; sourceTree = "<group>"; };
 		310AE28A266BB6F1005F0F17 /* MonitorGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorGridView.swift; sourceTree = "<group>"; };
 		31140B5D266C14AE005B9866 /* SummaryItemsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryItemsList.swift; sourceTree = "<group>"; };
+		317565C2266D37DE003F95C7 /* PiMonitor */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PiMonitor; path = ../../Personal/PiHoleStatsApp/PiMonitor; sourceTree = "<group>"; };
 		3194B424266B7EFA008408EE /* PiStatsCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PiStatsCore; path = ../../Personal/PiHoleStatsApp/PiStatsCore/PiStatsCore; sourceTree = "<group>"; };
 		3194B425266B7F05008408EE /* SwiftHole */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SwiftHole; path = ../../Personal/PiHoleStatsApp/SwiftHole; sourceTree = "<group>"; };
 		31B267FC266AE4FD0053927F /* PiStatsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiStatsApp.swift; sourceTree = "<group>"; };
@@ -164,6 +165,7 @@
 		31B267F6266AE4FD0053927F = {
 			isa = PBXGroup;
 			children = (
+				317565C2266D37DE003F95C7 /* PiMonitor */,
 				3194B424266B7EFA008408EE /* PiStatsCore */,
 				3194B425266B7F05008408EE /* SwiftHole */,
 				31B267FB266AE4FD0053927F /* Shared */,

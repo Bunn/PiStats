@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PiStatsCore
 
 fileprivate struct MonitorItem: Identifiable {
     let value: String
@@ -16,13 +17,14 @@ fileprivate struct MonitorItem: Identifiable {
 
 struct MonitorGridView: View {
     private let imageSize: CGFloat = 15
+    let display: MonitorDisplay
 
     private func getMonitorItems() -> [MonitorItem] {
         return [
-            MonitorItem(value: "123", itemType: .temperature, helpText: "Raspberry Pi temperature"),
-            MonitorItem(value: "123", itemType: .uptime, helpText: "Raspberry Pi temperature"),
-            MonitorItem(value: "123", itemType: .loadAverage, helpText: "Raspberry Pi temperature"),
-            MonitorItem(value: "123", itemType: .memoryPercentUsage, helpText: "Raspberry Pi temperature"),
+            MonitorItem(value: display.temperature, itemType: .temperature, helpText: "Raspberry Pi temperature"),
+            MonitorItem(value: display.uptime, itemType: .uptime, helpText: "Raspberry Pi uptime"),
+            MonitorItem(value: display.loadAverage, itemType: .loadAverage, helpText: "Raspberry Pi load average"),
+            MonitorItem(value: display.memoryPercentUsage, itemType: .memoryPercentUsage, helpText: "Raspberry Pi memory usage"),
         ]
     }
 
@@ -43,7 +45,7 @@ struct MonitorGridView: View {
                 })
                 .minimumScaleFactor(0.5)
                 .lineLimit(1)
-                .font(.footnote)
+                .font(.callout)
                 .help(item.helpText)
             }
         }
@@ -53,6 +55,6 @@ struct MonitorGridView: View {
 
 struct MonitorGridView_Previews: PreviewProvider {
     static var previews: some View {
-        MonitorGridView()
+        MonitorGridView(display: MonitorDisplay.preview())
     }
 }

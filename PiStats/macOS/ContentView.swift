@@ -13,7 +13,8 @@ struct ContentView: View {
     @State private var favoriteColor = 0
     private let itemPadding: CGFloat = 15
     @EnvironmentObject var summaryDataProvider: SummaryDataProvider
-
+    @EnvironmentObject var monitorDataProvider: MonitorDataProvider
+    
     var body: some View {
         VStack {
             
@@ -31,7 +32,7 @@ struct ContentView: View {
                 
                 Spacer()
                 
-           
+                
                 Button(action: {
                     print("A")
                 }) {
@@ -40,18 +41,23 @@ struct ContentView: View {
             }
             
             
-          
+            
             Divider()
             
             if let summary = summaryDataProvider.summaryDisplay {
                 SummaryItemsList(summaryDisplay: summary)
             } else {
                 Text("Error")
+                //SummaryItemsList(summaryDisplay: summary).redacted(reason: .placeholder
             }
             
             Divider()
+            if let display = monitorDataProvider.monitorDisplay {
+                MonitorGridView(display: display)
+            } else {
+                Text("Error")
+            }
             
-            MonitorGridView()
             
             Divider()
             HStack {
@@ -76,6 +82,8 @@ struct ContentView: View {
 
 struct MacContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView().environmentObject(SummaryDataProvider.preview())
+        ContentView()
+            .environmentObject(SummaryDataProvider.preview())
+            .environmentObject(MonitorDataProvider.preview())
     }
 }
