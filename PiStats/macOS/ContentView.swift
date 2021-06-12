@@ -68,7 +68,7 @@ struct ContentView: View {
                 }
                 Spacer()
                 Button(action: {
-                    print("A")
+                    openPreferences()
                 }) {
                     Text("Preferences")
                 }
@@ -77,6 +77,10 @@ struct ContentView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.leading)
         .padding(.trailing)
+    }
+    
+    private func openPreferences() {
+        NSApp.sendAction(#selector(AppDelegate.openPreferencesWindow), to: nil, from:nil)
     }
 }
 

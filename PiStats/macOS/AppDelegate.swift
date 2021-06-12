@@ -11,6 +11,8 @@ import PiStatsCore
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
+    var window: NSWindow!
+    var preferencesWindow: NSWindow!
 
     private var statusItem: NSStatusItem!
     
@@ -43,6 +45,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         
         windowController?.showWindow(sender)
+    }
+    
+    @objc func openPreferencesWindow() {
+        if nil == preferencesWindow {
+            let preferencesView = PiholeSidebar()
+            preferencesWindow = NSWindow(
+                contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
+                styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+                backing: .buffered,
+                defer: false)
+            preferencesWindow.center()
+            preferencesWindow.setFrameAutosaveName("Preferences")
+            preferencesWindow.isReleasedWhenClosed = false
+            preferencesWindow.contentView = NSHostingView(rootView: preferencesView)
+        }
+        preferencesWindow.makeKeyAndOrderFront(nil)
     }
 }
 
