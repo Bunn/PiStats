@@ -10,7 +10,6 @@
 		310AE21F266B7F4F005F0F17 /* PiStatsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 310AE21E266B7F4F005F0F17 /* PiStatsCore */; };
 		310AE221266B7F52005F0F17 /* SwiftHole in Frameworks */ = {isa = PBXBuildFile; productRef = 310AE220266B7F52005F0F17 /* SwiftHole */; };
 		310AE223266B7F56005F0F17 /* PiMonitor in Frameworks */ = {isa = PBXBuildFile; productRef = 310AE222266B7F56005F0F17 /* PiMonitor */; };
-		310AE225266B7F7B005F0F17 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310AE224266B7F7B005F0F17 /* Test.swift */; };
 		310AE22A266B7FCD005F0F17 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310AE229266B7FCD005F0F17 /* ContentView.swift */; };
 		310AE22B266B7FCD005F0F17 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310AE229266B7FCD005F0F17 /* ContentView.swift */; };
 		310AE231266B822F005F0F17 /* EventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310AE230266B822F005F0F17 /* EventMonitor.swift */; };
@@ -41,8 +40,14 @@
 		310AE28E266BB6F1005F0F17 /* MonitorGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310AE28A266BB6F1005F0F17 /* MonitorGridView.swift */; };
 		31140B5E266C14AE005B9866 /* SummaryItemsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31140B5D266C14AE005B9866 /* SummaryItemsList.swift */; };
 		31140B5F266C14AE005B9866 /* SummaryItemsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31140B5D266C14AE005B9866 /* SummaryItemsList.swift */; };
-		314526A726752D3500925F24 /* PiholeSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314526A626752D3500925F24 /* PiholeSidebar.swift */; };
-		314526A826752D3500925F24 /* PiholeSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314526A626752D3500925F24 /* PiholeSidebar.swift */; };
+		314526A726752D3500925F24 /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314526A626752D3500925F24 /* Sidebar.swift */; };
+		314526A826752D3500925F24 /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314526A626752D3500925F24 /* Sidebar.swift */; };
+		314526AA267530C400925F24 /* NavigationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314526A9267530C400925F24 /* NavigationList.swift */; };
+		314526AB267530C400925F24 /* NavigationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314526A9267530C400925F24 /* NavigationList.swift */; };
+		314526AD267530EF00925F24 /* NavigationContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314526AC267530EF00925F24 /* NavigationContentView.swift */; };
+		314526AE267530EF00925F24 /* NavigationContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314526AC267530EF00925F24 /* NavigationContentView.swift */; };
+		314526B1267531E200925F24 /* NavigationContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314526B0267531E200925F24 /* NavigationContainerView.swift */; };
+		314526B2267531E200925F24 /* NavigationContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314526B0267531E200925F24 /* NavigationContainerView.swift */; };
 		317B4EA0266B7CEB00CC0566 /* SwiftHole in Frameworks */ = {isa = PBXBuildFile; productRef = 317B4E9F266B7CEB00CC0566 /* SwiftHole */; };
 		317B4EA3266B7D2000CC0566 /* PiMonitor in Frameworks */ = {isa = PBXBuildFile; productRef = 317B4EA2266B7D2000CC0566 /* PiMonitor */; };
 		31B26818266AE4FE0053927F /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B26817266AE4FE0053927F /* Tests_iOS.swift */; };
@@ -71,7 +76,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		310AE224266B7F7B005F0F17 /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
 		310AE229266B7FCD005F0F17 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		310AE230266B822F005F0F17 /* EventMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMonitor.swift; sourceTree = "<group>"; };
 		310AE233266B826D005F0F17 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -83,7 +87,10 @@
 		310AE285266BB652005F0F17 /* MonitorItemType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorItemType.swift; sourceTree = "<group>"; };
 		310AE28A266BB6F1005F0F17 /* MonitorGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorGridView.swift; sourceTree = "<group>"; };
 		31140B5D266C14AE005B9866 /* SummaryItemsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryItemsList.swift; sourceTree = "<group>"; };
-		314526A626752D3500925F24 /* PiholeSidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiholeSidebar.swift; sourceTree = "<group>"; };
+		314526A626752D3500925F24 /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
+		314526A9267530C400925F24 /* NavigationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationList.swift; sourceTree = "<group>"; };
+		314526AC267530EF00925F24 /* NavigationContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationContentView.swift; sourceTree = "<group>"; };
+		314526B0267531E200925F24 /* NavigationContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationContainerView.swift; sourceTree = "<group>"; };
 		317565C2266D37DE003F95C7 /* PiMonitor */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PiMonitor; path = ../../Personal/PiHoleStatsApp/PiMonitor; sourceTree = "<group>"; };
 		3194B424266B7EFA008408EE /* PiStatsCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PiStatsCore; path = ../../Personal/PiHoleStatsApp/PiStatsCore/PiStatsCore; sourceTree = "<group>"; };
 		3194B425266B7F05008408EE /* SwiftHole */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SwiftHole; path = ../../Personal/PiHoleStatsApp/SwiftHole; sourceTree = "<group>"; };
@@ -159,11 +166,22 @@
 		310AE27E266BADD5005F0F17 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				310AE27F266BADE3005F0F17 /* SummaryItemRowView.swift */,
-				31140B5D266C14AE005B9866 /* SummaryItemsList.swift */,
-				314526A626752D3500925F24 /* PiholeSidebar.swift */,
+				314526AF267531AC00925F24 /* Summary */,
+				314526A626752D3500925F24 /* Sidebar.swift */,
+				314526A9267530C400925F24 /* NavigationList.swift */,
+				314526B0267531E200925F24 /* NavigationContainerView.swift */,
+				314526AC267530EF00925F24 /* NavigationContentView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		314526AF267531AC00925F24 /* Summary */ = {
+			isa = PBXGroup;
+			children = (
+				310AE27F266BADE3005F0F17 /* SummaryItemRowView.swift */,
+				31140B5D266C14AE005B9866 /* SummaryItemsList.swift */,
+			);
+			path = Summary;
 			sourceTree = "<group>";
 		};
 		31B267F6266AE4FD0053927F = {
@@ -223,7 +241,6 @@
 				310AE276266B851A005F0F17 /* Main.storyboard */,
 				31B2680D266AE4FE0053927F /* Info.plist */,
 				31B2680E266AE4FE0053927F /* macOS.entitlements */,
-				310AE224266B7F7B005F0F17 /* Test.swift */,
 				310AE229266B7FCD005F0F17 /* ContentView.swift */,
 				310AE23B266B844F005F0F17 /* AppDelegate.swift */,
 			);
@@ -434,16 +451,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				310AE235266B826D005F0F17 /* Logger.swift in Sources */,
-				314526A726752D3500925F24 /* PiholeSidebar.swift in Sources */,
+				314526A726752D3500925F24 /* Sidebar.swift in Sources */,
 				310AE22A266B7FCD005F0F17 /* ContentView.swift in Sources */,
 				310AE280266BADE3005F0F17 /* SummaryItemRowView.swift in Sources */,
 				310AE28C266BB6F1005F0F17 /* MonitorGridView.swift in Sources */,
-				310AE225266B7F7B005F0F17 /* Test.swift in Sources */,
+				314526AA267530C400925F24 /* NavigationList.swift in Sources */,
 				310AE27B266BADBE005F0F17 /* SummaryItemType.swift in Sources */,
+				314526AD267530EF00925F24 /* NavigationContentView.swift in Sources */,
 				310AE23C266B844F005F0F17 /* AppDelegate.swift in Sources */,
 				310AE239266B8375005F0F17 /* StatusBarMenuWindowController.swift in Sources */,
 				31140B5E266C14AE005B9866 /* SummaryItemsList.swift in Sources */,
 				310AE231266B822F005F0F17 /* EventMonitor.swift in Sources */,
+				314526B1267531E200925F24 /* NavigationContainerView.swift in Sources */,
 				310AE287266BB652005F0F17 /* MonitorItemType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -465,16 +484,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				310AE237266B826D005F0F17 /* Logger.swift in Sources */,
-				314526A826752D3500925F24 /* PiholeSidebar.swift in Sources */,
+				314526A826752D3500925F24 /* Sidebar.swift in Sources */,
 				31B26823266AE4FE0053927F /* Tests_macOS.swift in Sources */,
 				310AE281266BADE3005F0F17 /* SummaryItemRowView.swift in Sources */,
 				310AE28E266BB6F1005F0F17 /* MonitorGridView.swift in Sources */,
 				310AE22B266B7FCD005F0F17 /* ContentView.swift in Sources */,
+				314526AB267530C400925F24 /* NavigationList.swift in Sources */,
 				310AE27D266BADBE005F0F17 /* SummaryItemType.swift in Sources */,
+				314526AE267530EF00925F24 /* NavigationContentView.swift in Sources */,
 				310AE23D266B844F005F0F17 /* AppDelegate.swift in Sources */,
 				310AE23A266B8375005F0F17 /* StatusBarMenuWindowController.swift in Sources */,
 				31140B5F266C14AE005B9866 /* SummaryItemsList.swift in Sources */,
 				310AE232266B822F005F0F17 /* EventMonitor.swift in Sources */,
+				314526B2267531E200925F24 /* NavigationContainerView.swift in Sources */,
 				310AE289266BB652005F0F17 /* MonitorItemType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

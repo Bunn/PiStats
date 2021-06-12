@@ -11,8 +11,8 @@ import PiStatsCore
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
-    var window: NSWindow!
     var preferencesWindow: NSWindow!
+
 
     private var statusItem: NSStatusItem!
     
@@ -48,19 +48,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @objc func openPreferencesWindow() {
-        if nil == preferencesWindow {
-            let preferencesView = PiholeSidebar()
-            preferencesWindow = NSWindow(
-                contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
-                styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-                backing: .buffered,
-                defer: false)
-            preferencesWindow.center()
-            preferencesWindow.setFrameAutosaveName("Preferences")
-            preferencesWindow.isReleasedWhenClosed = false
-            preferencesWindow.contentView = NSHostingView(rootView: preferencesView)
-        }
+        let contentView = NavigationContainerView()
+
+        // Create the window and set the content view.
+        preferencesWindow = NSWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
+            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+            backing: .buffered, defer: false)
+        preferencesWindow.isReleasedWhenClosed = false
+        preferencesWindow.center()
+        preferencesWindow.setFrameAutosaveName("Main Window")
+        preferencesWindow.contentView = NSHostingView(rootView: contentView)
+        preferencesWindow.toolbarStyle = .unifiedCompact
         preferencesWindow.makeKeyAndOrderFront(nil)
+
     }
 }
 
