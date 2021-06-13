@@ -68,8 +68,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 final class DummyContentViewController: NSViewController {
     
-    let summaryProvider = SummaryDataProvider(piholes: [Pihole(address: "10.0.0.113")])
-    let monitorProvider = MonitorDataProvider(pihole: Pihole(address: "10.0.0.113"), temperatureScale: .celcius)
+    let summaryModel = StatusBarSummaryViewModel([Pihole(address: "10.0.0.113"),
+                                                  Pihole(address: "10.0.0.218")])
+    
 
     convenience init() {
         self.init(nibName: nil, bundle: nil)
@@ -82,9 +83,8 @@ final class DummyContentViewController: NSViewController {
         view.wantsLayer = true
         view.layer?.backgroundColor = NSColor.windowBackgroundColor.cgColor
         
-        let contentView = ContentView()
-            .environmentObject(summaryProvider)
-            .environmentObject(monitorProvider)
+        let contentView = StatusBarSummaryView()
+            .environmentObject(summaryModel)
         
         let hostingController = NSHostingController(rootView: contentView)
         addChild(hostingController)
@@ -96,8 +96,7 @@ final class DummyContentViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        summaryProvider.startPolling()
-        monitorProvider.startPolling()
+        summaryModel.startPolling()
     }
     
 }
