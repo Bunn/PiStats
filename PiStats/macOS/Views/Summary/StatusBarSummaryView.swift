@@ -10,7 +10,6 @@ import PiStatsCore
 
 
 struct StatusBarSummaryView: View {
-    @State private var favoriteColor = 0
     private let itemPadding: CGFloat = 15
     @EnvironmentObject var dataProvider: StatusBarSummaryViewModel
     
@@ -18,12 +17,12 @@ struct StatusBarSummaryView: View {
         VStack {
             
             HStack {
-                Picker(selection: $favoriteColor, label: HStack {
+                Picker(selection: $dataProvider.selectedOption, label: HStack {
                     SummaryStatus(status: dataProvider.status)
                 }) {
-                    Text("All").tag(0)
-                    Text("Pi-hole 1").tag(1)
-                    Text("Pi-hole 2").tag(2)
+                    ForEach(dataProvider.piholeSelectionOptions, id: \.self) {
+                        Text($0.name)
+                    }
                 }
                 .frame(width: 200)
                 

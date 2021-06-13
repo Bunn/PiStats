@@ -11,8 +11,24 @@ class StatusBarSummaryViewModel: ObservableObject {
         case mixture
     }
     
+    struct PiholeSelectionOption: Identifiable, Hashable {
+        internal init(pihole: Pihole? = nil) {
+            self.pihole = pihole
+            if let pihole = pihole {
+                id = pihole.id
+                name = pihole.displayName ?? pihole.address
+            } else {
+                id = UUID()
+                name = "All"
+            }
+        }
+        
+        var name: String
+        let pihole: Pihole?
+        let id: UUID
+    }
+    
     private var piholes: [Pihole]
-    private var selectedPihole: Pihole?
     
     private var summaryProvider: SummaryDataProvider?
     private var monitorProvider: MonitorDataProvider?
@@ -28,12 +44,23 @@ class StatusBarSummaryViewModel: ObservableObject {
     var status: SummaryDisplay.PiholeStatus {
         summaryDisplay?.status ?? .allDisabled
     }
-
+        
+    var piholeSelectionOptions: [PiholeSelectionOption]
+    
+    @Published var selectedOption: PiholeSelectionOption { didSet {
+        setupProviders()
+    }}
+    
     private var providers: [DataProvider?] {
         [summaryProvider, monitorProvider]
     }
     
     init(_ piholes: [Pihole]) {
+        var options = [PiholeSelectionOption()]
+        options.append(contentsOf: piholes.map{ PiholeSelectionOption(pihole: $0) })
+        piholeSelectionOptions = options
+        selectedOption = options.first!
+     
         self.piholes = piholes
         setupProviders()
     }
@@ -46,19 +73,12 @@ class StatusBarSummaryViewModel: ObservableObject {
         providers.forEach { $0?.stopPolling() }
     }
     
-    func selectAppPiholes() {
-        selectedPihole = nil
-    }
-    
-    func select(_ pihole: Pihole) {
-        selectedPihole = pihole
-    }
     
     private func setupProviders() {
         stopPolling()
         cancellables.removeAll()
         
-        let piholes = selectedPihole != nil ? [selectedPihole!] : piholes
+        let piholes = selectedOption.pihole != nil ? [selectedOption.pihole!] : piholes
         summaryProvider = SummaryDataProvider(piholes: piholes)
         monitorProvider = MonitorDataProvider(pihole: piholes.first!, temperatureScale: .celcius)
         
@@ -77,5 +97,7 @@ class StatusBarSummaryViewModel: ObservableObject {
         monitorProvider?.$error.sink(receiveValue: { value in
             self.monitorError = value
         }).store(in: &cancellables)
+        
+        startPolling()
     }
 }
