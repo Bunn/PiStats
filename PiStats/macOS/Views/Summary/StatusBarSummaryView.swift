@@ -8,7 +8,6 @@
 import SwiftUI
 import PiStatsCore
 
-
 struct StatusBarSummaryView: View {
     private let itemPadding: CGFloat = 15
     @EnvironmentObject var dataProvider: StatusBarSummaryViewModel
@@ -37,7 +36,6 @@ struct StatusBarSummaryView: View {
             }
             
             
-            
             Divider()
             
             if let summary = dataProvider.summaryDisplay {
@@ -48,14 +46,16 @@ struct StatusBarSummaryView: View {
                 SummaryItemsList(summaryDisplay: SummaryDisplay.preview()).redacted(reason: .placeholder)
             }
             
-            Divider()
-            
-            if let display = dataProvider.monitorDisplay {
-                MonitorGridView(display: display)
-            } else if let error = dataProvider.monitorError {
-                Text("Error \(error)")
-            } else {
-                MonitorGridView(display: MonitorDisplay.preview()).redacted(reason: .placeholder)
+            if dataProvider.hasMonitorEnabed {
+                Divider()
+                
+                if let display = dataProvider.monitorDisplay {
+                    MonitorGridView(display: display)
+                } else if let error = dataProvider.monitorError {
+                    Text("Error \(error)")
+                } else {
+                    MonitorGridView(display: MonitorDisplay.preview()).redacted(reason: .placeholder)
+                }
             }
             
             

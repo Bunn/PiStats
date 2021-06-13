@@ -47,6 +47,10 @@ class StatusBarSummaryViewModel: ObservableObject {
         
     var piholeSelectionOptions: [PiholeSelectionOption]
     
+    var hasMonitorEnabed: Bool {
+        return monitorProvider != nil
+    }
+    
     @Published var selectedOption: PiholeSelectionOption { didSet {
         setupProviders()
     }}
@@ -80,7 +84,23 @@ class StatusBarSummaryViewModel: ObservableObject {
         
         let piholes = selectedOption.pihole != nil ? [selectedOption.pihole!] : piholes
         summaryProvider = SummaryDataProvider(piholes: piholes)
-        monitorProvider = MonitorDataProvider(pihole: piholes.first!, temperatureScale: .celcius)
+        
+        if selectedOption.pihole != nil {
+            monitorProvider = MonitorDataProvider(pihole: piholes.first!, temperatureScale: .celcius)
+            
+            monitorProvider?.$monitorDisplay.sink(receiveValue: { value in
+                self.monitorDisplay = value
+            }).store(in: &cancellables)
+            
+            monitorProvider?.$error.sink(receiveValue: { value in
+                self.monitorError = value
+            }).store(in: &cancellables)
+            
+        } else {
+            monitorProvider = nil
+            monitorDisplay = nil
+            monitorError = nil
+        }
         
         summaryProvider?.$summaryDisplay.sink(receiveValue: { value in
             self.summaryDisplay = value
@@ -89,15 +109,7 @@ class StatusBarSummaryViewModel: ObservableObject {
         summaryProvider?.$error.sink(receiveValue: { value in
             self.summaryError = value
         }).store(in: &cancellables)
-        
-        monitorProvider?.$monitorDisplay.sink(receiveValue: { value in
-            self.monitorDisplay = value
-        }).store(in: &cancellables)
-        
-        monitorProvider?.$error.sink(receiveValue: { value in
-            self.monitorError = value
-        }).store(in: &cancellables)
-        
+ 
         startPolling()
     }
 }
