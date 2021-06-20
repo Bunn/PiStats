@@ -35,16 +35,12 @@ class StatusBarSummaryViewModel: ObservableObject {
 
     @Published var summaryDisplay: SummaryDisplay?
     @Published var summaryError: String?
-    
     @Published var monitorDisplay: MonitorDisplay?
     @Published var monitorError: String?
-    
+    @Published var hasMonitorEnabed = false
+
     var status: SummaryDisplay.PiholeStatus {
         summaryDisplay?.status ?? .allDisabled
-    }
-        
-    var hasMonitorEnabed: Bool {
-        monitorProvider != nil
     }
 
     var hasMultiplePiholes: Bool {
@@ -97,10 +93,12 @@ class StatusBarSummaryViewModel: ObservableObject {
                 self.monitorError = value
             }).store(in: &cancellables)
             
+            hasMonitorEnabed = true
         } else {
             monitorProvider = nil
             monitorDisplay = nil
             monitorError = nil
+            hasMonitorEnabed = false
         }
         
         summaryProvider?.$summaryDisplay.sink(receiveValue: { value in

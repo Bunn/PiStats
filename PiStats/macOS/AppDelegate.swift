@@ -8,6 +8,7 @@
 import Cocoa
 import SwiftUI
 import PiStatsCore
+import Combine
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -67,10 +68,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 
 final class DummyContentViewController: NSViewController {
-    
-    
-    let summaryModel: StatusBarSummaryViewModel
+    private var cancellables = Set<AnyCancellable>()
 
+    let summaryModel: StatusBarSummaryViewModel
+    var hasMonitorEnabled = false
+    
     internal init() {
 
         let pihole1 = Pihole(address: "10.0.0.113")
@@ -80,17 +82,11 @@ final class DummyContentViewController: NSViewController {
         self.summaryModel = StatusBarSummaryViewModel([pihole1,
                                                      Pihole(address: "10.0.0.218")])
         super.init(nibName: nil, bundle: nil)
-
-
+        updateContentSize()
     }
-    
-    override var preferredContentSize: NSSize {
-        get {
-            NSSize(width: 320, height: 250)
-        }
-        set {
-            super.preferredContentSize = newValue
-        }
+
+    private func updateContentSize() {
+        self.preferredContentSize =  NSSize(width: 320, height: hasMonitorEnabled ? 250 : 200)
     }
     
     required init?(coder: NSCoder) {
@@ -111,6 +107,14 @@ final class DummyContentViewController: NSViewController {
         hostingController.view.frame = view.bounds
         view.addSubview(hostingController.view)
 
+        setupSizeCancellable()
+    }
+    
+    private func setupSizeCancellable() {
+        summaryModel.$hasMonitorEnabed.sink { hasMonitorEnabled in
+            self.hasMonitorEnabled = hasMonitorEnabled
+            self.updateContentSize()
+        }.store(in: &cancellables)
     }
     
     override func viewDidLoad() {
