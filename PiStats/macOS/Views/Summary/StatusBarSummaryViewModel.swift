@@ -1,4 +1,3 @@
-
 import Foundation
 import PiStatsCore
 import Combine
@@ -29,12 +28,11 @@ class StatusBarSummaryViewModel: ObservableObject {
     }
     
     private var piholes: [Pihole]
-    
     private var summaryProvider: SummaryDataProvider?
     private var monitorProvider: MonitorDataProvider?
-    
     private var cancellables = Set<AnyCancellable>()
-    
+    private (set) var piholeSelectionOptions: [PiholeSelectionOption]
+
     @Published var summaryDisplay: SummaryDisplay?
     @Published var summaryError: String?
     
@@ -45,18 +43,21 @@ class StatusBarSummaryViewModel: ObservableObject {
         summaryDisplay?.status ?? .allDisabled
     }
         
-    var piholeSelectionOptions: [PiholeSelectionOption]
-    
     var hasMonitorEnabed: Bool {
-        return monitorProvider != nil
+        monitorProvider != nil
     }
-    
-    @Published var selectedOption: PiholeSelectionOption { didSet {
-        setupProviders()
-    }}
-    
+
+    var hasMultiplePiholes: Bool {
+        piholes.count > 1
+    }
     private var providers: [DataProvider?] {
         [summaryProvider, monitorProvider]
+    }
+    
+    @Published var selectedOption: PiholeSelectionOption {
+        didSet {
+            setupProviders()
+        }
     }
     
     init(_ piholes: [Pihole]) {
@@ -76,7 +77,6 @@ class StatusBarSummaryViewModel: ObservableObject {
     func stopPolling() {
         providers.forEach { $0?.stopPolling() }
     }
-    
     
     private func setupProviders() {
         stopPolling()

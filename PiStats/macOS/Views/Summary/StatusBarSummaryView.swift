@@ -14,19 +14,21 @@ struct StatusBarSummaryView: View {
     
     var body: some View {
         VStack {
-            
             HStack {
-                Picker(selection: $dataProvider.selectedOption, label: HStack {
-                    SummaryStatus(status: dataProvider.status)
-                }) {
-                    ForEach(dataProvider.piholeSelectionOptions, id: \.self) {
-                        Text($0.name)
+                if dataProvider.hasMultiplePiholes {
+                    Picker(selection: $dataProvider.selectedOption, label: HStack {
+                        SummaryStatus(status: dataProvider.status)
+                    }) {
+                        ForEach(dataProvider.piholeSelectionOptions, id: \.self) {
+                            Text($0.name)
+                        }
                     }
+                    .frame(width: 200)
+                } else {
+                    SummaryStatus(status: dataProvider.status)
                 }
-                .frame(width: 200)
                 
                 Spacer()
-                
                 
                 Button(action: {
                     print("A")
@@ -34,7 +36,6 @@ struct StatusBarSummaryView: View {
                     Text("Enable")
                 }
             }
-            
             
             Divider()
             
