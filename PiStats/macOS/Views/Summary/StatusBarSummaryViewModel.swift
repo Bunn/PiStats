@@ -50,6 +50,7 @@ class StatusBarSummaryViewModel: ObservableObject {
     var hasMultiplePiholes: Bool {
         piholes.count > 1
     }
+    
     private var providers: [DataProvider?] {
         [summaryProvider, monitorProvider]
     }
@@ -85,8 +86,8 @@ class StatusBarSummaryViewModel: ObservableObject {
         let piholes = selectedOption.pihole != nil ? [selectedOption.pihole!] : piholes
         summaryProvider = SummaryDataProvider(piholes: piholes)
         
-        if selectedOption.pihole != nil {
-            monitorProvider = MonitorDataProvider(pihole: piholes.first!, temperatureScale: .celcius)
+        if let pihole = selectedOption.pihole, pihole.hasPiMonitor {
+            monitorProvider = MonitorDataProvider(pihole: pihole, temperatureScale: .celcius)
             
             monitorProvider?.$monitorDisplay.sink(receiveValue: { value in
                 self.monitorDisplay = value

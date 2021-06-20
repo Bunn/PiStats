@@ -68,14 +68,33 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 final class DummyContentViewController: NSViewController {
     
-    let summaryModel = StatusBarSummaryViewModel([Pihole(address: "10.0.0.113"),
-                                                  Pihole(address: "10.0.0.218")])
     
+    let summaryModel: StatusBarSummaryViewModel
 
-    convenience init() {
-        self.init(nibName: nil, bundle: nil)
+    internal init() {
+
+        let pihole1 = Pihole(address: "10.0.0.113")
+        pihole1.hasPiMonitor = true
         
-        preferredContentSize = NSSize(width: 320, height: 250)
+        
+        self.summaryModel = StatusBarSummaryViewModel([pihole1,
+                                                     Pihole(address: "10.0.0.218")])
+        super.init(nibName: nil, bundle: nil)
+
+
+    }
+    
+    override var preferredContentSize: NSSize {
+        get {
+            NSSize(width: 320, height: 250)
+        }
+        set {
+            super.preferredContentSize = newValue
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func loadView() {
