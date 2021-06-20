@@ -31,9 +31,9 @@ struct StatusBarSummaryView: View {
                 Spacer()
                 
                 Button {
-                    print("test")
+                    dataProvider.toggleStatus()
                 } label: {
-                    Text("Enable")
+                    Text(dataProvider.buttonFormattedStatus)
                 }
             }
             
@@ -79,6 +79,7 @@ struct StatusBarSummaryView: View {
         .padding(.leading)
         .padding(.trailing)
     }
+    
     
     private func openPreferences() {
         NSApp.sendAction(#selector(AppDelegate.openPreferencesWindow), to: nil, from: nil)

@@ -32,7 +32,15 @@ class StatusBarSummaryViewModel: ObservableObject {
     private var monitorProvider: MonitorDataProvider?
     private var cancellables = Set<AnyCancellable>()
     private (set) var piholeSelectionOptions: [PiholeSelectionOption]
-
+    
+    var buttonFormattedStatus: String {
+        if status == .allEnabled {
+            return "Disable"
+        } else {
+            return "Enable"
+        }
+    }
+    
     @Published var summaryDisplay: SummaryDisplay?
     @Published var summaryError: String?
     @Published var monitorDisplay: MonitorDisplay?
@@ -73,6 +81,18 @@ class StatusBarSummaryViewModel: ObservableObject {
     
     func stopPolling() {
         providers.forEach { $0?.stopPolling() }
+    }
+    
+    func toggleStatus() {
+        let piholes = selectedOption.pihole != nil ? [selectedOption.pihole!] : piholes
+        
+        for pihole in piholes {
+            if pihole.enabled {
+                pihole.disablePiHole { _ in }
+            } else {
+                pihole.enablePiHole { _ in }
+            }
+        }
     }
     
     private func setupProviders() {
