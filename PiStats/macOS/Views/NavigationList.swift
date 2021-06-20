@@ -8,7 +8,6 @@
 import SwiftUI
 let allMessages = Array(0...100).map(String.init)
 
-
 struct NavigationList: View {
     var body: some View {
         List(allMessages, id: \.self) { message in
@@ -18,7 +17,9 @@ struct NavigationList: View {
         }
         .navigationTitle("Inbox")
         .toolbar {
-            Button(action: { /* Open filters */ }) {
+            Button {
+                print("test")
+            } label: {
                 Image(systemName: "line.horizontal.3.decrease.circle")
             }
         }

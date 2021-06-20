@@ -1,0 +1,20 @@
+disabled_rules:
+  - trailing_whitespace
+  - orphaned_doc_comment
+
+# Rule Config
+line_length:
+  warning: 150
+  ignores_comments: true
+identifier_name:
+  min_length: 1
+  max_length:
+    warning: 40
+    error: 60
+type_name:
+  allowed_symbols: "_"
+  min_length: 3
+  max_length:
+    warning: 80
+    error: 100
+

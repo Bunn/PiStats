@@ -6,8 +6,6 @@
 //
 
 import Foundation
-
-
 import Cocoa
 import os.log
 
@@ -15,7 +13,8 @@ import os.log
 
 final class StatusBarMenuWindowController: NSWindowController {
     
-    private let log = OSLog(subsystem: String(describing: StatusBarMenuWindowController.self), category: String(describing: StatusBarMenuWindowController.self))
+    private let log = OSLog(subsystem: String(describing: StatusBarMenuWindowController.self),
+                            category: String(describing: StatusBarMenuWindowController.self))
     
     let statusItem: NSStatusItem?
     
@@ -82,7 +81,7 @@ final class StatusBarMenuWindowController: NSWindowController {
     }
     
     private func startMonitoringClicks() {
-        eventMonitor = EventMonitor(mask: [.leftMouseDown, .rightMouseDown], handler: { [weak self] event in
+        eventMonitor = EventMonitor(mask: [.leftMouseDown, .rightMouseDown], handler: { [weak self] _ in
             guard let self = self else { return }
             self.close()
         })
@@ -187,7 +186,6 @@ extension StatusBarMenuWindowController: NSWindowDelegate {
     }
     
 }
-
 
 final class StatusBarFlowBackgroundView: NSView {
     private lazy var vfxView: NSVisualEffectView = {

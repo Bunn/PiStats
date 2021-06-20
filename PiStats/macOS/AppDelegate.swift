@@ -14,7 +14,6 @@ import Combine
 class AppDelegate: NSObject, NSApplicationDelegate {
     var preferencesWindow: NSWindow!
 
-
     private var statusItem: NSStatusItem!
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
@@ -66,7 +65,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 }
 
-
 final class DummyContentViewController: NSViewController {
     private var cancellables = Set<AnyCancellable>()
 
@@ -77,7 +75,6 @@ final class DummyContentViewController: NSViewController {
 
         let pihole1 = Pihole(address: "10.0.0.113")
         pihole1.hasPiMonitor = true
-        
         
         self.summaryModel = StatusBarSummaryViewModel([pihole1,
                                                      Pihole(address: "10.0.0.218")])

@@ -8,7 +8,7 @@
 import SwiftUI
 import PiStatsCore
 
-fileprivate struct MonitorItem: Identifiable {
+private struct MonitorItem: Identifiable {
     let value: String
     let itemType: MonitorItemType
     let helpText: String
@@ -24,10 +24,9 @@ struct MonitorGridView: View {
             MonitorItem(value: display.temperature, itemType: .temperature, helpText: "Raspberry Pi temperature"),
             MonitorItem(value: display.uptime, itemType: .uptime, helpText: "Raspberry Pi uptime"),
             MonitorItem(value: display.loadAverage, itemType: .loadAverage, helpText: "Raspberry Pi load average"),
-            MonitorItem(value: display.memoryPercentUsage, itemType: .memoryPercentUsage, helpText: "Raspberry Pi memory usage"),
+            MonitorItem(value: display.memoryPercentUsage, itemType: .memoryPercentUsage, helpText: "Raspberry Pi memory usage")
         ]
     }
-
     
     private let columns = [
         GridItem(.flexible()),
@@ -51,7 +50,6 @@ struct MonitorGridView: View {
         }
     }
 }
-
 
 struct MonitorGridView_Previews: PreviewProvider {
     static var previews: some View {

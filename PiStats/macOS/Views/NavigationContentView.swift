@@ -13,9 +13,12 @@ struct NavigationContentView: View {
     var body: some View {
         Text("Details for \(message)")
             .toolbar {
-                Button(action: {}) {
+                Button {
+                    print("test")
+                } label: {
                     Image(systemName: "square.and.arrow.up")
                 }
+
             }
     }
 }

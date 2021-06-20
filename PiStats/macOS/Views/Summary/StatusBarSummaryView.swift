@@ -30,9 +30,9 @@ struct StatusBarSummaryView: View {
                 
                 Spacer()
                 
-                Button(action: {
-                    print("A")
-                }) {
+                Button {
+                    print("test")
+                } label: {
                     Text("Enable")
                 }
             }
@@ -59,20 +59,20 @@ struct StatusBarSummaryView: View {
                 }
             }
             
-            
             Divider()
             HStack {
-                Button(action: {
-                    print("A")
-                }) {
+                Button {
+                    print("test")
+                } label: {
                     Text("Quit")
                 }
                 Spacer()
-                Button(action: {
+                Button {
                     openPreferences()
-                }) {
+                } label: {
                     Text("Preferences")
                 }
+
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -81,7 +81,7 @@ struct StatusBarSummaryView: View {
     }
     
     private func openPreferences() {
-        NSApp.sendAction(#selector(AppDelegate.openPreferencesWindow), to: nil, from:nil)
+        NSApp.sendAction(#selector(AppDelegate.openPreferencesWindow), to: nil, from: nil)
     }
 }
 

@@ -3,13 +3,13 @@ import PiStatsCore
 import Combine
 
 class StatusBarSummaryViewModel: ObservableObject {
-    
+
     enum Status {
         case enabled
         case disabled
         case mixture
     }
-    
+
     struct PiholeSelectionOption: Identifiable, Hashable {
         internal init(pihole: Pihole? = nil) {
             self.pihole = pihole
@@ -21,12 +21,12 @@ class StatusBarSummaryViewModel: ObservableObject {
                 name = "All"
             }
         }
-        
+
         var name: String
         let pihole: Pihole?
         let id: UUID
     }
-    
+
     private var piholes: [Pihole]
     private var summaryProvider: SummaryDataProvider?
     private var monitorProvider: MonitorDataProvider?
@@ -59,7 +59,7 @@ class StatusBarSummaryViewModel: ObservableObject {
     
     init(_ piholes: [Pihole]) {
         var options = [PiholeSelectionOption()]
-        options.append(contentsOf: piholes.map{ PiholeSelectionOption(pihole: $0) })
+        options.append(contentsOf: piholes.map { PiholeSelectionOption(pihole: $0) })
         piholeSelectionOptions = options
         selectedOption = options.first!
      
