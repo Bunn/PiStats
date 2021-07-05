@@ -8,8 +8,11 @@
 import Foundation
 import PiStatsCore
 import Combine
+import os.log
 
 class BackgroundService: ObservableObject {
+    private let log = OSLog(subsystem: "BackgroundService", category: String(describing: BackgroundService.self))
+
     private var cancellables = Set<AnyCancellable>()
     @Published private(set) var status: PiholeStatus = PiholeStatus.allDisabled
     private var dataProvider: SummaryDataProvider?
@@ -18,7 +21,6 @@ class BackgroundService: ObservableObject {
         didSet {
             setupCancellables()
             setupData()
-            startPolling()
         }
     }
 
@@ -49,10 +51,12 @@ class BackgroundService: ObservableObject {
     }
     
     func startPolling() {
+        os_log("Starting background polling")
         dataProvider?.startPolling()
     }
     
     func stopPolling() {
+        os_log("Stopping background polling")
         dataProvider?.startPolling()
     }
 }

@@ -55,10 +55,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @objc func hideUI() {
+        backgroundService.startPolling()
         windowController?.close()
     }
 
     func showUI(sender: Any?) {
+        backgroundService.stopPolling()
+        
         if windowController == nil {
             windowController = StatusBarMenuWindowController(
                 statusItem: statusItem,
