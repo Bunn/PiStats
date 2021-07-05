@@ -24,7 +24,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         setupStatusItem()
         setupPiholes()
     }
-    
 
     @objc func toggleUIVisible(_ sender: Any?) {
         if windowController == nil || windowController?.window?.isVisible == false {
@@ -49,21 +48,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         backgroundService.piholes = piholes
         
         backgroundService.$status.sink { status in
-            self.updateIcon(status: status)
+            MenuIconUpdater.update(statusItem: self.statusItem, with: status)
         }.store(in: &cancellables)
         
         backgroundService.startPolling()
-    }
-    
-    private func updateIcon(status: PiholeStatus) {
-        switch status {
-        case .allEnabled:
-            statusItem.button?.title = "🟢"
-        case .allDisabled:
-            statusItem.button?.title = "🛑"
-        case .enabledAndDisabled:
-            statusItem.button?.title = "⚠️"
-        }
     }
     
     @objc func hideUI() {
