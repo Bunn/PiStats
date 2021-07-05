@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		3100B16B2693605200FDC87D /* MenuContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100B16A2693605200FDC87D /* MenuContentViewController.swift */; };
 		3100B16C2693605200FDC87D /* MenuContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100B16A2693605200FDC87D /* MenuContentViewController.swift */; };
+		3100B16E2693642F00FDC87D /* BackgroundService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100B16D2693642F00FDC87D /* BackgroundService.swift */; };
+		3100B16F2693642F00FDC87D /* BackgroundService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100B16D2693642F00FDC87D /* BackgroundService.swift */; };
 		310AE21F266B7F4F005F0F17 /* PiStatsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 310AE21E266B7F4F005F0F17 /* PiStatsCore */; };
 		310AE221266B7F52005F0F17 /* SwiftHole in Frameworks */ = {isa = PBXBuildFile; productRef = 310AE220266B7F52005F0F17 /* SwiftHole */; };
 		310AE223266B7F56005F0F17 /* PiMonitor in Frameworks */ = {isa = PBXBuildFile; productRef = 310AE222266B7F56005F0F17 /* PiMonitor */; };
@@ -83,6 +85,7 @@
 
 /* Begin PBXFileReference section */
 		3100B16A2693605200FDC87D /* MenuContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuContentViewController.swift; sourceTree = "<group>"; };
+		3100B16D2693642F00FDC87D /* BackgroundService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundService.swift; sourceTree = "<group>"; };
 		310AE229266B7FCD005F0F17 /* StatusBarSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarSummaryView.swift; sourceTree = "<group>"; };
 		310AE230266B822F005F0F17 /* EventMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMonitor.swift; sourceTree = "<group>"; };
 		310AE233266B826D005F0F17 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -166,8 +169,10 @@
 		310AE22F266B8221005F0F17 /* Menu */ = {
 			isa = PBXGroup;
 			children = (
-				310AE230266B822F005F0F17 /* EventMonitor.swift */,
 				310AE238266B8375005F0F17 /* StatusBarMenuWindowController.swift */,
+				310AE230266B822F005F0F17 /* EventMonitor.swift */,
+				3100B16A2693605200FDC87D /* MenuContentViewController.swift */,
+				3100B16D2693642F00FDC87D /* BackgroundService.swift */,
 			);
 			path = Menu;
 			sourceTree = "<group>";
@@ -254,7 +259,6 @@
 				31B2680D266AE4FE0053927F /* Info.plist */,
 				31B2680E266AE4FE0053927F /* macOS.entitlements */,
 				310AE23B266B844F005F0F17 /* AppDelegate.swift */,
-				3100B16A2693605200FDC87D /* MenuContentViewController.swift */,
 			);
 			path = macOS;
 			sourceTree = "<group>";
@@ -486,6 +490,7 @@
 				3144F4B12676512C007BA9FE /* SummaryStatus.swift in Sources */,
 				310AE235266B826D005F0F17 /* Logger.swift in Sources */,
 				314526A726752D3500925F24 /* Sidebar.swift in Sources */,
+				3100B16E2693642F00FDC87D /* BackgroundService.swift in Sources */,
 				310AE22A266B7FCD005F0F17 /* StatusBarSummaryView.swift in Sources */,
 				310AE280266BADE3005F0F17 /* SummaryItemRowView.swift in Sources */,
 				310AE28C266BB6F1005F0F17 /* MonitorGridView.swift in Sources */,
@@ -531,6 +536,7 @@
 				310AE27D266BADBE005F0F17 /* SummaryItemType.swift in Sources */,
 				314526AE267530EF00925F24 /* NavigationContentView.swift in Sources */,
 				310AE23D266B844F005F0F17 /* AppDelegate.swift in Sources */,
+				3100B16F2693642F00FDC87D /* BackgroundService.swift in Sources */,
 				310AE23A266B8375005F0F17 /* StatusBarMenuWindowController.swift in Sources */,
 				31140B5F266C14AE005B9866 /* SummaryItemsList.swift in Sources */,
 				310AE232266B822F005F0F17 /* EventMonitor.swift in Sources */,

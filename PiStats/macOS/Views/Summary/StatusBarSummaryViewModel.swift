@@ -47,7 +47,7 @@ class StatusBarSummaryViewModel: ObservableObject {
     @Published var monitorError: String?
     @Published var hasMonitorEnabed = false
 
-    var status: SummaryDisplay.PiholeStatus {
+    var status: PiholeStatus {
         summaryDisplay?.status ?? .allDisabled
     }
 

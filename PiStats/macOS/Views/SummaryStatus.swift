@@ -9,7 +9,7 @@ import SwiftUI
 import PiStatsCore
 
 struct SummaryStatus: View {
-    let status: SummaryDisplay.PiholeStatus
+    let status: PiholeStatus
     
     var body: some View {
         HStack {

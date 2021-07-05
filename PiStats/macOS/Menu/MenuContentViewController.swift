@@ -12,19 +12,16 @@ import SwiftUI
 
 final class MenuContentViewController: NSViewController {
     private var cancellables = Set<AnyCancellable>()
-
+    var piholes: [Pihole]
     let summaryModel: StatusBarSummaryViewModel
     var hasMonitorEnabled = false
     
-    internal init() {
+    internal init(piholes: [Pihole]) {
+        self.piholes = piholes
+        self.summaryModel = StatusBarSummaryViewModel(piholes)
 
-        let pihole1 = Pihole(address: "10.0.0.113", apiToken: "")
-        pihole1.hasPiMonitor = true
-        
-        self.summaryModel = StatusBarSummaryViewModel([pihole1,
-                                                     Pihole(address: "10.0.0.218", apiToken: "")])
         super.init(nibName: nil, bundle: nil)
-        updateContentSize()
+        self.updateContentSize()
     }
 
     private func updateContentSize() {
@@ -58,9 +55,14 @@ final class MenuContentViewController: NSViewController {
             self.updateContentSize()
         }.store(in: &cancellables)
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+
+    override func viewWillAppear() {
+        super.viewWillAppear()
         summaryModel.startPolling()
+    }
+    
+    override func viewDidDisappear() {
+        super.viewDidLoad()
+        summaryModel.stopPolling()
     }
 }

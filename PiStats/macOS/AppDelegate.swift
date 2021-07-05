@@ -7,26 +7,62 @@
 
 import Cocoa
 import SwiftUI
+import PiStatsCore
+import Combine
 
 @NSApplicationMain
+
 class AppDelegate: NSObject, NSApplicationDelegate {
     var preferencesWindow: NSWindow!
-
+    var piholes = [Pihole]()
+    private var cancellables = Set<AnyCancellable>()
     private var statusItem: NSStatusItem!
-    
+    private var backgroundService = BackgroundService()
+    private var windowController: StatusBarMenuWindowController?
+
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        statusItem = NSStatusBar.system.statusItem(withLength: 28)
-        statusItem.button?.title = "🛑"
-        statusItem.button?.action = #selector(toggleUIVisible)
+        setupStatusItem()
+        setupPiholes()
     }
     
-    private var windowController: StatusBarMenuWindowController?
 
     @objc func toggleUIVisible(_ sender: Any?) {
         if windowController == nil || windowController?.window?.isVisible == false {
             showUI(sender: sender)
         } else {
             hideUI()
+        }
+    }
+    
+    private func setupStatusItem() {
+        statusItem = NSStatusBar.system.statusItem(withLength: 28)
+        statusItem.button?.action = #selector(toggleUIVisible)
+    }
+    
+    private func setupPiholes() {
+        let pihole1 = Pihole(address: "10.0.0.113", apiToken: "")
+        pihole1.hasPiMonitor = true
+        
+        self.piholes = [pihole1,
+                        Pihole(address: "10.0.0.218", apiToken: "")]
+        
+        backgroundService.piholes = piholes
+        
+        backgroundService.$status.sink { status in
+            self.updateIcon(status: status)
+        }.store(in: &cancellables)
+        
+        backgroundService.startPolling()
+    }
+    
+    private func updateIcon(status: PiholeStatus) {
+        switch status {
+        case .allEnabled:
+            statusItem.button?.title = "🟢"
+        case .allDisabled:
+            statusItem.button?.title = "🛑"
+        case .enabledAndDisabled:
+            statusItem.button?.title = "⚠️"
         }
     }
     
@@ -38,7 +74,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if windowController == nil {
             windowController = StatusBarMenuWindowController(
                 statusItem: statusItem,
-                contentViewController: MenuContentViewController()
+                contentViewController: MenuContentViewController(piholes: piholes)
             )
         }
         
