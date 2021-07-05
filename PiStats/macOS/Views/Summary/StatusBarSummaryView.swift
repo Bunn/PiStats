@@ -80,7 +80,6 @@ struct StatusBarSummaryView: View {
         .padding(.trailing)
     }
     
-    
     private func openPreferences() {
         NSApp.sendAction(#selector(AppDelegate.openPreferencesWindow), to: nil, from: nil)
     }

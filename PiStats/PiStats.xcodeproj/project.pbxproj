@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3100B16B2693605200FDC87D /* MenuContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100B16A2693605200FDC87D /* MenuContentViewController.swift */; };
+		3100B16C2693605200FDC87D /* MenuContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100B16A2693605200FDC87D /* MenuContentViewController.swift */; };
 		310AE21F266B7F4F005F0F17 /* PiStatsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 310AE21E266B7F4F005F0F17 /* PiStatsCore */; };
 		310AE221266B7F52005F0F17 /* SwiftHole in Frameworks */ = {isa = PBXBuildFile; productRef = 310AE220266B7F52005F0F17 /* SwiftHole */; };
 		310AE223266B7F56005F0F17 /* PiMonitor in Frameworks */ = {isa = PBXBuildFile; productRef = 310AE222266B7F56005F0F17 /* PiMonitor */; };
@@ -80,6 +82,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3100B16A2693605200FDC87D /* MenuContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuContentViewController.swift; sourceTree = "<group>"; };
 		310AE229266B7FCD005F0F17 /* StatusBarSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarSummaryView.swift; sourceTree = "<group>"; };
 		310AE230266B822F005F0F17 /* EventMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMonitor.swift; sourceTree = "<group>"; };
 		310AE233266B826D005F0F17 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -251,6 +254,7 @@
 				31B2680D266AE4FE0053927F /* Info.plist */,
 				31B2680E266AE4FE0053927F /* macOS.entitlements */,
 				310AE23B266B844F005F0F17 /* AppDelegate.swift */,
+				3100B16A2693605200FDC87D /* MenuContentViewController.swift */,
 			);
 			path = macOS;
 			sourceTree = "<group>";
@@ -494,6 +498,7 @@
 				31140B5E266C14AE005B9866 /* SummaryItemsList.swift in Sources */,
 				310AE231266B822F005F0F17 /* EventMonitor.swift in Sources */,
 				314526B1267531E200925F24 /* NavigationContainerView.swift in Sources */,
+				3100B16B2693605200FDC87D /* MenuContentViewController.swift in Sources */,
 				310AE287266BB652005F0F17 /* MonitorItemType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -519,6 +524,7 @@
 				3144F4B22676512C007BA9FE /* SummaryStatus.swift in Sources */,
 				31B26823266AE4FE0053927F /* Tests_macOS.swift in Sources */,
 				310AE281266BADE3005F0F17 /* SummaryItemRowView.swift in Sources */,
+				3100B16C2693605200FDC87D /* MenuContentViewController.swift in Sources */,
 				310AE28E266BB6F1005F0F17 /* MonitorGridView.swift in Sources */,
 				310AE22B266B7FCD005F0F17 /* StatusBarSummaryView.swift in Sources */,
 				314526AB267530C400925F24 /* NavigationList.swift in Sources */,

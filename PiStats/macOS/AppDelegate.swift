@@ -7,8 +7,6 @@
 
 import Cocoa
 import SwiftUI
-import PiStatsCore
-import Combine
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -40,7 +38,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if windowController == nil {
             windowController = StatusBarMenuWindowController(
                 statusItem: statusItem,
-                contentViewController: DummyContentViewController()
+                contentViewController: MenuContentViewController()
             )
         }
         
@@ -61,62 +59,5 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         preferencesWindow.contentView = NSHostingView(rootView: contentView)
         preferencesWindow.toolbarStyle = .unifiedCompact
         preferencesWindow.makeKeyAndOrderFront(nil)
-
     }
-}
-
-final class DummyContentViewController: NSViewController {
-    private var cancellables = Set<AnyCancellable>()
-
-    let summaryModel: StatusBarSummaryViewModel
-    var hasMonitorEnabled = false
-    
-    internal init() {
-
-        let pihole1 = Pihole(address: "10.0.0.113")
-        pihole1.hasPiMonitor = true
-        
-        self.summaryModel = StatusBarSummaryViewModel([pihole1,
-                                                     Pihole(address: "10.0.0.218")])
-        super.init(nibName: nil, bundle: nil)
-        updateContentSize()
-    }
-
-    private func updateContentSize() {
-        self.preferredContentSize =  NSSize(width: 320, height: hasMonitorEnabled ? 250 : 200)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func loadView() {
-        view = StatusBarFlowBackgroundView()
-        view.wantsLayer = true
-        view.layer?.backgroundColor = NSColor.windowBackgroundColor.cgColor
-        
-        let contentView = StatusBarSummaryView()
-            .environmentObject(summaryModel)
-        
-        let hostingController = NSHostingController(rootView: contentView)
-        addChild(hostingController)
-        hostingController.view.autoresizingMask = [.width, .height]
-        hostingController.view.frame = view.bounds
-        view.addSubview(hostingController.view)
-
-        setupSizeCancellable()
-    }
-    
-    private func setupSizeCancellable() {
-        summaryModel.$hasMonitorEnabed.sink { hasMonitorEnabled in
-            self.hasMonitorEnabled = hasMonitorEnabled
-            self.updateContentSize()
-        }.store(in: &cancellables)
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        summaryModel.startPolling()
-    }
-    
 }
