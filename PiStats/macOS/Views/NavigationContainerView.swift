@@ -11,8 +11,7 @@ struct NavigationContainerView: View {
     var body: some View {
         NavigationView {
             Sidebar()
-            Text("No Sidebar Selection")
-            Text("No Message Selection")
+            Text("No Sidebar Selection")            
         }
     }
 }

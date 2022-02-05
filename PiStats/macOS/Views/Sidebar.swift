@@ -12,21 +12,21 @@ struct Sidebar: View {
 
     var body: some View {
         List {
-            Text("Favorites")
+            Text("Pi-holes")
                 .font(.caption)
                 .foregroundColor(.secondary)
-            NavigationLink(destination: NavigationList(), isActive: $isDefaultItemActive) {
+            NavigationLink(destination: PiholeSettingsView(), isActive: $isDefaultItemActive) {
                 Label("Inbox", systemImage: "tray.2")
             }
 
-            Text("Status Bar")
+            Text("Preferences")
                 .font(.caption)
                 .foregroundColor(.secondary)
-            NavigationLink(destination: Text("a222a")) {
-                Label("Status Bar", systemImage: "menubar.rectangle")
+            NavigationLink(destination: PreferencesView()) {
+                Label("Preferences", systemImage: "gearshape")
             }
             
-        }.listStyle(SidebarListStyle())    }
+        }.listStyle(SidebarListStyle())}
 }
 
 struct PiholeSidebar_Previews: PreviewProvider {
