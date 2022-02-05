@@ -50,7 +50,7 @@ final class MenuContentViewController: NSViewController {
     }
     
     private func setupSizeCancellable() {
-        summaryModel.$hasMonitorEnabed.sink { hasMonitorEnabled in
+        summaryModel.$hasMonitorEnabled.sink { hasMonitorEnabled in
             self.hasMonitorEnabled = hasMonitorEnabled
             self.updateContentSize()
         }.store(in: &cancellables)

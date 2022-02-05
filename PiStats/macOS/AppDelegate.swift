@@ -39,11 +39,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     private func setupPiholes() {
-        let pihole1 = Pihole(address: "10.0.0.113", apiToken: "")
+        let pihole1 = Pihole(address: "192.168.1.123", apiToken: "")
         pihole1.hasPiMonitor = true
         
-        self.piholes = [pihole1,
-                        Pihole(address: "10.0.0.218", apiToken: "")]
+        let pihole2 = Pihole(address: "192.168.1.116", apiToken: "")
+        pihole2.hasPiMonitor = true
+        
+        self.piholes = [pihole1, pihole2]
         
         backgroundService.piholes = piholes
         

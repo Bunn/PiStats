@@ -37,7 +37,7 @@ struct SummaryStatus: View {
         case .allEnabled:
             return "Enabled"
         case .enabledAndDisabled:
-            return "Enabled and Disabled"
+            return "Multiple status"
         }
     }
 }

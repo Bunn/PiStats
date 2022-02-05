@@ -38,7 +38,7 @@ struct StatusBarSummaryView: View {
             }
             
             Divider()
-            
+
             if let summary = dataProvider.summaryDisplay {
                 SummaryItemsList(summaryDisplay: summary)
             } else if let error = dataProvider.summaryError {
@@ -47,7 +47,7 @@ struct StatusBarSummaryView: View {
                 SummaryItemsList(summaryDisplay: SummaryDisplay.preview()).redacted(reason: .placeholder)
             }
             
-            if dataProvider.hasMonitorEnabed {
+            if dataProvider.hasMonitorEnabled {
                 Divider()
                 
                 if let display = dataProvider.monitorDisplay {

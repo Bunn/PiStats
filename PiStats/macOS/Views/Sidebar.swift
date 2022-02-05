@@ -18,9 +18,14 @@ struct Sidebar: View {
             NavigationLink(destination: NavigationList(), isActive: $isDefaultItemActive) {
                 Label("Inbox", systemImage: "tray.2")
             }
-//            NavigationLink(destination: SentView()) {
-//                Label("Sent", systemImage: "paperplane")
-//            }
+
+            Text("Status Bar")
+                .font(.caption)
+                .foregroundColor(.secondary)
+            NavigationLink(destination: Text("a222a")) {
+                Label("Status Bar", systemImage: "menubar.rectangle")
+            }
+            
         }.listStyle(SidebarListStyle())    }
 }
 

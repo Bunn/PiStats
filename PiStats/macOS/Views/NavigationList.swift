@@ -11,7 +11,7 @@ let allMessages = Array(0...100).map(String.init)
 struct NavigationList: View {
     var body: some View {
         List(allMessages, id: \.self) { message in
-            NavigationLink(destination: NavigationContentView(message: message)) {
+            NavigationLink(destination: Text("test")) {
                 Text(message)
             }
         }
