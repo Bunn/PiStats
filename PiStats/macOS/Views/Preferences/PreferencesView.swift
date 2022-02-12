@@ -12,11 +12,18 @@ struct PreferencesView: View {
     @State var textSample: String = ""
     @State private var width: CGFloat?
     @State private var protocolTag: Int = 0
-
+    @State private var showingPopover = false
+    
     var body: some View {
         HStack {
             VStack(spacing:0) {
                 List {
+                    piholeRow
+                    Divider()
+                    piholeRow
+                    Divider()
+                    piholeRow
+                    Divider()
                     piholeRow
                 }.border(.gray)
                 
@@ -35,13 +42,40 @@ struct PreferencesView: View {
             
             detailsView
         }
+        .frame(maxWidth: 600, minHeight: 450, idealHeight: 450)
         .padding()
     }
     
     var piholeRow: some View {
         HStack {
-            Image(systemName: "shield")
-            Text("192.123.4.5")
+            HStack {
+                ZStack {
+                    
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(LinearGradient(gradient: Gradient(colors: self.piholeGradient), startPoint: self.startPoint, endPoint: self.endPoint))
+                        .frame(width: 35, height: 35)
+                        .onTapGesture {
+                            withAnimation (.easeInOut(duration: 3)){
+                                self.startPoint = UnitPoint(x: 1, y: -1)
+                                self.endPoint = UnitPoint(x: 0, y: 1)
+                            }
+                        }.shadow(radius: 1)
+
+                Image(systemName: "shield")
+                    .renderingMode(.original)
+                    .font(.title2)
+                    .foregroundColor(.white)
+                    .shadow(radius: 1)
+                }
+                VStack (alignment: .leading) {
+                Text("192.168.1.123")
+                        .font(.title3)
+                    Text("Enabled")
+                        .font(.caption)
+                }
+            }
+            
+            
             Spacer()
             
         }
@@ -63,6 +97,7 @@ struct PreferencesView: View {
             Spacer()
         }
     }
+    
     
     var addRemoveFooter: some View {
         let buttonWidth: CGFloat = 25
@@ -103,16 +138,37 @@ struct PreferencesView: View {
         value: { [$0.size.width] }
     )
     
+    @State var piholeGradient = [Color.red, Color.gray, Color.black]
+    @State var piMonitorGradient = [Color.black, Color.green, Color.blue]
+       @State var startPoint = UnitPoint(x: 0, y: 0)
+       @State var endPoint = UnitPoint(x: 0, y: 2)
+    
     var piholeSettings: some View {
         VStack (alignment: .leading) {
             HStack {
+                ZStack {
+                    
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(LinearGradient(gradient: Gradient(colors: self.piholeGradient), startPoint: self.startPoint, endPoint: self.endPoint))
+                        .frame(width: 35, height: 35)
+                        .onTapGesture {
+                            withAnimation (.easeInOut(duration: 3)){
+                                self.startPoint = UnitPoint(x: 1, y: -1)
+                                self.endPoint = UnitPoint(x: 0, y: 1)
+                            }
+                        }.shadow(radius: 1)
+
                 Image(systemName: "shield")
                     .renderingMode(.original)
+                    .font(.title2)
+                    .foregroundColor(.white)
+                    .shadow(radius: 1)
+                }
                 Text("Pi-hole")
             }.font(.title2)
             
             VStack(alignment: .leading) {
-                    
+                
                 HStack {
                     Text("Name")
                         .read(labelWidth)
@@ -120,19 +176,19 @@ struct PreferencesView: View {
                     TextField("Raspberry Pi", text: $textSample)
                 }
                 
-                    HStack {
-                        Text("Host")
-                            .read(labelWidth)
-                            .frame(width: width, alignment: .leading)
-                        TextField("192.168.1.1", text: $textSample)
-                    }
-                    
-                    HStack {
-                        Text("Port")
-                            .read(labelWidth)
-                            .frame(width: width, alignment: .leading)
-                        TextField("80", text: $textSample)
-                    }
+                HStack {
+                    Text("Host")
+                        .read(labelWidth)
+                        .frame(width: width, alignment: .leading)
+                    TextField("192.168.1.1", text: $textSample)
+                }
+                
+                HStack {
+                    Text("Port")
+                        .read(labelWidth)
+                        .frame(width: width, alignment: .leading)
+                    TextField("80", text: $textSample)
+                }
                 
                 HStack {
                     Text("API Token")
@@ -140,21 +196,21 @@ struct PreferencesView: View {
                         .frame(width: width, alignment: .leading)
                     
                     TextField("dsfsdfsdsdgs", text: $textSample)
-
+                    
                 }
-       
-                    HStack {
-                        Text("Protocol")
-                            .read(labelWidth)
-
-                        Picker(selection: $protocolTag, label: Text("")) {
-                            Text("HTTP").tag(0)
-                            Text("HTTPS").tag(1)
-                        }.frame(width: 85)
-                    }
-
+                
+                HStack {
+                    Text("Protocol")
+                        .read(labelWidth)
+                    
+                    Picker(selection: $protocolTag, label: Text("")) {
+                        Text("HTTP").tag(0)
+                        Text("HTTPS").tag(1)
+                    }.frame(width: 85)
                 }
-                .assignMaxPreference(for: labelWidth.key, to: $width)
+                
+            }
+            .assignMaxPreference(for: labelWidth.key, to: $width)
             
         }
         
@@ -164,18 +220,57 @@ struct PreferencesView: View {
     var piMonitorSettings: some View {
         VStack (alignment: .leading) {
             HStack {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(LinearGradient(gradient: Gradient(colors: self.piMonitorGradient), startPoint: self.startPoint, endPoint: self.endPoint))
+                        .frame(width: 35, height: 35)
+                        .onTapGesture {
+                            withAnimation (.easeInOut(duration: 3)){
+                                self.startPoint = UnitPoint(x: 1, y: -1)
+                                self.endPoint = UnitPoint(x: 0, y: 1)
+                            }
+                        }.shadow(radius: 1)
+
                 Image(systemName: "waveform.path.ecg.rectangle")
-                    .renderingMode(.original)
+                    //.renderingMode(.original)
+                    .font(.title2)
+                    .foregroundColor(.white)
+                    .shadow(radius: 1)
+                }
                 Text("Pi Monitor")
                 
                 Button {
-                    print("monitor")
+                    showingPopover = true
                 } label: {
                     Image(systemName: "info.circle.fill")
-                            .renderingMode(.original)
+                        .renderingMode(.original)
+                }.popover(isPresented: $showingPopover) {
+                    VStack(alignment: .center) {
+                        Text("Pi Monitor is a service that helps you to monitor your Raspberry Pi by showing you information like temperature, memory usage and more!\n\nIn order to use it you'll need to install it in your Raspberry Pi.")
+                            .multilineTextAlignment(.center)
+                            .font(.callout)
+                        
+                        HStack {
+                            Button {
+                                showingPopover = false
+                            } label: {
+                                Text("OK")
+                            }
+                            
+                            Button {
+                                showingPopover = false
+                            } label: {
+                                Text("Learn More")
+                            }
+                        }.font(.body)
+                        
+                    }.frame(width: 300)
+                    
+                        .padding()
                 }
                 .buttonStyle(.plain)
-
+                
+                
             }.font(.title2)
             VStack(alignment: .leading)  {
                 HStack {
@@ -184,7 +279,7 @@ struct PreferencesView: View {
                         .frame(width: width, alignment: .leading)
                     
                     Toggle("", isOn: $piMonitorEnabled)
-
+                    
                 }
                 
                 HStack {
@@ -193,7 +288,7 @@ struct PreferencesView: View {
                         .frame(width: width, alignment: .leading)
                     TextField("8088", text: $textSample)
                 }
-
+                
             }.assignMaxPreference(for: labelWidth.key, to: $width)
         }.padding()
     }
@@ -202,7 +297,6 @@ struct PreferencesView: View {
         GroupBox {
             
             
-            ScrollView(.vertical, showsIndicators: true) {
                 piholeSettings
                 
                 Divider()
@@ -233,8 +327,8 @@ struct PreferencesView: View {
                     } label: {
                         Text("Save")
                     }
-
-                }
+                    
+                
                 
             }.frame(width: 400)
             
