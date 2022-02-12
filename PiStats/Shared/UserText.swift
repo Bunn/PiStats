@@ -10,6 +10,7 @@ import Foundation
 struct UserText {
     static let buttonEnable = "Enable"
     static let buttonDisable = "Disable"
+    static let savePiholeButton = "Save"
     static let host = "Host"
     static let hostPlaceholder = "0.0.0.0"
     static let apiToken = "API Token"

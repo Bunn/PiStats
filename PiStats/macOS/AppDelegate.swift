@@ -75,7 +75,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @objc func openPreferencesWindow() {
-        let contentView = NavigationContainerView()
+        let contentView = PreferencesView()
 
         // Create the window and set the content view.
         preferencesWindow = NSWindow(

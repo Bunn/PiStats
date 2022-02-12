@@ -30,7 +30,34 @@ struct PiholeSettingsView: View {
     )
     
     var body: some View {
-        VStack(alignment: .trailing) {
+        Form {
+            Text("Pi-hole Settings")
+                .font(.title)
+            piholeSettings()
+            piholeSettingsButtons()
+            tokenFooter()
+            
+            Text("PiMetrics Settings")
+                .font(.title)
+                .padding(.top)
+            
+            piMetricsSettings()
+        }.padding()
+    }
+    
+    func piMetricsSettings() -> some View {
+        Group {
+            HStack {
+                Text(UserText.host)
+                    .read(labelWidth)
+                    .frame(width: width, alignment: .leading)
+                TextField(UserText.hostPlaceholder, text: $text)
+            }
+        }
+    }
+    
+    func piholeSettings() -> some View {
+        Group {
             HStack {
                 Text(UserText.host)
                     .read(labelWidth)
@@ -55,59 +82,66 @@ struct PiholeSettingsView: View {
                 }
             }
             
-            HStack {
-                
-                Button(action: {
-                    if let url = URL(string: "http://\("test")/admin/") {
-                        NSWorkspace.shared.open(url) }
-                }, label: {
-                        HStack {
-                            Image(UserImages.globe)
-                                .resizable().aspectRatio(contentMode: .fit)
-                                .frame(width: 15)
-                        }
-                })
-                    .overlay(Tooltip(tooltip: UserText.preferencesWebToolTip))
-                
-                Button(action: {
-                    self.presentingQRCodePopOver.toggle()
-                }, label: {
+        }
+    }
+    
+    func piholeSettingsButtons() -> some View {
+        HStack {
+            
+            Button(action: {
+                if let url = URL(string: "http://\("test")/admin/") {
+                    NSWorkspace.shared.open(url) }
+            }, label: {
                     HStack {
-                        Image(UserImages.QRCode)
+                        Image(systemName: UserImages.globe)
                             .resizable().aspectRatio(contentMode: .fit)
-                            .frame(width: 13)
+                            .frame(width: 15)
                     }
-                })
-                    .overlay(Tooltip(tooltip: UserText.preferencesQRCodeToolTip))
-                    .popover(isPresented: $presentingQRCodePopOver) {
-                    VStack {
-                        Image(nsImage: QRCodeGenerator().generateQRCode(from: "test", with: NSSize(width: self.qrcodeSize, height: self.qrcodeSize)))
-                        .interpolation(.none)
-                        .padding()
-                        
-                        HStack {
-                            Text(UserText.preferencesQRCodeFormat)
-                            MenuButton(label: Text("Test")) {
-                                Button(action: {
-                                    //self.preferences.qrcodeFormat = .webInterface
-                                }, label: { Text(UserText.preferencesQRCodeFormatWebInterface) })
-                                Button(action: {
-                                   // self.preferences.qrcodeFormat = .piStats
-                                }, label: { Text(UserText.preferencesQRCodeFormatPiStats) })
-                            }
-                        }
-                        .padding(.bottom)
-                        .padding(.horizontal)
-                    }
+            })
+                .overlay(Tooltip(tooltip: UserText.preferencesWebToolTip))
+            
+            Button(action: {
+                self.presentingQRCodePopOver.toggle()
+            }, label: {
+                HStack {
+                    Image(systemName: UserImages.QRCode)
+                        .resizable().aspectRatio(contentMode: .fit)
+                        .frame(width: 13)
                 }
-                
-                Button(action: {
-                   // self.piholeViewModel.save()
-                }, label: {
-                   // Text(UserText.savePiholeButton)
-                })
+            })
+                .overlay(Tooltip(tooltip: UserText.preferencesQRCodeToolTip))
+                .popover(isPresented: $presentingQRCodePopOver) {
+                VStack {
+                    Image(nsImage: QRCodeGenerator().generateQRCode(from: "test", with: NSSize(width: self.qrcodeSize, height: self.qrcodeSize)))
+                    .interpolation(.none)
+                    .padding()
+                    
+                    HStack {
+                        Text(UserText.preferencesQRCodeFormat)
+                        MenuButton(label: Text("Test")) {
+                            Button(action: {
+                                //self.preferences.qrcodeFormat = .webInterface
+                            }, label: { Text(UserText.preferencesQRCodeFormatWebInterface) })
+                            Button(action: {
+                               // self.preferences.qrcodeFormat = .piStats
+                            }, label: { Text(UserText.preferencesQRCodeFormatPiStats) })
+                        }
+                    }
+                    .padding(.bottom)
+                    .padding(.horizontal)
+                }
             }
             
+            Button(action: {
+               // self.piholeViewModel.save()
+            }, label: {
+                Text(UserText.savePiholeButton)
+            })
+        }
+    }
+    
+    func tokenFooter() -> some View {
+        Group {
             Divider()
             
             Text(UserText.findAPITokenInfo)

@@ -10,8 +10,7 @@ import SwiftUI
 struct NavigationContainerView: View {
     var body: some View {
         NavigationView {
-            Sidebar()
-            Text("No Sidebar Selection")            
+           PreferencesView()
         }
     }
 }
