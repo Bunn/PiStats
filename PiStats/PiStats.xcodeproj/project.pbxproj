@@ -43,6 +43,7 @@
 		310AE28E266BB6F1005F0F17 /* MonitorGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310AE28A266BB6F1005F0F17 /* MonitorGridView.swift */; };
 		31140B5E266C14AE005B9866 /* SummaryItemsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31140B5D266C14AE005B9866 /* SummaryItemsList.swift */; };
 		31140B5F266C14AE005B9866 /* SummaryItemsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31140B5D266C14AE005B9866 /* SummaryItemsList.swift */; };
+		312224E927C16C6E00BCF374 /* PiholeConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 312224E827C16C6E00BCF374 /* PiholeConfigurationView.swift */; };
 		3144F4AE2676458C007BA9FE /* StatusBarSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3144F4AD2676458C007BA9FE /* StatusBarSummaryViewModel.swift */; };
 		3144F4AF2676458C007BA9FE /* StatusBarSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3144F4AD2676458C007BA9FE /* StatusBarSummaryViewModel.swift */; };
 		3144F4B12676512C007BA9FE /* SummaryStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3144F4B02676512C007BA9FE /* SummaryStatus.swift */; };
@@ -105,6 +106,7 @@
 		310AE285266BB652005F0F17 /* MonitorItemType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorItemType.swift; sourceTree = "<group>"; };
 		310AE28A266BB6F1005F0F17 /* MonitorGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorGridView.swift; sourceTree = "<group>"; };
 		31140B5D266C14AE005B9866 /* SummaryItemsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryItemsList.swift; sourceTree = "<group>"; };
+		312224E827C16C6E00BCF374 /* PiholeConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiholeConfigurationView.swift; sourceTree = "<group>"; };
 		3144F4AD2676458C007BA9FE /* StatusBarSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarSummaryViewModel.swift; sourceTree = "<group>"; };
 		3144F4B02676512C007BA9FE /* SummaryStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryStatus.swift; sourceTree = "<group>"; };
 		314526A626752D3500925F24 /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
@@ -235,6 +237,7 @@
 			isa = PBXGroup;
 			children = (
 				317C58A427AED171007DC1C9 /* PiholeSettingsView.swift */,
+				312224E827C16C6E00BCF374 /* PiholeConfigurationView.swift */,
 			);
 			path = PiholeSettings;
 			sourceTree = "<group>";
@@ -534,6 +537,7 @@
 				310AE280266BADE3005F0F17 /* SummaryItemRowView.swift in Sources */,
 				310AE28C266BB6F1005F0F17 /* MonitorGridView.swift in Sources */,
 				3144F4AE2676458C007BA9FE /* StatusBarSummaryViewModel.swift in Sources */,
+				312224E927C16C6E00BCF374 /* PiholeConfigurationView.swift in Sources */,
 				317C58B227AED59D007DC1C9 /* QRCodeGenerator.swift in Sources */,
 				314526AA267530C400925F24 /* NavigationList.swift in Sources */,
 				310AE27B266BADBE005F0F17 /* SummaryItemType.swift in Sources */,
