@@ -2,8 +2,13 @@ import Foundation
 import PiStatsCore
 import Combine
 
-class StatusBarSummaryViewModel: ObservableObject {
+protocol StatusBarSummaryViewModelDelegate: AnyObject {
+    func statusBarSummaryViewModelWantsToOpenPreferences(_ viewModel: StatusBarSummaryViewModel)
+}
 
+class StatusBarSummaryViewModel: ObservableObject {
+    weak var delegate: StatusBarSummaryViewModelDelegate?
+    
     enum Status {
         case enabled
         case disabled
@@ -81,6 +86,10 @@ class StatusBarSummaryViewModel: ObservableObject {
     
     func stopPolling() {
         providers.forEach { $0?.stopPolling() }
+    }
+    
+    func openPreferences() {
+        delegate?.statusBarSummaryViewModelWantsToOpenPreferences(self)
     }
     
     func toggleStatus() {

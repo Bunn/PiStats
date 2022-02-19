@@ -13,12 +13,11 @@ import Combine
 @NSApplicationMain
 
 class AppDelegate: NSObject, NSApplicationDelegate {
-    var preferencesWindow: NSWindow!
-    var piholes = [Pihole]()
     private var cancellables = Set<AnyCancellable>()
     private var statusItem: NSStatusItem!
     private var backgroundService = BackgroundService()
     private var windowController: StatusBarMenuWindowController?
+    private let piholeManager = PiholeManager.shared
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         setupStatusItem()
@@ -39,15 +38,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     private func setupPiholes() {
-        let pihole1 = Pihole(address: "192.168.1.123", apiToken: "")
-        pihole1.hasPiMonitor = true
-        
-        let pihole2 = Pihole(address: "192.168.1.116", apiToken: "")
-        pihole2.hasPiMonitor = true
-        
-        self.piholes = [pihole1, pihole2]
-        
-        backgroundService.piholes = piholes
+        backgroundService.piholes = piholeManager.piholes
         
         backgroundService.$status.sink { status in
             MenuIconUpdater.update(statusItem: self.statusItem, with: status)
@@ -67,26 +58,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if windowController == nil {
             windowController = StatusBarMenuWindowController(
                 statusItem: statusItem,
-                contentViewController: MenuContentViewController(piholes: piholes)
+                contentViewController: MenuContentViewController(piholeManager: piholeManager)
             )
         }
         
         windowController?.showWindow(sender)
     }
     
-    @objc func openPreferencesWindow() {
-        let contentView = PreferencesView()
-
-        // Create the window and set the content view.
-        preferencesWindow = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-            backing: .buffered, defer: false)
-        preferencesWindow.isReleasedWhenClosed = false
-        preferencesWindow.center()
-        preferencesWindow.setFrameAutosaveName("Main Window")
-        preferencesWindow.contentView = NSHostingView(rootView: contentView)
-        preferencesWindow.toolbarStyle = .unifiedCompact
-        preferencesWindow.makeKeyAndOrderFront(nil)
-    }
 }

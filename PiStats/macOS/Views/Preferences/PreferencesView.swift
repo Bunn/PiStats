@@ -6,22 +6,20 @@
 //
 
 import SwiftUI
+import PiStatsCore
 
 struct PreferencesView: View {
+    @StateObject var viewModel: PreferencesViewModel
+    @State var selectedPihole: Pihole?
     
     var body: some View {
         HStack {
             VStack(spacing:0) {
-                List {
-                    piholeRow
+                List(viewModel.piholes, selection: $selectedPihole) { pihole in
+                    piholeRow(pihole)
                     Divider()
-                    piholeRow
-                    Divider()
-                    piholeRow
-                    Divider()
-                    piholeRow
                 }.border(.gray)
-                
+      
                 VStack(spacing:0) {
                     Spacer()
                     settingsRow
@@ -41,7 +39,7 @@ struct PreferencesView: View {
         .padding()
     }
     
-    var piholeRow: some View {
+    func piholeRow(_ pihole: Pihole) -> some View {
         HStack {
             HStack {
                 ZStack {
@@ -58,9 +56,9 @@ struct PreferencesView: View {
                     .shadow(radius: 1)
                 }
                 VStack (alignment: .leading) {
-                Text("192.168.1.123")
+                    Text(pihole.address)
                         .font(.title3)
-                    Text("Enabled")
+                    Text(pihole.enabled ? "Enabled" : "Disabled")
                         .font(.caption)
                 }
             }
@@ -70,6 +68,7 @@ struct PreferencesView: View {
             
         }
     }
+
     
     var settingsRow: some View {
         HStack {
@@ -109,6 +108,7 @@ struct PreferencesView: View {
             
             Button {
                 print("-")
+                viewModel.test()
             } label: {
                 Image(systemName: "minus")
                     .frame(width: buttonWidth, height: buttonHeight)
@@ -121,14 +121,10 @@ struct PreferencesView: View {
             Spacer()
         }.frame(height:footerHeight)
     }
-    
-
- 
-
 }
 
 struct PreferencesView_Previews: PreviewProvider {
     static var previews: some View {
-        PreferencesView()
+        PreferencesView(viewModel: PreferencesViewModel.init(piholeManager: PiholeManager.preview()))
     }
 }

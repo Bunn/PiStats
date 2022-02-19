@@ -10,49 +10,49 @@ import PiStatsCore
 
 struct StatusBarSummaryView: View {
     private let itemPadding: CGFloat = 15
-    @EnvironmentObject var dataProvider: StatusBarSummaryViewModel
+    @EnvironmentObject var summaryViewModel: StatusBarSummaryViewModel
     
     var body: some View {
         VStack {
             HStack {
-                if dataProvider.hasMultiplePiholes {
-                    Picker(selection: $dataProvider.selectedOption, label: HStack {
-                        SummaryStatus(status: dataProvider.status)
+                if summaryViewModel.hasMultiplePiholes {
+                    Picker(selection: $summaryViewModel.selectedOption, label: HStack {
+                        SummaryStatus(status: summaryViewModel.status)
                     }) {
-                        ForEach(dataProvider.piholeSelectionOptions, id: \.self) {
+                        ForEach(summaryViewModel.piholeSelectionOptions, id: \.self) {
                             Text($0.name)
                         }
                     }
                     .frame(width: 200)
                 } else {
-                    SummaryStatus(status: dataProvider.status)
+                    SummaryStatus(status: summaryViewModel.status)
                 }
                 
                 Spacer()
                 
                 Button {
-                    dataProvider.toggleStatus()
+                    summaryViewModel.toggleStatus()
                 } label: {
-                    Text(dataProvider.buttonFormattedStatus)
+                    Text(summaryViewModel.buttonFormattedStatus)
                 }
             }
             
             Divider()
 
-            if let summary = dataProvider.summaryDisplay {
+            if let summary = summaryViewModel.summaryDisplay {
                 SummaryItemsList(summaryDisplay: summary)
-            } else if let error = dataProvider.summaryError {
+            } else if let error = summaryViewModel.summaryError {
                 Text("Error \(error)")
             } else {
                 SummaryItemsList(summaryDisplay: SummaryDisplay.preview()).redacted(reason: .placeholder)
             }
             
-            if dataProvider.hasMonitorEnabled {
+            if summaryViewModel.hasMonitorEnabled {
                 Divider()
                 
-                if let display = dataProvider.monitorDisplay {
+                if let display = summaryViewModel.monitorDisplay {
                     MonitorGridView(display: display)
-                } else if let error = dataProvider.monitorError {
+                } else if let error = summaryViewModel.monitorError {
                     Text("Error \(error)")
                 } else {
                     MonitorGridView(display: MonitorDisplay.preview()).redacted(reason: .placeholder)
@@ -81,7 +81,7 @@ struct StatusBarSummaryView: View {
     }
     
     private func openPreferences() {
-        NSApp.sendAction(#selector(AppDelegate.openPreferencesWindow), to: nil, from: nil)
+        summaryViewModel.openPreferences()
     }
 }
 
