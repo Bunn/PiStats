@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct PiholeConfigurationView: View {
+    @Binding var piholeViewModel: PiholeConfigurationViewModel
     @State private var width: CGFloat?
     @State private var showingPopover = false
     
@@ -98,7 +99,7 @@ struct PiholeConfigurationView: View {
                     Text("Name")
                         .read(labelWidth)
                         .frame(width: width, alignment: .leading)
-                    TextField("Raspberry Pi", text: $textSample)
+                    TextField("Raspberry Pi", text: $piholeViewModel.name)
                 }
                 
                 HStack {
@@ -220,8 +221,8 @@ struct PiholeConfigurationView: View {
     }
 }
 
-struct PiholeConfigurationView_Previews: PreviewProvider {
-    static var previews: some View {
-        PiholeConfigurationView()
-    }
-}
+//struct PiholeConfigurationView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        PiholeConfigurationView(piholeViewModel: PiholeConfigurationViewModel.preview())
+//    }
+//}

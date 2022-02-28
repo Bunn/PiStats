@@ -9,9 +9,9 @@ import SwiftUI
 import PiStatsCore
 
 struct PreferencesView: View {
-    @StateObject var viewModel: PreferencesViewModel
-    @State var selectedPihole: Pihole?
-    
+    @ObservedObject var viewModel: PreferencesViewModel
+    @State private var selectedPihole: Pihole?
+
     var body: some View {
         HStack {
             VStack(spacing:0) {
@@ -22,9 +22,9 @@ struct PreferencesView: View {
                             
                             ZStack (alignment: .leading) {
                                 if selectedPihole == pihole {
-                                    Color.blue
+                                    Color.accentColor
                                 } else {
-                                    Color.white
+                                    Color("backgroundColor")
                                 }
                                 
                                 piholeRow(pihole)
@@ -36,8 +36,8 @@ struct PreferencesView: View {
                         }
                     }
                 }
-                .background(Color.white)
-                .border(.gray)
+                .background(Color("backgroundColor"))
+                .border(Color("border"))
                 
                 //PiStats Options
                 VStack(spacing:0) {
@@ -45,19 +45,31 @@ struct PreferencesView: View {
                     settingsRow
                     Spacer()
                     Divider()
-                }.background(Color.white)
+                }.background(Color("backgroundColor"))
                     .frame(height: 40)
                 
                 addRemovePiholeFooter
                 
                 
-            }.border(.gray)
+            }.border(Color("border"))
                 .frame(width: 200)
+            if let selectedPihole = selectedPihole {
+                PiholeConfigurationView(piholeViewModel: Binding.constant(PiholeConfigurationViewModel(pihole: selectedPihole)))
+            } else {
+                Text("Please select or add a pi-hole")
+                    .frame(width: 410)
+            }
             
-            PiholeConfigurationView()
         }
         .frame(maxWidth: 600, minHeight: 450, idealHeight: 450)
-        .padding()
+        .padding(30)
+        .onAppear {
+            autoSelectPihole()
+        }
+    }
+    
+    private func autoSelectPihole() {
+        selectedPihole = viewModel.piholes.first
     }
     
     func piholeRow(_ pihole: Pihole) -> some View {

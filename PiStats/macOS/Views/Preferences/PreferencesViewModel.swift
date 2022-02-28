@@ -11,7 +11,8 @@ import Combine
 
 class PreferencesViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
-
+    private(set) var configurationViewModel: PiholeConfigurationViewModel?
+    
     private let piholeManager: PiholeManager
     @Published var piholes: [Pihole]
     
@@ -27,6 +28,11 @@ class PreferencesViewModel: ObservableObject {
             }.store(in: &cancellables)
     }
     
+    func configurationViewModel(for pihole: Pihole) -> PiholeConfigurationViewModel {
+        let viewModel = PiholeConfigurationViewModel(pihole: pihole)
+        self.configurationViewModel = viewModel
+        return viewModel
+    }
     
     func test() {
         piholeManager.test()
