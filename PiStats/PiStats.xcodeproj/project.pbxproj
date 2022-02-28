@@ -51,7 +51,6 @@
 		317C589D27AEC8FE007DC1C9 /* PiStatsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 317C589C27AEC8FE007DC1C9 /* PiStatsCore */; };
 		317C58A027AECCDB007DC1C9 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C589F27AECCDB007DC1C9 /* PreferencesView.swift */; };
 		317C58A227AECF99007DC1C9 /* PreferencesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C58A127AECF99007DC1C9 /* PreferencesViewModel.swift */; };
-		317C58A527AED171007DC1C9 /* PiholeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C58A427AED171007DC1C9 /* PiholeSettingsView.swift */; };
 		317C58A727AED1AA007DC1C9 /* UserText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C58A627AED1AA007DC1C9 /* UserText.swift */; };
 		317C58A827AED1AA007DC1C9 /* UserText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C58A627AED1AA007DC1C9 /* UserText.swift */; };
 		317C58AA27AED435007DC1C9 /* EqualFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317C58A927AED435007DC1C9 /* EqualFrame.swift */; };
@@ -106,7 +105,6 @@
 		317C589B27AEC8E1007DC1C9 /* PiStatsCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = PiStatsCore; path = ../../PiStatsCore/PiStatsCore; sourceTree = "<group>"; };
 		317C589F27AECCDB007DC1C9 /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
 		317C58A127AECF99007DC1C9 /* PreferencesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewModel.swift; sourceTree = "<group>"; };
-		317C58A427AED171007DC1C9 /* PiholeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiholeSettingsView.swift; sourceTree = "<group>"; };
 		317C58A627AED1AA007DC1C9 /* UserText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserText.swift; sourceTree = "<group>"; };
 		317C58A927AED435007DC1C9 /* EqualFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EqualFrame.swift; sourceTree = "<group>"; };
 		317C58AC27AED48F007DC1C9 /* UserImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserImages.swift; sourceTree = "<group>"; };
@@ -224,7 +222,6 @@
 		317C58A327AED15D007DC1C9 /* PiholeSettings */ = {
 			isa = PBXGroup;
 			children = (
-				317C58A427AED171007DC1C9 /* PiholeSettingsView.swift */,
 				312224E827C16C6E00BCF374 /* PiholeConfigurationView.swift */,
 			);
 			path = PiholeSettings;
@@ -519,7 +516,6 @@
 				3144F4B12676512C007BA9FE /* SummaryStatus.swift in Sources */,
 				310AE235266B826D005F0F17 /* Logger.swift in Sources */,
 				3100B16E2693642F00FDC87D /* BackgroundService.swift in Sources */,
-				317C58A527AED171007DC1C9 /* PiholeSettingsView.swift in Sources */,
 				310AE22A266B7FCD005F0F17 /* StatusBarSummaryView.swift in Sources */,
 				310AE280266BADE3005F0F17 /* SummaryItemRowView.swift in Sources */,
 				310AE28C266BB6F1005F0F17 /* MonitorGridView.swift in Sources */,

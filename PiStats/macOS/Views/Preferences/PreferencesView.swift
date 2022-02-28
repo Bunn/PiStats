@@ -15,11 +15,31 @@ struct PreferencesView: View {
     var body: some View {
         HStack {
             VStack(spacing:0) {
-                List(viewModel.piholes, selection: $selectedPihole) { pihole in
-                    piholeRow(pihole)
-                    Divider()
-                }.border(.gray)
-      
+                
+                ScrollView {
+                    VStack(spacing: 0) {
+                        ForEach(viewModel.piholes) { pihole in
+                            
+                            ZStack (alignment: .leading) {
+                                if selectedPihole == pihole {
+                                    Color.blue
+                                } else {
+                                    Color.white
+                                }
+                                
+                                piholeRow(pihole)
+                                    .onTapGesture {
+                                        selectedPihole = pihole
+                                    }
+                            }
+                            
+                        }
+                    }
+                }
+                .background(Color.white)
+                .border(.gray)
+                
+                //PiStats Options
                 VStack(spacing:0) {
                     Spacer()
                     settingsRow
@@ -28,7 +48,8 @@ struct PreferencesView: View {
                 }.background(Color.white)
                     .frame(height: 40)
                 
-                addRemoveFooter
+                addRemovePiholeFooter
+                
                 
             }.border(.gray)
                 .frame(width: 200)
@@ -45,16 +66,18 @@ struct PreferencesView: View {
                 ZStack {
                     
                     RoundedRectangle(cornerRadius: 10)
-                        
+                    
                         .frame(width: 35, height: 35)
                         .shadow(radius: 1)
-
-                Image(systemName: "shield")
-                    .renderingMode(.original)
-                    .font(.title2)
-                    .foregroundColor(.white)
-                    .shadow(radius: 1)
+                        .padding(8)
+                    
+                    Image(systemName: "shield")
+                        .renderingMode(.original)
+                        .font(.title2)
+                        .foregroundColor(.white)
+                        .shadow(radius: 1)
                 }
+                
                 VStack (alignment: .leading) {
                     Text(pihole.address)
                         .font(.title3)
@@ -66,9 +89,9 @@ struct PreferencesView: View {
             
             Spacer()
             
-        }
+        }.contentShape(Rectangle())
     }
-
+    
     
     var settingsRow: some View {
         HStack {
@@ -88,7 +111,7 @@ struct PreferencesView: View {
     }
     
     
-    var addRemoveFooter: some View {
+    var addRemovePiholeFooter: some View {
         let buttonWidth: CGFloat = 25
         let buttonHeight: CGFloat = 20
         let footerHeight: CGFloat = 20
