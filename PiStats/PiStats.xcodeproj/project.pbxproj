@@ -41,6 +41,11 @@
 		310AE28C266BB6F1005F0F17 /* MonitorGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310AE28A266BB6F1005F0F17 /* MonitorGridView.swift */; };
 		310AE28D266BB6F1005F0F17 /* MonitorGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310AE28A266BB6F1005F0F17 /* MonitorGridView.swift */; };
 		310AE28E266BB6F1005F0F17 /* MonitorGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310AE28A266BB6F1005F0F17 /* MonitorGridView.swift */; };
+		310E16CC27CE5A8E00EDB51A /* PiholePreferenceListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310E16CB27CE5A8E00EDB51A /* PiholePreferenceListRow.swift */; };
+		310E16D027CE5C1E00EDB51A /* OptionsButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310E16CF27CE5C1E00EDB51A /* OptionsButtonView.swift */; };
+		310E16D227CE5C4C00EDB51A /* AddRemoveFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310E16D127CE5C4C00EDB51A /* AddRemoveFooterView.swift */; };
+		310E16D427CE5E7C00EDB51A /* PiholeConfigurationPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310E16D327CE5E7C00EDB51A /* PiholeConfigurationPanelView.swift */; };
+		310E16D627CE5E9100EDB51A /* PiMonitorConfigurationPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310E16D527CE5E9100EDB51A /* PiMonitorConfigurationPanelView.swift */; };
 		31140B5E266C14AE005B9866 /* SummaryItemsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31140B5D266C14AE005B9866 /* SummaryItemsList.swift */; };
 		31140B5F266C14AE005B9866 /* SummaryItemsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31140B5D266C14AE005B9866 /* SummaryItemsList.swift */; };
 		312224E927C16C6E00BCF374 /* PiholeConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 312224E827C16C6E00BCF374 /* PiholeConfigurationView.swift */; };
@@ -99,6 +104,11 @@
 		310AE27F266BADE3005F0F17 /* SummaryItemRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryItemRowView.swift; sourceTree = "<group>"; };
 		310AE285266BB652005F0F17 /* MonitorItemType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorItemType.swift; sourceTree = "<group>"; };
 		310AE28A266BB6F1005F0F17 /* MonitorGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorGridView.swift; sourceTree = "<group>"; };
+		310E16CB27CE5A8E00EDB51A /* PiholePreferenceListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiholePreferenceListRow.swift; sourceTree = "<group>"; };
+		310E16CF27CE5C1E00EDB51A /* OptionsButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsButtonView.swift; sourceTree = "<group>"; };
+		310E16D127CE5C4C00EDB51A /* AddRemoveFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRemoveFooterView.swift; sourceTree = "<group>"; };
+		310E16D327CE5E7C00EDB51A /* PiholeConfigurationPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiholeConfigurationPanelView.swift; sourceTree = "<group>"; };
+		310E16D527CE5E9100EDB51A /* PiMonitorConfigurationPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiMonitorConfigurationPanelView.swift; sourceTree = "<group>"; };
 		31140B5D266C14AE005B9866 /* SummaryItemsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryItemsList.swift; sourceTree = "<group>"; };
 		312224E827C16C6E00BCF374 /* PiholeConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiholeConfigurationView.swift; sourceTree = "<group>"; };
 		3144F4AD2676458C007BA9FE /* StatusBarSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarSummaryViewModel.swift; sourceTree = "<group>"; };
@@ -192,6 +202,26 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		310E16CD27CE5AB700EDB51A /* ListPanel */ = {
+			isa = PBXGroup;
+			children = (
+				310E16CB27CE5A8E00EDB51A /* PiholePreferenceListRow.swift */,
+				310E16CF27CE5C1E00EDB51A /* OptionsButtonView.swift */,
+				310E16D127CE5C4C00EDB51A /* AddRemoveFooterView.swift */,
+			);
+			path = ListPanel;
+			sourceTree = "<group>";
+		};
+		310E16CE27CE5BA200EDB51A /* DetailsPanel */ = {
+			isa = PBXGroup;
+			children = (
+				312224E827C16C6E00BCF374 /* PiholeConfigurationView.swift */,
+				310E16D327CE5E7C00EDB51A /* PiholeConfigurationPanelView.swift */,
+				310E16D527CE5E9100EDB51A /* PiMonitorConfigurationPanelView.swift */,
+			);
+			path = DetailsPanel;
+			sourceTree = "<group>";
+		};
 		314526AF267531AC00925F24 /* Summary */ = {
 			isa = PBXGroup;
 			children = (
@@ -214,7 +244,8 @@
 		317C589E27AECCC5007DC1C9 /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
-				312224E827C16C6E00BCF374 /* PiholeConfigurationView.swift */,
+				310E16CE27CE5BA200EDB51A /* DetailsPanel */,
+				310E16CD27CE5AB700EDB51A /* ListPanel */,
 				317C589F27AECCDB007DC1C9 /* PreferencesView.swift */,
 				317C58A127AECF99007DC1C9 /* PreferencesViewModel.swift */,
 				3151288F27CD68B000CE4154 /* PiholeConfigurationViewModel.swift */,
@@ -507,10 +538,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				317C58AE27AED48F007DC1C9 /* UserImages.swift in Sources */,
+				310E16D627CE5E9100EDB51A /* PiMonitorConfigurationPanelView.swift in Sources */,
 				317C58A027AECCDB007DC1C9 /* PreferencesView.swift in Sources */,
 				3144F4B12676512C007BA9FE /* SummaryStatus.swift in Sources */,
 				310AE235266B826D005F0F17 /* Logger.swift in Sources */,
 				3100B16E2693642F00FDC87D /* BackgroundService.swift in Sources */,
+				310E16D227CE5C4C00EDB51A /* AddRemoveFooterView.swift in Sources */,
 				310AE22A266B7FCD005F0F17 /* StatusBarSummaryView.swift in Sources */,
 				310AE280266BADE3005F0F17 /* SummaryItemRowView.swift in Sources */,
 				310AE28C266BB6F1005F0F17 /* MonitorGridView.swift in Sources */,
@@ -520,6 +553,8 @@
 				310AE27B266BADBE005F0F17 /* SummaryItemType.swift in Sources */,
 				317C58A227AECF99007DC1C9 /* PreferencesViewModel.swift in Sources */,
 				317C58B027AED4DD007DC1C9 /* Tooltip.swift in Sources */,
+				310E16D427CE5E7C00EDB51A /* PiholeConfigurationPanelView.swift in Sources */,
+				310E16CC27CE5A8E00EDB51A /* PiholePreferenceListRow.swift in Sources */,
 				310AE23C266B844F005F0F17 /* AppDelegate.swift in Sources */,
 				310AE239266B8375005F0F17 /* StatusBarMenuWindowController.swift in Sources */,
 				31140B5E266C14AE005B9866 /* SummaryItemsList.swift in Sources */,
@@ -528,6 +563,7 @@
 				317C58AB27AED435007DC1C9 /* EqualFrame.swift in Sources */,
 				3100B16B2693605200FDC87D /* MenuContentViewController.swift in Sources */,
 				317C58A827AED1AA007DC1C9 /* UserText.swift in Sources */,
+				310E16D027CE5C1E00EDB51A /* OptionsButtonView.swift in Sources */,
 				310AE287266BB652005F0F17 /* MonitorItemType.swift in Sources */,
 				3100B176269370BB00FDC87D /* MenuIconUpdater.swift in Sources */,
 			);

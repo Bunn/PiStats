@@ -11,7 +11,7 @@ import PiStatsCore
 struct PreferencesView: View {
     @ObservedObject var viewModel: PreferencesViewModel
     @State private var selectedPihole: Pihole?
-
+    
     var body: some View {
         HStack {
             VStack(spacing:0) {
@@ -19,7 +19,6 @@ struct PreferencesView: View {
                 ScrollView {
                     VStack(spacing: 0) {
                         ForEach(viewModel.piholes) { pihole in
-                            
                             ZStack (alignment: .leading) {
                                 if selectedPihole == pihole {
                                     Color.accentColor
@@ -27,12 +26,11 @@ struct PreferencesView: View {
                                     Color("backgroundColor")
                                 }
                                 
-                                piholeRow(pihole)
+                                PiholePreferenceListRow(pihole: pihole)
                                     .onTapGesture {
                                         selectedPihole = pihole
                                     }
                             }
-                            
                         }
                     }
                 }
@@ -42,13 +40,13 @@ struct PreferencesView: View {
                 //PiStats Options
                 VStack(spacing:0) {
                     Spacer()
-                    settingsRow
+                    OptionsButtonView()
                     Spacer()
                     Divider()
                 }.background(Color("backgroundColor"))
                     .frame(height: 40)
                 
-                addRemovePiholeFooter
+                AddRemoveFooterView()
                 
                 
             }.border(Color("border"))
@@ -70,91 +68,6 @@ struct PreferencesView: View {
     
     private func autoSelectPihole() {
         selectedPihole = viewModel.piholes.first
-    }
-    
-    func piholeRow(_ pihole: Pihole) -> some View {
-        HStack {
-            HStack {
-                ZStack {
-                    
-                    RoundedRectangle(cornerRadius: 10)
-                    
-                        .frame(width: 35, height: 35)
-                        .shadow(radius: 1)
-                        .padding(8)
-                    
-                    Image(systemName: "shield")
-                        .renderingMode(.original)
-                        .font(.title2)
-                        .foregroundColor(.white)
-                        .shadow(radius: 1)
-                }
-                
-                VStack (alignment: .leading) {
-                    Text(pihole.address)
-                        .font(.title3)
-                    Text(pihole.enabled ? "Enabled" : "Disabled")
-                        .font(.caption)
-                }
-            }
-            
-            
-            Spacer()
-            
-        }.contentShape(Rectangle())
-    }
-    
-    
-    var settingsRow: some View {
-        HStack {
-            Button {
-                print("settings")
-            } label: {
-                HStack {
-                    Image(systemName: "gear")
-                        .padding(.leading)
-                    Text("Pi Stats Options")
-                }
-            } .buttonStyle(.plain)
-            
-            
-            Spacer()
-        }
-    }
-    
-    
-    var addRemovePiholeFooter: some View {
-        let buttonWidth: CGFloat = 25
-        let buttonHeight: CGFloat = 20
-        let footerHeight: CGFloat = 20
-        
-        return HStack(spacing:0) {
-            Button {
-                print("+")
-            } label: {
-                Image(systemName: "plus")
-                    .frame(width: buttonWidth, height: buttonHeight)
-                    .contentShape(Rectangle())
-                
-            }
-            .buttonStyle(.plain)
-            
-            Divider()
-            
-            Button {
-                print("-")
-                viewModel.test()
-            } label: {
-                Image(systemName: "minus")
-                    .frame(width: buttonWidth, height: buttonHeight)
-                    .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            
-            
-            Divider()
-            Spacer()
-        }.frame(height:footerHeight)
     }
 }
 
