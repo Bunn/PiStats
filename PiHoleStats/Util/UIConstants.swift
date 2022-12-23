@@ -42,6 +42,7 @@ struct UIConstants {
             static let decodeResponseError = "Can't decode response"
             static let noAPITokenProvided = "No API Token Provided"
             static let sessionError = "Session Error"
+            static let cantAddNewItem = "Can't add new item"
         }
 
         static let totalQueries = "Total Queries"

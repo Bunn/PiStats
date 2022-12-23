@@ -503,7 +503,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.3.3;
+				MARKETING_VERSION = 2.3.4;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.holestats;
 				PRODUCT_NAME = "Pi Stats";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -533,7 +533,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.3.3;
+				MARKETING_VERSION = 2.3.4;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.holestats;
 				PRODUCT_NAME = "Pi Stats";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -571,7 +571,7 @@
 			repositoryURL = "git@github.com:Bunn/SwiftHole.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.1.0;
+				minimumVersion = 2.0.0;
 			};
 		};
 		31653446248C261B00733357 /* XCRemoteSwiftPackageReference "Preferences" */ = {
