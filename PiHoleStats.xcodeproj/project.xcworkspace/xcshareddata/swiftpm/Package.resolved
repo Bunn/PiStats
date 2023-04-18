@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "git@github.com:Bunn/SwiftHole.git",
       "state" : {
-        "revision" : "a2f35eaeeed0a43ec77e9c81544e471352ef82e8",
-        "version" : "2.0.0"
+        "revision" : "554d7977ba771157c0a7c7197399763a9a5ecad6",
+        "version" : "3.0.0"
       }
     }
   ],
