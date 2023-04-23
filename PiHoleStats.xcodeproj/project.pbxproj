@@ -38,6 +38,7 @@
 		31CC8174249F8072008DA24C /* DataMigrationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CC8173249F8072008DA24C /* DataMigrationManager.swift */; };
 		31CC8176249FA290008DA24C /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CC8175249FA290008DA24C /* Logger.swift */; };
 		31DC927924D7103500C6E8F7 /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31DC927824D7103500C6E8F7 /* QRCodeGenerator.swift */; };
+		63E0AC82257D84E200E20B1E /* AddRemoveButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E0AC81257D84E200E20B1E /* AddRemoveButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,6 +76,7 @@
 		31CC8173249F8072008DA24C /* DataMigrationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataMigrationManager.swift; sourceTree = "<group>"; };
 		31CC8175249FA290008DA24C /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		31DC927824D7103500C6E8F7 /* QRCodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeGenerator.swift; sourceTree = "<group>"; };
+		63E0AC81257D84E200E20B1E /* AddRemoveButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRemoveButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 				31CC8175249FA290008DA24C /* Logger.swift */,
 				31DC927824D7103500C6E8F7 /* QRCodeGenerator.swift */,
 				3129E20124F2B79800473269 /* ToolTip.swift */,
+				63E0AC81257D84E200E20B1E /* AddRemoveButton.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -350,6 +353,7 @@
 				319084BC2454920700D47980 /* AppDelegate.swift in Sources */,
 				313408DB24688456005D73E7 /* SummaryViewController.swift in Sources */,
 				315CA2DC247931FE0079F555 /* SharedFileList.m in Sources */,
+				63E0AC82257D84E200E20B1E /* AddRemoveButton.swift in Sources */,
 				3160C4F7247876AC00FAB226 /* EventMonitor.swift in Sources */,
 				3160C4F5247875D600FAB226 /* MenuController.swift in Sources */,
 				3124948C24701BD300634933 /* KeyChainPasswordItem.swift in Sources */,
