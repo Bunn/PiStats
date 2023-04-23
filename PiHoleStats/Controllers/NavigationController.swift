@@ -13,6 +13,8 @@ class NavigationController: ObservableObject {
     let preferences: UserPreferences
     let piholeDataProvider: PiholeDataProvider
     
+    lazy var preferencesController = PreferencesViewController(preferences: preferences, piholeListViewModel: PiholeListViewModel(piholeDataProvider: piholeDataProvider))
+    
     init(preferences: UserPreferences, piholeDataProvider: PiholeDataProvider) {
         self.preferences = preferences
         self.piholeDataProvider = piholeDataProvider
@@ -20,8 +22,7 @@ class NavigationController: ObservableObject {
     
     public func openPreferences() {
         NSApp.activate(ignoringOtherApps: true)
-        
-        let controller = PreferencesViewController(preferences: preferences, piholeListViewModel: PiholeListViewModel(piholeDataProvider: piholeDataProvider))
-        controller.show()
+
+        preferencesController.show()
     }
 }
