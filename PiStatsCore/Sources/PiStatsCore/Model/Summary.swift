@@ -45,7 +45,7 @@ public struct SummaryV6: Summary, Decodable {
     public var totalQueries: Int { queries.total }
     public var queriesBlocked: Int { queries.blocked }
     public var percentBlocked: Double { queries.percent_blocked }
-    public var domainsOnList: Int { queries.unique_domains }
+    public var domainsOnList: Int { gravity.domains_being_blocked }
     public var activeClients: Int { clients.active }
 }
 
