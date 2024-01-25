@@ -8,7 +8,7 @@
 import XCTest
 @testable import PiStatsCore
 
-class V6ServiceTests: XCTestCase {
+class V5ServiceTests: XCTestCase {
     override func setUp() {
         super.setUp()
     }
@@ -26,7 +26,7 @@ class V6ServiceTests: XCTestCase {
             static let activeClients = 5093
         }
 
-        let mockedData = JSONMock.summaryV6JSON(totalQueries: "\(ExpectedSummary.totalQueries)",
+        let mockedData = JSONMock.summaryV5JSON(totalQueries: "\(ExpectedSummary.totalQueries)",
                                                 queriesBlocked: "\(ExpectedSummary.queriesBlocked)",
                                                 percentBlocked: "\(ExpectedSummary.percentBlocked)",
                                                 domainsOnList: "\(ExpectedSummary.domainsOnList)",
@@ -38,11 +38,10 @@ class V6ServiceTests: XCTestCase {
         config.protocolClasses = [URLProtocolMock.self]
         let session = URLSession(configuration: config)
 
-        let service = PiholeV6Service(session: session)
+        let service = PiholeV5Service(session: session)
 
-        let serverSettings = ServerSettings(version: .v6, host: "127.0.0.1", requestProtocol: .http)
-        let credentials = Credentials(applicationPassword: "batata")
-        credentials.sessionID = Credentials.SessionID(sid: "repolho", csrf: "cenoura")
+        let serverSettings = ServerSettings(version: .v5, host: "127.0.0.1", requestProtocol: .http)
+        let credentials = Credentials(apiToken: "batata")
         let result = try await service.fetchSummary(serverSettings, credentials: credentials)
 
         XCTAssertEqual(result.totalQueries, ExpectedSummary.totalQueries)

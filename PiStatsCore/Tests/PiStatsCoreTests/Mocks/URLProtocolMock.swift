@@ -8,7 +8,7 @@
 import Foundation
 
 class URLProtocolMock: URLProtocol {
-    static var testURLs = [URL?: Data]()
+    static var expectedData: Data? = nil
 
     override class func canInit(with request: URLRequest) -> Bool {
         return true
@@ -19,14 +19,14 @@ class URLProtocolMock: URLProtocol {
     }
 
     override func startLoading() {
-        if let url = request.url {
-            if let data = URLProtocolMock.testURLs[url] {
-                client?.urlProtocol(self, didLoad: data)
-                client?.urlProtocol(self, didReceive: HTTPURLResponse(), cacheStoragePolicy: .allowed)
-            }
+        if let data = URLProtocolMock.expectedData {
+            client?.urlProtocol(self, didLoad: data)
+        } else {
+            client?.urlProtocol(self, didLoad: Data("".utf8))
         }
 
-        self.client?.urlProtocolDidFinishLoading(self)
+        client?.urlProtocol(self, didReceive: HTTPURLResponse(), cacheStoragePolicy: .allowed)
+        client?.urlProtocolDidFinishLoading(self)
     }
 
     override func stopLoading() { }

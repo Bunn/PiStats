@@ -9,7 +9,7 @@ import Foundation
 
 struct JSONMock {
 
-    static func summaryJSON(totalQueries: String = "10",
+    static func summaryV6JSON(totalQueries: String = "10",
                             queriesBlocked: String = "10",
                             percentBlocked: String = "10",
                             domainsOnList: String = "10",
@@ -89,5 +89,66 @@ struct JSONMock {
  }
 """
     }
+
+    static func summaryV5JSON(totalQueries: String = "10",
+                            queriesBlocked: String = "10",
+                            percentBlocked: String = "10",
+                            domainsOnList: String = "10",
+                            activeClients: String = "10") -> String {
+    """
+  {
+    "domains_being_blocked": \(domainsOnList),
+    "dns_queries_today": \(totalQueries),
+    "ads_blocked_today": \(queriesBlocked),
+    "ads_percentage_today": \(percentBlocked),
+    "unique_domains": 23,
+    "queries_forwarded": 4139,
+    "queries_cached": 20883,
+    "clients_ever_seen": 42,
+    "unique_clients": \(activeClients),
+    "dns_queries_all_types": 25652,
+    "reply_UNKNOWN": 283,
+    "reply_NODATA": 1762,
+    "reply_NXDOMAIN": 10421,
+    "reply_CNAME": 2622,
+    "reply_IP": 10145,
+    "reply_DOMAIN": 48,
+    "reply_RRNAME": 364,
+    "reply_SERVFAIL": 0,
+    "reply_REFUSED": 0,
+    "reply_NOTIMP": 0,
+    "reply_OTHER": 0,
+    "reply_DNSSEC": 0,
+    "reply_NONE": 0,
+    "reply_BLOB": 7,
+    "dns_queries_all_replies": 25652,
+    "privacy_level": 0,
+    "status": "enabled",
+    "gravity_last_updated": {
+      "file_exists": true,
+      "absolute": 1705806851,
+      "relative": {
+        "days": 0,
+        "hours": 17,
+        "minutes": 49
+      }
+    },
+    "top_queries": {
+      "amazon.com": 4331,
+      "wikipedia.org": 4331,
+    },
+    "top_ads": {
+      "analytics.plex.tv": 185,
+      "logs.netflix.com": 59,
+    },
+    "top_sources_blocked": {
+      "192.168.1.248": 201,
+      "192.168.1.163": 59
+    }
+  }
+"""
+    }
 }
+
+
 
