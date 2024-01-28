@@ -32,8 +32,11 @@ struct PiholeV5Service: PiholeService {
         self.urlSession = session
     }
 
-    func setStatus(_ status: Pihole.Status, timer: Int?, serverSettings: ServerSettings, credentials: Credentials) async throws {
-
+    func setStatus(_ status: Pihole.Status,
+                   timer: Int?,
+                   serverSettings: ServerSettings,
+                   credentials: Credentials) async throws -> Pihole.Status {
+        return .unknown
     }
 
     // V5 doesn't have a specific API for fetching only the status, so we use the summary instead

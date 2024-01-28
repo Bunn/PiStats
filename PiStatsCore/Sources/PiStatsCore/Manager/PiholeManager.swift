@@ -22,28 +22,28 @@ final class PiholeManager {
     }
 
     public func updateSummary() async throws {
-        try await pihole.summary = service.fetchSummary(serverSettings: pihole.serverSettings,
+        pihole.summary = try await service.fetchSummary(serverSettings: pihole.serverSettings,
                                                         credentials: pihole.credentials)
     }
 
     public func updateStatus() async throws {
-        try await pihole.status = service.fetchStatus(serverSettings: pihole.serverSettings,
+        pihole.status = try await service.fetchStatus(serverSettings: pihole.serverSettings,
                                                       credentials: pihole.credentials)
     }
 
     public func updateSystemInfo() async throws {
-        try await pihole.systemInfo = service.fetchSystemInfo(serverSettings: pihole.serverSettings,
+        pihole.systemInfo = try await service.fetchSystemInfo(serverSettings: pihole.serverSettings,
                                                               credentials: pihole.credentials)
     }
 
     public func updateSensorData() async throws {
-        try await pihole.sensorData = service.fetchSensorData(serverSettings: pihole.serverSettings,
+        pihole.sensorData = try await service.fetchSensorData(serverSettings: pihole.serverSettings,
                                                               credentials: pihole.credentials)
     }
-    
+
     public func setStatus(_ status: Pihole.Status) async throws {
-        try await service.setStatus(status, timer: nil,
-                                    serverSettings: pihole.serverSettings,
-                                    credentials: pihole.credentials)
+        pihole.status = try await service.setStatus(status, timer: nil,
+                                                    serverSettings: pihole.serverSettings,
+                                                    credentials: pihole.credentials)
     }
 }

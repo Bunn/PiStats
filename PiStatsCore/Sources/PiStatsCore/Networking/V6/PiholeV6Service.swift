@@ -27,24 +27,24 @@ struct PiholeV6Service: PiholeService {
         self.urlSession = session
     }
 
-    func setStatus(_ status: Pihole.Status, timer: Int?, serverSettings: ServerSettings, credentials: Credentials) async throws {
+    func setStatus(_ status: Pihole.Status,
+                   timer: Int? = 0,
+                   serverSettings: ServerSettings,
+                   credentials: Credentials) async throws -> Pihole.Status{
 
         if status == .unknown {
             throw PiholeServiceError.invalidStatusType
         }
 
-        let body = try JSONEncoder().encode(["blocking": status.rawValue])
+        let body = try JSONEncoder().encode(["blocking": status == .enabled])
         let response: ResponseData = try await fetchData(serverSettings: serverSettings,
                                                         path: .status,
                                                         httpMethod: .POST,
                                                         httpBody: body,
                                                         credentials: credentials)
 
-        if response.piholeStatus == status {
-            print("YEY")
-        } else {
-            print("NOO")
-        }
+
+        return response.piholeStatus
     }
 
     func fetchStatus(serverSettings: ServerSettings, credentials: Credentials) async throws -> Pihole.Status {
