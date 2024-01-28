@@ -64,6 +64,20 @@ final class V6RemoteTests: XCTestCase {
         print("--------\nSYSTEM INFO ->\(String(describing: pihole.systemInfo))\n--------\n")
     }
 
+    func testRemoteV6SetDisableStatus_WithValidFetch() async throws {
+        let pihole = Pihole(serverSettings: serverSettings, credentials: credentials)
+        let manager = PiholeManager(pihole: pihole)
+        try await manager.setStatus(.disabled)
+        print("--------\nSENSOR DATA -> \(pihole.status)\n--------\n")
+    }
+
+    func testRemoteV6SetEnableStatus_WithValidFetch() async throws {
+        let pihole = Pihole(serverSettings: serverSettings, credentials: credentials)
+        let manager = PiholeManager(pihole: pihole)
+        try await manager.setStatus(.enabled)
+        print("--------\nSENSOR DATA -> \(pihole.status)\n--------\n")
+    }
+    
     func loadConfigValues() {
         guard let url = Bundle.module.url(forResource: "ServerConfig", withExtension: "plist") else {
             fatalError("ServerConfig.plist not found")

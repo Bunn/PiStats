@@ -27,29 +27,34 @@ struct PiholeV6Service: PiholeService {
         self.urlSession = session
     }
 
-    func setStatus(_ status: Pihole.Status, serverSettings: ServerSettings, credentials: Credentials) async throws {
+    func setStatus(_ status: Pihole.Status, timer: Int?, serverSettings: ServerSettings, credentials: Credentials) async throws {
 
+        if status == .unknown {
+            throw PiholeServiceError.invalidStatusType
+        }
+
+        let body = try JSONEncoder().encode(["blocking": status.rawValue])
+        let response: ResponseData = try await fetchData(serverSettings: serverSettings,
+                                                        path: .status,
+                                                        httpMethod: .POST,
+                                                        httpBody: body,
+                                                        credentials: credentials)
+
+        if response.piholeStatus == status {
+            print("YEY")
+        } else {
+            print("NOO")
+        }
     }
 
     func fetchStatus(serverSettings: ServerSettings, credentials: Credentials) async throws -> Pihole.Status {
-        struct ResponseData: Codable {
-            let blocking: String
-            let timer: String?
-            let took: Double
-        }
+
 
         let data: ResponseData = try await fetchData(serverSettings: serverSettings,
                                                    path: .status,
                                                    credentials: credentials)
 
-        switch data.blocking.lowercased() {
-        case "enabled":
-            return .enabled
-        case "disabled":
-            return .disabled
-        default:
-            return .unknown
-        }
+        return data.piholeStatus
     }
 
     func fetchSystemInfo(serverSettings: ServerSettings, credentials: Credentials) async throws -> SystemInfo {
@@ -147,4 +152,21 @@ private struct Error: Codable {
     let key: String
     let message: String
     let hint: String?
+}
+
+private struct ResponseData: Codable {
+    let blocking: String
+    let timer: String?
+    let took: Double
+
+    var piholeStatus: Pihole.Status {
+        switch blocking.lowercased() {
+        case "enabled":
+            return .enabled
+        case "disabled":
+            return .disabled
+        default:
+            return .unknown
+        }
+    }
 }

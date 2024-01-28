@@ -32,7 +32,7 @@ struct PiholeV5Service: PiholeService {
         self.urlSession = session
     }
 
-    func setStatus(_ status: Pihole.Status, serverSettings: ServerSettings, credentials: Credentials) async throws {
+    func setStatus(_ status: Pihole.Status, timer: Int?, serverSettings: ServerSettings, credentials: Credentials) async throws {
 
     }
 

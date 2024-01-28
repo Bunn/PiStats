@@ -40,4 +40,10 @@ final class PiholeManager {
         try await pihole.sensorData = service.fetchSensorData(serverSettings: pihole.serverSettings,
                                                               credentials: pihole.credentials)
     }
+    
+    public func setStatus(_ status: Pihole.Status) async throws {
+        try await service.setStatus(status, timer: nil,
+                                    serverSettings: pihole.serverSettings,
+                                    credentials: pihole.credentials)
+    }
 }

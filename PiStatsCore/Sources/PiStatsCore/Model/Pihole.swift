@@ -26,7 +26,7 @@ public struct ServerSettings {
 
 public class Pihole {
 
-    public enum Status {
+    public enum Status: String {
         case enabled
         case disabled
         case unknown
