@@ -14,12 +14,28 @@ struct PiholeV5Service: PiholeService {
         self.urlSession = session
     }
 
-    func authenticate(_ serverSettings: ServerSettings, credentials: Credentials) async throws -> Credentials.SessionID {
+    func setStatus(_ status: Pihole.Status, serverSettings: ServerSettings, credentials: Credentials) async throws {
+
+    }
+
+    func fetchStatus(serverSettings: ServerSettings, credentials: Credentials) async throws -> Pihole.Status {
+        return .disabled
+    }
+    
+    func fetchSystemInfo(serverSettings: ServerSettings, credentials: Credentials) async throws -> SystemInfo {
+        throw PiholeServiceError.notImplementedByPiholeVersion
+    }
+
+    func fetchSensorData(serverSettings: ServerSettings, credentials: Credentials) async throws -> SensorData {
+        throw PiholeServiceError.notImplementedByPiholeVersion
+    }
+
+    func authenticate(serverSettings: ServerSettings, credentials: Credentials) async throws -> Credentials.SessionID {
         assertionFailure("V5 should not call this API")
         return Credentials.SessionID(sid: "", csrf: "")
     }
 
-    func fetchSummary(_ serverSettings: ServerSettings, credentials: Credentials) async throws -> Summary {
+    func fetchSummary(serverSettings: ServerSettings, credentials: Credentials) async throws -> Summary {
         guard let token = credentials.apiToken else {
             throw PiholeServiceError.noAPIToken
         }
@@ -42,7 +58,7 @@ struct PiholeV5Service: PiholeService {
         do {
             return try JSONDecoder().decode(SummaryV5.self, from: data)
         } catch {
-            throw PiholeServiceError.cantDecodeSummary
+            throw PiholeServiceError.cantDecodeData(data: data)
         }
     }
 

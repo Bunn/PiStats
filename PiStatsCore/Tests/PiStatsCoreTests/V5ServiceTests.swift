@@ -42,7 +42,7 @@ class V5ServiceTests: XCTestCase {
 
         let serverSettings = ServerSettings(version: .v5, host: "127.0.0.1", requestProtocol: .http)
         let credentials = Credentials(apiToken: "batata")
-        let result = try await service.fetchSummary(serverSettings, credentials: credentials)
+        let result = try await service.fetchSummary(serverSettings: serverSettings, credentials: credentials)
 
         XCTAssertEqual(result.totalQueries, ExpectedSummary.totalQueries)
         XCTAssertEqual(result.queriesBlocked, ExpectedSummary.queriesBlocked)

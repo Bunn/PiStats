@@ -43,7 +43,7 @@ class V6ServiceTests: XCTestCase {
         let serverSettings = ServerSettings(version: .v6, host: "127.0.0.1", requestProtocol: .http)
         let credentials = Credentials(applicationPassword: "batata")
         credentials.sessionID = Credentials.SessionID(sid: "repolho", csrf: "cenoura")
-        let result = try await service.fetchSummary(serverSettings, credentials: credentials)
+        let result = try await service.fetchSummary(serverSettings: serverSettings, credentials: credentials)
 
         XCTAssertEqual(result.totalQueries, ExpectedSummary.totalQueries)
         XCTAssertEqual(result.queriesBlocked, ExpectedSummary.queriesBlocked)

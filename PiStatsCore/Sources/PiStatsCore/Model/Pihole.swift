@@ -29,6 +29,8 @@ public class Pihole {
     public var serverSettings: ServerSettings
     public var status: Status = .unknown
     public var summary: Summary?
+    public var sensorData: SensorData?
+    public var systemInfo: SystemInfo?
     var credentials: Credentials
 
 

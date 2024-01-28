@@ -7,82 +7,118 @@
 
 import Foundation
 
+private enum ServicePath: String {
+    case summary = "/api/stats/summary"
+    case auth = "/api/auth"
+    case systemInfo = "/api/info/system"
+    case sensorData = "/api/info/sensors"
+}
+
+private enum ServiceHeader {
+    static let CSRF = "X-FTL-CSRF"
+    static let SID = "X-FTL-SID"
+}
+
+private enum HTTPMethod: String {
+    case GET
+    case POST
+}
+
 struct PiholeV6Service: PiholeService {
-
-    struct APIResponse: Codable {
-        let session: Credentials.SessionID
-    }
-
     public let urlSession: URLSession
 
     init(session: URLSession = .shared) {
         self.urlSession = session
     }
 
-    // TODO: Refactor this
-    func fetchSummary(_ serverSettings: ServerSettings, credentials: Credentials) async throws -> Summary {
+    func setStatus(_ status: Pihole.Status, serverSettings: ServerSettings, credentials: Credentials) async throws {
+
+    }
+    
+    func fetchStatus(serverSettings: ServerSettings, credentials: Credentials) async throws -> Pihole.Status {
+        return .disabled
+    }
+    
+    func fetchSystemInfo(serverSettings: ServerSettings, credentials: Credentials) async throws -> SystemInfo {
+        let data: SystemInfo = try await fetchData(serverSettings: serverSettings,
+                                                         path: .systemInfo,
+                                                         credentials: credentials)
+        return data
+    }
+
+    func fetchSensorData(serverSettings: ServerSettings, credentials: Credentials) async throws -> SensorData {
+        let data: SensorData = try await fetchData(serverSettings: serverSettings,
+                                                         path: .sensorData,
+                                                         credentials: credentials)
+        return data
+    }
+
+    func fetchSummary(serverSettings: ServerSettings, credentials: Credentials) async throws -> Summary {
+        let data: SummaryV6 = try await fetchData(serverSettings: serverSettings,
+                                                         path: .summary,
+                                                         credentials: credentials)
+        return data
+    }
+
+    func authenticate(serverSettings: ServerSettings, credentials: Credentials) async throws -> Credentials.SessionID {
+        guard let password = credentials.applicationPassword else {
+            throw PiholeServiceError.noAPIPassword
+        }
+
+        let body = try JSONEncoder().encode(["password": password])
+
+        let response: APIResponse = try await fetchData(serverSettings: serverSettings,
+                                                        path: .auth,
+                                                        shouldAuthenticateIfNoSession: false,
+                                                        httpMethod: .POST,
+                                                        httpBody: body,
+                                                        credentials: credentials)
+
+        return response.session
+    }
+
+    private func fetchData<ServerData: Decodable>(serverSettings: ServerSettings, 
+                                                  path: ServicePath,
+                                                  shouldAuthenticateIfNoSession: Bool = true,
+                                                  httpMethod: HTTPMethod = .GET,
+                                                  httpBody: Data? = nil,
+                                                  credentials: Credentials) async throws -> ServerData {
         var sessionID: Credentials.SessionID
 
         guard credentials.applicationPassword != nil else {
             throw PiholeServiceError.noAPIPassword
         }
 
-        if credentials.sessionID == nil {
-            sessionID = try await authenticate(serverSettings, credentials: credentials)
-        } else {
-            sessionID = credentials.sessionID!
-        }
-
 
         var urlComponents = URLComponentsForSettings(serverSettings)
-        urlComponents.path = "/api/stats/summary"
+        urlComponents.path = path.rawValue
 
         guard let url = urlComponents.url else {
             throw PiholeServiceError.cantGenerateURL
         }
 
         var request = URLRequest(url: url)
-        request.setValue(sessionID.csrf, forHTTPHeaderField: "X-FTL-CSRF")
-        request.setValue(sessionID.sid, forHTTPHeaderField: "X-FTL-SID")
+        request.httpMethod = httpMethod.rawValue
+        request.httpBody = httpBody
 
+
+        if shouldAuthenticateIfNoSession {
+            if credentials.sessionID == nil {
+                sessionID = try await authenticate(serverSettings: serverSettings, credentials: credentials)
+            } else {
+                sessionID = credentials.sessionID!
+            }
+
+            request.setValue(sessionID.csrf, forHTTPHeaderField: ServiceHeader.CSRF)
+            request.setValue(sessionID.sid, forHTTPHeaderField: ServiceHeader.SID)
+        }
         let (data, _) = try await urlSession.data(for: request)
 
         do {
-            return try JSONDecoder().decode(SummaryV6.self, from: data)
+            return try JSONDecoder().decode(ServerData.self, from: data)
         } catch {
-            throw PiholeServiceError.cantDecodeSummary
-        }
-    }
-
-    func authenticate(_ serverSettings: ServerSettings, credentials: Credentials) async throws -> Credentials.SessionID {
-        guard let password = credentials.applicationPassword else {
-            throw PiholeServiceError.noAPIPassword
-        }
-
-        var urlComponents = URLComponentsForSettings(serverSettings)
-        urlComponents.path = "/api/auth"
-
-        guard let url = urlComponents.url else {
-            throw PiholeServiceError.cantGenerateURL
-        }
-
-        var request = URLRequest(url: url)
-        let requestBody = ["password": password]
-        request.httpMethod = "POST"
-        request.httpBody = try JSONEncoder().encode(requestBody)
-
-        let (data, _) = try await urlSession.data(for: request)
-
-        let decoder = JSONDecoder()
-        do {
-            let apiResponse = try decoder.decode(APIResponse.self, from: data)
-            // Now `apiResponse` contains the parsed data
-            print(apiResponse.session.sid) // Access the SID
-            print(apiResponse.session.csrf) // Access the CSRF
-            return apiResponse.session
-        } catch {
-            print("Error parsing the API response: \(error)")
-            throw PiholeServiceError.noAPIToken
+            print("ERROR \(error)")
+            throw PiholeServiceError.cantDecodeData(data: data)
         }
     }
 
@@ -94,4 +130,19 @@ struct PiholeV6Service: PiholeService {
         components.port = settings.port
         return components
     }
+}
+
+private struct APIResponse: Codable {
+    let session: Credentials.SessionID
+}
+
+private struct ErrorResponse: Codable {
+    let error: Error
+    let took: Double
+}
+
+private struct Error: Codable {
+    let key: String
+    let message: String
+    let hint: String?
 }
