@@ -9,11 +9,56 @@ import Foundation
 
 struct JSONMock {
 
+    static func systemInfo(uptime: String = "10",
+                           totalRam: String = "10",
+                           freeRam: String = "10",
+                           percentUsedRam: String = "0.10",
+                           totalSwap: String = "10") -> String {
+        """
+    {
+      "system": {
+        "uptime": \(uptime),
+        "memory": {
+          "ram": {
+            "total": \(totalRam),
+            "free": \(freeRam),
+            "used": 104464,
+            "available": 276184,
+            "%used": \(percentUsedRam)
+          },
+          "swap": {
+            "total": \(totalSwap),
+            "free": 97020,
+            "used": 5376,
+            "%used": 5.2502050861361775
+          }
+        },
+        "procs": 265,
+        "cpu": {
+          "nprocs": 4,
+          "load": {
+            "raw": [
+              0.0703125,
+              0.06005859375,
+              0.00537109375
+            ],
+            "percent": [
+              1.7578125,
+              1.50146484375,
+              0.13427734375
+            ]
+          }
+        }
+      },
+      "took": 0.0005588531494140625
+    }
+    """
+    }
     static func summaryV6JSON(totalQueries: String = "10",
-                            queriesBlocked: String = "10",
-                            percentBlocked: String = "10",
-                            domainsOnList: String = "10",
-                            activeClients: String = "10") -> String {
+                              queriesBlocked: String = "10",
+                              percentBlocked: String = "10",
+                              domainsOnList: String = "10",
+                              activeClients: String = "10") -> String {
     """
  {
    "queries": {
@@ -91,10 +136,10 @@ struct JSONMock {
     }
 
     static func summaryV5JSON(totalQueries: String = "10",
-                            queriesBlocked: String = "10",
-                            percentBlocked: String = "10",
-                            domainsOnList: String = "10",
-                            activeClients: String = "10") -> String {
+                              queriesBlocked: String = "10",
+                              percentBlocked: String = "10",
+                              domainsOnList: String = "10",
+                              activeClients: String = "10") -> String {
     """
   {
     "domains_being_blocked": \(domainsOnList),

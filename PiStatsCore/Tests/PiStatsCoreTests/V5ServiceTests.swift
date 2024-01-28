@@ -9,12 +9,29 @@ import XCTest
 @testable import PiStatsCore
 
 class V5ServiceTests: XCTestCase {
+    private var service: PiholeV5Service!
+    private var serverSettings: ServerSettings!
+    private var credentials: Credentials!
+
     override func setUp() {
         super.setUp()
+
+        let config = URLSessionConfiguration.ephemeral
+        config.protocolClasses = [URLProtocolMock.self]
+        let session = URLSession(configuration: config)
+
+        service = PiholeV5Service(session: session)
+
+        serverSettings = ServerSettings(version: .v5, host: "127.0.0.1", requestProtocol: .http)
+        credentials = Credentials(apiToken: "batata")
     }
 
     override func tearDown() {
         super.tearDown()
+
+        service = nil
+        serverSettings = nil
+        credentials = nil
     }
 
     func testFetchSummary_WithValidCredentials_ReturnsSummary() async throws {
@@ -34,14 +51,6 @@ class V5ServiceTests: XCTestCase {
 
         URLProtocolMock.expectedData = Data(mockedData.utf8)
 
-        let config = URLSessionConfiguration.ephemeral
-        config.protocolClasses = [URLProtocolMock.self]
-        let session = URLSession(configuration: config)
-
-        let service = PiholeV5Service(session: session)
-
-        let serverSettings = ServerSettings(version: .v5, host: "127.0.0.1", requestProtocol: .http)
-        let credentials = Credentials(apiToken: "batata")
         let result = try await service.fetchSummary(serverSettings: serverSettings, credentials: credentials)
 
         XCTAssertEqual(result.totalQueries, ExpectedSummary.totalQueries)
