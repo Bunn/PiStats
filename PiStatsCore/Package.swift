@@ -19,6 +19,9 @@ let package = Package(
             name: "PiStatsCore"),
         .testTarget(
             name: "PiStatsCoreTests",
-            dependencies: ["PiStatsCore"]),
+            dependencies: ["PiStatsCore"],
+            resources: [
+                .process("Resources")
+            ])
     ]
 )

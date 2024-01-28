@@ -1,8 +1,8 @@
 //
 //  Summary.swift
 //
-//
-//  Created by Fernando Bunn on 25/04/2020.
+//  Created by Fernando Bunn
+//  Copyright © 2024 Fernando Bunn. All rights reserved.
 //
 
 import Foundation

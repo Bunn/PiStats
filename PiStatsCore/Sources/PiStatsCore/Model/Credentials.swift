@@ -1,8 +1,8 @@
 //
-//  File.swift
-//  
+//  Credentials.swift
 //
-//  Created by Fernando Bunn on 1/21/24.
+//  Created by Fernando Bunn
+//  Copyright © 2024 Fernando Bunn. All rights reserved.
 //
 
 import Foundation

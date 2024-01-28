@@ -1,8 +1,7 @@
+//  SensorData.swift
 //
-//  File.swift
-//  
-//
-//  Created by Fernando Bunn on 1/28/24.
+//  Created by Fernando Bunn
+//  Copyright © 2024 Fernando Bunn. All rights reserved.
 //
 
 import Foundation
