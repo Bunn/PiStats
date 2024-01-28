@@ -27,20 +27,20 @@ public struct SummaryV6: Summary, Decodable {
         let forwarded: Int
         let cached: Int
     }
-
+    
     struct Clients: Codable {
         let active: Int
         let total: Int
     }
-
+    
     struct Gravity: Codable {
         let domains_being_blocked: Int
     }
-
+    
     let queries: Queries
     let clients: Clients
     let gravity: Gravity
-
+    
     // Summary conformance
     public var totalQueries: Int { queries.total }
     public var queriesBlocked: Int { queries.blocked }
@@ -59,7 +59,7 @@ struct SummaryV5: Summary, Decodable {
     let ads_percentage_today: Double
     let unique_clients: Int
     let status: String
-
+    
     // Summary conformance
     public var totalQueries: Int { dns_queries_today }
     public var queriesBlocked: Int { ads_blocked_today }

@@ -38,21 +38,19 @@ struct PiholeV6Service: PiholeService {
 
         let body = try JSONEncoder().encode(["blocking": status == .enabled])
         let response: ResponseData = try await fetchData(serverSettings: serverSettings,
-                                                        path: .status,
-                                                        httpMethod: .POST,
-                                                        httpBody: body,
-                                                        credentials: credentials)
+                                                         path: .status,
+                                                         httpMethod: .POST,
+                                                         httpBody: body,
+                                                         credentials: credentials)
 
 
         return response.piholeStatus
     }
 
     func fetchStatus(serverSettings: ServerSettings, credentials: Credentials) async throws -> Pihole.Status {
-
-
         let data: ResponseData = try await fetchData(serverSettings: serverSettings,
-                                                   path: .status,
-                                                   credentials: credentials)
+                                                     path: .status,
+                                                     credentials: credentials)
 
         return data.piholeStatus
     }

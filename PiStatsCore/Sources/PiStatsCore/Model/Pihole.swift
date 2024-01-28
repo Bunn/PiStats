@@ -12,12 +12,12 @@ public struct ServerSettings {
         case v5
         case v6
     }
-
+    
     enum RequestProtocol: String {
         case http
         case https
     }
-
+    
     var version: Version
     var host: String
     var port: Int?
@@ -25,21 +25,21 @@ public struct ServerSettings {
 }
 
 public class Pihole {
-
+    
     public enum Status: String {
         case enabled
         case disabled
         case unknown
     }
-
+    
     public var serverSettings: ServerSettings
     public var status: Status = .unknown
     public var summary: Summary?
     public var sensorData: SensorData?
     public var systemInfo: SystemInfo?
     var credentials: Credentials
-
-
+    
+    
     init(serverSettings: ServerSettings, credentials: Credentials) {
         self.serverSettings = serverSettings
         self.credentials = credentials
