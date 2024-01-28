@@ -19,11 +19,6 @@ private enum ServiceHeader {
     static let SID = "X-FTL-SID"
 }
 
-private enum HTTPMethod: String {
-    case GET
-    case POST
-}
-
 struct PiholeV6Service: PiholeService {
     public let urlSession: URLSession
 
@@ -89,8 +84,7 @@ struct PiholeV6Service: PiholeService {
             throw PiholeServiceError.noAPIPassword
         }
 
-
-        var urlComponents = URLComponentsForSettings(serverSettings)
+        var urlComponents = ServerSettings.URLComponentsForSettings(serverSettings)
         urlComponents.path = path.rawValue
 
         guard let url = urlComponents.url else {
@@ -100,7 +94,6 @@ struct PiholeV6Service: PiholeService {
         var request = URLRequest(url: url)
         request.httpMethod = httpMethod.rawValue
         request.httpBody = httpBody
-
 
         if shouldAuthenticateIfNoSession {
             if credentials.sessionID == nil {
@@ -120,15 +113,6 @@ struct PiholeV6Service: PiholeService {
             print("ERROR \(error)")
             throw PiholeServiceError.cantDecodeData(data: data)
         }
-    }
-
-    // TODO: Refactor this
-    private func URLComponentsForSettings(_ settings: ServerSettings) -> URLComponents {
-        var components = URLComponents()
-        components.scheme = settings.requestProtocol.rawValue
-        components.host = settings.host
-        components.port = settings.port
-        return components
     }
 }
 
