@@ -12,6 +12,7 @@ private enum ServicePath: String {
     case auth = "/api/auth"
     case systemInfo = "/api/info/system"
     case sensorData = "/api/info/sensors"
+    case status = "/api/dns/blocking"
 }
 
 private enum ServiceHeader {
@@ -29,29 +30,46 @@ struct PiholeV6Service: PiholeService {
     func setStatus(_ status: Pihole.Status, serverSettings: ServerSettings, credentials: Credentials) async throws {
 
     }
-    
+
     func fetchStatus(serverSettings: ServerSettings, credentials: Credentials) async throws -> Pihole.Status {
-        return .disabled
+        struct ResponseData: Codable {
+            let blocking: String
+            let timer: String?
+            let took: Double
+        }
+
+        let data: ResponseData = try await fetchData(serverSettings: serverSettings,
+                                                   path: .status,
+                                                   credentials: credentials)
+
+        switch data.blocking.lowercased() {
+        case "enabled":
+            return .enabled
+        case "disabled":
+            return .disabled
+        default:
+            return .unknown
+        }
     }
-    
+
     func fetchSystemInfo(serverSettings: ServerSettings, credentials: Credentials) async throws -> SystemInfo {
         let data: SystemInfo = try await fetchData(serverSettings: serverSettings,
-                                                         path: .systemInfo,
-                                                         credentials: credentials)
+                                                   path: .systemInfo,
+                                                   credentials: credentials)
         return data
     }
 
     func fetchSensorData(serverSettings: ServerSettings, credentials: Credentials) async throws -> SensorData {
         let data: SensorData = try await fetchData(serverSettings: serverSettings,
-                                                         path: .sensorData,
-                                                         credentials: credentials)
+                                                   path: .sensorData,
+                                                   credentials: credentials)
         return data
     }
 
     func fetchSummary(serverSettings: ServerSettings, credentials: Credentials) async throws -> Summary {
         let data: SummaryV6 = try await fetchData(serverSettings: serverSettings,
-                                                         path: .summary,
-                                                         credentials: credentials)
+                                                  path: .summary,
+                                                  credentials: credentials)
         return data
     }
 
@@ -72,7 +90,7 @@ struct PiholeV6Service: PiholeService {
         return response.session
     }
 
-    private func fetchData<ServerData: Decodable>(serverSettings: ServerSettings, 
+    private func fetchData<ServerData: Decodable>(serverSettings: ServerSettings,
                                                   path: ServicePath,
                                                   shouldAuthenticateIfNoSession: Bool = true,
                                                   httpMethod: HTTPMethod = .GET,

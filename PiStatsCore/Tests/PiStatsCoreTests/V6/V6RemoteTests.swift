@@ -50,6 +50,13 @@ final class V6RemoteTests: XCTestCase {
         print("--------\nSENSOR DATA -> \(String(describing: pihole.sensorData))\n--------\n")
     }
 
+    func testRemoteV6Status_WithValidFetch() async throws {
+        let pihole = Pihole(serverSettings: serverSettings, credentials: credentials)
+        let manager = PiholeManager(pihole: pihole)
+        try await manager.updateStatus()
+        print("--------\nSENSOR DATA -> \(pihole.status)\n--------\n")
+    }
+
     func testRemoteV6SystemInfo_WithValidFetch() async throws {
         let pihole = Pihole(serverSettings: serverSettings, credentials: credentials)
         let manager = PiholeManager(pihole: pihole)

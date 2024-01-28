@@ -39,6 +39,12 @@ final class V5RemoteTests: XCTestCase {
         print("--------\nV5 SUMMARY DATA -> \(String(describing: pihole.summary))\n--------\n")
     }
 
+    func testRemoteV5Status_WithValidFetch() async throws {
+        let pihole = Pihole(serverSettings: serverSettings, credentials: credentials)
+        let manager = PiholeManager(pihole: pihole)
+        try await manager.updateStatus()
+        print("--------\nV5 STATUS -> \(String(describing: pihole.status))\n--------\n")
+    }
 
     func loadConfigValues() {
         guard let url = Bundle.module.url(forResource: "ServerConfig", withExtension: "plist") else {

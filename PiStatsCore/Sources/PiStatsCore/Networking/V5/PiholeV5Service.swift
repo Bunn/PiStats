@@ -36,10 +36,22 @@ struct PiholeV5Service: PiholeService {
 
     }
 
+    // V5 doesn't have a specific API for fetching only the status, so we use the summary instead
     func fetchStatus(serverSettings: ServerSettings, credentials: Credentials) async throws -> Pihole.Status {
-        return .disabled
+        guard let summary = try await fetchSummary(serverSettings: serverSettings, credentials: credentials) as? SummaryV5 else {
+            return .unknown
+        }
+        
+        switch summary.status.lowercased() {
+        case "enabled":
+            return .enabled
+        case "disabled":
+            return .disabled
+        default:
+            return .unknown
+        }
     }
-    
+
     func fetchSystemInfo(serverSettings: ServerSettings, credentials: Credentials) async throws -> SystemInfo {
         throw PiholeServiceError.notImplementedByPiholeVersion
     }
