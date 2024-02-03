@@ -8,12 +8,12 @@
 import Foundation
 
 public struct ServerSettings {
-    enum Version {
+    public enum Version {
         case v5
         case v6
     }
     
-    enum RequestProtocol: String {
+    public enum RequestProtocol: String {
         case http
         case https
     }
@@ -22,11 +22,18 @@ public struct ServerSettings {
     var host: String
     var port: Int?
     var requestProtocol: RequestProtocol = .http
+
+    public init(version: ServerSettings.Version, host: String, port: Int? = nil, requestProtocol: ServerSettings.RequestProtocol = .http) {
+        self.version = version
+        self.host = host
+        self.port = port
+        self.requestProtocol = requestProtocol
+    }
+
 }
 
 public class Pihole {
-    
-    public enum Status: String {
+        public enum Status: String {
         case enabled
         case disabled
         case unknown
@@ -40,7 +47,7 @@ public class Pihole {
     var credentials: Credentials
     
     
-    init(serverSettings: ServerSettings, credentials: Credentials) {
+    public init(serverSettings: ServerSettings, credentials: Credentials) {
         self.serverSettings = serverSettings
         self.credentials = credentials
     }

@@ -21,6 +21,7 @@
 		31BD60A82B5D7700007ACEE3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 31BD60632B5D7536007ACEE3 /* Preview Assets.xcassets */; };
 		31BD60A92B5D7700007ACEE3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 31BD605F2B5D7536007ACEE3 /* Assets.xcassets */; };
 		31BD60B02B5D77E2007ACEE3 /* MacTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BD60AF2B5D77E2007ACEE3 /* MacTest.swift */; };
+		31CCAC4C2B6ECE0F00E5FD7F /* PiStatsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 31CCAC4B2B6ECE0F00E5FD7F /* PiStatsCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				31CCAC4C2B6ECE0F00E5FD7F /* PiStatsCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,6 +102,7 @@
 				31BD60772B5D7536007ACEE3 /* PiStatsUITests */,
 				31BD60572B5D7535007ACEE3 /* Products */,
 				31BD60AE2B5D7700007ACEE3 /* PiStats-macOS-Info.plist */,
+				31CCAC4A2B6ECE0F00E5FD7F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -187,6 +190,13 @@
 			path = Shared;
 			sourceTree = "<group>";
 		};
+		31CCAC4A2B6ECE0F00E5FD7F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -256,6 +266,9 @@
 			dependencies = (
 			);
 			name = "PiStats (macOS)";
+			packageProductDependencies = (
+				31CCAC4B2B6ECE0F00E5FD7F /* PiStatsCore */,
+			);
 			productName = PiStats;
 			productReference = 31BD60AD2B5D7700007ACEE3 /* PiStats (macOS).app */;
 			productType = "com.apple.product-type.application";
@@ -803,6 +816,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		31CCAC4B2B6ECE0F00E5FD7F /* PiStatsCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PiStatsCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 31BD604E2B5D7535007ACEE3 /* Project object */;
 }

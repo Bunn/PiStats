@@ -7,11 +7,11 @@
 
 import Foundation
 
-final class PiholeManager {
-    let pihole: Pihole
+final public class PiholeManager {
+    public let pihole: Pihole
     let service: PiholeService
 
-    init(pihole: Pihole) {
+    public init(pihole: Pihole) {
         self.pihole = pihole
 
         if pihole.serverSettings.version == .v5 {

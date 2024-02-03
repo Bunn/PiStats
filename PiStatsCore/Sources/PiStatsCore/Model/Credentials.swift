@@ -24,12 +24,12 @@ final public class Credentials {
     var applicationPassword: String?
     var sessionID: SessionID?
 
-    init(apiToken: String? = nil, applicationPassword: String? = nil) {
+    public init(apiToken: String? = nil, applicationPassword: String? = nil) {
         self.apiToken = apiToken
         self.applicationPassword = applicationPassword
     }
 
-    func saveToKeychain() {
+    public func saveToKeychain() {
         if let apiToken = apiToken {
             saveToKeychain(service: KeyChainKey.apiToken.rawValue, data: apiToken)
         }
@@ -38,12 +38,12 @@ final public class Credentials {
         }
     }
 
-    func restoreFromKeychain() {
+    public func restoreFromKeychain() {
         apiToken = retrieveFromKeychain(service: KeyChainKey.apiToken.rawValue)
         applicationPassword = retrieveFromKeychain(service: KeyChainKey.applicationPassword.rawValue)
     }
 
-    func clearKeychain() {
+    public func clearKeychain() {
         deleteFromKeychain(service: KeyChainKey.apiToken.rawValue)
         deleteFromKeychain(service: KeyChainKey.applicationPassword.rawValue)
     }
