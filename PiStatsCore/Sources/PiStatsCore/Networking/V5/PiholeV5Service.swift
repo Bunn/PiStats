@@ -9,17 +9,23 @@ import Foundation
 
 private enum ServicePath {
     case summary
+    case disable(seconds: Int)
+    case enable
 
     var queryItems: [URLQueryItem] {
         switch self {
         case .summary:
             return [URLQueryItem(name: "summaryRaw", value: "")]
+        case .disable (let seconds):
+            return [URLQueryItem(name: "disable", value: "\(seconds)")]
+        case .enable:
+            return [URLQueryItem(name: "enable", value: "")]
         }
     }
 
     var path: String {
         switch self {
-        case .summary:
+        case .summary, .disable, .enable:
             return "/admin/api.php"
         }
     }
@@ -33,10 +39,23 @@ struct PiholeV5Service: PiholeService {
     }
 
     func setStatus(_ status: Pihole.Status,
-                   timer: Int?,
+                   timer: Int? = 0,
                    serverSettings: ServerSettings,
                    credentials: Credentials) async throws -> Pihole.Status {
-        return .unknown
+        let path: ServicePath
+
+        if status == .disabled {
+            path = .disable(seconds: timer ?? 0)
+        } else {
+            path = .enable
+        }
+
+        let response: BlockerStatusResponse = try await fetchData(serverSettings: serverSettings,
+                                                                  path: path,
+                                                                  httpMethod: .POST,
+                                                                  credentials: credentials)
+
+        return response.piholeStatus
     }
 
     // V5 doesn't have a specific API for fetching only the status, so we use the summary instead
@@ -100,6 +119,21 @@ struct PiholeV5Service: PiholeService {
             return try JSONDecoder().decode(ServerData.self, from: data)
         } catch {
             throw PiholeServiceError.cantDecodeData(data: data)
+        }
+    }
+}
+
+private struct BlockerStatusResponse: Decodable {
+    let status: String
+
+    var piholeStatus: Pihole.Status {
+        switch status.lowercased() {
+        case "enabled":
+            return .enabled
+        case "disabled":
+            return .disabled
+        default:
+            return .unknown
         }
     }
 }
