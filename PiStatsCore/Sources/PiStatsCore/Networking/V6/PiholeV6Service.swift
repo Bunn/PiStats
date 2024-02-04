@@ -13,6 +13,7 @@ private enum ServicePath: String {
     case systemInfo = "/api/info/system"
     case sensorData = "/api/info/sensors"
     case status = "/api/dns/blocking"
+    case history = "/api/history"
 }
 
 private enum ServiceHeader {
@@ -45,6 +46,11 @@ struct PiholeV6Service: PiholeService {
 
 
         return response.piholeStatus
+    }
+
+    func fetchDNSQueries(serverSettings: ServerSettings, credentials: Credentials) async throws -> DNSQueries {
+        let data: HistoryResponse = try await fetchData(serverSettings: serverSettings, path: .history, credentials: credentials)
+        return data
     }
 
     func fetchStatus(serverSettings: ServerSettings, credentials: Credentials) async throws -> Pihole.Status {

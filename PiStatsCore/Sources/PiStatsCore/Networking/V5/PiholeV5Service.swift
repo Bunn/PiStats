@@ -11,6 +11,7 @@ private enum ServicePath {
     case summary
     case disable(seconds: Int)
     case enable
+    case dnsHistory
 
     var queryItems: [URLQueryItem] {
         switch self {
@@ -20,12 +21,14 @@ private enum ServicePath {
             return [URLQueryItem(name: "disable", value: "\(seconds)")]
         case .enable:
             return [URLQueryItem(name: "enable", value: "")]
+        case .dnsHistory:
+            return [URLQueryItem(name: "overTimeData10mins", value: "")]
         }
     }
 
     var path: String {
         switch self {
-        case .summary, .disable, .enable:
+        case .summary, .disable, .enable, .dnsHistory:
             return "/admin/api.php"
         }
     }
@@ -56,6 +59,11 @@ struct PiholeV5Service: PiholeService {
                                                                   credentials: credentials)
 
         return response.piholeStatus
+    }
+
+    func fetchDNSQueries(serverSettings: ServerSettings, credentials: Credentials) async throws -> DNSQueries {
+        let data: DNSQueriesOverTime = try await fetchData(serverSettings: serverSettings, path: .dnsHistory, credentials: credentials)
+        return data
     }
 
     // V5 doesn't have a specific API for fetching only the status, so we use the summary instead

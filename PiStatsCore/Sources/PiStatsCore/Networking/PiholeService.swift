@@ -30,6 +30,7 @@ protocol PiholeService {
     func fetchStatus(serverSettings: ServerSettings, credentials: Credentials) async throws -> Pihole.Status
     func fetchSystemInfo(serverSettings: ServerSettings, credentials: Credentials) async throws -> SystemInfo
     func fetchSensorData(serverSettings: ServerSettings, credentials: Credentials) async throws -> SensorData
+    func fetchDNSQueries(serverSettings: ServerSettings, credentials: Credentials) async throws -> DNSQueries
 }
 
 extension ServerSettings {

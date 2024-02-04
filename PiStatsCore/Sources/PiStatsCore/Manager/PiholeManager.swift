@@ -46,4 +46,9 @@ final public class PiholeManager {
                                                     serverSettings: pihole.serverSettings,
                                                     credentials: pihole.credentials)
     }
+
+    public func updateDNSQueries() async throws {
+        pihole.DNSQueries = try await service.fetchDNSQueries(serverSettings: pihole.serverSettings,
+                                                              credentials: pihole.credentials)
+    }
 }

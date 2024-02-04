@@ -50,14 +50,22 @@ final class V5RemoteTests: XCTestCase {
         let pihole = Pihole(serverSettings: serverSettings, credentials: credentials)
         let manager = PiholeManager(pihole: pihole)
         try await manager.setStatus(.disabled)
-        print("--------\nSENSOR DATA -> \(pihole.status)\n--------\n")
+        print("--------\nSTATUS -> \(pihole.status)\n--------\n")
     }
 
     func testRemoteV5SetEnableStatus_WithValidFetch() async throws {
         let pihole = Pihole(serverSettings: serverSettings, credentials: credentials)
         let manager = PiholeManager(pihole: pihole)
         try await manager.setStatus(.enabled)
-        print("--------\nSENSOR DATA -> \(pihole.status)\n--------\n")
+        print("--------\nSTATUS -> \(pihole.status)\n--------\n")
+    }
+
+    func testDNSQueries_WithValidFetch() async throws {
+        let pihole = Pihole(serverSettings: serverSettings, credentials: credentials)
+        let manager = PiholeManager(pihole: pihole)
+        try await manager.updateDNSQueries()
+        print("--------\n BLOCKED -> \(String(describing: pihole.DNSQueries?.blocked.count))\n--------\n")
+        print("--------\n DOMAINS -> \(String(describing: pihole.DNSQueries?.domains.count))\n--------\n")
     }
 
     func loadConfigValues() {

@@ -44,6 +44,7 @@ public class Pihole {
     public var summary: Summary?
     public var sensorData: SensorData?
     public var systemInfo: SystemInfo?
+    public var DNSQueries: DNSQueries?
     var credentials: Credentials
     
     
@@ -51,4 +52,14 @@ public class Pihole {
         self.serverSettings = serverSettings
         self.credentials = credentials
     }
+}
+
+struct Queries {
+    let domainsOverTime: [TimestampedRequest]
+    let adsOverTime: [TimestampedRequest]
+}
+
+struct TimestampedRequest {
+    let timestamp: Int
+    let value: Int
 }

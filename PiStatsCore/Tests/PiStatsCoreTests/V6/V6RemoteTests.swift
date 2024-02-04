@@ -78,6 +78,14 @@ final class V6RemoteTests: XCTestCase {
         print("--------\nSENSOR DATA -> \(pihole.status)\n--------\n")
     }
 
+    func testDNSQueriesV6_WithValidFetch() async throws {
+        let pihole = Pihole(serverSettings: serverSettings, credentials: credentials)
+        let manager = PiholeManager(pihole: pihole)
+        try await manager.updateDNSQueries()
+        print("--------\n BLOCKED -> \(String(describing: pihole.DNSQueries?.blocked.count))\n--------\n")
+        print("--------\n DOMAINS -> \(String(describing: pihole.DNSQueries?.domains.count))\n--------\n")
+    }
+
     func loadConfigValues() {
         guard let url = Bundle.module.url(forResource: "ServerConfig", withExtension: "plist") else {
             fatalError("ServerConfig.plist not found")
