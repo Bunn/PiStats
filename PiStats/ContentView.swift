@@ -20,8 +20,8 @@ struct ContentView: View {
         .onAppear {
             print("potato")
 
-            let server = ServerSettings(version: .v5, host: "192.168.1.168", requestProtocol: .http)
-            let credentials = Credentials(apiToken: "992590e383538763d03f45aa1d084efa015a05c93a14d434b8969e3b5e983288")
+            let server = ServerSettings(version: .v5, host: "x", requestProtocol: .http)
+            let credentials = Credentials(apiToken: "x")
             let pihole = Pihole(serverSettings: server, credentials: credentials)
 
             let manager = PiholeManager(pihole: pihole)
