@@ -7,7 +7,19 @@
 
 import Foundation
 
-final public class PiholeManager {
+protocol PiholeManagerProtocol {
+    var pihole: Pihole { get }
+
+    func updateSummary() async throws
+    func updateStatus() async throws
+    func updateSystemInfo() async throws
+    func updateSensorData() async throws
+    func setStatus(_ status: Pihole.Status) async throws
+    func updateDNSQueries() async throws
+}
+
+
+final public class PiholeManager: PiholeManagerProtocol {
     public let pihole: Pihole
     let service: PiholeService
 

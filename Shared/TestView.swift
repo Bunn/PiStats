@@ -9,31 +9,26 @@ import SwiftUI
 import PiStatsCore
 
 struct TestView: View {
+    @State var pihole: Pihole
+
     var body: some View {
         VStack {
             Image(systemName: "globe")
                 .imageScale(.large)
                 .foregroundStyle(.tint)
             Text("Hello, world!")
+            Text(pihole.status.rawValue)
+            Text("lalala \(pihole.summary?.totalQueries ?? 1)")
         }
         .padding()
-        .onAppear {
-            print("potato")
 
-            let server = ServerSettings(version: .v5, host: "x", requestProtocol: .http)
-            let credentials = Credentials(apiToken: "x")
-            let pihole = Pihole(serverSettings: server, credentials: credentials)
-
-            let manager = PiholeManager(pihole: pihole)
-
-            Task {
-                try await manager.updateSummary()
-                print("P \(manager.pihole.summary)")
-            }
-        }
     }
 }
 
 #Preview {
-    TestView()
+    let server = ServerSettings(version: .v5, host: "1", requestProtocol: .http)
+    let credentials = Credentials(apiToken: "1")
+    let pihole = Pihole(serverSettings: server, credentials: credentials)
+
+    return TestView(pihole: pihole)
 }

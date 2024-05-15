@@ -11,7 +11,7 @@ import PiStatsCore
 struct ContentView: View {
     var body: some View {
         VStack {
-            TestView()
+            Text("ata")
         }
     }
 }
