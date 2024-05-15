@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		314C5ACC2BF3F64000A92F84 /* PiStatsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 314C5ACB2BF3F64000A92F84 /* PiStatsCore */; };
 		317D113B2BF3F4FD00FF086E /* PiStatsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D113A2BF3F4FD00FF086E /* PiStatsApp.swift */; };
 		317D113D2BF3F4FD00FF086E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D113C2BF3F4FD00FF086E /* ContentView.swift */; };
 		317D113F2BF3F4FE00FF086E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 317D113E2BF3F4FE00FF086E /* Assets.xcassets */; };
@@ -15,6 +14,17 @@
 		317D114D2BF3F4FF00FF086E /* PiStatsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D114C2BF3F4FF00FF086E /* PiStatsTests.swift */; };
 		317D11572BF3F4FF00FF086E /* PiStatsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D11562BF3F4FF00FF086E /* PiStatsUITests.swift */; };
 		317D11592BF3F4FF00FF086E /* PiStatsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D11582BF3F4FF00FF086E /* PiStatsUITestsLaunchTests.swift */; };
+		319741E82BF5417300E786D6 /* PiStats_macOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319741E72BF5417300E786D6 /* PiStats_macOSApp.swift */; };
+		319741EA2BF5417300E786D6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319741E92BF5417300E786D6 /* ContentView.swift */; };
+		319741EC2BF5417400E786D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 319741EB2BF5417400E786D6 /* Assets.xcassets */; };
+		319741EF2BF5417400E786D6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 319741EE2BF5417400E786D6 /* Preview Assets.xcassets */; };
+		319741FA2BF5417400E786D6 /* PiStats_macOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319741F92BF5417400E786D6 /* PiStats_macOSTests.swift */; };
+		319742042BF5417400E786D6 /* PiStats_macOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319742032BF5417400E786D6 /* PiStats_macOSUITests.swift */; };
+		319742062BF5417400E786D6 /* PiStats_macOSUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319742052BF5417400E786D6 /* PiStats_macOSUITestsLaunchTests.swift */; };
+		319742142BF541F700E786D6 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319742132BF541F700E786D6 /* TestView.swift */; };
+		319742152BF541F700E786D6 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319742132BF541F700E786D6 /* TestView.swift */; };
+		319742182BF543AD00E786D6 /* PiStatsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 319742172BF543AD00E786D6 /* PiStatsCore */; };
+		3197421A2BF543B900E786D6 /* PiStatsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 319742192BF543B900E786D6 /* PiStatsCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,10 +42,23 @@
 			remoteGlobalIDString = 317D11362BF3F4FD00FF086E;
 			remoteInfo = PiStats;
 		};
+		319741F62BF5417400E786D6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 317D112F2BF3F4FD00FF086E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 319741E42BF5417300E786D6;
+			remoteInfo = "PiStats-macOS";
+		};
+		319742002BF5417400E786D6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 317D112F2BF3F4FD00FF086E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 319741E42BF5417300E786D6;
+			remoteInfo = "PiStats-macOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		314C5AC92BF3F59200A92F84 /* PiStatsCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PiStatsCore; sourceTree = "<group>"; };
 		317D11372BF3F4FD00FF086E /* PiStats.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PiStats.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		317D113A2BF3F4FD00FF086E /* PiStatsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiStatsApp.swift; sourceTree = "<group>"; };
 		317D113C2BF3F4FD00FF086E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -47,6 +70,19 @@
 		317D11522BF3F4FF00FF086E /* PiStatsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PiStatsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		317D11562BF3F4FF00FF086E /* PiStatsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiStatsUITests.swift; sourceTree = "<group>"; };
 		317D11582BF3F4FF00FF086E /* PiStatsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiStatsUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		319741E52BF5417300E786D6 /* PiStats-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PiStats-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		319741E72BF5417300E786D6 /* PiStats_macOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiStats_macOSApp.swift; sourceTree = "<group>"; };
+		319741E92BF5417300E786D6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		319741EB2BF5417400E786D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		319741EE2BF5417400E786D6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		319741F02BF5417400E786D6 /* PiStats_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PiStats_macOS.entitlements; sourceTree = "<group>"; };
+		319741F52BF5417400E786D6 /* PiStats-macOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PiStats-macOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		319741F92BF5417400E786D6 /* PiStats_macOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiStats_macOSTests.swift; sourceTree = "<group>"; };
+		319741FF2BF5417400E786D6 /* PiStats-macOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PiStats-macOSUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		319742032BF5417400E786D6 /* PiStats_macOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiStats_macOSUITests.swift; sourceTree = "<group>"; };
+		319742052BF5417400E786D6 /* PiStats_macOSUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiStats_macOSUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		319742132BF541F700E786D6 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		319742162BF543A600E786D6 /* PiStatsCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PiStatsCore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,7 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				314C5ACC2BF3F64000A92F84 /* PiStatsCore in Frameworks */,
+				3197421A2BF543B900E786D6 /* PiStatsCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,13 +108,35 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		319741E22BF5417300E786D6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				319742182BF543AD00E786D6 /* PiStatsCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		319741F22BF5417400E786D6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		319741FC2BF5417400E786D6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		314C5AC72BF3F56C00A92F84 /* LocalPackages */ = {
 			isa = PBXGroup;
 			children = (
-				314C5AC92BF3F59200A92F84 /* PiStatsCore */,
+				319742162BF543A600E786D6 /* PiStatsCore */,
 			);
 			path = LocalPackages;
 			sourceTree = "<group>";
@@ -93,9 +151,13 @@
 		317D112E2BF3F4FD00FF086E = {
 			isa = PBXGroup;
 			children = (
+				319742122BF541E200E786D6 /* Shared */,
 				317D11392BF3F4FD00FF086E /* PiStats */,
 				317D114B2BF3F4FF00FF086E /* PiStatsTests */,
 				317D11552BF3F4FF00FF086E /* PiStatsUITests */,
+				319741E62BF5417300E786D6 /* PiStats-macOS */,
+				319741F82BF5417400E786D6 /* PiStats-macOSTests */,
+				319742022BF5417400E786D6 /* PiStats-macOSUITests */,
 				317D11382BF3F4FD00FF086E /* Products */,
 				314C5ACA2BF3F64000A92F84 /* Frameworks */,
 			);
@@ -107,6 +169,9 @@
 				317D11372BF3F4FD00FF086E /* PiStats.app */,
 				317D11482BF3F4FF00FF086E /* PiStatsTests.xctest */,
 				317D11522BF3F4FF00FF086E /* PiStatsUITests.xctest */,
+				319741E52BF5417300E786D6 /* PiStats-macOS.app */,
+				319741F52BF5417400E786D6 /* PiStats-macOSTests.xctest */,
+				319741FF2BF5417400E786D6 /* PiStats-macOSUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -114,7 +179,6 @@
 		317D11392BF3F4FD00FF086E /* PiStats */ = {
 			isa = PBXGroup;
 			children = (
-				314C5AC72BF3F56C00A92F84 /* LocalPackages */,
 				317D113A2BF3F4FD00FF086E /* PiStatsApp.swift */,
 				317D113C2BF3F4FD00FF086E /* ContentView.swift */,
 				317D113E2BF3F4FE00FF086E /* Assets.xcassets */,
@@ -149,6 +213,52 @@
 			path = PiStatsUITests;
 			sourceTree = "<group>";
 		};
+		319741E62BF5417300E786D6 /* PiStats-macOS */ = {
+			isa = PBXGroup;
+			children = (
+				319741E72BF5417300E786D6 /* PiStats_macOSApp.swift */,
+				319741E92BF5417300E786D6 /* ContentView.swift */,
+				319741EB2BF5417400E786D6 /* Assets.xcassets */,
+				319741F02BF5417400E786D6 /* PiStats_macOS.entitlements */,
+				319741ED2BF5417400E786D6 /* Preview Content */,
+			);
+			path = "PiStats-macOS";
+			sourceTree = "<group>";
+		};
+		319741ED2BF5417400E786D6 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				319741EE2BF5417400E786D6 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		319741F82BF5417400E786D6 /* PiStats-macOSTests */ = {
+			isa = PBXGroup;
+			children = (
+				319741F92BF5417400E786D6 /* PiStats_macOSTests.swift */,
+			);
+			path = "PiStats-macOSTests";
+			sourceTree = "<group>";
+		};
+		319742022BF5417400E786D6 /* PiStats-macOSUITests */ = {
+			isa = PBXGroup;
+			children = (
+				319742032BF5417400E786D6 /* PiStats_macOSUITests.swift */,
+				319742052BF5417400E786D6 /* PiStats_macOSUITestsLaunchTests.swift */,
+			);
+			path = "PiStats-macOSUITests";
+			sourceTree = "<group>";
+		};
+		319742122BF541E200E786D6 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				314C5AC72BF3F56C00A92F84 /* LocalPackages */,
+				319742132BF541F700E786D6 /* TestView.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -166,7 +276,7 @@
 			);
 			name = PiStats;
 			packageProductDependencies = (
-				314C5ACB2BF3F64000A92F84 /* PiStatsCore */,
+				319742192BF543B900E786D6 /* PiStatsCore */,
 			);
 			productName = PiStats;
 			productReference = 317D11372BF3F4FD00FF086E /* PiStats.app */;
@@ -208,6 +318,62 @@
 			productReference = 317D11522BF3F4FF00FF086E /* PiStatsUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		319741E42BF5417300E786D6 /* PiStats-macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3197420D2BF5417400E786D6 /* Build configuration list for PBXNativeTarget "PiStats-macOS" */;
+			buildPhases = (
+				319741E12BF5417300E786D6 /* Sources */,
+				319741E22BF5417300E786D6 /* Frameworks */,
+				319741E32BF5417300E786D6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "PiStats-macOS";
+			packageProductDependencies = (
+				319742172BF543AD00E786D6 /* PiStatsCore */,
+			);
+			productName = "PiStats-macOS";
+			productReference = 319741E52BF5417300E786D6 /* PiStats-macOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		319741F42BF5417400E786D6 /* PiStats-macOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3197420E2BF5417400E786D6 /* Build configuration list for PBXNativeTarget "PiStats-macOSTests" */;
+			buildPhases = (
+				319741F12BF5417400E786D6 /* Sources */,
+				319741F22BF5417400E786D6 /* Frameworks */,
+				319741F32BF5417400E786D6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				319741F72BF5417400E786D6 /* PBXTargetDependency */,
+			);
+			name = "PiStats-macOSTests";
+			productName = "PiStats-macOSTests";
+			productReference = 319741F52BF5417400E786D6 /* PiStats-macOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		319741FE2BF5417400E786D6 /* PiStats-macOSUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3197420F2BF5417400E786D6 /* Build configuration list for PBXNativeTarget "PiStats-macOSUITests" */;
+			buildPhases = (
+				319741FB2BF5417400E786D6 /* Sources */,
+				319741FC2BF5417400E786D6 /* Frameworks */,
+				319741FD2BF5417400E786D6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				319742012BF5417400E786D6 /* PBXTargetDependency */,
+			);
+			name = "PiStats-macOSUITests";
+			productName = "PiStats-macOSUITests";
+			productReference = 319741FF2BF5417400E786D6 /* PiStats-macOSUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -215,7 +381,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1530;
+				LastSwiftUpdateCheck = 1540;
 				LastUpgradeCheck = 1530;
 				TargetAttributes = {
 					317D11362BF3F4FD00FF086E = {
@@ -228,6 +394,17 @@
 					317D11512BF3F4FF00FF086E = {
 						CreatedOnToolsVersion = 15.3;
 						TestTargetID = 317D11362BF3F4FD00FF086E;
+					};
+					319741E42BF5417300E786D6 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					319741F42BF5417400E786D6 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = 319741E42BF5417300E786D6;
+					};
+					319741FE2BF5417400E786D6 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = 319741E42BF5417300E786D6;
 					};
 				};
 			};
@@ -247,6 +424,9 @@
 				317D11362BF3F4FD00FF086E /* PiStats */,
 				317D11472BF3F4FF00FF086E /* PiStatsTests */,
 				317D11512BF3F4FF00FF086E /* PiStatsUITests */,
+				319741E42BF5417300E786D6 /* PiStats-macOS */,
+				319741F42BF5417400E786D6 /* PiStats-macOSTests */,
+				319741FE2BF5417400E786D6 /* PiStats-macOSUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -275,6 +455,29 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		319741E32BF5417300E786D6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				319741EF2BF5417400E786D6 /* Preview Assets.xcassets in Resources */,
+				319741EC2BF5417400E786D6 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		319741F32BF5417400E786D6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		319741FD2BF5417400E786D6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -282,6 +485,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				319742142BF541F700E786D6 /* TestView.swift in Sources */,
 				317D113D2BF3F4FD00FF086E /* ContentView.swift in Sources */,
 				317D113B2BF3F4FD00FF086E /* PiStatsApp.swift in Sources */,
 			);
@@ -304,6 +508,33 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		319741E12BF5417300E786D6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				319742152BF541F700E786D6 /* TestView.swift in Sources */,
+				319741EA2BF5417300E786D6 /* ContentView.swift in Sources */,
+				319741E82BF5417300E786D6 /* PiStats_macOSApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		319741F12BF5417400E786D6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				319741FA2BF5417400E786D6 /* PiStats_macOSTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		319741FB2BF5417400E786D6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				319742042BF5417400E786D6 /* PiStats_macOSUITests.swift in Sources */,
+				319742062BF5417400E786D6 /* PiStats_macOSUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -316,6 +547,16 @@
 			isa = PBXTargetDependency;
 			target = 317D11362BF3F4FD00FF086E /* PiStats */;
 			targetProxy = 317D11532BF3F4FF00FF086E /* PBXContainerItemProxy */;
+		};
+		319741F72BF5417400E786D6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 319741E42BF5417300E786D6 /* PiStats-macOS */;
+			targetProxy = 319741F62BF5417400E786D6 /* PBXContainerItemProxy */;
+		};
+		319742012BF5417400E786D6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 319741E42BF5417300E786D6 /* PiStats-macOS */;
+			targetProxy = 319742002BF5417400E786D6 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -462,10 +703,11 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.4;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.PiStats;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.PiStatsiOSMobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -500,10 +742,11 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.4;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.PiStats;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.PiStatsiOSMobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -600,6 +843,142 @@
 			};
 			name = Release;
 		};
+		319742072BF5417400E786D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "PiStats-macOS/PiStats_macOS.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"PiStats-macOS/Preview Content\"";
+				DEVELOPMENT_TEAM = 4RP463563M;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.bunn.PiStats-macOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		319742082BF5417400E786D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "PiStats-macOS/PiStats_macOS.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"PiStats-macOS/Preview Content\"";
+				DEVELOPMENT_TEAM = 4RP463563M;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.bunn.PiStats-macOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		319742092BF5417400E786D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4RP463563M;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.bunn.PiStats-macOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PiStats-macOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PiStats-macOS";
+			};
+			name = Debug;
+		};
+		3197420A2BF5417400E786D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4RP463563M;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.bunn.PiStats-macOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PiStats-macOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PiStats-macOS";
+			};
+			name = Release;
+		};
+		3197420B2BF5417400E786D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4RP463563M;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.bunn.PiStats-macOSUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "PiStats-macOS";
+			};
+			name = Debug;
+		};
+		3197420C2BF5417400E786D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4RP463563M;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.bunn.PiStats-macOSUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "PiStats-macOS";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -639,10 +1018,41 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		3197420D2BF5417400E786D6 /* Build configuration list for PBXNativeTarget "PiStats-macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				319742072BF5417400E786D6 /* Debug */,
+				319742082BF5417400E786D6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3197420E2BF5417400E786D6 /* Build configuration list for PBXNativeTarget "PiStats-macOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				319742092BF5417400E786D6 /* Debug */,
+				3197420A2BF5417400E786D6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3197420F2BF5417400E786D6 /* Build configuration list for PBXNativeTarget "PiStats-macOSUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3197420B2BF5417400E786D6 /* Debug */,
+				3197420C2BF5417400E786D6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		314C5ACB2BF3F64000A92F84 /* PiStatsCore */ = {
+		319742172BF543AD00E786D6 /* PiStatsCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PiStatsCore;
+		};
+		319742192BF543B900E786D6 /* PiStatsCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = PiStatsCore;
 		};

@@ -29,9 +29,9 @@ public struct ServerSettings {
         self.port = port
         self.requestProtocol = requestProtocol
     }
-
 }
 
+@Observable
 public class Pihole {
         public enum Status: String {
         case enabled

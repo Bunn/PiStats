@@ -7,14 +7,14 @@
 		<key>host</key>
 		<string>1.1.1.1</string>
 		<key>password</key>
-		<string>aaaa</string>
+		<string>b</string>
 	</dict>
 	<key>v5</key>
 	<dict>
 		<key>host</key>
 		<string>1.1.1.2</string>
 		<key>token</key>
-		<string>bbb</string>
+		<string>a</string>
 	</dict>
 </dict>
 </plist>

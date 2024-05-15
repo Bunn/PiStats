@@ -1,8 +1,8 @@
 //
 //  ContentView.swift
-//  PiStats
+//  PiStats-macOS
 //
-//  Created by Fernando Bunn on 5/14/24.
+//  Created by Fernando Bunn on 5/15/24.
 //
 
 import SwiftUI
@@ -13,7 +13,9 @@ struct ContentView: View {
         VStack {
             TestView()
         }
+
     }
+
 }
 
 #Preview {
