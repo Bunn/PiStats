@@ -19,6 +19,13 @@ struct TestView: View {
             Text("Hello, world!")
             Text(pihole.status.rawValue)
             Text("lalala \(pihole.summary?.totalQueries ?? 1)")
+
+            List {
+                ForEach(pihole.errors, id: \.self) { item in
+                    Text("A \(item.timestamp)")
+                }
+            }
+
         }
         .padding()
 

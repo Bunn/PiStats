@@ -45,12 +45,18 @@ public class Pihole {
     public var sensorData: SensorData?
     public var systemInfo: SystemInfo?
     public var DNSQueries: DNSQueries?
+    public private(set) var errors: [PiholeOperationErrorLog]
     var credentials: Credentials
     
     
     public init(serverSettings: ServerSettings, credentials: Credentials) {
         self.serverSettings = serverSettings
         self.credentials = credentials
+        self.errors = [PiholeOperationErrorLog]()
+    }
+
+    func addErrorLog(_ error: Error) {
+        self.errors.append(PiholeOperationErrorLog.logError(error))
     }
 }
 

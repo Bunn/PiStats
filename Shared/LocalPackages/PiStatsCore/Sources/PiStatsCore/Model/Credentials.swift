@@ -10,7 +10,7 @@ import Security
 
 final public class Credentials {
 
-    struct SessionID: Codable {
+    public struct SessionID: Codable {
         let sid: String
         let csrf: String
     }

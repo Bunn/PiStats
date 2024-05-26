@@ -22,7 +22,7 @@ public enum PiholeServiceError: Error {
     case invalidStatusType
 }
 
-protocol PiholeService {
+public protocol PiholeService {
     init(session: URLSession)
     func fetchSummary(serverSettings: ServerSettings, credentials: Credentials) async throws -> Summary
     func authenticate(serverSettings: ServerSettings, credentials: Credentials) async throws -> Credentials.SessionID

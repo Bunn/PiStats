@@ -18,49 +18,67 @@ protocol PiholeManagerProtocol {
     func updateDNSQueries() async throws
 }
 
-
 final public class PiholeManager: PiholeManagerProtocol {
     public let pihole: Pihole
-    let service: PiholeService
+    private let service: PiholeService
 
-    public init(pihole: Pihole) {
+    public init(pihole: Pihole, serviceBuilder: PiholeServiceBuilder = DefaultPiholeServiceBuilder()) {
         self.pihole = pihole
-
-        if pihole.serverSettings.version == .v5 {
-            self.service = PiholeV5Service()
-        } else {
-            self.service = PiholeV6Service()
-        }
+        self.service = serviceBuilder.buildService(version: pihole.serverSettings.version)
     }
 
     public func updateSummary() async throws {
-        pihole.summary = try await service.fetchSummary(serverSettings: pihole.serverSettings,
-                                                        credentials: pihole.credentials)
+        do {
+            pihole.summary = try await service.fetchSummary(serverSettings: pihole.serverSettings,
+                                                            credentials: pihole.credentials)
+        } catch {
+            pihole.addErrorLog(error)
+        }
     }
 
     public func updateStatus() async throws {
-        pihole.status = try await service.fetchStatus(serverSettings: pihole.serverSettings,
-                                                      credentials: pihole.credentials)
+        do {
+            pihole.status = try await service.fetchStatus(serverSettings: pihole.serverSettings,
+                                                          credentials: pihole.credentials)
+        } catch {
+            pihole.addErrorLog(error)
+        }
     }
 
     public func updateSystemInfo() async throws {
-        pihole.systemInfo = try await service.fetchSystemInfo(serverSettings: pihole.serverSettings,
-                                                              credentials: pihole.credentials)
+        do {
+            pihole.systemInfo = try await service.fetchSystemInfo(serverSettings: pihole.serverSettings,
+                                                                  credentials: pihole.credentials)
+        } catch {
+            pihole.addErrorLog(error)
+        }
     }
 
     public func updateSensorData() async throws {
-        pihole.sensorData = try await service.fetchSensorData(serverSettings: pihole.serverSettings,
-                                                              credentials: pihole.credentials)
+        do {
+            pihole.sensorData = try await service.fetchSensorData(serverSettings: pihole.serverSettings,
+                                                                  credentials: pihole.credentials)
+        } catch {
+            pihole.addErrorLog(error)
+        }
     }
 
     public func setStatus(_ status: Pihole.Status) async throws {
-        pihole.status = try await service.setStatus(status, timer: nil,
-                                                    serverSettings: pihole.serverSettings,
-                                                    credentials: pihole.credentials)
+        do {
+            pihole.status = try await service.setStatus(status, timer: nil,
+                                                        serverSettings: pihole.serverSettings,
+                                                        credentials: pihole.credentials)
+        } catch {
+            pihole.addErrorLog(error)
+        }
     }
 
     public func updateDNSQueries() async throws {
-        pihole.DNSQueries = try await service.fetchDNSQueries(serverSettings: pihole.serverSettings,
-                                                              credentials: pihole.credentials)
+        do {
+            pihole.DNSQueries = try await service.fetchDNSQueries(serverSettings: pihole.serverSettings,
+                                                                  credentials: pihole.credentials)
+        } catch {
+            pihole.addErrorLog(error)
+        }
     }
 }
