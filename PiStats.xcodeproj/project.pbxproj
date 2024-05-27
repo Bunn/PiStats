@@ -25,6 +25,11 @@
 		319742152BF541F700E786D6 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319742132BF541F700E786D6 /* TestView.swift */; };
 		319742182BF543AD00E786D6 /* PiStatsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 319742172BF543AD00E786D6 /* PiStatsCore */; };
 		3197421A2BF543B900E786D6 /* PiStatsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 319742192BF543B900E786D6 /* PiStatsCore */; };
+		31F5361F2C04B86700357CF5 /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F5361E2C04B86700357CF5 /* PopoverView.swift */; };
+		31F536212C04BB7800357CF5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F536202C04BB7800357CF5 /* AppDelegate.swift */; };
+		31F536232C04BCA600357CF5 /* StatusBarMenuWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F536222C04BCA600357CF5 /* StatusBarMenuWindowController.swift */; };
+		31F536252C04BCBD00357CF5 /* EventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F536242C04BCBD00357CF5 /* EventMonitor.swift */; };
+		31F536272C04BD0200357CF5 /* MenuContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F536262C04BD0200357CF5 /* MenuContentViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +88,11 @@
 		319742052BF5417400E786D6 /* PiStats_macOSUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiStats_macOSUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		319742132BF541F700E786D6 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		319742162BF543A600E786D6 /* PiStatsCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PiStatsCore; sourceTree = "<group>"; };
+		31F5361E2C04B86700357CF5 /* PopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverView.swift; sourceTree = "<group>"; };
+		31F536202C04BB7800357CF5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		31F536222C04BCA600357CF5 /* StatusBarMenuWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarMenuWindowController.swift; sourceTree = "<group>"; };
+		31F536242C04BCBD00357CF5 /* EventMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMonitor.swift; sourceTree = "<group>"; };
+		31F536262C04BD0200357CF5 /* MenuContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuContentViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -216,11 +226,13 @@
 		319741E62BF5417300E786D6 /* PiStats-macOS */ = {
 			isa = PBXGroup;
 			children = (
+				31F5361D2C04B85500357CF5 /* Popover */,
 				319741E72BF5417300E786D6 /* PiStats_macOSApp.swift */,
 				319741E92BF5417300E786D6 /* ContentView.swift */,
 				319741EB2BF5417400E786D6 /* Assets.xcassets */,
 				319741F02BF5417400E786D6 /* PiStats_macOS.entitlements */,
 				319741ED2BF5417400E786D6 /* Preview Content */,
+				31F536202C04BB7800357CF5 /* AppDelegate.swift */,
 			);
 			path = "PiStats-macOS";
 			sourceTree = "<group>";
@@ -257,6 +269,17 @@
 				319742132BF541F700E786D6 /* TestView.swift */,
 			);
 			path = Shared;
+			sourceTree = "<group>";
+		};
+		31F5361D2C04B85500357CF5 /* Popover */ = {
+			isa = PBXGroup;
+			children = (
+				31F5361E2C04B86700357CF5 /* PopoverView.swift */,
+				31F536222C04BCA600357CF5 /* StatusBarMenuWindowController.swift */,
+				31F536242C04BCBD00357CF5 /* EventMonitor.swift */,
+				31F536262C04BD0200357CF5 /* MenuContentViewController.swift */,
+			);
+			path = Popover;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -513,7 +536,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				319742152BF541F700E786D6 /* TestView.swift in Sources */,
+				31F536272C04BD0200357CF5 /* MenuContentViewController.swift in Sources */,
 				319741EA2BF5417300E786D6 /* ContentView.swift in Sources */,
+				31F5361F2C04B86700357CF5 /* PopoverView.swift in Sources */,
+				31F536212C04BB7800357CF5 /* AppDelegate.swift in Sources */,
+				31F536252C04BCBD00357CF5 /* EventMonitor.swift in Sources */,
+				31F536232C04BCA600357CF5 /* StatusBarMenuWindowController.swift in Sources */,
 				319741E82BF5417300E786D6 /* PiStats_macOSApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

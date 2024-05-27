@@ -9,6 +9,8 @@ import SwiftUI
 
 @main
 struct PiStats_macOSApp: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
