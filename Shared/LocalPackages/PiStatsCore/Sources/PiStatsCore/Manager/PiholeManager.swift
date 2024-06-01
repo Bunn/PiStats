@@ -18,6 +18,7 @@ protocol PiholeManagerProtocol {
     func updateDNSQueries() async throws
 }
 
+@MainActor
 final public class PiholeManager: PiholeManagerProtocol {
     public let pihole: Pihole
     private let service: PiholeService

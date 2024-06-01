@@ -31,6 +31,7 @@ public struct ServerSettings {
     }
 }
 
+@MainActor
 @Observable
 public class Pihole {
         public enum Status: String {

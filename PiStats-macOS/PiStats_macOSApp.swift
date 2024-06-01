@@ -10,8 +10,17 @@ import SwiftUI
 @main
 struct PiStats_macOSApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    
+    @AppStorage("menuBarExtraIsInserted") var menuBarExtraIsInserted = true
+
     var body: some Scene {
+        MenuBarExtra("Screenshots",
+                     systemImage: "photo.badge.plus",
+                     isInserted: $menuBarExtraIsInserted) {
+            PopoverView()
+                .frame(width: 400, height: 300)
+        }
+                     .menuBarExtraStyle(.window)
+
         WindowGroup {
             ContentView()
         }

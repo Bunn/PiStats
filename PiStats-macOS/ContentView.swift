@@ -25,20 +25,27 @@ struct ContentView: View {
 }
 
 
+@MainActor
 final class Manager: ObservableObject {
-    lazy var manager: PiholeManager = {
+    let manager: PiholeManager
+
+    init() {
         let server = ServerSettings(version: .v5, host: "28", requestProtocol: .http)
         let credentials = Credentials(apiToken: "1")
         let pihole = Pihole(serverSettings: server, credentials: credentials)
 
-        return PiholeManager(pihole: pihole)
-    }()
+        self.manager = PiholeManager(pihole: pihole)
+    }
 
     func startUpdate() {
-        Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { timer in
-            self.updatePihole()
+        Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { [weak self] timer in
+            guard let self = self else { return }
+            Task { @MainActor in
+                self.updatePihole()
+            }
         }
     }
+
 
     func updatePihole() {
         Task {
