@@ -23,7 +23,7 @@ class V5ServiceTests: XCTestCase {
         service = PiholeV5Service(session: session)
         
         serverSettings = ServerSettings(version: .v5, host: "127.0.0.1", requestProtocol: .http)
-        credentials = Credentials(apiToken: "batata")
+        credentials = Credentials(secret: "batata")
     }
     
     override func tearDown() {

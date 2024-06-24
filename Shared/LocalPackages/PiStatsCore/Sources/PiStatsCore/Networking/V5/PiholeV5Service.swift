@@ -104,15 +104,11 @@ struct PiholeV5Service: PiholeService {
                                                   httpMethod: HTTPMethod = .GET,
                                                   httpBody: Data? = nil,
                                                   credentials: Credentials) async throws -> ServerData {
-        guard let token = credentials.apiToken else {
-            throw PiholeServiceError.noAPIToken
-        }
-
         var urlComponents = ServerSettings.URLComponentsForSettings(serverSettings)
 
         urlComponents.path = path.path
         urlComponents.queryItems = [
-            URLQueryItem(name: "auth", value: token)
+            URLQueryItem(name: "auth", value: credentials.secret)
         ]
         urlComponents.queryItems?.append(contentsOf: path.queryItems)
 

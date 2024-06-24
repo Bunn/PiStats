@@ -20,7 +20,7 @@ final class V6RemoteTests: XCTestCase {
         loadConfigValues()
 
         serverSettings = ServerSettings(version: .v6, host: host)
-        credentials = Credentials(applicationPassword: password)
+        credentials = Credentials(secret: password)
     }
 
     override func tearDown() {

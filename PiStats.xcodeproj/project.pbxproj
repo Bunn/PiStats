@@ -25,6 +25,9 @@
 		319742152BF541F700E786D6 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319742132BF541F700E786D6 /* TestView.swift */; };
 		319742182BF543AD00E786D6 /* PiStatsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 319742172BF543AD00E786D6 /* PiStatsCore */; };
 		3197421A2BF543B900E786D6 /* PiStatsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 319742192BF543B900E786D6 /* PiStatsCore */; };
+		31BC5F382C29EDB40004DF37 /* PiholeStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 31BC5F372C29EDB40004DF37 /* PiholeStorage */; };
+		31BC5F3D2C29F49F0004DF37 /* Pihole+StorageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BC5F3C2C29F49F0004DF37 /* Pihole+StorageData.swift */; };
+		31BC5F3F2C29F4F90004DF37 /* Pihole+StorageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BC5F3C2C29F49F0004DF37 /* Pihole+StorageData.swift */; };
 		31F5361F2C04B86700357CF5 /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F5361E2C04B86700357CF5 /* PopoverView.swift */; };
 		31F536212C04BB7800357CF5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F536202C04BB7800357CF5 /* AppDelegate.swift */; };
 		31F536232C04BCA600357CF5 /* StatusBarMenuWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F536222C04BCA600357CF5 /* StatusBarMenuWindowController.swift */; };
@@ -88,6 +91,8 @@
 		319742052BF5417400E786D6 /* PiStats_macOSUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiStats_macOSUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		319742132BF541F700E786D6 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		319742162BF543A600E786D6 /* PiStatsCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PiStatsCore; sourceTree = "<group>"; };
+		31BC5F362C29ED0D0004DF37 /* PiholeStorage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PiholeStorage; sourceTree = "<group>"; };
+		31BC5F3C2C29F49F0004DF37 /* Pihole+StorageData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pihole+StorageData.swift"; sourceTree = "<group>"; };
 		31F5361E2C04B86700357CF5 /* PopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverView.swift; sourceTree = "<group>"; };
 		31F536202C04BB7800357CF5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		31F536222C04BCA600357CF5 /* StatusBarMenuWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarMenuWindowController.swift; sourceTree = "<group>"; };
@@ -123,6 +128,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				319742182BF543AD00E786D6 /* PiStatsCore in Frameworks */,
+				31BC5F382C29EDB40004DF37 /* PiholeStorage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,6 +152,7 @@
 		314C5AC72BF3F56C00A92F84 /* LocalPackages */ = {
 			isa = PBXGroup;
 			children = (
+				31BC5F362C29ED0D0004DF37 /* PiholeStorage */,
 				319742162BF543A600E786D6 /* PiStatsCore */,
 			);
 			path = LocalPackages;
@@ -189,6 +196,7 @@
 		317D11392BF3F4FD00FF086E /* PiStats */ = {
 			isa = PBXGroup;
 			children = (
+				31BC5F392C29F4680004DF37 /* Extensions */,
 				317D113A2BF3F4FD00FF086E /* PiStatsApp.swift */,
 				317D113C2BF3F4FD00FF086E /* ContentView.swift */,
 				317D113E2BF3F4FE00FF086E /* Assets.xcassets */,
@@ -265,10 +273,26 @@
 		319742122BF541E200E786D6 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				31BC5F3E2C29F4C50004DF37 /* Extensions */,
 				314C5AC72BF3F56C00A92F84 /* LocalPackages */,
 				319742132BF541F700E786D6 /* TestView.swift */,
 			);
 			path = Shared;
+			sourceTree = "<group>";
+		};
+		31BC5F392C29F4680004DF37 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		31BC5F3E2C29F4C50004DF37 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				31BC5F3C2C29F49F0004DF37 /* Pihole+StorageData.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		31F5361D2C04B85500357CF5 /* Popover */ = {
@@ -356,6 +380,7 @@
 			name = "PiStats-macOS";
 			packageProductDependencies = (
 				319742172BF543AD00E786D6 /* PiStatsCore */,
+				31BC5F372C29EDB40004DF37 /* PiholeStorage */,
 			);
 			productName = "PiStats-macOS";
 			productReference = 319741E52BF5417300E786D6 /* PiStats-macOS.app */;
@@ -510,6 +535,7 @@
 			files = (
 				319742142BF541F700E786D6 /* TestView.swift in Sources */,
 				317D113D2BF3F4FD00FF086E /* ContentView.swift in Sources */,
+				31BC5F3D2C29F49F0004DF37 /* Pihole+StorageData.swift in Sources */,
 				317D113B2BF3F4FD00FF086E /* PiStatsApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -535,6 +561,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				31BC5F3F2C29F4F90004DF37 /* Pihole+StorageData.swift in Sources */,
 				319742152BF541F700E786D6 /* TestView.swift in Sources */,
 				31F536272C04BD0200357CF5 /* MenuContentViewController.swift in Sources */,
 				319741EA2BF5417300E786D6 /* ContentView.swift in Sources */,
@@ -1083,6 +1110,10 @@
 		319742192BF543B900E786D6 /* PiStatsCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = PiStatsCore;
+		};
+		31BC5F372C29EDB40004DF37 /* PiholeStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PiholeStorage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

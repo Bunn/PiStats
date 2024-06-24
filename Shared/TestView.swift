@@ -34,7 +34,7 @@ struct TestView: View {
 
 #Preview {
     let server = ServerSettings(version: .v5, host: "1", requestProtocol: .http)
-    let credentials = Credentials(apiToken: "1")
+    let credentials = Credentials(secret: "1")
     let pihole = Pihole(serverSettings: server, credentials: credentials)
 
     return TestView(pihole: pihole)

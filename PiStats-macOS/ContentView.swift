@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PiStatsCore
+import PiholeStorage
 
 struct ContentView: View {
      @StateObject var manager = Manager()
@@ -30,11 +31,23 @@ final class Manager: ObservableObject {
     let manager: PiholeManager
 
     init() {
-        let server = ServerSettings(version: .v5, host: "28", requestProtocol: .http)
-        let credentials = Credentials(apiToken: "1")
+        print("INIT")
+
+        let server = ServerSettings(version: .v5, host: "a", requestProtocol: .http)
+        let credentials = Credentials(secret: "s")
         let pihole = Pihole(serverSettings: server, credentials: credentials)
 
         self.manager = PiholeManager(pihole: pihole)
+        let storage = DefaultPiholeStorage()
+
+        storage.save(data: pihole)
+
+        let pi = storage.retrieveAll(ofType: Pihole.self)
+        print(pi)
+    }
+
+    deinit {
+        print("Deinit")
     }
 
     func startUpdate() {
@@ -56,4 +69,3 @@ final class Manager: ObservableObject {
 
     }
 }
-

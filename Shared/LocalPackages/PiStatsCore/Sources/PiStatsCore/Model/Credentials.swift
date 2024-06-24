@@ -15,77 +15,34 @@ final public class Credentials {
         let csrf: String
     }
 
-    private enum KeyChainKey: String {
-        case apiToken
-        case applicationPassword
-    }
-
-    var apiToken: String?
-    var applicationPassword: String?
+    public let secret: String
     var sessionID: SessionID?
 
-    public init(apiToken: String? = nil, applicationPassword: String? = nil) {
-        self.apiToken = apiToken
-        self.applicationPassword = applicationPassword
+    public init(secret: String) {
+        self.secret = secret
+    }
+}
+
+// MARK: - Codable
+extension Credentials: Codable {
+    enum CodingKeys: String, CodingKey {
+        case secret
+        case sessionID
     }
 
-    public func saveToKeychain() {
-        if let apiToken = apiToken {
-            saveToKeychain(service: KeyChainKey.apiToken.rawValue, data: apiToken)
-        }
-        if let applicationPassword = applicationPassword {
-            saveToKeychain(service: KeyChainKey.applicationPassword.rawValue, data: applicationPassword)
-        }
+    // Decodable
+    public convenience init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let secret = try container.decode(String.self, forKey: .secret)
+        let sessionID = try container.decodeIfPresent(SessionID.self, forKey: .sessionID)
+        self.init(secret: secret)
+        self.sessionID = sessionID
     }
 
-    public func restoreFromKeychain() {
-        apiToken = retrieveFromKeychain(service: KeyChainKey.apiToken.rawValue)
-        applicationPassword = retrieveFromKeychain(service: KeyChainKey.applicationPassword.rawValue)
-    }
-
-    public func clearKeychain() {
-        deleteFromKeychain(service: KeyChainKey.apiToken.rawValue)
-        deleteFromKeychain(service: KeyChainKey.applicationPassword.rawValue)
-    }
-
-    private func deleteFromKeychain(service: String) {
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service
-        ]
-
-        SecItemDelete(query as CFDictionary)
-    }
-
-    private func saveToKeychain(service: String, data: String) {
-        if let data = data.data(using: .utf8) {
-            let query: [String: Any] = [
-                kSecClass as String: kSecClassGenericPassword,
-                kSecAttrService as String: service,
-                kSecValueData as String: data
-            ]
-
-            SecItemAdd(query as CFDictionary, nil)
-        }
-    }
-
-    private func retrieveFromKeychain(service: String) -> String? {
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service,
-            kSecReturnData as String: kCFBooleanTrue!,
-            kSecMatchLimit as String: kSecMatchLimitOne
-        ]
-
-        var dataTypeRef: AnyObject?
-        let status = SecItemCopyMatching(query as CFDictionary, &dataTypeRef)
-
-        if status == errSecSuccess {
-            if let data = dataTypeRef as? Data, let result = String(data: data, encoding: .utf8) {
-                return result
-            }
-        }
-
-        return nil
+    // Encodable
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(secret, forKey: .secret)
+        try container.encodeIfPresent(sessionID, forKey: .sessionID)
     }
 }

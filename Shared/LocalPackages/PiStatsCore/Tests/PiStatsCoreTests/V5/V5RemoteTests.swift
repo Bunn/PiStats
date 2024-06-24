@@ -21,7 +21,7 @@ final class V5RemoteTests: XCTestCase {
         loadConfigValues()
 
         serverSettings = ServerSettings(version: .v5, host: host)
-        credentials = Credentials(apiToken: token)
+        credentials = Credentials(secret: token)
     }
 
     override func tearDown() {

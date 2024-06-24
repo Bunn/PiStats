@@ -83,11 +83,7 @@ struct PiholeV6Service: PiholeService {
     }
 
     func authenticate(serverSettings: ServerSettings, credentials: Credentials) async throws -> Credentials.SessionID {
-        guard let password = credentials.applicationPassword else {
-            throw PiholeServiceError.noAPIPassword
-        }
-
-        let body = try JSONEncoder().encode(["password": password])
+        let body = try JSONEncoder().encode(["password": credentials.secret])
 
         let response: APIResponse = try await fetchData(serverSettings: serverSettings,
                                                         path: .auth,
@@ -106,10 +102,6 @@ struct PiholeV6Service: PiholeService {
                                                   httpBody: Data? = nil,
                                                   credentials: Credentials) async throws -> ServerData {
         var sessionID: Credentials.SessionID
-
-        guard credentials.applicationPassword != nil else {
-            throw PiholeServiceError.noAPIPassword
-        }
 
         var urlComponents = ServerSettings.URLComponentsForSettings(serverSettings)
         urlComponents.path = path.rawValue

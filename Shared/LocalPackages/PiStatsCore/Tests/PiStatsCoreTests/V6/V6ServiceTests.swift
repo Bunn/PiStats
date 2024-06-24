@@ -23,7 +23,7 @@ class V6ServiceTests: XCTestCase {
         service = PiholeV6Service(session: session)
         
         serverSettings = ServerSettings(version: .v6, host: "127.0.0.1", requestProtocol: .http)
-        credentials = Credentials(applicationPassword: "batata")
+        credentials = Credentials(secret: "batata")
         credentials.sessionID = Credentials.SessionID(sid: "repolho", csrf: "cenoura")
     }
     
