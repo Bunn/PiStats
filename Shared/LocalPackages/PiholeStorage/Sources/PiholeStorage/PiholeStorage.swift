@@ -19,7 +19,6 @@ public struct DefaultPiholeStorage: PiholeStorage {
     private let userDefaults: UserDefaults
     private let keychainHelper = KeychainHelper()
     private let storageKey = "PiholeStorageData"
-    private let secretKeyPrefix = "pi-stats-secret"
 
     public init(userDefaults: UserDefaults = .standard) {
         self.userDefaults = userDefaults
@@ -27,7 +26,7 @@ public struct DefaultPiholeStorage: PiholeStorage {
 
     public func save(data: StorageData) {
         do {
-            let secretKey = "\(secretKeyPrefix)-\(data.id.uuidString)"
+            let secretKey = secretKey(with: data.id)
             guard keychainHelper.save(data: data.secret, for: secretKey) else {
                 print("Error saving secret to keychain")
                 return
@@ -59,8 +58,8 @@ public struct DefaultPiholeStorage: PiholeStorage {
         let currentData = retrieveStoredDictionary()
         if let data = currentData[id.uuidString] {
             if var storedData = try? JSONDecoder().decode(T.self, from: data) {
-                // Retrieve secret from keychain and update the storedData object
-                let secretKey = "\(secretKeyPrefix)-\(id.uuidString)"
+
+                let secretKey = secretKey(with: id)
                 if let secret = keychainHelper.retrieve(for: secretKey) {
                     storedData.secret = secret
                     return storedData
@@ -81,6 +80,11 @@ public struct DefaultPiholeStorage: PiholeStorage {
         }
 
         return [:]
+    }
+
+    private func secretKey(with id: UUID) -> String {
+        let secretKeyPrefix = "pi-stats-secret"
+        return "\(secretKeyPrefix)-\(id.uuidString)"
     }
 }
 

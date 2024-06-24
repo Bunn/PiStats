@@ -34,15 +34,14 @@ final class Manager: ObservableObject {
         print("INIT")
 
         let server = ServerSettings(version: .v5, host: "a", requestProtocol: .http)
-        let credentials = Credentials(secret: "s")
+        let credentials = Credentials(secret: "a")
         let pihole = Pihole(serverSettings: server, credentials: credentials)
 
         self.manager = PiholeManager(pihole: pihole)
-        let storage = DefaultPiholeStorage()
 
-        storage.save(data: pihole)
+        DefaultPiholeStorage().save(data: pihole)
 
-        let pi = storage.retrieveAll(ofType: Pihole.self)
+        let pi = DefaultPiholeStorage().retrieveAll(ofType: Pihole.self)
         print(pi)
     }
 
