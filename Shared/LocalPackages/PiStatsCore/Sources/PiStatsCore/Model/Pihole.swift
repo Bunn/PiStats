@@ -12,12 +12,12 @@ public struct ServerSettings {
         case v5
         case v6
     }
-    
+
     public enum RequestProtocol: String, Codable {
         case http
         case https
     }
-    
+
     var version: Version
     var host: String
     var port: Int?
@@ -33,38 +33,38 @@ public struct ServerSettings {
 
 extension ServerSettings: Codable {
     enum CodingKeys: String, CodingKey {
-          case version
-          case host
-          case port
-          case requestProtocol
-      }
+        case version
+        case host
+        case port
+        case requestProtocol
+    }
 
     public func encode(to encoder: Encoder) throws {
-         var container = encoder.container(keyedBy: CodingKeys.self)
+        var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(version.rawValue, forKey: .version)
-         try container.encode(host, forKey: .host)
-         try container.encodeIfPresent(port, forKey: .port)
+        try container.encode(host, forKey: .host)
+        try container.encodeIfPresent(port, forKey: .port)
         try container.encode(requestProtocol.rawValue, forKey: .requestProtocol)
-     }
+    }
 
     public init(from decoder: Decoder) throws {
-          let container = try decoder.container(keyedBy: CodingKeys.self)
-          self.version = try container.decode(Version.self, forKey: .version)
-          self.host = try container.decode(String.self, forKey: .host)
-          self.port = try container.decodeIfPresent(Int.self, forKey: .port)
-          self.requestProtocol = try container.decode(RequestProtocol.self, forKey: .requestProtocol)
-      }
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.version = try container.decode(Version.self, forKey: .version)
+        self.host = try container.decode(String.self, forKey: .host)
+        self.port = try container.decodeIfPresent(Int.self, forKey: .port)
+        self.requestProtocol = try container.decode(RequestProtocol.self, forKey: .requestProtocol)
+    }
 }
 
 
 @Observable
 final public class Pihole {
-        public enum Status: String {
+    public enum Status: String {
         case enabled
         case disabled
         case unknown
     }
-    
+
     public var serverSettings: ServerSettings
     public var credentials: Credentials
     public var name: String
@@ -76,7 +76,7 @@ final public class Pihole {
     public var DNSQueries: DNSQueries?
     public private(set) var errors: [PiholeOperationErrorLog]
     public let id = UUID()
-    
+
     public init(serverSettings: ServerSettings, credentials: Credentials, name: String? = nil) {
         self.serverSettings = serverSettings
         self.credentials = credentials
