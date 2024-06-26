@@ -37,6 +37,12 @@ struct PopoverView: View {
             }
             Divider()
 
+            HStack {
+                Text("Statistics")
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.secondary)
+                Spacer()
+            }
           ForEach(testData) { data in
                 HStack {
                     Circle()
@@ -46,10 +52,15 @@ struct PopoverView: View {
                     Spacer()
                     Text(data.value)
                 }
-            }
+          }
 
             Divider()
-
+            HStack {
+                Text("Device")
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.secondary)
+                Spacer()
+            }
             LazyVGrid(columns: columns, spacing: 10) {
                  ForEach(sensorTest) { data in
                      Label {
@@ -60,8 +71,45 @@ struct PopoverView: View {
                      }
                      .frame(maxWidth: .infinity, alignment: .leading)
                  }
-            }.frame(height: (CGFloat(sensorTest.count) / 2.0) * 30.0)
+            }.frame(height: (CGFloat(sensorTest.count) / 2.0) * 20)
+
+            Divider()
+
+            HStack {
+                VStack (alignment: .leading) {
+                    Button(action: {
+                        // Action for gear.circle.fill button
+                    }) {
+                        HStack {
+                            Image(systemName: "gear.circle.fill")
+                                .font(.title)
+                                .bold()
+                            Text("Settings")
+                        }
+                    }
+                    .buttonStyle(BorderlessButtonStyle())
+
+                    Button(action: {
+                        // Action for power.circle.fill button
+                    }) {
+                        HStack {
+                            Image(systemName: "power.circle.fill")
+                                .font(.title)
+                                .bold()
+                            
+
+                            Text("Close PiStats")
+                        }
+                    }
+                    .buttonStyle(BorderlessButtonStyle())
+
+                }
+
+                Spacer()
+            }
+
         }.padding()
+
     }
 }
 
