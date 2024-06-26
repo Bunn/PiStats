@@ -39,10 +39,10 @@ final class Manager: ObservableObject {
 
         self.manager = PiholeManager(pihole: pihole)
 
-        DefaultPiholeStorage().save(data: pihole)
-
-        let pi = DefaultPiholeStorage().retrieveAll(ofType: Pihole.self)
-        print(pi)
+//        DefaultPiholeStorage().save(data: pihole)
+//
+//        let pi = DefaultPiholeStorage().retrieveAll(ofType: Pihole.self)
+//        print(pi)
     }
 
     deinit {

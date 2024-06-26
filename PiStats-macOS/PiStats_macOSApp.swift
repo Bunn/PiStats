@@ -17,7 +17,6 @@ struct PiStats_macOSApp: App {
                      systemImage: "photo.badge.plus",
                      isInserted: $menuBarExtraIsInserted) {
             PopoverView()
-                .frame(width: 400, height: 300)
         }
                      .menuBarExtraStyle(.window)
 
