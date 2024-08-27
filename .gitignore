@@ -25,5 +25,8 @@ xcuserdata/
 *.dSYM.zip
 *.dSYM
 
-
 PiHoleStats.xcodeproj/xcuserdata
+
+# Generated Config Files
+
+TeamID.xcconfig
