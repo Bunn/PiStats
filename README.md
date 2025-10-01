@@ -1,7 +1,3 @@
-# Project deprecated
-
-This project is no longer maintained and has been archived. For the latest updates and ongoing development of the iOS app, please visit: https://github.com/Bunn/PiStats
-
 
 <p align="center">
   <img width="130" src="./images/icon.png"">
