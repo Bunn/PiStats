@@ -67,6 +67,7 @@ struct PiStatsOverviewWidget: Widget {
 struct PiStatsOverviewWidgetView: View {
     let entry: PiStatsEntry
     @Environment(\.widgetFamily) private var family
+    @Environment(\.widgetRenderingMode) private var renderingMode
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -106,12 +107,20 @@ struct PiStatsOverviewWidgetView: View {
                     title: family == .systemMedium ? "Total Queries" : nil
                 )
                 
+                if renderingMode == .accented {
+                    Divider()
+                }
+                
                 StatCard(
                     value: formatCompactNumber(summary.adsBlocked),
                     color: AppColors.queriesBlocked,
                     icon: SystemImages.queriesBlocked,
                     title: family == .systemMedium ? "Blocked" : nil
                 )
+            }
+            
+            if renderingMode == .accented {
+                Divider()
             }
             
             HStack(spacing: 0) {
@@ -121,6 +130,10 @@ struct PiStatsOverviewWidgetView: View {
                     icon: SystemImages.percentBlocked,
                     title: family == .systemMedium ? "Blocked %" : nil
                 )
+                
+                if renderingMode == .accented {
+                    Divider()
+                }
                 
                 StatCard(
                     value: formatCompactNumber(summary.domainsBeingBlocked),
@@ -151,12 +164,20 @@ struct PiStatsOverviewWidgetView: View {
                     title: family == .systemMedium ? "Total Queries" : nil
                 )
                 
+                if renderingMode == .accented {
+                    Divider()
+                }
+                
                 StatCard(
                     value: "—",
                     color: AppColors.queriesBlocked,
                     icon: SystemImages.queriesBlocked,
                     title: family == .systemMedium ? "Blocked" : nil
                 )
+            }
+            
+            if renderingMode == .accented {
+                Divider()
             }
             
             HStack(spacing: 0) {
@@ -166,6 +187,10 @@ struct PiStatsOverviewWidgetView: View {
                     icon: SystemImages.percentBlocked,
                     title: family == .systemMedium ? "Blocked %" : nil
                 )
+                
+                if renderingMode == .accented {
+                    Divider()
+                }
                 
                 StatCard(
                     value: "—",
@@ -190,6 +215,7 @@ struct PiStatsOverviewWidgetView: View {
 
 struct CenterShield: View {
     let status: PiholeStatus
+    @Environment(\.widgetRenderingMode) private var renderingMode
 
     var body: some View {
         ZStack {
@@ -203,7 +229,7 @@ struct CenterShield: View {
     @ViewBuilder
     private func buildBackgroundCircle() -> some View {
         Circle()
-            .fill(Color(.systemGroupedBackground))
+            .fill(circleBackgroundColor)
             .frame(
                 width: WidgetConstants.Layout.centerShieldSize,
                 height: WidgetConstants.Layout.centerShieldSize
@@ -216,11 +242,19 @@ struct CenterShield: View {
             )
     }
     
+    private var circleBackgroundColor: Color {
+        if renderingMode == .accented || renderingMode == .vibrant {
+            return Color.clear
+        }
+        return Color(.systemGroupedBackground)
+    }
+    
     @ViewBuilder
     private func buildShieldIcon() -> some View {
         Image(systemName: shieldImageName)
             .font(.system(size: WidgetConstants.Typography.centerShieldIconSize))
             .foregroundColor(shieldColor)
+            .widgetAccentable()
     }
     
     // MARK: - Computed Properties
@@ -237,6 +271,10 @@ struct CenterShield: View {
     }
 
     private var shieldColor: Color {
+        if renderingMode == .vibrant || renderingMode == .accented {
+            return .primary
+        }
+        
         switch status {
         case .enabled:
             return AppColors.statusOnline
@@ -255,10 +293,12 @@ struct StatCard: View {
     let color: Color
     let icon: String
     let title: String?
+    
+    @Environment(\.widgetRenderingMode) private var renderingMode
 
     var body: some View {
         ZStack {
-            color
+            backgroundColor
             
             if let title = title {
                 buildMediumFamilyLayout(title: title)
@@ -267,6 +307,29 @@ struct StatCard: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+    
+    // MARK: - Computed Properties
+    
+    private var backgroundColor: Color {
+        if renderingMode == .vibrant || renderingMode == .accented {
+            return Color.clear
+        }
+        return color
+    }
+    
+    private var contentColor: Color {
+        if renderingMode == .vibrant || renderingMode == .accented {
+            return Color.primary
+        }
+        return .white
+    }
+    
+    private var titleOpacity: Double {
+        if renderingMode == .vibrant || renderingMode == .accented {
+            return 0.7
+        }
+        return WidgetConstants.Opacity.titleOpacity
     }
     
     // MARK: - View Builders
@@ -280,7 +343,7 @@ struct StatCard: View {
                         size: WidgetConstants.Typography.statTitleSize,
                         weight: .medium
                     ))
-                    .foregroundColor(.white.opacity(WidgetConstants.Opacity.titleOpacity))
+                    .foregroundColor(contentColor.opacity(titleOpacity))
                     .lineLimit(1)
                     .minimumScaleFactor(WidgetConstants.Scale.titleMinimumScale)
                 Spacer()
@@ -288,8 +351,9 @@ struct StatCard: View {
             
             HStack(spacing: WidgetConstants.Spacing.statCardHorizontal) {
                 Image(systemName: icon)
-                    .foregroundColor(.white)
+                    .foregroundColor(contentColor)
                     .font(.system(size: WidgetConstants.Typography.statIconSizeMedium))
+                    .widgetAccentable()
 
                 Text(value)
                     .font(.system(
@@ -297,9 +361,10 @@ struct StatCard: View {
                         weight: .bold,
                         design: .rounded
                     ))
-                    .foregroundColor(.white)
+                    .foregroundColor(contentColor)
                     .lineLimit(1)
                     .minimumScaleFactor(WidgetConstants.Scale.valueMinimumScale)
+                    .widgetAccentable()
                 
                 Spacer()
             }
@@ -312,8 +377,9 @@ struct StatCard: View {
     private func buildSmallFamilyLayout() -> some View {
         VStack(spacing: WidgetConstants.Spacing.statCardVertical) {
             Image(systemName: icon)
-                .foregroundColor(.white)
+                .foregroundColor(contentColor)
                 .font(.system(size: WidgetConstants.Typography.statIconSizeSmall))
+                .widgetAccentable()
 
             Text(value)
                 .font(.system(
@@ -321,9 +387,10 @@ struct StatCard: View {
                     weight: .bold,
                     design: .rounded
                 ))
-                .foregroundColor(.white)
+                .foregroundColor(contentColor)
                 .lineLimit(1)
                 .minimumScaleFactor(WidgetConstants.Scale.valueMinimumScale)
+                .widgetAccentable()
         }
     }
 }
