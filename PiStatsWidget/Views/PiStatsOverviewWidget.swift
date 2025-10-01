@@ -387,6 +387,7 @@ struct StatCard: View {
                     weight: .bold,
                     design: .rounded
                 ))
+                .padding(.horizontal, 8)
                 .foregroundColor(contentColor)
                 .lineLimit(1)
                 .minimumScaleFactor(WidgetConstants.Scale.valueMinimumScale)
