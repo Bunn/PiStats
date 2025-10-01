@@ -72,10 +72,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		310D5F7B2D49698C008E611D /* iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		310D5F7B2D49698C008E611D /* Pi Stats Mobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pi Stats Mobile.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		310D5F8A2D49698D008E611D /* iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		310D5F942D49698D008E611D /* iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		310D5FA92D496998008E611D /* macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = macOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		310D5FA92D496998008E611D /* Pi Stats.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pi Stats.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		310D5FB92D496999008E611D /* macOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = macOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		310D5FC32D496999008E611D /* macOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = macOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		311A98C12E11BEDB00C36B1C /* PiStatsWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PiStatsWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -86,7 +86,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		310D60262D496A0F008E611D /* Exceptions for "iOS" folder in "iOS" target */ = {
+		310D60262D496A0F008E611D /* Exceptions for "iOS" folder in "Pi Stats Mobile" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Assets.xcassets,
@@ -103,7 +103,7 @@
 				Views/Settings/SettingsView.swift,
 				Views/Settings/SettingsViewModel.swift,
 			);
-			target = 310D5F7A2D49698C008E611D /* iOS */;
+			target = 310D5F7A2D49698C008E611D /* Pi Stats Mobile */;
 		};
 		310D60272D496A0F008E611D /* Exceptions for "iOS" folder in "iOSTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -120,7 +120,7 @@
 			);
 			target = 310D5F932D49698D008E611D /* iOSUITests */;
 		};
-		310D60292D496A0F008E611D /* Exceptions for "macOS" folder in "macOS" target */ = {
+		310D60292D496A0F008E611D /* Exceptions for "macOS" folder in "Pi Stats" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Assets.xcassets,
@@ -139,7 +139,7 @@
 				Views/MenuBarIconView.swift,
 				Views/PiholeRowViews.swift,
 			);
-			target = 310D5FA82D496998008E611D /* macOS */;
+			target = 310D5FA82D496998008E611D /* Pi Stats */;
 		};
 		310D602A2D496A0F008E611D /* Exceptions for "macOS" folder in "macOSTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -156,7 +156,7 @@
 			);
 			target = 310D5FC22D496999008E611D /* macOSUITests */;
 		};
-		310D602F2D496A33008E611D /* Exceptions for "Shared" folder in "iOS" target */ = {
+		310D602F2D496A33008E611D /* Exceptions for "Shared" folder in "Pi Stats Mobile" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				AppConstants.swift,
@@ -177,9 +177,9 @@
 				Views/StatusHeaderView.swift,
 				Views/TestView.swift,
 			);
-			target = 310D5F7A2D49698C008E611D /* iOS */;
+			target = 310D5F7A2D49698C008E611D /* Pi Stats Mobile */;
 		};
-		310D60312D496A7A008E611D /* Exceptions for "Shared" folder in "macOS" target */ = {
+		310D60312D496A7A008E611D /* Exceptions for "Shared" folder in "Pi Stats" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				AppConstants.swift,
@@ -200,7 +200,7 @@
 				Views/StatusHeaderView.swift,
 				Views/TestView.swift,
 			);
-			target = 310D5FA82D496998008E611D /* macOS */;
+			target = 310D5FA82D496998008E611D /* Pi Stats */;
 		};
 		311A98DB2E11BEDB00C36B1C /* Exceptions for "PiStatsWidget" folder in "PiStatsWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -233,7 +233,7 @@
 		310D600B2D496A0F008E611D /* iOS */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				310D60262D496A0F008E611D /* Exceptions for "iOS" folder in "iOS" target */,
+				310D60262D496A0F008E611D /* Exceptions for "iOS" folder in "Pi Stats Mobile" target */,
 				310D60272D496A0F008E611D /* Exceptions for "iOS" folder in "iOSTests" target */,
 				310D60282D496A0F008E611D /* Exceptions for "iOS" folder in "iOSUITests" target */,
 				31C66C982E1EF14000DA2E9D /* Exceptions for "iOS" folder in "PiStatsWidgetExtension" target */,
@@ -244,7 +244,7 @@
 		310D60172D496A0F008E611D /* macOS */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				310D60292D496A0F008E611D /* Exceptions for "macOS" folder in "macOS" target */,
+				310D60292D496A0F008E611D /* Exceptions for "macOS" folder in "Pi Stats" target */,
 				310D602A2D496A0F008E611D /* Exceptions for "macOS" folder in "macOSTests" target */,
 				310D602B2D496A0F008E611D /* Exceptions for "macOS" folder in "macOSUITests" target */,
 			);
@@ -254,8 +254,8 @@
 		310D602C2D496A19008E611D /* Shared */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				310D602F2D496A33008E611D /* Exceptions for "Shared" folder in "iOS" target */,
-				310D60312D496A7A008E611D /* Exceptions for "Shared" folder in "macOS" target */,
+				310D602F2D496A33008E611D /* Exceptions for "Shared" folder in "Pi Stats Mobile" target */,
+				310D60312D496A7A008E611D /* Exceptions for "Shared" folder in "Pi Stats" target */,
 				311A98EA2E11C13C00C36B1C /* Exceptions for "Shared" folder in "PiStatsWidgetExtension" target */,
 			);
 			path = Shared;
@@ -354,10 +354,10 @@
 		310D5F182D4967F1008E611D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				310D5F7B2D49698C008E611D /* iOS.app */,
+				310D5F7B2D49698C008E611D /* Pi Stats Mobile.app */,
 				310D5F8A2D49698D008E611D /* iOSTests.xctest */,
 				310D5F942D49698D008E611D /* iOSUITests.xctest */,
-				310D5FA92D496998008E611D /* macOS.app */,
+				310D5FA92D496998008E611D /* Pi Stats.app */,
 				310D5FB92D496999008E611D /* macOSTests.xctest */,
 				310D5FC32D496999008E611D /* macOSUITests.xctest */,
 				311A98C12E11BEDB00C36B1C /* PiStatsWidgetExtension.appex */,
@@ -377,9 +377,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		310D5F7A2D49698C008E611D /* iOS */ = {
+		310D5F7A2D49698C008E611D /* Pi Stats Mobile */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 310D5F9C2D49698D008E611D /* Build configuration list for PBXNativeTarget "iOS" */;
+			buildConfigurationList = 310D5F9C2D49698D008E611D /* Build configuration list for PBXNativeTarget "Pi Stats Mobile" */;
 			buildPhases = (
 				310D5F772D49698C008E611D /* Sources */,
 				310D5F782D49698C008E611D /* Frameworks */,
@@ -391,13 +391,13 @@
 			dependencies = (
 				311A98D52E11BEDB00C36B1C /* PBXTargetDependency */,
 			);
-			name = iOS;
+			name = "Pi Stats Mobile";
 			packageProductDependencies = (
 				3130C3462D496BCB007ABEBD /* PiStatsCore */,
 				3189B5ED2D4AB0ED008C339C /* PiStatsUI */,
 			);
 			productName = iOS;
-			productReference = 310D5F7B2D49698C008E611D /* iOS.app */;
+			productReference = 310D5F7B2D49698C008E611D /* Pi Stats Mobile.app */;
 			productType = "com.apple.product-type.application";
 		};
 		310D5F892D49698D008E611D /* iOSTests */ = {
@@ -440,9 +440,9 @@
 			productReference = 310D5F942D49698D008E611D /* iOSUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		310D5FA82D496998008E611D /* macOS */ = {
+		310D5FA82D496998008E611D /* Pi Stats */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 310D5FCB2D496999008E611D /* Build configuration list for PBXNativeTarget "macOS" */;
+			buildConfigurationList = 310D5FCB2D496999008E611D /* Build configuration list for PBXNativeTarget "Pi Stats" */;
 			buildPhases = (
 				310D5FA52D496998008E611D /* Sources */,
 				310D5FA62D496998008E611D /* Frameworks */,
@@ -452,12 +452,12 @@
 			);
 			dependencies = (
 			);
-			name = macOS;
+			name = "Pi Stats";
 			packageProductDependencies = (
 				3130C3482D496BD0007ABEBD /* PiStatsCore */,
 			);
 			productName = macOS;
-			productReference = 310D5FA92D496998008E611D /* macOS.app */;
+			productReference = 310D5FA92D496998008E611D /* Pi Stats.app */;
 			productType = "com.apple.product-type.application";
 		};
 		310D5FB82D496999008E611D /* macOSTests */ = {
@@ -575,10 +575,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				310D5F7A2D49698C008E611D /* iOS */,
+				310D5F7A2D49698C008E611D /* Pi Stats Mobile */,
 				310D5F892D49698D008E611D /* iOSTests */,
 				310D5F932D49698D008E611D /* iOSUITests */,
-				310D5FA82D496998008E611D /* macOS */,
+				310D5FA82D496998008E611D /* Pi Stats */,
 				310D5FB82D496999008E611D /* macOSTests */,
 				310D5FC22D496999008E611D /* macOSUITests */,
 				311A98C02E11BEDB00C36B1C /* PiStatsWidgetExtension */,
@@ -695,22 +695,22 @@
 /* Begin PBXTargetDependency section */
 		310D5F8C2D49698D008E611D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 310D5F7A2D49698C008E611D /* iOS */;
+			target = 310D5F7A2D49698C008E611D /* Pi Stats Mobile */;
 			targetProxy = 310D5F8B2D49698D008E611D /* PBXContainerItemProxy */;
 		};
 		310D5F962D49698D008E611D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 310D5F7A2D49698C008E611D /* iOS */;
+			target = 310D5F7A2D49698C008E611D /* Pi Stats Mobile */;
 			targetProxy = 310D5F952D49698D008E611D /* PBXContainerItemProxy */;
 		};
 		310D5FBB2D496999008E611D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 310D5FA82D496998008E611D /* macOS */;
+			target = 310D5FA82D496998008E611D /* Pi Stats */;
 			targetProxy = 310D5FBA2D496999008E611D /* PBXContainerItemProxy */;
 		};
 		310D5FC52D496999008E611D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 310D5FA82D496998008E611D /* macOS */;
+			target = 310D5FA82D496998008E611D /* Pi Stats */;
 			targetProxy = 310D5FC42D496999008E611D /* PBXContainerItemProxy */;
 		};
 		311A98D52E11BEDB00C36B1C /* PBXTargetDependency */ = {
@@ -1197,7 +1197,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		310D5F9C2D49698D008E611D /* Build configuration list for PBXNativeTarget "iOS" */ = {
+		310D5F9C2D49698D008E611D /* Build configuration list for PBXNativeTarget "Pi Stats Mobile" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				310D5F9D2D49698D008E611D /* Debug */,
@@ -1224,7 +1224,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		310D5FCB2D496999008E611D /* Build configuration list for PBXNativeTarget "macOS" */ = {
+		310D5FCB2D496999008E611D /* Build configuration list for PBXNativeTarget "Pi Stats" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				310D5FCC2D496999008E611D /* Debug */,

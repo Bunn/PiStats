@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "310D5F7A2D49698C008E611D"
-               BuildableName = "iOS.app"
-               BlueprintName = "iOS"
+               BuildableName = "Pi Stats Mobile.app"
+               BlueprintName = "Pi Stats Mobile"
                ReferencedContainer = "container:PiStats.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,8 +45,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "310D5F7A2D49698C008E611D"
-            BuildableName = "iOS.app"
-            BlueprintName = "iOS"
+            BuildableName = "Pi Stats Mobile.app"
+            BlueprintName = "Pi Stats Mobile"
             ReferencedContainer = "container:PiStats.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -62,8 +62,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "310D5F7A2D49698C008E611D"
-            BuildableName = "iOS.app"
-            BlueprintName = "iOS"
+            BuildableName = "Pi Stats Mobile.app"
+            BlueprintName = "Pi Stats Mobile"
             ReferencedContainer = "container:PiStats.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

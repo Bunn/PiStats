@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "310D5FA82D496998008E611D"
-               BuildableName = "macOS.app"
-               BlueprintName = "macOS"
+               BuildableName = "Pi Stats.app"
+               BlueprintName = "Pi Stats"
                ReferencedContainer = "container:PiStats.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -69,8 +69,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "310D5FA82D496998008E611D"
-            BuildableName = "macOS.app"
-            BlueprintName = "macOS"
+            BuildableName = "Pi Stats.app"
+            BlueprintName = "Pi Stats"
             ReferencedContainer = "container:PiStats.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -86,8 +86,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "310D5FA82D496998008E611D"
-            BuildableName = "macOS.app"
-            BlueprintName = "macOS"
+            BuildableName = "Pi Stats.app"
+            BlueprintName = "Pi Stats"
             ReferencedContainer = "container:PiStats.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
