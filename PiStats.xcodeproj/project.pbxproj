@@ -1,0 +1,1289 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		311A98C32E11BEDB00C36B1C /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 311A98C22E11BEDB00C36B1C /* WidgetKit.framework */; };
+		311A98C52E11BEDB00C36B1C /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 311A98C42E11BEDB00C36B1C /* SwiftUI.framework */; };
+		311A98D62E11BEDB00C36B1C /* PiStatsWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 311A98C12E11BEDB00C36B1C /* PiStatsWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		311A98DD2E11BF0800C36B1C /* PiStatsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 311A98DC2E11BF0800C36B1C /* PiStatsCore */; };
+		311A98DF2E11BF0B00C36B1C /* PiStatsUI in Frameworks */ = {isa = PBXBuildFile; productRef = 311A98DE2E11BF0B00C36B1C /* PiStatsUI */; };
+		3130C3472D496BCB007ABEBD /* PiStatsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 3130C3462D496BCB007ABEBD /* PiStatsCore */; };
+		3130C3492D496BD0007ABEBD /* PiStatsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 3130C3482D496BD0007ABEBD /* PiStatsCore */; };
+		3189B5EE2D4AB0ED008C339C /* PiStatsUI in Frameworks */ = {isa = PBXBuildFile; productRef = 3189B5ED2D4AB0ED008C339C /* PiStatsUI */; };
+		31DCC5122E7F420D00AAEBBC /* pistats.icon in Resources */ = {isa = PBXBuildFile; fileRef = 31DCC5112E7F420D00AAEBBC /* pistats.icon */; };
+		31DCC5132E7F420D00AAEBBC /* pistats.icon in Resources */ = {isa = PBXBuildFile; fileRef = 31DCC5112E7F420D00AAEBBC /* pistats.icon */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		310D5F8B2D49698D008E611D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 310D5F0F2D4967F1008E611D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 310D5F7A2D49698C008E611D;
+			remoteInfo = iOS;
+		};
+		310D5F952D49698D008E611D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 310D5F0F2D4967F1008E611D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 310D5F7A2D49698C008E611D;
+			remoteInfo = iOS;
+		};
+		310D5FBA2D496999008E611D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 310D5F0F2D4967F1008E611D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 310D5FA82D496998008E611D;
+			remoteInfo = macOS;
+		};
+		310D5FC42D496999008E611D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 310D5F0F2D4967F1008E611D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 310D5FA82D496998008E611D;
+			remoteInfo = macOS;
+		};
+		311A98D42E11BEDB00C36B1C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 310D5F0F2D4967F1008E611D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 311A98C02E11BEDB00C36B1C;
+			remoteInfo = PiStatsWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		311A98D72E11BEDB00C36B1C /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				311A98D62E11BEDB00C36B1C /* PiStatsWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		310D5F7B2D49698C008E611D /* Pi Stats Mobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pi Stats Mobile.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		310D5F8A2D49698D008E611D /* iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		310D5F942D49698D008E611D /* iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		310D5FA92D496998008E611D /* Pi Stats.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pi Stats.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		310D5FB92D496999008E611D /* macOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = macOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		310D5FC32D496999008E611D /* macOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = macOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		311A98C12E11BEDB00C36B1C /* PiStatsWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PiStatsWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		311A98C22E11BEDB00C36B1C /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		311A98C42E11BEDB00C36B1C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		311A98EF2E11C30100C36B1C /* PiStatsWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PiStatsWidgetExtension.entitlements; sourceTree = "<group>"; };
+		31DCC5112E7F420D00AAEBBC /* pistats.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = pistats.icon; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		310D60262D496A0F008E611D /* Exceptions for "iOS" folder in "Pi Stats Mobile" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Assets.xcassets,
+				ContentView.swift,
+				iOSApp.swift,
+				"Preview Content/Preview Assets.xcassets",
+				Views/PiHoleSetup/CodeScannerView.swift,
+				Views/PiHoleSetup/PiholeSetupView.swift,
+				Views/PiholeStatsList/AllPiholesView.swift,
+				Views/PiholeStatsList/PiholeStatsList.swift,
+				Views/PiholeStatsList/PiStatsCardView.swift,
+				Views/Settings/CustomDisableTimesView.swift,
+				Views/Settings/SettingsStore.swift,
+				Views/Settings/SettingsView.swift,
+				Views/Settings/SettingsViewModel.swift,
+			);
+			target = 310D5F7A2D49698C008E611D /* Pi Stats Mobile */;
+		};
+		310D60272D496A0F008E611D /* Exceptions for "iOS" folder in "iOSTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				iOSTests/iOSTests.swift,
+			);
+			target = 310D5F892D49698D008E611D /* iOSTests */;
+		};
+		310D60282D496A0F008E611D /* Exceptions for "iOS" folder in "iOSUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				iOSUITests/iOSUITests.swift,
+				iOSUITests/iOSUITestsLaunchTests.swift,
+			);
+			target = 310D5F932D49698D008E611D /* iOSUITests */;
+		};
+		310D60292D496A0F008E611D /* Exceptions for "macOS" folder in "Pi Stats" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Assets.xcassets,
+				ContentView.swift,
+				macOSApp.swift,
+				MacPiholeSetupView.swift,
+				MacPiholesModel.swift,
+				MacPreferences.swift,
+				MacSettingsView.swift,
+				PiholeDataManager.swift,
+				Popover/PopoverView.swift,
+				"Preview Content/Preview Assets.xcassets",
+				Views/AboutView.swift,
+				Views/ActionButtonView.swift,
+				Views/EmptyStateView.swift,
+				Views/MenuBarIconView.swift,
+				Views/PiholeRowViews.swift,
+			);
+			target = 310D5FA82D496998008E611D /* Pi Stats */;
+		};
+		310D602A2D496A0F008E611D /* Exceptions for "macOS" folder in "macOSTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				macOSTests/macOSTests.swift,
+			);
+			target = 310D5FB82D496999008E611D /* macOSTests */;
+		};
+		310D602B2D496A0F008E611D /* Exceptions for "macOS" folder in "macOSUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				macOSUITests/macOSUITests.swift,
+				macOSUITests/macOSUITestsLaunchTests.swift,
+			);
+			target = 310D5FC22D496999008E611D /* macOSUITests */;
+		};
+		310D602F2D496A33008E611D /* Exceptions for "Shared" folder in "Pi Stats Mobile" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AppConstants.swift,
+				AppGroup.swift,
+				Colors.xcassets,
+				DataUpdater/PiholeListUpdating.swift,
+				DataUpdater/PiholeSummaryData.swift,
+				DataUpdater/PiholeSummaryDataUpdater.swift,
+				KeyChainPasswordItem.swift,
+				PiholeStorage.swift,
+				StatType.swift,
+				TemperatureScale.swift,
+				UserDefaultExtensions.swift,
+				Views/CardViewGrid.swift,
+				Views/ErrorMessageView.swift,
+				Views/ListView.swift,
+				Views/MetricsView.swift,
+				Views/StatusHeaderView.swift,
+				Views/TestView.swift,
+			);
+			target = 310D5F7A2D49698C008E611D /* Pi Stats Mobile */;
+		};
+		310D60312D496A7A008E611D /* Exceptions for "Shared" folder in "Pi Stats" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AppConstants.swift,
+				AppGroup.swift,
+				Colors.xcassets,
+				DataUpdater/PiholeListUpdating.swift,
+				DataUpdater/PiholeSummaryData.swift,
+				DataUpdater/PiholeSummaryDataUpdater.swift,
+				KeyChainPasswordItem.swift,
+				PiholeStorage.swift,
+				StatType.swift,
+				TemperatureScale.swift,
+				UserDefaultExtensions.swift,
+				Views/CardViewGrid.swift,
+				Views/ErrorMessageView.swift,
+				Views/ListView.swift,
+				Views/MetricsView.swift,
+				Views/StatusHeaderView.swift,
+				Views/TestView.swift,
+			);
+			target = 310D5FA82D496998008E611D /* Pi Stats */;
+		};
+		311A98DB2E11BEDB00C36B1C /* Exceptions for "PiStatsWidget" folder in "PiStatsWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 311A98C02E11BEDB00C36B1C /* PiStatsWidgetExtension */;
+		};
+		311A98EA2E11C13C00C36B1C /* Exceptions for "Shared" folder in "PiStatsWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AppGroup.swift,
+				Colors.xcassets,
+				KeyChainPasswordItem.swift,
+				PiholeStorage.swift,
+				UserDefaultExtensions.swift,
+			);
+			target = 311A98C02E11BEDB00C36B1C /* PiStatsWidgetExtension */;
+		};
+		31C66C982E1EF14000DA2E9D /* Exceptions for "iOS" folder in "PiStatsWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Assets.xcassets,
+			);
+			target = 311A98C02E11BEDB00C36B1C /* PiStatsWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		310D600B2D496A0F008E611D /* iOS */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				310D60262D496A0F008E611D /* Exceptions for "iOS" folder in "Pi Stats Mobile" target */,
+				310D60272D496A0F008E611D /* Exceptions for "iOS" folder in "iOSTests" target */,
+				310D60282D496A0F008E611D /* Exceptions for "iOS" folder in "iOSUITests" target */,
+				31C66C982E1EF14000DA2E9D /* Exceptions for "iOS" folder in "PiStatsWidgetExtension" target */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		310D60172D496A0F008E611D /* macOS */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				310D60292D496A0F008E611D /* Exceptions for "macOS" folder in "Pi Stats" target */,
+				310D602A2D496A0F008E611D /* Exceptions for "macOS" folder in "macOSTests" target */,
+				310D602B2D496A0F008E611D /* Exceptions for "macOS" folder in "macOSUITests" target */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		310D602C2D496A19008E611D /* Shared */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				310D602F2D496A33008E611D /* Exceptions for "Shared" folder in "Pi Stats Mobile" target */,
+				310D60312D496A7A008E611D /* Exceptions for "Shared" folder in "Pi Stats" target */,
+				311A98EA2E11C13C00C36B1C /* Exceptions for "Shared" folder in "PiStatsWidgetExtension" target */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		310D60342D496B2C008E611D /* LocalPackages */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = LocalPackages;
+			sourceTree = "<group>";
+		};
+		311A98C62E11BEDB00C36B1C /* PiStatsWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				311A98DB2E11BEDB00C36B1C /* Exceptions for "PiStatsWidget" folder in "PiStatsWidgetExtension" target */,
+			);
+			path = PiStatsWidget;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		310D5F782D49698C008E611D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3130C3472D496BCB007ABEBD /* PiStatsCore in Frameworks */,
+				3189B5EE2D4AB0ED008C339C /* PiStatsUI in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		310D5F872D49698D008E611D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		310D5F912D49698D008E611D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		310D5FA62D496998008E611D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3130C3492D496BD0007ABEBD /* PiStatsCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		310D5FB62D496999008E611D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		310D5FC02D496999008E611D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		311A98BE2E11BEDB00C36B1C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				311A98C52E11BEDB00C36B1C /* SwiftUI.framework in Frameworks */,
+				311A98DD2E11BF0800C36B1C /* PiStatsCore in Frameworks */,
+				311A98C32E11BEDB00C36B1C /* WidgetKit.framework in Frameworks */,
+				311A98DF2E11BF0B00C36B1C /* PiStatsUI in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		310D5F0E2D4967F1008E611D = {
+			isa = PBXGroup;
+			children = (
+				311A98EF2E11C30100C36B1C /* PiStatsWidgetExtension.entitlements */,
+				310D60342D496B2C008E611D /* LocalPackages */,
+				310D602C2D496A19008E611D /* Shared */,
+				310D600B2D496A0F008E611D /* iOS */,
+				310D60172D496A0F008E611D /* macOS */,
+				311A98C62E11BEDB00C36B1C /* PiStatsWidget */,
+				3130C3452D496BCB007ABEBD /* Frameworks */,
+				310D5F182D4967F1008E611D /* Products */,
+				31DCC5112E7F420D00AAEBBC /* pistats.icon */,
+			);
+			sourceTree = "<group>";
+		};
+		310D5F182D4967F1008E611D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				310D5F7B2D49698C008E611D /* Pi Stats Mobile.app */,
+				310D5F8A2D49698D008E611D /* iOSTests.xctest */,
+				310D5F942D49698D008E611D /* iOSUITests.xctest */,
+				310D5FA92D496998008E611D /* Pi Stats.app */,
+				310D5FB92D496999008E611D /* macOSTests.xctest */,
+				310D5FC32D496999008E611D /* macOSUITests.xctest */,
+				311A98C12E11BEDB00C36B1C /* PiStatsWidgetExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3130C3452D496BCB007ABEBD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				311A98C22E11BEDB00C36B1C /* WidgetKit.framework */,
+				311A98C42E11BEDB00C36B1C /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		310D5F7A2D49698C008E611D /* Pi Stats Mobile */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 310D5F9C2D49698D008E611D /* Build configuration list for PBXNativeTarget "Pi Stats Mobile" */;
+			buildPhases = (
+				310D5F772D49698C008E611D /* Sources */,
+				310D5F782D49698C008E611D /* Frameworks */,
+				310D5F792D49698C008E611D /* Resources */,
+				311A98D72E11BEDB00C36B1C /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				311A98D52E11BEDB00C36B1C /* PBXTargetDependency */,
+			);
+			name = "Pi Stats Mobile";
+			packageProductDependencies = (
+				3130C3462D496BCB007ABEBD /* PiStatsCore */,
+				3189B5ED2D4AB0ED008C339C /* PiStatsUI */,
+			);
+			productName = iOS;
+			productReference = 310D5F7B2D49698C008E611D /* Pi Stats Mobile.app */;
+			productType = "com.apple.product-type.application";
+		};
+		310D5F892D49698D008E611D /* iOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 310D5F9F2D49698D008E611D /* Build configuration list for PBXNativeTarget "iOSTests" */;
+			buildPhases = (
+				310D5F862D49698D008E611D /* Sources */,
+				310D5F872D49698D008E611D /* Frameworks */,
+				310D5F882D49698D008E611D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				310D5F8C2D49698D008E611D /* PBXTargetDependency */,
+			);
+			name = iOSTests;
+			packageProductDependencies = (
+			);
+			productName = iOSTests;
+			productReference = 310D5F8A2D49698D008E611D /* iOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		310D5F932D49698D008E611D /* iOSUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 310D5FA22D49698D008E611D /* Build configuration list for PBXNativeTarget "iOSUITests" */;
+			buildPhases = (
+				310D5F902D49698D008E611D /* Sources */,
+				310D5F912D49698D008E611D /* Frameworks */,
+				310D5F922D49698D008E611D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				310D5F962D49698D008E611D /* PBXTargetDependency */,
+			);
+			name = iOSUITests;
+			packageProductDependencies = (
+			);
+			productName = iOSUITests;
+			productReference = 310D5F942D49698D008E611D /* iOSUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		310D5FA82D496998008E611D /* Pi Stats */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 310D5FCB2D496999008E611D /* Build configuration list for PBXNativeTarget "Pi Stats" */;
+			buildPhases = (
+				310D5FA52D496998008E611D /* Sources */,
+				310D5FA62D496998008E611D /* Frameworks */,
+				310D5FA72D496998008E611D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pi Stats";
+			packageProductDependencies = (
+				3130C3482D496BD0007ABEBD /* PiStatsCore */,
+			);
+			productName = macOS;
+			productReference = 310D5FA92D496998008E611D /* Pi Stats.app */;
+			productType = "com.apple.product-type.application";
+		};
+		310D5FB82D496999008E611D /* macOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 310D5FCE2D496999008E611D /* Build configuration list for PBXNativeTarget "macOSTests" */;
+			buildPhases = (
+				310D5FB52D496999008E611D /* Sources */,
+				310D5FB62D496999008E611D /* Frameworks */,
+				310D5FB72D496999008E611D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				310D5FBB2D496999008E611D /* PBXTargetDependency */,
+			);
+			name = macOSTests;
+			packageProductDependencies = (
+			);
+			productName = macOSTests;
+			productReference = 310D5FB92D496999008E611D /* macOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		310D5FC22D496999008E611D /* macOSUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 310D5FD12D496999008E611D /* Build configuration list for PBXNativeTarget "macOSUITests" */;
+			buildPhases = (
+				310D5FBF2D496999008E611D /* Sources */,
+				310D5FC02D496999008E611D /* Frameworks */,
+				310D5FC12D496999008E611D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				310D5FC52D496999008E611D /* PBXTargetDependency */,
+			);
+			name = macOSUITests;
+			packageProductDependencies = (
+			);
+			productName = macOSUITests;
+			productReference = 310D5FC32D496999008E611D /* macOSUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		311A98C02E11BEDB00C36B1C /* PiStatsWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 311A98DA2E11BEDB00C36B1C /* Build configuration list for PBXNativeTarget "PiStatsWidgetExtension" */;
+			buildPhases = (
+				311A98BD2E11BEDB00C36B1C /* Sources */,
+				311A98BE2E11BEDB00C36B1C /* Frameworks */,
+				311A98BF2E11BEDB00C36B1C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				311A98C62E11BEDB00C36B1C /* PiStatsWidget */,
+			);
+			name = PiStatsWidgetExtension;
+			packageProductDependencies = (
+				311A98DC2E11BF0800C36B1C /* PiStatsCore */,
+				311A98DE2E11BF0B00C36B1C /* PiStatsUI */,
+			);
+			productName = PiStatsWidgetExtension;
+			productReference = 311A98C12E11BEDB00C36B1C /* PiStatsWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		310D5F0F2D4967F1008E611D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					310D5F7A2D49698C008E611D = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					310D5F892D49698D008E611D = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 310D5F7A2D49698C008E611D;
+					};
+					310D5F932D49698D008E611D = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 310D5F7A2D49698C008E611D;
+					};
+					310D5FA82D496998008E611D = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					310D5FB82D496999008E611D = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 310D5FA82D496998008E611D;
+					};
+					310D5FC22D496999008E611D = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 310D5FA82D496998008E611D;
+					};
+					311A98C02E11BEDB00C36B1C = {
+						CreatedOnToolsVersion = 16.4;
+					};
+				};
+			};
+			buildConfigurationList = 310D5F122D4967F1008E611D /* Build configuration list for PBXProject "PiStats" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 310D5F0E2D4967F1008E611D;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 310D5F182D4967F1008E611D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				310D5F7A2D49698C008E611D /* Pi Stats Mobile */,
+				310D5F892D49698D008E611D /* iOSTests */,
+				310D5F932D49698D008E611D /* iOSUITests */,
+				310D5FA82D496998008E611D /* Pi Stats */,
+				310D5FB82D496999008E611D /* macOSTests */,
+				310D5FC22D496999008E611D /* macOSUITests */,
+				311A98C02E11BEDB00C36B1C /* PiStatsWidgetExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		310D5F792D49698C008E611D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				31DCC5132E7F420D00AAEBBC /* pistats.icon in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		310D5F882D49698D008E611D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		310D5F922D49698D008E611D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		310D5FA72D496998008E611D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				31DCC5122E7F420D00AAEBBC /* pistats.icon in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		310D5FB72D496999008E611D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		310D5FC12D496999008E611D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		311A98BF2E11BEDB00C36B1C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		310D5F772D49698C008E611D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		310D5F862D49698D008E611D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		310D5F902D49698D008E611D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		310D5FA52D496998008E611D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		310D5FB52D496999008E611D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		310D5FBF2D496999008E611D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		311A98BD2E11BEDB00C36B1C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		310D5F8C2D49698D008E611D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 310D5F7A2D49698C008E611D /* Pi Stats Mobile */;
+			targetProxy = 310D5F8B2D49698D008E611D /* PBXContainerItemProxy */;
+		};
+		310D5F962D49698D008E611D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 310D5F7A2D49698C008E611D /* Pi Stats Mobile */;
+			targetProxy = 310D5F952D49698D008E611D /* PBXContainerItemProxy */;
+		};
+		310D5FBB2D496999008E611D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 310D5FA82D496998008E611D /* Pi Stats */;
+			targetProxy = 310D5FBA2D496999008E611D /* PBXContainerItemProxy */;
+		};
+		310D5FC52D496999008E611D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 310D5FA82D496998008E611D /* Pi Stats */;
+			targetProxy = 310D5FC42D496999008E611D /* PBXContainerItemProxy */;
+		};
+		311A98D52E11BEDB00C36B1C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 311A98C02E11BEDB00C36B1C /* PiStatsWidgetExtension */;
+			targetProxy = 311A98D42E11BEDB00C36B1C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		310D5F3A2D4967F2008E611D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		310D5F3B2D4967F2008E611D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		310D5F9D2D49698D008E611D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = pistats;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 22;
+				DEVELOPMENT_ASSET_PATHS = "\"iOS/Preview Content\"";
+				DEVELOPMENT_TEAM = B2RUA6XMHC;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Pi Stats";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera permission is necessary to read the API Token QRCode";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 2.3.2;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.PiStatsMobile;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		310D5F9E2D49698D008E611D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = pistats;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 22;
+				DEVELOPMENT_ASSET_PATHS = "\"iOS/Preview Content\"";
+				DEVELOPMENT_TEAM = B2RUA6XMHC;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Pi Stats";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera permission is necessary to read the API Token QRCode";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 2.3.2;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.PiStatsMobile;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		310D5FA02D49698D008E611D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B2RUA6XMHC;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.iOSTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/iOS";
+			};
+			name = Debug;
+		};
+		310D5FA12D49698D008E611D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B2RUA6XMHC;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.iOSTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/iOS";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		310D5FA32D49698D008E611D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B2RUA6XMHC;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.iOSUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = iOS;
+			};
+			name = Debug;
+		};
+		310D5FA42D49698D008E611D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B2RUA6XMHC;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.iOSUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = iOS;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		310D5FCC2D496999008E611D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = pistats;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 20;
+				DEVELOPMENT_ASSET_PATHS = "\"macOS/Preview Content\"";
+				DEVELOPMENT_TEAM = B2RUA6XMHC;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Pi Stats";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 3.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.holestats;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		310D5FCD2D496999008E611D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = pistats;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 20;
+				DEVELOPMENT_ASSET_PATHS = "\"macOS/Preview Content\"";
+				DEVELOPMENT_TEAM = B2RUA6XMHC;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Pi Stats";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 3.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.holestats;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		310D5FCF2D496999008E611D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B2RUA6XMHC;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.macOSTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/macOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/macOS";
+			};
+			name = Debug;
+		};
+		310D5FD02D496999008E611D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B2RUA6XMHC;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.macOSTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/macOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/macOS";
+			};
+			name = Release;
+		};
+		310D5FD22D496999008E611D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B2RUA6XMHC;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.macOSUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = macOS;
+			};
+			name = Debug;
+		};
+		310D5FD32D496999008E611D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B2RUA6XMHC;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.macOSUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = macOS;
+			};
+			name = Release;
+		};
+		311A98D82E11BEDB00C36B1C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = PiStatsWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B2RUA6XMHC;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PiStatsWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PiStatsWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.PiStatsMobile.PiStatsWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		311A98D92E11BEDB00C36B1C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = PiStatsWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B2RUA6XMHC;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PiStatsWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PiStatsWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.PiStatsMobile.PiStatsWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		310D5F122D4967F1008E611D /* Build configuration list for PBXProject "PiStats" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				310D5F3A2D4967F2008E611D /* Debug */,
+				310D5F3B2D4967F2008E611D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		310D5F9C2D49698D008E611D /* Build configuration list for PBXNativeTarget "Pi Stats Mobile" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				310D5F9D2D49698D008E611D /* Debug */,
+				310D5F9E2D49698D008E611D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		310D5F9F2D49698D008E611D /* Build configuration list for PBXNativeTarget "iOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				310D5FA02D49698D008E611D /* Debug */,
+				310D5FA12D49698D008E611D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		310D5FA22D49698D008E611D /* Build configuration list for PBXNativeTarget "iOSUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				310D5FA32D49698D008E611D /* Debug */,
+				310D5FA42D49698D008E611D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		310D5FCB2D496999008E611D /* Build configuration list for PBXNativeTarget "Pi Stats" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				310D5FCC2D496999008E611D /* Debug */,
+				310D5FCD2D496999008E611D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		310D5FCE2D496999008E611D /* Build configuration list for PBXNativeTarget "macOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				310D5FCF2D496999008E611D /* Debug */,
+				310D5FD02D496999008E611D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		310D5FD12D496999008E611D /* Build configuration list for PBXNativeTarget "macOSUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				310D5FD22D496999008E611D /* Debug */,
+				310D5FD32D496999008E611D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		311A98DA2E11BEDB00C36B1C /* Build configuration list for PBXNativeTarget "PiStatsWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				311A98D82E11BEDB00C36B1C /* Debug */,
+				311A98D92E11BEDB00C36B1C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		311A98DC2E11BF0800C36B1C /* PiStatsCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PiStatsCore;
+		};
+		311A98DE2E11BF0B00C36B1C /* PiStatsUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PiStatsUI;
+		};
+		3130C3462D496BCB007ABEBD /* PiStatsCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PiStatsCore;
+		};
+		3130C3482D496BD0007ABEBD /* PiStatsCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PiStatsCore;
+		};
+		3189B5ED2D4AB0ED008C339C /* PiStatsUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PiStatsUI;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 310D5F0F2D4967F1008E611D /* Project object */;
+}
