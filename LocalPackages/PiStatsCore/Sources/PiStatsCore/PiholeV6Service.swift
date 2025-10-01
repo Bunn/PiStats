@@ -11,9 +11,11 @@ import OSLog
 internal final class PiholeV6Service: PiholeService {
     public let pihole: Pihole
     private let authActor = AuthActor()
+    private let urlSession: URLSession
 
-    init(_ pihole: Pihole) {
+    init(_ pihole: Pihole, urlSession: URLSession = .shared) {
         self.pihole = pihole
+        self.urlSession = urlSession
     }
     
     private struct PiholeV6AuthResponse: Codable, Sendable {
@@ -127,7 +129,7 @@ extension PiholeV6Service {
         Log.network.debug("📤 [V6] Sending authentication request to \(url.absoluteString)")
 
         do {
-            let (data, response) = try await URLSession.shared.data(for: request)
+            let (data, response) = try await urlSession.data(for: request)
             
             if let httpResponse = response as? HTTPURLResponse {
                 Log.network.debug("🔐 [V6] Authentication response: \(httpResponse.statusCode)")
@@ -182,7 +184,7 @@ extension PiholeV6Service {
         request.addValue(auth.csrf, forHTTPHeaderField: HeaderFields.csrf)
 
         do {
-            let (data, response) = try await URLSession.shared.data(for: request)
+            let (data, response) = try await urlSession.data(for: request)
             
             if let httpResponse = response as? HTTPURLResponse {
                 Log.network.info("✅ [V6] Received response: \(httpResponse.statusCode) for \(url.absoluteString)")
@@ -220,7 +222,7 @@ extension PiholeV6Service {
         }
 
         do {
-            let (data, response) = try await URLSession.shared.data(for: request)
+            let (data, response) = try await urlSession.data(for: request)
             
             if let httpResponse = response as? HTTPURLResponse {
                 Log.network.info("✅ [V6] POST response: \(httpResponse.statusCode) for \(url.absoluteString)")

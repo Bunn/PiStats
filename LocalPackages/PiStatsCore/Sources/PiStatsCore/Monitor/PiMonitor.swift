@@ -1,5 +1,7 @@
 import Foundation
 
+// MARK: - PiMonitorEnvironment
+
 public struct PiMonitorEnvironment: Sendable, Hashable {
     public init(host: String, port: Int? = 8088, secure: Bool = false) {
         self.host = host
@@ -12,24 +14,44 @@ public struct PiMonitorEnvironment: Sendable, Hashable {
     public var secure: Bool = false
 }
 
-public struct PiMonitor {
-    private var service = PiMonitorService()
+// MARK: - PiMonitorProtocol
+
+public protocol PiMonitorProtocol {
+    var timeoutInterval: TimeInterval { get set }
+    
+    func fetchMetrics(completion: @escaping (Result<PiMonitorMetrics, PiMonitorError>) -> ())
+    func fetchMetrics() async throws -> PiMonitorMetrics
+}
+
+// MARK: - PiMonitor
+
+public struct PiMonitor: PiMonitorProtocol {
+    private var service: PiMonitorServiceProtocol
     private let environment: PiMonitorEnvironment
 
     public var timeoutInterval: TimeInterval {
-        set {
-            service.timeoutInterval = newValue
-        }
         get {
             return service.timeoutInterval
+        }
+        set {
+            service.timeoutInterval = newValue
         }
     }
     
     // MARK: Public Methods
     
-    public init(host: String, port: Int? = nil, timeoutInterval: TimeInterval = 30, secure: Bool = false) {
+    public init(host: String, port: Int? = nil, timeoutInterval: TimeInterval = 30, secure: Bool = false, urlSession: URLSession = .shared) {
+        var service = PiMonitorService()
         service.timeoutInterval = timeoutInterval
+        service.urlSession = urlSession
+        self.service = service
         environment = PiMonitorEnvironment(host: host, port: port, secure: secure)
+    }
+    
+    // Internal initializer for testing with custom service
+    internal init(service: PiMonitorServiceProtocol, environment: PiMonitorEnvironment) {
+        self.service = service
+        self.environment = environment
     }
     
     public func fetchMetrics(completion: @escaping (Result<PiMonitorMetrics, PiMonitorError>) -> ()) {

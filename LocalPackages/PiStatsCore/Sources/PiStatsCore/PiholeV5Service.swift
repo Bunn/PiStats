@@ -9,9 +9,11 @@ import OSLog
 
 internal final class PiholeV5Service: PiholeService {
     public let pihole: Pihole
+    private let urlSession: URLSession
 
-    init(_ pihole: Pihole) {
+    init(_ pihole: Pihole, urlSession: URLSession = .shared) {
         self.pihole = pihole
+        self.urlSession = urlSession
     }
 
     func fetchSummary() async throws -> PiholeSummary {
@@ -102,7 +104,7 @@ extension PiholeV5Service {
         Log.network.info("🌐 [V5] Starting API request to: \(url.absoluteString)")
         
         do {
-            let (data, response) = try await URLSession.shared.data(from: url)
+            let (data, response) = try await urlSession.data(from: url)
             
             if let httpResponse = response as? HTTPURLResponse {
                 Log.network.info("✅ [V5] Received response: \(httpResponse.statusCode) for \(url.absoluteString)")
@@ -153,7 +155,7 @@ extension PiholeV5Service {
         Log.network.debug("📤 [V5] Sending POST request to: \(url.absoluteString)")
 
         do {
-            let (data, response) = try await URLSession.shared.data(for: request)
+            let (data, response) = try await urlSession.data(for: request)
             
             if let httpResponse = response as? HTTPURLResponse {
                 Log.network.info("✅ [V5] Blocking action response: \(httpResponse.statusCode)")

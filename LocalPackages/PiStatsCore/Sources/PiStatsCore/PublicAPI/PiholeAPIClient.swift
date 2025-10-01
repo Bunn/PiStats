@@ -13,15 +13,15 @@ public struct PiholeAPIClient: PiholeService {
     private let service: PiholeService
     public let pihole: Pihole
 
-    public init(_ pihole: Pihole) {
+    public init(_ pihole: Pihole, urlSession: URLSession = .shared) {
         self.pihole = pihole
 
         switch pihole.version {
         case .v5:
-            self.service = PiholeV5Service(pihole)
+            self.service = PiholeV5Service(pihole, urlSession: urlSession)
             Log.network.info("🔧 [Client] Initialized V5 service for \(pihole.name)")
         case .v6:
-            self.service = PiholeV6Service(pihole)
+            self.service = PiholeV6Service(pihole, urlSession: urlSession)
             Log.network.info("🔧 [Client] Initialized V6 service for \(pihole.name)")
         }
     }

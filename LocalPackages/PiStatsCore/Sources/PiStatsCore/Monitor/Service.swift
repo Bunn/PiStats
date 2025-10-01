@@ -8,9 +8,21 @@
 import Foundation
 import OSLog
 
-internal struct PiMonitorService {
+// MARK: - PiMonitorServiceProtocol
+
+internal protocol PiMonitorServiceProtocol {
+    var timeoutInterval: TimeInterval { get set }
+    var urlSession: URLSession { get set }
+    
+    func fetchMetrics(host: String, port: Int?, secure: Bool, completion: @escaping (Result<PiMonitorMetrics, PiMonitorError>) -> ())
+}
+
+// MARK: - PiMonitorService
+
+internal struct PiMonitorService: PiMonitorServiceProtocol {
 
     var timeoutInterval: TimeInterval = 30
+    var urlSession: URLSession = .shared
 
     func fetchMetrics(host: String, port: Int? = nil, secure: Bool = false, completion: @escaping (Result<PiMonitorMetrics, PiMonitorError>) -> ()) {
         Log.network.info("🖥️ [PiMonitor] Fetching metrics from \(host):\(port ?? 8088)")
@@ -23,12 +35,11 @@ internal struct PiMonitorService {
         
         Log.network.debug("🌐 [PiMonitor] Requesting: \(url.absoluteString)")
         
-        let session = URLSession(configuration: .default)
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "GET"
         urlRequest.timeoutInterval = timeoutInterval
 
-        let task = session.dataTask(with: urlRequest, completionHandler: { (data: Data?, response: URLResponse?, error: Error?) -> Void in
+        let task = urlSession.dataTask(with: urlRequest, completionHandler: { (data: Data?, response: URLResponse?, error: Error?) -> Void in
             if let error = error {
                 Log.network.error("💥 [PiMonitor] Session error for \(host): \(error.localizedDescription)")
                 completion(.failure(.sessionError(error)))
@@ -67,7 +78,6 @@ internal struct PiMonitorService {
             }
         })
         task.resume()
-        session.finishTasksAndInvalidate()
     }
     
     private func URLWithComponents(host: String, port: Int? = nil, secure: Bool) -> URL? {
