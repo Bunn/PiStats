@@ -67,7 +67,7 @@ You can increase the API session limit by modifying the `webserver.api.max_sessi
 
 ## Requirements
 
-- **iOS**: iOS 18.2 or later (iPhone, iPad)
+- **iOS**: iOS 26.0 or later (iPhone, iPad)
 - **macOS**: macOS Sequoia (15.2) or later
 
 Tested with Pi-hole 5.x and 6.x versions
