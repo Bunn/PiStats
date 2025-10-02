@@ -44,7 +44,7 @@ If you're unable to connect to your Pi-hole but other apps or websites can acces
 You can increase the API session limit by modifying the `webserver.api.max_sessions` setting:
 
 1. **Via configuration file**: Edit `/etc/pihole/pihole.toml` on your Pi-hole server
-2. **Via Web GUI**: Navigate to Settings → Expert Settings (All Settings) and search for `webserver.api.max_sessions`
+2. **Via Web GUI**: Navigate to Settings → Expert Settings (All Settings) and search for `webserver.api.max_sessions` on Webserver and API
 
 **About this setting:**
 
