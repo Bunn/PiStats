@@ -34,12 +34,12 @@ private final class MacPiholeSetupViewModel: ObservableObject {
             self.port = "\(pihole.port)"
             self.token = pihole.token ?? ""
             self.selectedVersion = pihole.version
+            self.httpType = pihole.secure ? .https : .http
             
             // Setup PiMonitor fields if available
             if let piMonitor = pihole.piMonitor {
                 self.isPiMonitorEnabled = true
                 self.piMonitorPort = "\(piMonitor.port ?? 8088)"
-                self.httpType = piMonitor.secure ? .https : .http
             }
         } else {
             self.selectedVersion = .v6
@@ -51,12 +51,13 @@ private final class MacPiholeSetupViewModel: ObservableObject {
         let finalDisplayName = displayName.isEmpty ? host : displayName
         let finalPort = Int(port) ?? 80
         let finalToken = token.isEmpty ? nil : token
+        let isSecure = httpType == .https
 
         let piMonitor: PiMonitorEnvironment? = isPiMonitorEnabled ?
             PiMonitorEnvironment(
                 host: host,
                 port: Int(piMonitorPort) ?? 8088,
-                secure: httpType == .https
+                secure: isSecure
             ) : nil
 
         let newPihole = Pihole(
@@ -64,6 +65,7 @@ private final class MacPiholeSetupViewModel: ObservableObject {
             address: host,
             version: selectedVersion,
             port: finalPort,
+            secure: isSecure,
             token: finalToken,
             piMonitor: piMonitor,
             uuid: pihole?.uuid ?? UUID()

@@ -170,7 +170,10 @@ extension PiholeV6Service {
     }
 
     private func makeURL(for pihole: Pihole, endpoint: Endpoint) throws -> URL {
-        guard let url = URL(string: "http://\(pihole.address)/api/\(endpoint.rawValue)") else {
+        let scheme = pihole.secure ? "https" : "http"
+        let portString = ":\(pihole.port)"
+        
+        guard let url = URL(string: "\(scheme)://\(pihole.address)\(portString)/api/\(endpoint.rawValue)") else {
             throw PiholeServiceError.badURL
         }
         return url

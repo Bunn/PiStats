@@ -156,6 +156,7 @@ final class DefaultPiholeStorage: PiholeStorage {
             address: pihole.address,
             version: pihole.version,
             port: pihole.port,
+            secure: pihole.secure,
             token: nil,
             piMonitor: pihole.piMonitor,
             uuid: pihole.uuid
@@ -231,6 +232,7 @@ final class DefaultPiholeStorage: PiholeStorage {
                         address: stored.address,
                         version: stored.version,
                         port: stored.port,
+                        secure: stored.secure,
                         token: finalToken,
                         piMonitor: stored.piMonitor,
                         uuid: stored.uuid
@@ -313,6 +315,7 @@ final class DefaultPiholeStorage: PiholeStorage {
             address: host,
             version: version,
             port: port,
+            secure: legacy.secure,
             token: token,
             piMonitor: piMonitor,
             uuid: legacy.id
@@ -335,6 +338,7 @@ extension Pihole: Codable {
         case address
         case token
         case port
+        case secure
         case version
         case piMonitor
     }
@@ -346,6 +350,8 @@ extension Pihole: Codable {
         let address = try container.decode(String.self, forKey: .address)
         let token = try container.decodeIfPresent(String.self, forKey: .token)
         let port = try container.decode(Int.self, forKey: .port)
+        // Default to false for backwards compatibility with existing data
+        let secure = try container.decodeIfPresent(Bool.self, forKey: .secure) ?? false
         let version = try container.decode(PiholeVersion.self, forKey: .version)
         let piMonitor = try container.decodeIfPresent(PiMonitorEnvironment.self, forKey: .piMonitor)
 
@@ -354,6 +360,7 @@ extension Pihole: Codable {
             address: address,
             version: version,
             port: port,
+            secure: secure,
             token: token,
             piMonitor: piMonitor,
             uuid: uuid
@@ -367,6 +374,7 @@ extension Pihole: Codable {
         try container.encode(address, forKey: .address)
         // Do not encode token/password; it is stored in Keychain
         try container.encode(port, forKey: .port)
+        try container.encode(secure, forKey: .secure)
         try container.encode(version, forKey: .version)
         try container.encodeIfPresent(piMonitor, forKey: .piMonitor)
     }

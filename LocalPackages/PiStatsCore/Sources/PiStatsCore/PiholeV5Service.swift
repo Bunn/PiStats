@@ -94,7 +94,10 @@ extension PiholeV5Service {
     }
 
     private func makeURL(for pihole: Pihole, endpoint: Endpoint) throws -> URL {
-        guard let url = URL(string: "http://\(pihole.address)/admin/api.php?\(endpoint.rawValue)&auth=\(pihole.token ?? "")") else {
+        let scheme = pihole.secure ? "https" : "http"
+        let portString = ":\(pihole.port)"
+        
+        guard let url = URL(string: "\(scheme)://\(pihole.address)\(portString)/admin/api.php?\(endpoint.rawValue)&auth=\(pihole.token ?? "")") else {
             throw PiholeServiceError.badURL
         }
         return url
@@ -138,7 +141,10 @@ extension PiholeV5Service {
             Log.network.debug("⏱️ [V5] Disable timer set to: \(timer) seconds")
         }
 
-        var urlComponents = URLComponents(string: "http://\(pihole.address)/admin/api.php")!
+        let scheme = pihole.secure ? "https" : "http"
+        let portString = ":\(pihole.port)"
+        
+        var urlComponents = URLComponents(string: "\(scheme)://\(pihole.address)\(portString)/admin/api.php")!
         urlComponents.queryItems = [
             URLQueryItem(name: endpoint, value: timer != nil ? "\(timer!)" : nil),
             URLQueryItem(name: "auth", value: pihole.token)

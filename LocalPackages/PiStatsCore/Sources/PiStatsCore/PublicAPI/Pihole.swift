@@ -23,6 +23,7 @@ public struct Pihole: Sendable, Identifiable {
     public let address: String
     public let token: String?
     public let port: Int
+    public let secure: Bool
     public let version: PiholeVersion
     public let piMonitor: PiMonitorEnvironment?
     
@@ -30,6 +31,7 @@ public struct Pihole: Sendable, Identifiable {
                 address: String,
                 version: PiholeVersion = .v6,
                 port: Int = 80,
+                secure: Bool = false,
                 token: String? = nil,
                 piMonitor: PiMonitorEnvironment? = nil,
                 uuid: UUID = UUID()) {
@@ -39,6 +41,7 @@ public struct Pihole: Sendable, Identifiable {
         self.token = token
         self.version = version
         self.port = port
+        self.secure = secure
         self.piMonitor = piMonitor
     }
 

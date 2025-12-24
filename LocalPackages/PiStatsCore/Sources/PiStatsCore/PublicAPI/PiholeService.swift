@@ -26,7 +26,7 @@ extension PiholeService {
     }
 }
 
-public enum PiholeServiceError: Error {
+public enum PiholeServiceError: Error, LocalizedError {
     case missingToken
     case invalidAuthenticationResponse
     case badURL
@@ -38,6 +38,33 @@ public enum PiholeServiceError: Error {
     case piMonitorNotSet
     case piMonitorError(PiMonitorError)
     case apiSeatsExceeded
+    
+    public var errorDescription: String? {
+        switch self {
+        case .missingToken:
+            return "Authentication token or password is missing. Please enter your Pi-hole password in the settings."
+        case .invalidAuthenticationResponse:
+            return "Invalid authentication response from Pi-hole. Please check your password and try again."
+        case .badURL:
+            return "Invalid Pi-hole URL. Please check the host address and port."
+        case .cannotParseResponse:
+            return "Unable to parse Pi-hole response. The server may be using an incompatible API version."
+        case .unknownStatus:
+            return "Unable to determine Pi-hole status."
+        case .networkError(let error):
+            return "Network error: \(error.localizedDescription)"
+        case .encodingError(let error):
+            return "Request encoding error: \(error.localizedDescription)"
+        case .unknownError:
+            return "An unknown error occurred while communicating with Pi-hole."
+        case .piMonitorNotSet:
+            return "Pi Monitor is not configured for this Pi-hole."
+        case .piMonitorError(let error):
+            return "Pi Monitor error: \(error.localizedDescription)"
+        case .apiSeatsExceeded:
+            return "Maximum number of API sessions exceeded on Pi-hole. Please close some other Pi-hole clients or increase the session limit."
+        }
+    }
 }
 
 extension PiholeService {

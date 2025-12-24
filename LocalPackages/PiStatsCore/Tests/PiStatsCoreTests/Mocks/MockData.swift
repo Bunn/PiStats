@@ -61,6 +61,70 @@ enum MockData {
         uuid: UUID(uuidString: "00000000-0000-0000-0000-000000000005")!
     )
     
+    // MARK: - Test Piholes with HTTPS
+    
+    static let testPiholeV6HTTPS = Pihole(
+        name: "Test Pi-hole V6 HTTPS",
+        address: "pihole.example.com",
+        version: .v6,
+        port: 443,
+        secure: true,
+        token: "test-token-v6-https",
+        uuid: UUID(uuidString: "00000000-0000-0000-0000-000000000006")!
+    )
+    
+    static let testPiholeV5HTTPS = Pihole(
+        name: "Test Pi-hole V5 HTTPS",
+        address: "pihole.example.com",
+        version: .v5,
+        port: 443,
+        secure: true,
+        token: "test-token-v5-https",
+        uuid: UUID(uuidString: "00000000-0000-0000-0000-000000000007")!
+    )
+    
+    // MARK: - Test Piholes with Custom Ports
+    
+    static let testPiholeV6CustomPort = Pihole(
+        name: "Test Pi-hole V6 Custom Port",
+        address: "192.168.1.105",
+        version: .v6,
+        port: 8080,
+        secure: false,
+        token: "test-token-v6-port",
+        uuid: UUID(uuidString: "00000000-0000-0000-0000-000000000008")!
+    )
+    
+    static let testPiholeV5CustomPort = Pihole(
+        name: "Test Pi-hole V5 Custom Port",
+        address: "192.168.1.106",
+        version: .v5,
+        port: 8080,
+        secure: false,
+        token: "test-token-v5-port",
+        uuid: UUID(uuidString: "00000000-0000-0000-0000-000000000009")!
+    )
+    
+    static let testPiholeV6HTTPSCustomPort = Pihole(
+        name: "Test Pi-hole V6 HTTPS Custom Port",
+        address: "pihole.example.com",
+        version: .v6,
+        port: 8443,
+        secure: true,
+        token: "test-token-v6-https-port",
+        uuid: UUID(uuidString: "00000000-0000-0000-0000-00000000000A")!
+    )
+    
+    static let testPiholeV5HTTPSCustomPort = Pihole(
+        name: "Test Pi-hole V5 HTTPS Custom Port",
+        address: "pihole.example.com",
+        version: .v5,
+        port: 8443,
+        secure: true,
+        token: "test-token-v5-https-port",
+        uuid: UUID(uuidString: "00000000-0000-0000-0000-00000000000B")!
+    )
+    
     // MARK: - V5 Mock Responses
     
     nonisolated(unsafe) static let v5SummaryJSON: [String: Any] = [

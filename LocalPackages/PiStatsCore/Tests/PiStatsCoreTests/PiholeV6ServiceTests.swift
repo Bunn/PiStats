@@ -351,5 +351,170 @@ struct PiholeV6ServiceTests {
         
         MockURLProtocol.reset()
     }
+    
+    // MARK: - URL Construction Tests
+    
+    @Test("makeURL uses HTTP scheme by default")
+    func testMakeURLHTTPScheme() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)
+        
+        MockURLProtocol.requestHandler = { request in
+            // Verify the URL uses HTTP scheme
+            #expect(request.url?.scheme == "http")
+            #expect(request.url?.host == "192.168.1.101")
+            
+            if request.url?.absoluteString.contains("auth") == true {
+                let data = MockData.jsonData(from: MockData.v6AuthSuccessJSON)
+                return MockURLProtocol.successResponse(for: request, data: data)
+            } else {
+                let data = MockData.jsonData(from: MockData.v6StatusEnabledJSON)
+                return MockURLProtocol.successResponse(for: request, data: data)
+            }
+        }
+        
+        let _ = try await service.fetchStatus()
+        MockURLProtocol.reset()
+    }
+    
+    @Test("makeURL uses HTTPS scheme when secure is true")
+    func testMakeURLHTTPSScheme() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6HTTPS, urlSession: mockSession)
+        
+        MockURLProtocol.requestHandler = { request in
+            // Verify the URL uses HTTPS scheme
+            #expect(request.url?.scheme == "https")
+            #expect(request.url?.host == "pihole.example.com")
+            
+            if request.url?.absoluteString.contains("auth") == true {
+                let data = MockData.jsonData(from: MockData.v6AuthSuccessJSON)
+                return MockURLProtocol.successResponse(for: request, data: data)
+            } else {
+                let data = MockData.jsonData(from: MockData.v6StatusEnabledJSON)
+                return MockURLProtocol.successResponse(for: request, data: data)
+            }
+        }
+        
+        let _ = try await service.fetchStatus()
+        MockURLProtocol.reset()
+    }
+    
+    @Test("makeURL includes custom port in URL")
+    func testMakeURLCustomPort() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6CustomPort, urlSession: mockSession)
+        
+        MockURLProtocol.requestHandler = { request in
+            // Verify the URL includes the custom port
+            #expect(request.url?.scheme == "http")
+            #expect(request.url?.port == 8080)
+            #expect(request.url?.host == "192.168.1.105")
+            
+            if request.url?.absoluteString.contains("auth") == true {
+                let data = MockData.jsonData(from: MockData.v6AuthSuccessJSON)
+                return MockURLProtocol.successResponse(for: request, data: data)
+            } else {
+                let data = MockData.jsonData(from: MockData.v6StatusEnabledJSON)
+                return MockURLProtocol.successResponse(for: request, data: data)
+            }
+        }
+        
+        let _ = try await service.fetchStatus()
+        MockURLProtocol.reset()
+    }
+    
+    @Test("makeURL uses HTTPS with custom port")
+    func testMakeURLHTTPSCustomPort() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6HTTPSCustomPort, urlSession: mockSession)
+        
+        MockURLProtocol.requestHandler = { request in
+            // Verify the URL uses HTTPS with custom port
+            #expect(request.url?.scheme == "https")
+            #expect(request.url?.port == 8443)
+            #expect(request.url?.host == "pihole.example.com")
+            
+            if request.url?.absoluteString.contains("auth") == true {
+                let data = MockData.jsonData(from: MockData.v6AuthSuccessJSON)
+                return MockURLProtocol.successResponse(for: request, data: data)
+            } else {
+                let data = MockData.jsonData(from: MockData.v6StatusEnabledJSON)
+                return MockURLProtocol.successResponse(for: request, data: data)
+            }
+        }
+        
+        let _ = try await service.fetchStatus()
+        MockURLProtocol.reset()
+    }
+    
+    @Test("makeURL includes correct API path")
+    func testMakeURLAPIPath() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)
+        
+        var authURL: URL?
+        var blockingURL: URL?
+        
+        MockURLProtocol.requestHandler = { request in
+            if request.url?.absoluteString.contains("auth") == true {
+                authURL = request.url
+                let data = MockData.jsonData(from: MockData.v6AuthSuccessJSON)
+                return MockURLProtocol.successResponse(for: request, data: data)
+            } else if request.url?.absoluteString.contains("dns/blocking") == true {
+                blockingURL = request.url
+                let data = MockData.jsonData(from: MockData.v6StatusEnabledJSON)
+                return MockURLProtocol.successResponse(for: request, data: data)
+            }
+            throw PiholeServiceError.unknownError
+        }
+        
+        let _ = try await service.fetchStatus()
+        
+        // Verify auth URL path
+        #expect(authURL?.path == "/api/auth" || authURL?.path(percentEncoded: false) == "/api/auth")
+        
+        // Verify blocking URL path
+        #expect(blockingURL?.path == "/api/dns/blocking" || blockingURL?.path(percentEncoded: false) == "/api/dns/blocking")
+        
+        MockURLProtocol.reset()
+    }
+    
+    @Test("makeURL includes port 80 for HTTP")
+    func testMakeURLPort80ForHTTP() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)
+        
+        MockURLProtocol.requestHandler = { request in
+            // Port 80 should be included in the URL
+            #expect(request.url?.port == 80)
+            
+            if request.url?.absoluteString.contains("auth") == true {
+                let data = MockData.jsonData(from: MockData.v6AuthSuccessJSON)
+                return MockURLProtocol.successResponse(for: request, data: data)
+            } else {
+                let data = MockData.jsonData(from: MockData.v6StatusEnabledJSON)
+                return MockURLProtocol.successResponse(for: request, data: data)
+            }
+        }
+        
+        let _ = try await service.fetchStatus()
+        MockURLProtocol.reset()
+    }
+    
+    @Test("makeURL includes port 443 for HTTPS")
+    func testMakeURLPort443ForHTTPS() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6HTTPS, urlSession: mockSession)
+        
+        MockURLProtocol.requestHandler = { request in
+            // Port 443 should be included in the URL
+            #expect(request.url?.port == 443)
+            
+            if request.url?.absoluteString.contains("auth") == true {
+                let data = MockData.jsonData(from: MockData.v6AuthSuccessJSON)
+                return MockURLProtocol.successResponse(for: request, data: data)
+            } else {
+                let data = MockData.jsonData(from: MockData.v6StatusEnabledJSON)
+                return MockURLProtocol.successResponse(for: request, data: data)
+            }
+        }
+        
+        let _ = try await service.fetchStatus()
+        MockURLProtocol.reset()
+    }
 }
 
