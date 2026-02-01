@@ -59,7 +59,7 @@ struct SettingsView: View {
                     Label(UserText.Settings.sourceCodeLink, systemImage: SystemImages.piStatsSourceCode)
                         .foregroundColor(.primary)
                 })
-                
+
                 Button(action: {
                     openPiStatsMacOS()
                 }, label: {
@@ -73,6 +73,12 @@ struct SettingsView: View {
                     Label(UserText.Settings.leaveReview, systemImage: SystemImages.leaveReview)
                         .foregroundColor(.primary)
                 })
+            }
+
+            Section(header: Text("Developer")) {
+                NavigationLink("Debug Storage") {
+                    DebugStorageView()
+                }
             }
         }
         .listStyle(InsetGroupedListStyle())

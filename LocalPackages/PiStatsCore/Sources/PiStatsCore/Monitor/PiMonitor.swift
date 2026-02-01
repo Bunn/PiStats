@@ -2,7 +2,7 @@ import Foundation
 
 // MARK: - PiMonitorEnvironment
 
-public struct PiMonitorEnvironment: Sendable, Hashable {
+public struct PiMonitorEnvironment: Sendable, Hashable, Codable {
     public init(host: String, port: Int? = 8088, secure: Bool = false) {
         self.host = host
         self.port = port

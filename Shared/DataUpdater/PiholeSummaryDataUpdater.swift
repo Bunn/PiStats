@@ -8,6 +8,7 @@
 import Foundation
 import PiStatsCore
 import SwiftUI
+import Combine
 
 // MARK: - Error Handling Protocol
 

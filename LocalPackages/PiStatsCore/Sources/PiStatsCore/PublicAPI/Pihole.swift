@@ -1,7 +1,7 @@
 import Foundation
 
 // MARK: - Pihole Model
-public enum PiholeVersion: String, CaseIterable, Identifiable, Sendable {
+public enum PiholeVersion: String, CaseIterable, Identifiable, Sendable, Codable {
     case v5
     case v6
 
@@ -17,7 +17,7 @@ public enum PiholeVersion: String, CaseIterable, Identifiable, Sendable {
     }
 }
 
-public struct Pihole: Sendable, Identifiable {
+public struct Pihole: Sendable, Identifiable, Codable {
     public let uuid: UUID
     public let name: String
     public let address: String

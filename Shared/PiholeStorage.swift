@@ -8,6 +8,7 @@
 import PiStatsCore
 import Foundation
 import Security
+import os
 
 protocol PiholeStorage {
     func savePihole(_ pihole: Pihole)
@@ -63,20 +64,7 @@ private struct LegacyPihole: Codable {
     }
 }
 
-// MARK: - UserPreferences for Migration
-
-private class UserPreferences {
-    private static let didMigrateAppGroupKey = "didMigrateAppGroup"
-
-    var didMigrateAppGroup: Bool {
-        get {
-            UserDefaults.shared().bool(forKey: Self.didMigrateAppGroupKey)
-        }
-        set {
-            UserDefaults.shared().set(newValue, forKey: Self.didMigrateAppGroupKey)
-        }
-    }
-}
+// UserPreferences is defined in UserPreferences.swift
 
 // MARK: - APIToken Helper
 
@@ -142,12 +130,18 @@ final class DefaultPiholeStorage: PiholeStorage {
     private var hasMigrated = false
 
     func savePihole(_ pihole: Pihole) {
+        print("🔵 [PiholeStorage] savePihole() called for: \(pihole.name) @ \(pihole.address)")
+        print("🔵 [PiholeStorage] UUID: \(pihole.uuid)")
+        print("🔵 [PiholeStorage] Has token: \(pihole.token != nil)")
+
         // Persist token/password to Keychain, and do not store it in UserDefaults
         var keychain = APIToken(accountName: pihole.uuid.uuidString)
         if let token = pihole.token, !token.isEmpty {
             keychain.token = token
+            print("🔵 [PiholeStorage] Saved token to keychain")
         } else {
             keychain.delete()
+            print("🔵 [PiholeStorage] Deleted token from keychain")
         }
 
         // Store a representation without token
@@ -163,14 +157,17 @@ final class DefaultPiholeStorage: PiholeStorage {
         )
 
         var piholeList = restoreAllPiholes()
+        print("🔵 [PiholeStorage] Current list has \(piholeList.count) Pi-holes before update")
 
         // Remove existing pihole with same id if it exists
         piholeList.removeAll { $0.uuid == persistablePihole.uuid }
 
         // Add the new/updated pihole
         piholeList.append(persistablePihole)
+        print("🔵 [PiholeStorage] New list has \(piholeList.count) Pi-holes after update")
 
         save(piholeList)
+        print("🔵 [PiholeStorage] save() completed")
     }
 
     func deletePihole(_ pihole: Pihole) {
@@ -249,11 +246,44 @@ final class DefaultPiholeStorage: PiholeStorage {
     }
 
     private func save(_ piholes: [Pihole]) {
+        print("🔵 [PiholeStorage] save() called with \(piholes.count) Pi-holes")
         let encoder = JSONEncoder()
         do {
             let encoded = try encoder.encode(piholes)
-            UserDefaults.shared().set(encoded, forKey: Self.newPiHoleListKey)
+            print("🔵 [PiholeStorage] Encoded \(encoded.count) bytes")
+
+            let defaults = UserDefaults.shared()
+            print("🔵 [PiholeStorage] UserDefaults.shared() instance: \(defaults)")
+
+            // Check if it's actually using the app group
+            if let appGroupDefaults = UserDefaults(suiteName: AppGroup.name) {
+                print("🔵 [PiholeStorage] App group name: \(AppGroup.name)")
+                print("🔵 [PiholeStorage] Direct app group access: \(appGroupDefaults)")
+                print("🔵 [PiholeStorage] Are they the same? \(defaults === appGroupDefaults ? "YES" : "NO (PROBLEM!)")")
+            }
+
+            defaults.set(encoded, forKey: Self.newPiHoleListKey)
+            print("🔵 [PiholeStorage] Set data for key: \(Self.newPiHoleListKey)")
+
+            // Force synchronize
+            defaults.synchronize()
+            print("🔵 [PiholeStorage] Synchronized UserDefaults")
+
+            // Verify it was saved
+            if let verifyData = defaults.data(forKey: Self.newPiHoleListKey) {
+                print("🔵 [PiholeStorage] ✅ Verified: Data exists in UserDefaults (\(verifyData.count) bytes)")
+
+                // Also check via direct app group access
+                if let directData = UserDefaults(suiteName: AppGroup.name)?.data(forKey: Self.newPiHoleListKey) {
+                    print("🔵 [PiholeStorage] ✅ Also verified via direct app group access (\(directData.count) bytes)")
+                } else {
+                    print("🔵 [PiholeStorage] ❌ WARNING: NOT found via direct app group access!")
+                }
+            } else {
+                print("🔵 [PiholeStorage] ❌ WARNING: Data NOT found in UserDefaults after save!")
+            }
         } catch {
+            print("🔵 [PiholeStorage] ❌ ERROR encoding: \(error)")
             Log.storage.error("Error encoding Pihole list: \(String(describing: error), privacy: .public)")
         }
     }

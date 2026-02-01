@@ -6,8 +6,9 @@ import PackageDescription
 let package = Package(
     name: "PiStatsUI",
     platforms: [
-        .macOS(.v10_15),
-        .iOS(.v16)
+        .macOS(.v11),
+        .iOS(.v16),
+        .watchOS(.v10)
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -17,7 +18,7 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(path: "./PiStatsCore")
+        .package(path: "../PiStatsCore")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.

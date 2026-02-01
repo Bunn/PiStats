@@ -15,6 +15,8 @@
 		3130C3472D496BCB007ABEBD /* PiStatsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 3130C3462D496BCB007ABEBD /* PiStatsCore */; };
 		3130C3492D496BD0007ABEBD /* PiStatsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 3130C3482D496BD0007ABEBD /* PiStatsCore */; };
 		3189B5EE2D4AB0ED008C339C /* PiStatsUI in Frameworks */ = {isa = PBXBuildFile; productRef = 3189B5ED2D4AB0ED008C339C /* PiStatsUI */; };
+		31AAF6CA2F2FC986008DA256 /* Pi Stats Watch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 31AAF6AA2F2FC984008DA256 /* Pi Stats Watch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		31AAF6E42F2FCA70008DA256 /* PiStatsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 31AAF6E32F2FCA70008DA256 /* PiStatsCore */; };
 		31DCC5122E7F420D00AAEBBC /* pistats.icon in Resources */ = {isa = PBXBuildFile; fileRef = 31DCC5112E7F420D00AAEBBC /* pistats.icon */; };
 		31DCC5132E7F420D00AAEBBC /* pistats.icon in Resources */ = {isa = PBXBuildFile; fileRef = 31DCC5112E7F420D00AAEBBC /* pistats.icon */; };
 /* End PBXBuildFile section */
@@ -55,6 +57,27 @@
 			remoteGlobalIDString = 311A98C02E11BEDB00C36B1C;
 			remoteInfo = PiStatsWidgetExtension;
 		};
+		31AAF6B72F2FC986008DA256 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 310D5F0F2D4967F1008E611D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 31AAF6A92F2FC984008DA256;
+			remoteInfo = "Pi Stats Watch Watch App";
+		};
+		31AAF6C12F2FC986008DA256 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 310D5F0F2D4967F1008E611D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 31AAF6A92F2FC984008DA256;
+			remoteInfo = "Pi Stats Watch Watch App";
+		};
+		31AAF6C82F2FC986008DA256 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 310D5F0F2D4967F1008E611D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 31AAF6A92F2FC984008DA256;
+			remoteInfo = "Pi Stats Watch Watch App";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -67,6 +90,17 @@
 				311A98D62E11BEDB00C36B1C /* PiStatsWidgetExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		31AAF6CB2F2FC986008DA256 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				31AAF6CA2F2FC986008DA256 /* Pi Stats Watch Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -84,6 +118,9 @@
 		311A98EF2E11C30100C36B1C /* PiStatsWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PiStatsWidgetExtension.entitlements; sourceTree = "<group>"; };
 		316137492E95748F0038CC2F /* Pi-Stats-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Pi-Stats-Info.plist"; sourceTree = "<group>"; };
 		3161374A2E9575AD0038CC2F /* Pi-Stats-Mobile-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Pi-Stats-Mobile-Info.plist"; sourceTree = "<group>"; };
+		31AAF6AA2F2FC984008DA256 /* Pi Stats Watch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pi Stats Watch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		31AAF6B62F2FC986008DA256 /* Pi Stats Watch Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Pi Stats Watch Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		31AAF6C02F2FC986008DA256 /* Pi Stats Watch Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Pi Stats Watch Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		31DCC5112E7F420D00AAEBBC /* pistats.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = pistats.icon; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -101,6 +138,7 @@
 				Views/PiholeStatsList/PiholeStatsList.swift,
 				Views/PiholeStatsList/PiStatsCardView.swift,
 				Views/Settings/CustomDisableTimesView.swift,
+				Views/Settings/DebugStorageView.swift,
 				Views/Settings/SettingsStore.swift,
 				Views/Settings/SettingsView.swift,
 				Views/Settings/SettingsViewModel.swift,
@@ -172,6 +210,7 @@
 				StatType.swift,
 				TemperatureScale.swift,
 				UserDefaultExtensions.swift,
+				UserPreferences.swift,
 				Views/CardViewGrid.swift,
 				Views/ErrorMessageView.swift,
 				Views/ListView.swift,
@@ -195,6 +234,7 @@
 				StatType.swift,
 				TemperatureScale.swift,
 				UserDefaultExtensions.swift,
+				UserPreferences.swift,
 				Views/CardViewGrid.swift,
 				Views/ErrorMessageView.swift,
 				Views/ListView.swift,
@@ -219,8 +259,41 @@
 				KeyChainPasswordItem.swift,
 				PiholeStorage.swift,
 				UserDefaultExtensions.swift,
+				UserPreferences.swift,
 			);
 			target = 311A98C02E11BEDB00C36B1C /* PiStatsWidgetExtension */;
+		};
+		31AAF6EF2F2FCC44008DA256 /* Exceptions for "Shared" folder in "Pi Stats Watch Watch App" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AppConstants.swift,
+				AppGroup.swift,
+				Colors.xcassets,
+				DataUpdater/PiholeListUpdating.swift,
+				DataUpdater/PiholeSummaryData.swift,
+				DataUpdater/PiholeSummaryDataUpdater.swift,
+				KeyChainPasswordItem.swift,
+				PiholeStorage.swift,
+				StatType.swift,
+				TemperatureScale.swift,
+				UserDefaultExtensions.swift,
+				UserPreferences.swift,
+				Views/CardViewGrid.swift,
+				Views/ErrorMessageView.swift,
+				Views/ListView.swift,
+				Views/MetricsView.swift,
+				Views/StatusHeaderView.swift,
+				Views/TestView.swift,
+			);
+			target = 31AAF6A92F2FC984008DA256 /* Pi Stats Watch Watch App */;
+		};
+		31AAF6FB2F2FCC78008DA256 /* Exceptions for "iOS" folder in "Pi Stats Watch Watch App" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Views/Settings/SettingsStore.swift,
+				Views/Settings/SettingsViewModel.swift,
+			);
+			target = 31AAF6A92F2FC984008DA256 /* Pi Stats Watch Watch App */;
 		};
 		31C66C982E1EF14000DA2E9D /* Exceptions for "iOS" folder in "PiStatsWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -239,6 +312,7 @@
 				310D60272D496A0F008E611D /* Exceptions for "iOS" folder in "iOSTests" target */,
 				310D60282D496A0F008E611D /* Exceptions for "iOS" folder in "iOSUITests" target */,
 				31C66C982E1EF14000DA2E9D /* Exceptions for "iOS" folder in "PiStatsWidgetExtension" target */,
+				31AAF6FB2F2FCC78008DA256 /* Exceptions for "iOS" folder in "Pi Stats Watch Watch App" target */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -259,6 +333,7 @@
 				310D602F2D496A33008E611D /* Exceptions for "Shared" folder in "Pi Stats Mobile" target */,
 				310D60312D496A7A008E611D /* Exceptions for "Shared" folder in "Pi Stats" target */,
 				311A98EA2E11C13C00C36B1C /* Exceptions for "Shared" folder in "PiStatsWidgetExtension" target */,
+				31AAF6EF2F2FCC44008DA256 /* Exceptions for "Shared" folder in "Pi Stats Watch Watch App" target */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -274,6 +349,21 @@
 				311A98DB2E11BEDB00C36B1C /* Exceptions for "PiStatsWidget" folder in "PiStatsWidgetExtension" target */,
 			);
 			path = PiStatsWidget;
+			sourceTree = "<group>";
+		};
+		31AAF6AB2F2FC984008DA256 /* Pi Stats Watch Watch App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Pi Stats Watch Watch App";
+			sourceTree = "<group>";
+		};
+		31AAF6B92F2FC986008DA256 /* Pi Stats Watch Watch AppTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Pi Stats Watch Watch AppTests";
+			sourceTree = "<group>";
+		};
+		31AAF6C32F2FC986008DA256 /* Pi Stats Watch Watch AppUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Pi Stats Watch Watch AppUITests";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -335,6 +425,28 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		31AAF6A72F2FC984008DA256 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				31AAF6E42F2FCA70008DA256 /* PiStatsCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		31AAF6B32F2FC986008DA256 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		31AAF6BD2F2FC986008DA256 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -349,6 +461,9 @@
 				310D600B2D496A0F008E611D /* iOS */,
 				310D60172D496A0F008E611D /* macOS */,
 				311A98C62E11BEDB00C36B1C /* PiStatsWidget */,
+				31AAF6AB2F2FC984008DA256 /* Pi Stats Watch Watch App */,
+				31AAF6B92F2FC986008DA256 /* Pi Stats Watch Watch AppTests */,
+				31AAF6C32F2FC986008DA256 /* Pi Stats Watch Watch AppUITests */,
 				3130C3452D496BCB007ABEBD /* Frameworks */,
 				310D5F182D4967F1008E611D /* Products */,
 				31DCC5112E7F420D00AAEBBC /* pistats.icon */,
@@ -365,6 +480,9 @@
 				310D5FB92D496999008E611D /* macOSTests.xctest */,
 				310D5FC32D496999008E611D /* macOSUITests.xctest */,
 				311A98C12E11BEDB00C36B1C /* PiStatsWidgetExtension.appex */,
+				31AAF6AA2F2FC984008DA256 /* Pi Stats Watch Watch App.app */,
+				31AAF6B62F2FC986008DA256 /* Pi Stats Watch Watch AppTests.xctest */,
+				31AAF6C02F2FC986008DA256 /* Pi Stats Watch Watch AppUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -389,11 +507,13 @@
 				310D5F782D49698C008E611D /* Frameworks */,
 				310D5F792D49698C008E611D /* Resources */,
 				311A98D72E11BEDB00C36B1C /* Embed Foundation Extensions */,
+				31AAF6CB2F2FC986008DA256 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				311A98D52E11BEDB00C36B1C /* PBXTargetDependency */,
+				31AAF6C92F2FC986008DA256 /* PBXTargetDependency */,
 			);
 			name = "Pi Stats Mobile";
 			packageProductDependencies = (
@@ -528,6 +648,75 @@
 			productReference = 311A98C12E11BEDB00C36B1C /* PiStatsWidgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		31AAF6A92F2FC984008DA256 /* Pi Stats Watch Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 31AAF6D22F2FC986008DA256 /* Build configuration list for PBXNativeTarget "Pi Stats Watch Watch App" */;
+			buildPhases = (
+				31AAF6A62F2FC984008DA256 /* Sources */,
+				31AAF6A72F2FC984008DA256 /* Frameworks */,
+				31AAF6A82F2FC984008DA256 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				31AAF6AB2F2FC984008DA256 /* Pi Stats Watch Watch App */,
+			);
+			name = "Pi Stats Watch Watch App";
+			packageProductDependencies = (
+				31AAF6E32F2FCA70008DA256 /* PiStatsCore */,
+			);
+			productName = "Pi Stats Watch Watch App";
+			productReference = 31AAF6AA2F2FC984008DA256 /* Pi Stats Watch Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
+		31AAF6B52F2FC986008DA256 /* Pi Stats Watch Watch AppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 31AAF6D32F2FC986008DA256 /* Build configuration list for PBXNativeTarget "Pi Stats Watch Watch AppTests" */;
+			buildPhases = (
+				31AAF6B22F2FC986008DA256 /* Sources */,
+				31AAF6B32F2FC986008DA256 /* Frameworks */,
+				31AAF6B42F2FC986008DA256 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				31AAF6B82F2FC986008DA256 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				31AAF6B92F2FC986008DA256 /* Pi Stats Watch Watch AppTests */,
+			);
+			name = "Pi Stats Watch Watch AppTests";
+			packageProductDependencies = (
+			);
+			productName = "Pi Stats Watch Watch AppTests";
+			productReference = 31AAF6B62F2FC986008DA256 /* Pi Stats Watch Watch AppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		31AAF6BF2F2FC986008DA256 /* Pi Stats Watch Watch AppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 31AAF6D42F2FC986008DA256 /* Build configuration list for PBXNativeTarget "Pi Stats Watch Watch AppUITests" */;
+			buildPhases = (
+				31AAF6BC2F2FC986008DA256 /* Sources */,
+				31AAF6BD2F2FC986008DA256 /* Frameworks */,
+				31AAF6BE2F2FC986008DA256 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				31AAF6C22F2FC986008DA256 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				31AAF6C32F2FC986008DA256 /* Pi Stats Watch Watch AppUITests */,
+			);
+			name = "Pi Stats Watch Watch AppUITests";
+			packageProductDependencies = (
+			);
+			productName = "Pi Stats Watch Watch AppUITests";
+			productReference = 31AAF6C02F2FC986008DA256 /* Pi Stats Watch Watch AppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -535,7 +724,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1640;
+				LastSwiftUpdateCheck = 2620;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
 					310D5F7A2D49698C008E611D = {
@@ -563,6 +752,17 @@
 					311A98C02E11BEDB00C36B1C = {
 						CreatedOnToolsVersion = 16.4;
 					};
+					31AAF6A92F2FC984008DA256 = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					31AAF6B52F2FC986008DA256 = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 31AAF6A92F2FC984008DA256;
+					};
+					31AAF6BF2F2FC986008DA256 = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 31AAF6A92F2FC984008DA256;
+					};
 				};
 			};
 			buildConfigurationList = 310D5F122D4967F1008E611D /* Build configuration list for PBXProject "PiStats" */;
@@ -586,6 +786,9 @@
 				310D5FB82D496999008E611D /* macOSTests */,
 				310D5FC22D496999008E611D /* macOSUITests */,
 				311A98C02E11BEDB00C36B1C /* PiStatsWidgetExtension */,
+				31AAF6A92F2FC984008DA256 /* Pi Stats Watch Watch App */,
+				31AAF6B52F2FC986008DA256 /* Pi Stats Watch Watch AppTests */,
+				31AAF6BF2F2FC986008DA256 /* Pi Stats Watch Watch AppUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -636,6 +839,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		311A98BF2E11BEDB00C36B1C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		31AAF6A82F2FC984008DA256 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		31AAF6B42F2FC986008DA256 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		31AAF6BE2F2FC986008DA256 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -694,6 +918,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		31AAF6A62F2FC984008DA256 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		31AAF6B22F2FC986008DA256 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		31AAF6BC2F2FC986008DA256 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -721,6 +966,21 @@
 			isa = PBXTargetDependency;
 			target = 311A98C02E11BEDB00C36B1C /* PiStatsWidgetExtension */;
 			targetProxy = 311A98D42E11BEDB00C36B1C /* PBXContainerItemProxy */;
+		};
+		31AAF6B82F2FC986008DA256 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 31AAF6A92F2FC984008DA256 /* Pi Stats Watch Watch App */;
+			targetProxy = 31AAF6B72F2FC986008DA256 /* PBXContainerItemProxy */;
+		};
+		31AAF6C22F2FC986008DA256 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 31AAF6A92F2FC984008DA256 /* Pi Stats Watch Watch App */;
+			targetProxy = 31AAF6C12F2FC986008DA256 /* PBXContainerItemProxy */;
+		};
+		31AAF6C92F2FC986008DA256 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 31AAF6A92F2FC984008DA256 /* Pi Stats Watch Watch App */;
+			targetProxy = 31AAF6C82F2FC986008DA256 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1193,6 +1453,167 @@
 			};
 			name = Release;
 		};
+		31AAF6CC2F2FC986008DA256 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Pi Stats Watch Watch App/Pi Stats Watch Watch App.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B2RUA6XMHC;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Pi Stats Watch";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = dev.bunn.PiStatsMobile;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.PiStatsMobile.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Debug;
+		};
+		31AAF6CD2F2FC986008DA256 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Pi Stats Watch Watch App/Pi Stats Watch Watch App.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B2RUA6XMHC;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Pi Stats Watch";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = dev.bunn.PiStatsMobile;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.PiStatsMobile.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Release;
+		};
+		31AAF6CE2F2FC986008DA256 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B2RUA6XMHC;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.bunn.PiStatsMobile.watchOS.Pi-Stats-Watch-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pi Stats Watch Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Pi Stats Watch Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Debug;
+		};
+		31AAF6CF2F2FC986008DA256 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B2RUA6XMHC;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.bunn.PiStatsMobile.watchOS.Pi-Stats-Watch-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pi Stats Watch Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Pi Stats Watch Watch App";
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Release;
+		};
+		31AAF6D02F2FC986008DA256 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B2RUA6XMHC;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.bunn.PiStatsMobile.watchOS.Pi-Stats-Watch-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "Pi Stats Watch Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Debug;
+		};
+		31AAF6D12F2FC986008DA256 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B2RUA6XMHC;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.bunn.PiStatsMobile.watchOS.Pi-Stats-Watch-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "Pi Stats Watch Watch App";
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1268,6 +1689,33 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		31AAF6D22F2FC986008DA256 /* Build configuration list for PBXNativeTarget "Pi Stats Watch Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				31AAF6CC2F2FC986008DA256 /* Debug */,
+				31AAF6CD2F2FC986008DA256 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		31AAF6D32F2FC986008DA256 /* Build configuration list for PBXNativeTarget "Pi Stats Watch Watch AppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				31AAF6CE2F2FC986008DA256 /* Debug */,
+				31AAF6CF2F2FC986008DA256 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		31AAF6D42F2FC986008DA256 /* Build configuration list for PBXNativeTarget "Pi Stats Watch Watch AppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				31AAF6D02F2FC986008DA256 /* Debug */,
+				31AAF6D12F2FC986008DA256 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1290,6 +1738,10 @@
 		3189B5ED2D4AB0ED008C339C /* PiStatsUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = PiStatsUI;
+		};
+		31AAF6E32F2FCA70008DA256 /* PiStatsCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PiStatsCore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
