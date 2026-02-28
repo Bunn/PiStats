@@ -225,6 +225,57 @@ struct PiholeV5ServiceTests {
         MockURLProtocol.reset()
     }
     
+    // MARK: - fetchTopDomains Tests
+
+    @Test("fetchTopDomains returns correct data sorted by count")
+    func testFetchTopDomainsSuccess() async throws {
+        let service = PiholeV5Service(MockData.testPiholeV5, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            #expect(request.url?.absoluteString.contains("topItems") == true)
+
+            let data = MockData.jsonData(from: MockData.v5TopDomainsJSON)
+            return MockURLProtocol.successResponse(for: request, data: data)
+        }
+
+        let result = try await service.fetchTopDomains(count: 10)
+
+        #expect(result.topPermitted.count == 3)
+        #expect(result.topBlocked.count == 3)
+
+        // Verify sorted by count descending
+        #expect(result.topPermitted[0].domain == "google.com")
+        #expect(result.topPermitted[0].count == 500)
+        #expect(result.topPermitted[1].count == 300)
+
+        #expect(result.topBlocked[0].domain == "ads.doubleclick.net")
+        #expect(result.topBlocked[0].count == 1200)
+        #expect(result.topBlocked[1].count == 800)
+
+        MockURLProtocol.reset()
+    }
+
+    @Test("fetchTopDomains handles empty response")
+    func testFetchTopDomainsEmpty() async throws {
+        let service = PiholeV5Service(MockData.testPiholeV5, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            let emptyData: [String: Any] = [
+                "top_queries": [:],
+                "top_ads": [:]
+            ]
+            let data = MockData.jsonData(from: emptyData)
+            return MockURLProtocol.successResponse(for: request, data: data)
+        }
+
+        let result = try await service.fetchTopDomains(count: 10)
+
+        #expect(result.topPermitted.isEmpty)
+        #expect(result.topBlocked.isEmpty)
+
+        MockURLProtocol.reset()
+    }
+
     // MARK: - enable Tests
     
     @Test("enable sets status to enabled")

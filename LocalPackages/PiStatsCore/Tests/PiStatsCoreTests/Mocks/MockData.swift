@@ -224,6 +224,39 @@ enum MockData {
         ]
     ]
     
+    // MARK: - V5 Top Domains Mock Response
+
+    nonisolated(unsafe) static let v5TopDomainsJSON: [String: Any] = [
+        "top_queries": [
+            "google.com": 500,
+            "apple.com": 300,
+            "github.com": 150
+        ],
+        "top_ads": [
+            "ads.doubleclick.net": 1200,
+            "tracker.facebook.com": 800,
+            "analytics.google.com": 400
+        ]
+    ]
+
+    // MARK: - V6 Top Domains Mock Responses
+
+    nonisolated(unsafe) static let v6TopDomainsPermittedJSON: [String: Any] = [
+        "domains": [
+            ["domain": "google.com", "count": 500],
+            ["domain": "apple.com", "count": 300],
+            ["domain": "github.com", "count": 150]
+        ]
+    ]
+
+    nonisolated(unsafe) static let v6TopDomainsBlockedJSON: [String: Any] = [
+        "domains": [
+            ["domain": "ads.doubleclick.net", "count": 1200],
+            ["domain": "tracker.facebook.com", "count": 800],
+            ["domain": "analytics.google.com", "count": 400]
+        ]
+    ]
+
     // MARK: - PiMonitor Mock Responses
     
     static let piMonitorMetricsJSON: Data = {

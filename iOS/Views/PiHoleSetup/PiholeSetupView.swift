@@ -21,6 +21,7 @@ fileprivate class SetupViewModel: ObservableObject {
     @Published var isShowingScanner = false
     @Published var piMonitorPort = ""
     @Published var isPiMonitorEnabled = false
+    @Published var showTopDomains = true
     @Published var displayPiMonitorAlert = false
     @Published var httpType: SecureTag = .unsecure
     @Published var selectedVersion: PiholeVersion = .v6
@@ -39,6 +40,8 @@ fileprivate class SetupViewModel: ObservableObject {
             self.selectedVersion = pihole.version
             self.httpType = pihole.secure ? .secure : .unsecure
             
+            self.showTopDomains = pihole.showTopDomains
+
             // Setup PiMonitor fields if available
             if let piMonitor = pihole.piMonitor {
                 self.isPiMonitorEnabled = true
@@ -72,6 +75,7 @@ fileprivate class SetupViewModel: ObservableObject {
             secure: isSecure,
             token: finalToken,
             piMonitor: piMonitor,
+            showTopDomains: showTopDomains,
             uuid: pihole?.uuid ?? UUID()
         )
         
@@ -104,6 +108,7 @@ struct PiholeSetupView: View {
         NavigationView {
             Form {
                 piholeSettingsSection
+                topDomainsSettingsSection
                 piMonitorSettingsSection
                 if viewModel.pihole != nil {
                     deleteSection
@@ -197,6 +202,18 @@ struct PiholeSetupView: View {
                     Image(systemName: SystemImages.piholeSetupToken)
                         .frame(width: imageWidthSize)
                     SecureField("Password", text: $viewModel.token)
+                }
+            }
+        }
+    }
+
+    private var topDomainsSettingsSection: some View {
+        Section {
+            Toggle(isOn: $viewModel.showTopDomains) {
+                HStack {
+                    Image(systemName: SystemImages.topDomains)
+                        .frame(width: imageWidthSize)
+                    Text(UserText.piholeSetupShowTopDomains)
                 }
             }
         }

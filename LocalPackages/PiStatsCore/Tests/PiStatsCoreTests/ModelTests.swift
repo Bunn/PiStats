@@ -42,11 +42,19 @@ struct ModelTests {
     @Test("Pihole uses default values")
     func testPiholeDefaults() {
         let pihole = Pihole(name: "Test", address: "192.168.1.100")
-        
+
         #expect(pihole.version == .v6)
         #expect(pihole.port == 80)
         #expect(pihole.token == nil)
         #expect(pihole.piMonitor == nil)
+        #expect(pihole.showTopDomains == true)
+    }
+
+    @Test("Pihole showTopDomains can be set to false")
+    func testPiholeShowTopDomainsFalse() {
+        let pihole = Pihole(name: "Test", address: "192.168.1.100", showTopDomains: false)
+
+        #expect(pihole.showTopDomains == false)
     }
     
     // MARK: - PiholeVersion Tests
@@ -240,6 +248,47 @@ struct ModelTests {
         #expect(env1 != env3)
     }
     
+    // MARK: - TopDomainsResult Tests
+
+    @Test("TopDomainsResult initializes correctly")
+    func testTopDomainsResultInitialization() {
+        let permitted = [TopDomainItem(domain: "google.com", count: 500)]
+        let blocked = [TopDomainItem(domain: "ads.example.com", count: 200)]
+
+        let result = TopDomainsResult(topPermitted: permitted, topBlocked: blocked)
+
+        #expect(result.topPermitted.count == 1)
+        #expect(result.topBlocked.count == 1)
+        #expect(result.topPermitted[0].domain == "google.com")
+        #expect(result.topBlocked[0].domain == "ads.example.com")
+    }
+
+    @Test("TopDomainsResult handles empty arrays")
+    func testTopDomainsResultEmpty() {
+        let result = TopDomainsResult(topPermitted: [], topBlocked: [])
+
+        #expect(result.topPermitted.isEmpty)
+        #expect(result.topBlocked.isEmpty)
+    }
+
+    // MARK: - TopDomainItem Tests
+
+    @Test("TopDomainItem initializes correctly")
+    func testTopDomainItemInitialization() {
+        let item = TopDomainItem(domain: "example.com", count: 42)
+
+        #expect(item.domain == "example.com")
+        #expect(item.count == 42)
+    }
+
+    @Test("TopDomainItem has unique Identifiable IDs")
+    func testTopDomainItemIdentifiable() {
+        let item1 = TopDomainItem(domain: "example.com", count: 42)
+        let item2 = TopDomainItem(domain: "example.com", count: 42)
+
+        #expect(item1.id != item2.id)
+    }
+
     // MARK: - PiMonitorError Tests
     
     @Test("PiMonitorError enum cases exist")

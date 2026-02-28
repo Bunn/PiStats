@@ -176,18 +176,26 @@ final class PiholeSummaryDataUpdater: Identifiable, ObservableObject, ErrorHandl
             }
         })
 
-        fetchTasks.append(Task { [weak self] in
-            guard let self else { return }
-            do {
-                let result = try await service.fetchTopDomains(count: 10)
-                try Task.checkCancellation()
-                await updateTopDomains(with: result)
-            } catch is CancellationError {
-                // Task was cancelled, do nothing
-            } catch {
-                // Top domains is non-critical, don't set error state
-            }
-        })
+        let piholeNameForLog = pihole.name
+        let piholeVersionForLog = pihole.version.rawValue
+        if pihole.showTopDomains {
+            fetchTasks.append(Task { [weak self] in
+                guard let self else { return }
+                Log.network.info("📊 Fetching top domains for \(piholeNameForLog, privacy: .public) (version: \(piholeVersionForLog, privacy: .public))")
+                do {
+                    let result = try await service.fetchTopDomains(count: 10)
+                    try Task.checkCancellation()
+                    Log.network.info("✅ Top domains fetched for \(piholeNameForLog, privacy: .public) - \(result.topPermitted.count, privacy: .public) permitted, \(result.topBlocked.count, privacy: .public) blocked")
+                    await updateTopDomains(with: result)
+                } catch is CancellationError {
+                    Log.network.info("⏹️ Top domains fetch cancelled for \(piholeNameForLog, privacy: .public)")
+                } catch {
+                    Log.network.error("❌ Top domains fetch failed for \(piholeNameForLog, privacy: .public): \(String(describing: error), privacy: .public)")
+                }
+            })
+        } else {
+            Log.network.info("⏭️ Top domains disabled for \(piholeNameForLog, privacy: .public) (showTopDomains=false)")
+        }
 
         if service.pihole.piMonitor != nil {
             fetchTasks.append(Task { [weak self] in

@@ -236,6 +236,67 @@ struct PiholeV6ServiceTests {
         MockURLProtocol.reset()
     }
     
+    // MARK: - fetchTopDomains Tests
+
+    @Test("fetchTopDomains returns correct data with auth and parallel requests")
+    func testFetchTopDomainsSuccess() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            if request.url?.absoluteString.contains("auth") == true {
+                let data = MockData.jsonData(from: MockData.v6AuthSuccessJSON)
+                return MockURLProtocol.successResponse(for: request, data: data)
+            } else if request.url?.absoluteString.contains("stats/top_domains") == true {
+                // Check if it's the blocked or permitted request
+                if request.url?.absoluteString.contains("blocked=true") == true {
+                    let data = MockData.jsonData(from: MockData.v6TopDomainsBlockedJSON)
+                    return MockURLProtocol.successResponse(for: request, data: data)
+                } else {
+                    let data = MockData.jsonData(from: MockData.v6TopDomainsPermittedJSON)
+                    return MockURLProtocol.successResponse(for: request, data: data)
+                }
+            }
+            throw PiholeServiceError.unknownError
+        }
+
+        let result = try await service.fetchTopDomains(count: 10)
+
+        #expect(result.topPermitted.count == 3)
+        #expect(result.topBlocked.count == 3)
+
+        #expect(result.topPermitted[0].domain == "google.com")
+        #expect(result.topPermitted[0].count == 500)
+
+        #expect(result.topBlocked[0].domain == "ads.doubleclick.net")
+        #expect(result.topBlocked[0].count == 1200)
+
+        MockURLProtocol.reset()
+    }
+
+    @Test("fetchTopDomains handles empty response")
+    func testFetchTopDomainsEmpty() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            if request.url?.absoluteString.contains("auth") == true {
+                let data = MockData.jsonData(from: MockData.v6AuthSuccessJSON)
+                return MockURLProtocol.successResponse(for: request, data: data)
+            } else if request.url?.absoluteString.contains("stats/top_domains") == true {
+                let emptyData: [String: Any] = ["domains": []]
+                let data = MockData.jsonData(from: emptyData)
+                return MockURLProtocol.successResponse(for: request, data: data)
+            }
+            throw PiholeServiceError.unknownError
+        }
+
+        let result = try await service.fetchTopDomains(count: 10)
+
+        #expect(result.topPermitted.isEmpty)
+        #expect(result.topBlocked.isEmpty)
+
+        MockURLProtocol.reset()
+    }
+
     // MARK: - enable Tests
     
     @Test("enable sets status to enabled")

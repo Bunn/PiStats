@@ -16,6 +16,7 @@ private final class MacPiholeSetupViewModel: ObservableObject {
     @Published var displayName = ""
     @Published var piMonitorPort = ""
     @Published var isPiMonitorEnabled = false
+    @Published var showTopDomains = true
     @Published var httpType: MacSecureTag = .http
     @Published var selectedVersion: PiholeVersion = .v6
 
@@ -35,7 +36,8 @@ private final class MacPiholeSetupViewModel: ObservableObject {
             self.token = pihole.token ?? ""
             self.selectedVersion = pihole.version
             self.httpType = pihole.secure ? .https : .http
-            
+            self.showTopDomains = pihole.showTopDomains
+
             // Setup PiMonitor fields if available
             if let piMonitor = pihole.piMonitor {
                 self.isPiMonitorEnabled = true
@@ -68,6 +70,7 @@ private final class MacPiholeSetupViewModel: ObservableObject {
             secure: isSecure,
             token: finalToken,
             piMonitor: piMonitor,
+            showTopDomains: showTopDomains,
             uuid: pihole?.uuid ?? UUID()
         )
 
@@ -95,6 +98,7 @@ struct MacPiholeSetupView: View {
             // Content
             VStack(alignment: .leading, spacing: 16) {
                 piholeConfigurationSection
+                topDomainsConfigurationSection
                 piMonitorConfigurationSection
                 
                 if viewModel.pihole != nil {
@@ -228,6 +232,25 @@ struct MacPiholeSetupView: View {
         }
     }
     
+    // MARK: - Top Domains Configuration
+    private var topDomainsConfigurationSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            sectionHeader("Top Domains")
+
+            VStack(alignment: .leading, spacing: 10) {
+                Toggle(UserText.Setup.showTopDomainsLabel, isOn: $viewModel.showTopDomains)
+                    .toggleStyle(.switch)
+            }
+            .padding(12)
+            .background(Color(NSColor.controlBackgroundColor))
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(Color(NSColor.separatorColor), lineWidth: 1)
+            )
+        }
+    }
+
     // MARK: - Pi Monitor Configuration
     private var piMonitorConfigurationSection: some View {
         VStack(alignment: .leading, spacing: 12) {
