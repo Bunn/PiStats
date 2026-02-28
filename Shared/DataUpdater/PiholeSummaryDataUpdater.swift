@@ -176,6 +176,19 @@ final class PiholeSummaryDataUpdater: Identifiable, ObservableObject, ErrorHandl
             }
         })
 
+        fetchTasks.append(Task { [weak self] in
+            guard let self else { return }
+            do {
+                let result = try await service.fetchTopDomains(count: 10)
+                try Task.checkCancellation()
+                await updateTopDomains(with: result)
+            } catch is CancellationError {
+                // Task was cancelled, do nothing
+            } catch {
+                // Top domains is non-critical, don't set error state
+            }
+        })
+
         if service.pihole.piMonitor != nil {
             fetchTasks.append(Task { [weak self] in
                 guard let self else { return }
@@ -241,6 +254,13 @@ extension PiholeSummaryDataUpdater {
             summary.domainsOnList = result.domainsBeingBlocked.formatted()
             summary.percentageBlocked = result.adsPercentageToday.formattedPercentage()
             summary.totalQueries = result.queries.formatted()
+        }
+    }
+
+    @MainActor
+    private func updateTopDomains(with result: TopDomainsResult) {
+        withAnimation {
+            summary.topDomains = result
         }
     }
 

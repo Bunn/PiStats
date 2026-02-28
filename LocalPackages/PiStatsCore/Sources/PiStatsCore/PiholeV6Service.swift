@@ -89,6 +89,31 @@ internal final class PiholeV6Service: PiholeService {
         return historyItems
     }
 
+    func fetchTopDomains(count: Int) async throws -> TopDomainsResult {
+        Log.network.info("🏆 [V6] Fetching top domains for \(self.pihole.name)")
+        
+        let authResponse = try await ensureAuthenticated(self.pihole)
+        
+        let permittedURL = try makeURL(for: self.pihole, endpoint: .topDomains, queryItems: [
+            URLQueryItem(name: "count", value: "\(count)")
+        ])
+        let blockedURL = try makeURL(for: self.pihole, endpoint: .topDomains, queryItems: [
+            URLQueryItem(name: "count", value: "\(count)"),
+            URLQueryItem(name: "blocked", value: "true")
+        ])
+        
+        async let permittedJSON = fetchJSON(from: permittedURL, with: authResponse)
+        async let blockedJSON = fetchJSON(from: blockedURL, with: authResponse)
+        
+        let (permitted, blocked) = try await (permittedJSON, blockedJSON)
+        
+        let topPermitted = parseTopDomains(from: permitted)
+        let topBlocked = parseTopDomains(from: blocked)
+        
+        Log.network.info("✅ [V6] Top domains fetched for \(self.pihole.name) - \(topPermitted.count) permitted, \(topBlocked.count) blocked")
+        return TopDomainsResult(topPermitted: topPermitted, topBlocked: topBlocked)
+    }
+
     func enable() async throws -> PiholeStatus {
         try await setBlocking(.enable, for: self.pihole)
     }
@@ -169,14 +194,35 @@ extension PiholeV6Service {
         }
     }
 
-    private func makeURL(for pihole: Pihole, endpoint: Endpoint) throws -> URL {
+    private func makeURL(for pihole: Pihole, endpoint: Endpoint, queryItems: [URLQueryItem] = []) throws -> URL {
         let scheme = pihole.secure ? "https" : "http"
         let portString = ":\(pihole.port)"
         
-        guard let url = URL(string: "\(scheme)://\(pihole.address)\(portString)/api/\(endpoint.rawValue)") else {
+        guard var components = URLComponents(string: "\(scheme)://\(pihole.address)\(portString)/api/\(endpoint.rawValue)") else {
+            throw PiholeServiceError.badURL
+        }
+        
+        if !queryItems.isEmpty {
+            components.queryItems = queryItems
+        }
+        
+        guard let url = components.url else {
             throw PiholeServiceError.badURL
         }
         return url
+    }
+
+    private func parseTopDomains(from json: [String: Any]) -> [TopDomainItem] {
+        guard let domains = json["domains"] as? [[String: Any]] else {
+            return []
+        }
+        return domains.compactMap { item in
+            guard let domain = item["domain"] as? String,
+                  let count = item["count"] as? Int else {
+                return nil
+            }
+            return TopDomainItem(domain: domain, count: count)
+        }
     }
 
     private func fetchJSON(from url: URL, with auth: PiholeV6AuthResponse) async throws -> [String: Any] {
@@ -299,6 +345,7 @@ extension PiholeV6Service {
         case blocking = "dns/blocking"
         case history = "history"
         case auth = "auth"
+        case topDomains = "stats/top_domains"
     }
 
     private enum JSONKeys: String {

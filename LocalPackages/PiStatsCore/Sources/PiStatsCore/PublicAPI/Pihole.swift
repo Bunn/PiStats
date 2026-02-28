@@ -84,3 +84,26 @@ public struct HistoryItem: Codable, Identifiable, Sendable {
     public let blocked: Int
     public let forwarded: Int
 }
+
+// MARK: - TopDomainsResult Model
+
+public struct TopDomainsResult: Sendable {
+    public let topPermitted: [TopDomainItem]
+    public let topBlocked: [TopDomainItem]
+    
+    public init(topPermitted: [TopDomainItem], topBlocked: [TopDomainItem]) {
+        self.topPermitted = topPermitted
+        self.topBlocked = topBlocked
+    }
+}
+
+public struct TopDomainItem: Identifiable, Sendable {
+    public let id = UUID()
+    public let domain: String
+    public let count: Int
+    
+    public init(domain: String, count: Int) {
+        self.domain = domain
+        self.count = count
+    }
+}

@@ -133,6 +133,17 @@ struct PiStatPopoverView: View {
 
             ListView(data: dataUpdater.summary)
 
+            if let topDomains = dataUpdater.summary.topDomains {
+                Divider()
+                HStack {
+                    Text("Top Domains")
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                }
+                TopDomainsView(topDomains: topDomains)
+            }
+
             if let metrics = dataUpdater.summary.monitorMetrics {
                 Divider()
                 HStack {

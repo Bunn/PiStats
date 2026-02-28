@@ -18,6 +18,7 @@ final class PiholeSummaryData: Identifiable, ObservableObject {
     @Published var domainsOnList: String = ""
     @Published var name: String = ""
     @Published var status: PiholeStatus = .unknown
+    @Published var topDomains: TopDomainsResult? = nil
     @Published var monitorMetrics: PiMonitorMetrics? = nil
     @Published var currentError: PiholeError? = nil
     @Published var hasError: Bool = false

@@ -75,6 +75,19 @@ internal final class PiholeV5Service: PiholeService {
         return historyItems
     }
 
+    func fetchTopDomains(count: Int) async throws -> TopDomainsResult {
+        Log.network.info("🏆 [V5] Fetching top domains for \(self.pihole.name)")
+        
+        let url = try makeURL(for: self.pihole, endpoint: .custom("topItems=\(count)"))
+        let json = try await fetchJSON(from: url)
+        
+        let topPermitted = parseDomainDictionary(json[JSONKeys.topQueries.rawValue] as? [String: Int] ?? [:])
+        let topBlocked = parseDomainDictionary(json[JSONKeys.topAds.rawValue] as? [String: Int] ?? [:])
+        
+        Log.network.info("✅ [V5] Top domains fetched for \(self.pihole.name) - \(topPermitted.count) permitted, \(topBlocked.count) blocked")
+        return TopDomainsResult(topPermitted: topPermitted, topBlocked: topBlocked)
+    }
+
     func enable() async throws -> PiholeStatus {
         try await setBlocking(.enable, for: self.pihole)
     }
@@ -125,6 +138,11 @@ extension PiholeV5Service {
             Log.network.error("💥 [V5] Network error for \(url.absoluteString): \(error.localizedDescription)")
             throw error
         }
+    }
+
+    private func parseDomainDictionary(_ dict: [String: Int]) -> [TopDomainItem] {
+        dict.map { TopDomainItem(domain: $0.key, count: $0.value) }
+            .sorted { $0.count > $1.count }
     }
 
     private func setBlocking(_ action: BlockingAction, for pihole: Pihole, timer: Int? = nil) async throws -> PiholeStatus {
@@ -218,5 +236,7 @@ extension PiholeV5Service {
         case status
         case domainsOverTime = "domains_over_time"
         case adsOverTime = "ads_over_time"
+        case topQueries = "top_queries"
+        case topAds = "top_ads"
     }
 }
