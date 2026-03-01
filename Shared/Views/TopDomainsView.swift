@@ -15,21 +15,16 @@ struct TopDomainsView: View {
     enum DomainTab: String, CaseIterable {
         case blocked = "Top Blocked"
         case permitted = "Top Permitted"
-
-        var tintColor: Color {
-            switch self {
-            case .blocked: AppColors.queriesBlocked
-            case .permitted: AppColors.totalQueries
-            }
-        }
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            ColoredSegmentedPicker(
-                selection: $selectedTab,
-                options: DomainTab.allCases
-            ) { $0.rawValue } color: { $0.tintColor }
+            Picker("", selection: $selectedTab) {
+                ForEach(DomainTab.allCases, id: \.self) { tab in
+                    Text(tab.rawValue).tag(tab)
+                }
+            }
+            .pickerStyle(.segmented)
 
             let items = selectedTab == .blocked ? topDomains.topBlocked : topDomains.topPermitted
 
