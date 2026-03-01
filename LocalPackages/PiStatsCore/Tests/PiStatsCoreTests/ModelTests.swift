@@ -289,6 +289,67 @@ struct ModelTests {
         #expect(item1.id != item2.id)
     }
 
+    // MARK: - TopClientsResult Tests
+
+    @Test("TopClientsResult initializes correctly")
+    func testTopClientsResultInitialization() {
+        let active = [
+            TopClientItem(ip: "192.168.1.100", name: "MacBook-Pro", count: 5000),
+            TopClientItem(ip: "192.168.1.101", name: "iPhone", count: 3200)
+        ]
+        let blocked = [
+            TopClientItem(ip: "192.168.1.200", name: "IoT-Camera", count: 2400)
+        ]
+
+        let result = TopClientsResult(topActive: active, topBlocked: blocked)
+
+        #expect(result.topActive.count == 2)
+        #expect(result.topBlocked.count == 1)
+        #expect(result.topActive[0].name == "MacBook-Pro")
+        #expect(result.topBlocked[0].ip == "192.168.1.200")
+    }
+
+    @Test("TopClientsResult handles empty arrays")
+    func testTopClientsResultEmpty() {
+        let result = TopClientsResult(topActive: [], topBlocked: [])
+
+        #expect(result.topActive.isEmpty)
+        #expect(result.topBlocked.isEmpty)
+    }
+
+    // MARK: - TopClientItem Tests
+
+    @Test("TopClientItem initializes correctly")
+    func testTopClientItemInitialization() {
+        let item = TopClientItem(ip: "192.168.1.100", name: "MacBook-Pro", count: 5000)
+
+        #expect(item.ip == "192.168.1.100")
+        #expect(item.name == "MacBook-Pro")
+        #expect(item.count == 5000)
+    }
+
+    @Test("TopClientItem has unique Identifiable IDs")
+    func testTopClientItemIdentifiable() {
+        let item1 = TopClientItem(ip: "192.168.1.100", name: "MacBook-Pro", count: 5000)
+        let item2 = TopClientItem(ip: "192.168.1.100", name: "MacBook-Pro", count: 5000)
+
+        #expect(item1.id != item2.id)
+    }
+
+    @Test("TopClientItem displayName returns name when available")
+    func testTopClientItemDisplayNameWithName() {
+        let item = TopClientItem(ip: "192.168.1.100", name: "MacBook-Pro", count: 5000)
+
+        #expect(item.displayName == "MacBook-Pro")
+    }
+
+    @Test("TopClientItem displayName returns IP when name is empty")
+    func testTopClientItemDisplayNameWithoutName() {
+        let item = TopClientItem(ip: "192.168.1.150", name: "", count: 1500)
+
+        #expect(item.displayName == "192.168.1.150")
+    }
+
     // MARK: - PiMonitorError Tests
     
     @Test("PiMonitorError enum cases exist")

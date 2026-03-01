@@ -38,6 +38,9 @@ public struct SystemImages {
     // Top Domains
     public static let topDomains = "chart.bar"
 
+    // Top Clients
+    public static let topClients = "person.2"
+
     // Statistics
     public static let globe = "globe"
     public static let totalQueries = "globe"
@@ -116,6 +119,7 @@ public struct UserText {
     public static let piholeSetupDisplayName = "Display Name (Optional)"
     public static let piholeSetupTokenPlaceholder = "Token (Optional)"
     public static let piholeSetupShowTopDomains = "Show Top Domains"
+    public static let piholeSetupShowTopClients = "Show Top Clients"
     public static let piholeSetupEnablePiMonitor = "Enable Pi Monitor"
     public static let piholeTokenFooterSection = "Token is required for some functionalities like disable/enable your pi-hole.\\n\\nYou can find the API Token on /etc/pihole/setupVars.conf under WEBPASSWORD or you can open the web UI and go to Settings -> API -> Show API Token"
     public static let piholeTokenFooterV6Section = "For version 6.x, you can use your actual password for authenticating"
@@ -249,6 +253,7 @@ public struct UserText {
         public static let apiTokenHelp = "Find in /etc/pihole/setupVars.conf under WEBPASSWORD or in Web UI → Settings → API"
         public static let passwordHelp = "Use your Pi-hole web interface password"
         public static let showTopDomainsLabel = "Show Top Domains"
+        public static let showTopClientsLabel = "Show Top Clients"
         public static let enablePiMonitorLabel = "Enable Pi Monitor"
         public static let piMonitorPortPlaceholder = "8088"
         public static let whatsThisButton = "What's this?"

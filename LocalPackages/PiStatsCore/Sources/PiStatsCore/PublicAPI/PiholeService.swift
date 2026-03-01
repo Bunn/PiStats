@@ -17,6 +17,7 @@ public protocol PiholeService: Sendable {
     func fetchMonitorMetrics() async throws -> PiMonitorMetrics
     func fetchHistory() async throws -> [HistoryItem]
     func fetchTopDomains(count: Int) async throws -> TopDomainsResult
+    func fetchTopClients(count: Int) async throws -> TopClientsResult
     func enable() async throws -> PiholeStatus
     func disable(timer: Int?) async throws -> PiholeStatus
 }

@@ -159,6 +159,17 @@ struct PiStatPopoverView: View {
                 TopDomainsView(topDomains: topDomains)
             }
 
+            if let topClients = summary.topClients {
+                Divider()
+                HStack {
+                    Text("Top Clients")
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                }
+                TopClientsView(topClients: topClients)
+            }
+
             if let metrics = summary.monitorMetrics {
                 Divider()
                 HStack {

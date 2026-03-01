@@ -297,8 +297,76 @@ struct PiholeV6ServiceTests {
         MockURLProtocol.reset()
     }
 
+    // MARK: - fetchTopClients Tests
+
+    @Test("fetchTopClients returns correct data with auth and parallel requests")
+    func testFetchTopClientsSuccess() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            if request.url?.absoluteString.contains("auth") == true {
+                let data = MockData.jsonData(from: MockData.v6AuthSuccessJSON)
+                return MockURLProtocol.successResponse(for: request, data: data)
+            } else if request.url?.absoluteString.contains("stats/top_clients") == true {
+                if request.url?.absoluteString.contains("blocked=true") == true {
+                    let data = MockData.jsonData(from: MockData.v6TopClientsBlockedJSON)
+                    return MockURLProtocol.successResponse(for: request, data: data)
+                } else {
+                    let data = MockData.jsonData(from: MockData.v6TopClientsActiveJSON)
+                    return MockURLProtocol.successResponse(for: request, data: data)
+                }
+            }
+            throw PiholeServiceError.unknownError
+        }
+
+        let result = try await service.fetchTopClients(count: 10)
+
+        #expect(result.topActive.count == 3)
+        #expect(result.topBlocked.count == 3)
+
+        // Verify active clients
+        #expect(result.topActive[0].name == "MacBook-Pro")
+        #expect(result.topActive[0].ip == "192.168.1.100")
+        #expect(result.topActive[0].count == 5000)
+
+        // Verify empty name client uses IP
+        #expect(result.topActive[2].name == "")
+        #expect(result.topActive[2].ip == "192.168.1.150")
+
+        // Verify blocked clients
+        #expect(result.topBlocked[0].name == "IoT-Camera")
+        #expect(result.topBlocked[0].ip == "192.168.1.200")
+        #expect(result.topBlocked[0].count == 2400)
+
+        MockURLProtocol.reset()
+    }
+
+    @Test("fetchTopClients handles empty response")
+    func testFetchTopClientsEmpty() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            if request.url?.absoluteString.contains("auth") == true {
+                let data = MockData.jsonData(from: MockData.v6AuthSuccessJSON)
+                return MockURLProtocol.successResponse(for: request, data: data)
+            } else if request.url?.absoluteString.contains("stats/top_clients") == true {
+                let emptyData: [String: Any] = ["clients": []]
+                let data = MockData.jsonData(from: emptyData)
+                return MockURLProtocol.successResponse(for: request, data: data)
+            }
+            throw PiholeServiceError.unknownError
+        }
+
+        let result = try await service.fetchTopClients(count: 10)
+
+        #expect(result.topActive.isEmpty)
+        #expect(result.topBlocked.isEmpty)
+
+        MockURLProtocol.reset()
+    }
+
     // MARK: - enable Tests
-    
+
     @Test("enable sets status to enabled")
     func testEnableSuccess() async throws {
         let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)

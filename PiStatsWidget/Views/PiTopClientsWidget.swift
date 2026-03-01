@@ -1,8 +1,8 @@
 //
-//  PiTopDomainsWidget.swift
+//  PiTopClientsWidget.swift
 //  PiStatsWidget
 //
-//  Created by Fernando Bunn on 28/02/2026.
+//  Created by Fernando Bunn on 01/03/2026.
 //
 
 import WidgetKit
@@ -12,19 +12,19 @@ import AppIntents
 
 // MARK: - Constants
 
-private enum TopDomainsConstants {
+private enum TopClientsConstants {
     enum Layout {
         static let mainSpacing: CGFloat = 6
-        static let domainSpacing: CGFloat = 4
+        static let clientSpacing: CGFloat = 4
         static let barHeight: CGFloat = 3
         static let barCornerRadius: CGFloat = 1.5
     }
 }
 
-// MARK: - Pi Top Domains Widget
+// MARK: - Pi Top Clients Widget
 
-struct PiTopDomainsWidget: Widget {
-    let kind: String = "PiTopDomainsWidget"
+struct PiTopClientsWidget: Widget {
+    let kind: String = "PiTopClientsWidget"
 
     var body: some WidgetConfiguration {
         AppIntentConfiguration(
@@ -32,10 +32,10 @@ struct PiTopDomainsWidget: Widget {
             intent: PiholeSelectionIntent.self,
             provider: WidgetDataProvider()
         ) { entry in
-            PiTopDomainsWidgetView(entry: entry)
+            PiTopClientsWidgetView(entry: entry)
         }
-        .configurationDisplayName("Top Blocked Domains")
-        .description("See your most blocked domains at a glance")
+        .configurationDisplayName("Top Clients")
+        .description("See which devices make the most queries and get the most blocks")
         .contentMarginsDisabled()
         .supportedFamilies([.systemSmall, .systemMedium])
     }
@@ -43,7 +43,7 @@ struct PiTopDomainsWidget: Widget {
 
 // MARK: - Widget View
 
-struct PiTopDomainsWidgetView: View {
+struct PiTopClientsWidgetView: View {
     let entry: PiStatsEntry
     @Environment(\.widgetFamily) private var family
 
@@ -52,7 +52,7 @@ struct PiTopDomainsWidgetView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: TopDomainsConstants.Layout.mainSpacing) {
+        VStack(alignment: .leading, spacing: TopClientsConstants.Layout.mainSpacing) {
             headerView
             Divider()
             contentView
@@ -72,7 +72,7 @@ struct PiTopDomainsWidgetView: View {
                 .foregroundColor(.primary)
                 .lineLimit(1)
             Spacer()
-            Image(systemName: "chart.bar")
+            Image(systemName: "person.2")
                 .foregroundColor(.secondary)
         }
     }
@@ -81,22 +81,20 @@ struct PiTopDomainsWidgetView: View {
 
     @ViewBuilder
     private var contentView: some View {
-        if let topDomains = entry.widgetData?.topDomains,
-           !topDomains.topBlocked.isEmpty {
-            domainsListView(items: Array(topDomains.topBlocked.prefix(itemCount)))
-        } else if entry.widgetData != nil {
-            placeholderView
+        if let topClients = entry.widgetData?.topClients,
+           !topClients.topActive.isEmpty {
+            clientsListView(items: Array(topClients.topActive.prefix(itemCount)))
         } else {
             placeholderView
         }
     }
 
-    private func domainsListView(items: [TopDomainItem]) -> some View {
+    private func clientsListView(items: [TopClientItem]) -> some View {
         let maxCount = items.first?.count ?? 1
 
-        return VStack(alignment: .leading, spacing: TopDomainsConstants.Layout.domainSpacing) {
+        return VStack(alignment: .leading, spacing: TopClientsConstants.Layout.clientSpacing) {
             ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
-                DomainRow(
+                ClientRow(
                     item: item,
                     maxCount: maxCount,
                     showBar: family == .systemMedium
@@ -107,7 +105,7 @@ struct PiTopDomainsWidgetView: View {
     }
 
     private var placeholderView: some View {
-        VStack(spacing: TopDomainsConstants.Layout.domainSpacing) {
+        VStack(spacing: TopClientsConstants.Layout.clientSpacing) {
             ForEach(0..<itemCount, id: \.self) { _ in
                 HStack {
                     Text("---")
@@ -124,10 +122,10 @@ struct PiTopDomainsWidgetView: View {
     }
 }
 
-// MARK: - Domain Row
+// MARK: - Client Row
 
-private struct DomainRow: View {
-    let item: TopDomainItem
+private struct ClientRow: View {
+    let item: TopClientItem
     let maxCount: Int
     let showBar: Bool
 
@@ -139,7 +137,7 @@ private struct DomainRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 1) {
             HStack {
-                Text(item.domain)
+                Text(item.displayName)
                     .font(.caption2)
                     .lineLimit(1)
                     .truncationMode(.middle)
@@ -148,19 +146,19 @@ private struct DomainRow: View {
                 Text(formatCount(item.count))
                     .font(.caption2)
                     .fontWeight(.semibold)
-                    .foregroundColor(AppColors.queriesBlocked)
+                    .foregroundColor(AppColors.totalQueries)
             }
 
             if showBar {
                 GeometryReader { geometry in
-                    RoundedRectangle(cornerRadius: TopDomainsConstants.Layout.barCornerRadius)
-                        .fill(AppColors.queriesBlocked.opacity(0.5))
+                    RoundedRectangle(cornerRadius: TopClientsConstants.Layout.barCornerRadius)
+                        .fill(AppColors.totalQueries.opacity(0.5))
                         .frame(
                             width: geometry.size.width * barFraction,
-                            height: TopDomainsConstants.Layout.barHeight
+                            height: TopClientsConstants.Layout.barHeight
                         )
                 }
-                .frame(height: TopDomainsConstants.Layout.barHeight)
+                .frame(height: TopClientsConstants.Layout.barHeight)
             }
         }
     }
@@ -176,7 +174,7 @@ private struct DomainRow: View {
 // MARK: - Preview
 
 #Preview(as: .systemMedium) {
-    PiTopDomainsWidget()
+    PiTopClientsWidget()
 } timeline: {
     PiStatsEntry.placeholder()
 }

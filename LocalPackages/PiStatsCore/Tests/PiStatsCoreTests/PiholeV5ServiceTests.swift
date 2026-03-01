@@ -276,6 +276,101 @@ struct PiholeV5ServiceTests {
         MockURLProtocol.reset()
     }
 
+    // MARK: - fetchTopClients Tests
+
+    @Test("fetchTopClients returns correct data sorted by count")
+    func testFetchTopClientsSuccess() async throws {
+        let service = PiholeV5Service(MockData.testPiholeV5, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            let urlString = request.url?.absoluteString ?? ""
+            if urlString.contains("topClientsBlocked") {
+                let data = MockData.jsonData(from: MockData.v5TopClientsBlockedJSON)
+                return MockURLProtocol.successResponse(for: request, data: data)
+            } else if urlString.contains("topClients") {
+                let data = MockData.jsonData(from: MockData.v5TopClientsActiveJSON)
+                return MockURLProtocol.successResponse(for: request, data: data)
+            }
+            throw PiholeServiceError.unknownError
+        }
+
+        let result = try await service.fetchTopClients(count: 10)
+
+        #expect(result.topActive.count == 3)
+        #expect(result.topBlocked.count == 3)
+
+        // Verify sorted by count descending
+        #expect(result.topActive[0].count == 5000)
+        #expect(result.topActive[1].count == 3200)
+        #expect(result.topActive[2].count == 1500)
+
+        // Verify hostname|IP parsing
+        #expect(result.topActive[0].name == "MacBook-Pro")
+        #expect(result.topActive[0].ip == "192.168.1.100")
+
+        // Verify IP-only client (no pipe separator)
+        #expect(result.topActive[2].name == "")
+        #expect(result.topActive[2].ip == "192.168.1.150")
+
+        // Verify blocked clients
+        #expect(result.topBlocked[0].name == "IoT-Camera")
+        #expect(result.topBlocked[0].ip == "192.168.1.200")
+        #expect(result.topBlocked[0].count == 2400)
+
+        MockURLProtocol.reset()
+    }
+
+    @Test("fetchTopClients handles empty response")
+    func testFetchTopClientsEmpty() async throws {
+        let service = PiholeV5Service(MockData.testPiholeV5, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            let urlString = request.url?.absoluteString ?? ""
+            if urlString.contains("topClientsBlocked") {
+                let data = MockData.jsonData(from: ["top_sources_blocked": [:]])
+                return MockURLProtocol.successResponse(for: request, data: data)
+            } else {
+                let data = MockData.jsonData(from: ["top_sources": [:]])
+                return MockURLProtocol.successResponse(for: request, data: data)
+            }
+        }
+
+        let result = try await service.fetchTopClients(count: 10)
+
+        #expect(result.topActive.isEmpty)
+        #expect(result.topBlocked.isEmpty)
+
+        MockURLProtocol.reset()
+    }
+
+    @Test("fetchTopClients sends correct endpoint parameters")
+    func testFetchTopClientsEndpoints() async throws {
+        let service = PiholeV5Service(MockData.testPiholeV5, urlSession: mockSession)
+        var seenActiveRequest = false
+        var seenBlockedRequest = false
+
+        MockURLProtocol.requestHandler = { request in
+            let urlString = request.url?.absoluteString ?? ""
+            if urlString.contains("topClientsBlocked=10") {
+                seenBlockedRequest = true
+                let data = MockData.jsonData(from: MockData.v5TopClientsBlockedJSON)
+                return MockURLProtocol.successResponse(for: request, data: data)
+            } else if urlString.contains("topClients=10") {
+                seenActiveRequest = true
+                let data = MockData.jsonData(from: MockData.v5TopClientsActiveJSON)
+                return MockURLProtocol.successResponse(for: request, data: data)
+            }
+            throw PiholeServiceError.unknownError
+        }
+
+        let _ = try await service.fetchTopClients(count: 10)
+
+        #expect(seenActiveRequest)
+        #expect(seenBlockedRequest)
+
+        MockURLProtocol.reset()
+    }
+
     // MARK: - enable Tests
     
     @Test("enable sets status to enabled")

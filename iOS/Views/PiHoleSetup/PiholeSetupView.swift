@@ -22,6 +22,7 @@ fileprivate class SetupViewModel: ObservableObject {
     @Published var piMonitorPort = ""
     @Published var isPiMonitorEnabled = false
     @Published var showTopDomains = true
+    @Published var showTopClients = true
     @Published var displayPiMonitorAlert = false
     @Published var httpType: SecureTag = .unsecure
     @Published var selectedVersion: PiholeVersion = .v6
@@ -41,6 +42,7 @@ fileprivate class SetupViewModel: ObservableObject {
             self.httpType = pihole.secure ? .secure : .unsecure
             
             self.showTopDomains = pihole.showTopDomains
+            self.showTopClients = pihole.showTopClients
 
             // Setup PiMonitor fields if available
             if let piMonitor = pihole.piMonitor {
@@ -76,6 +78,7 @@ fileprivate class SetupViewModel: ObservableObject {
             token: finalToken,
             piMonitor: piMonitor,
             showTopDomains: showTopDomains,
+            showTopClients: showTopClients,
             uuid: pihole?.uuid ?? UUID()
         )
         
@@ -214,6 +217,13 @@ struct PiholeSetupView: View {
                     Image(systemName: SystemImages.topDomains)
                         .frame(width: imageWidthSize)
                     Text(UserText.piholeSetupShowTopDomains)
+                }
+            }
+            Toggle(isOn: $viewModel.showTopClients) {
+                HStack {
+                    Image(systemName: SystemImages.topClients)
+                        .frame(width: imageWidthSize)
+                    Text(UserText.piholeSetupShowTopClients)
                 }
             }
         }

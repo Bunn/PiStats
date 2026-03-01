@@ -17,6 +17,7 @@ private final class MacPiholeSetupViewModel: ObservableObject {
     @Published var piMonitorPort = ""
     @Published var isPiMonitorEnabled = false
     @Published var showTopDomains = true
+    @Published var showTopClients = true
     @Published var httpType: MacSecureTag = .http
     @Published var selectedVersion: PiholeVersion = .v6
 
@@ -37,6 +38,7 @@ private final class MacPiholeSetupViewModel: ObservableObject {
             self.selectedVersion = pihole.version
             self.httpType = pihole.secure ? .https : .http
             self.showTopDomains = pihole.showTopDomains
+            self.showTopClients = pihole.showTopClients
 
             // Setup PiMonitor fields if available
             if let piMonitor = pihole.piMonitor {
@@ -71,6 +73,7 @@ private final class MacPiholeSetupViewModel: ObservableObject {
             token: finalToken,
             piMonitor: piMonitor,
             showTopDomains: showTopDomains,
+            showTopClients: showTopClients,
             uuid: pihole?.uuid ?? UUID()
         )
 
@@ -248,17 +251,29 @@ struct MacPiholeSetupView: View {
         }
     }
     
-    // MARK: - Top Domains Configuration
+    // MARK: - Statistics Configuration
     private var topDomainsConfigurationSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            sectionHeader("Top Domains")
+            sectionHeader("Statistics")
 
-            HStack {
-                Text(UserText.Setup.showTopDomainsLabel)
-                Spacer()
-                Toggle("", isOn: $viewModel.showTopDomains)
-                    .toggleStyle(.switch)
-                    .labelsHidden()
+            VStack(spacing: 10) {
+                HStack {
+                    Text(UserText.Setup.showTopDomainsLabel)
+                    Spacer()
+                    Toggle("", isOn: $viewModel.showTopDomains)
+                        .toggleStyle(.switch)
+                        .labelsHidden()
+                }
+
+                Divider()
+
+                HStack {
+                    Text(UserText.Setup.showTopClientsLabel)
+                    Spacer()
+                    Toggle("", isOn: $viewModel.showTopClients)
+                        .toggleStyle(.switch)
+                        .labelsHidden()
+                }
             }
             .padding(12)
             .background(Color(NSColor.controlBackgroundColor))

@@ -91,9 +91,9 @@ internal final class PiholeV6Service: PiholeService {
 
     func fetchTopDomains(count: Int) async throws -> TopDomainsResult {
         Log.network.info("🏆 [V6] Fetching top domains for \(self.pihole.name)")
-        
+
         let authResponse = try await ensureAuthenticated(self.pihole)
-        
+
         let permittedURL = try makeURL(for: self.pihole, endpoint: .topDomains, queryItems: [
             URLQueryItem(name: "count", value: "\(count)")
         ])
@@ -101,17 +101,42 @@ internal final class PiholeV6Service: PiholeService {
             URLQueryItem(name: "count", value: "\(count)"),
             URLQueryItem(name: "blocked", value: "true")
         ])
-        
+
         async let permittedJSON = fetchJSON(from: permittedURL, with: authResponse)
         async let blockedJSON = fetchJSON(from: blockedURL, with: authResponse)
-        
+
         let (permitted, blocked) = try await (permittedJSON, blockedJSON)
-        
+
         let topPermitted = parseTopDomains(from: permitted)
         let topBlocked = parseTopDomains(from: blocked)
-        
+
         Log.network.info("✅ [V6] Top domains fetched for \(self.pihole.name) - \(topPermitted.count) permitted, \(topBlocked.count) blocked")
         return TopDomainsResult(topPermitted: topPermitted, topBlocked: topBlocked)
+    }
+
+    func fetchTopClients(count: Int) async throws -> TopClientsResult {
+        Log.network.info("👥 [V6] Fetching top clients for \(self.pihole.name)")
+
+        let authResponse = try await ensureAuthenticated(self.pihole)
+
+        let activeURL = try makeURL(for: self.pihole, endpoint: .topClients, queryItems: [
+            URLQueryItem(name: "count", value: "\(count)")
+        ])
+        let blockedURL = try makeURL(for: self.pihole, endpoint: .topClients, queryItems: [
+            URLQueryItem(name: "count", value: "\(count)"),
+            URLQueryItem(name: "blocked", value: "true")
+        ])
+
+        async let activeJSON = fetchJSON(from: activeURL, with: authResponse)
+        async let blockedJSON = fetchJSON(from: blockedURL, with: authResponse)
+
+        let (active, blocked) = try await (activeJSON, blockedJSON)
+
+        let topActive = parseTopClients(from: active)
+        let topBlocked = parseTopClients(from: blocked)
+
+        Log.network.info("✅ [V6] Top clients fetched for \(self.pihole.name) - \(topActive.count) active, \(topBlocked.count) blocked")
+        return TopClientsResult(topActive: topActive, topBlocked: topBlocked)
     }
 
     func enable() async throws -> PiholeStatus {
@@ -222,6 +247,20 @@ extension PiholeV6Service {
                 return nil
             }
             return TopDomainItem(domain: domain, count: count)
+        }
+    }
+
+    private func parseTopClients(from json: [String: Any]) -> [TopClientItem] {
+        guard let clients = json["clients"] as? [[String: Any]] else {
+            return []
+        }
+        return clients.compactMap { item in
+            guard let ip = item["ip"] as? String,
+                  let count = item["count"] as? Int else {
+                return nil
+            }
+            let name = item["name"] as? String ?? ""
+            return TopClientItem(ip: ip, name: name, count: count)
         }
     }
 
@@ -346,6 +385,7 @@ extension PiholeV6Service {
         case history = "history"
         case auth = "auth"
         case topDomains = "stats/top_domains"
+        case topClients = "stats/top_clients"
     }
 
     private enum JSONKeys: String {

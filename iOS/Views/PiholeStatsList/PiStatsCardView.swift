@@ -37,6 +37,11 @@ struct PiStatsCardView: View {
                 TopDomainsView(topDomains: topDomains)
             }
 
+            if let topClients = data.topClients {
+                Divider()
+                TopClientsView(topClients: topClients)
+            }
+
             if let metrics = data.monitorMetrics {
                 Divider()
                 MetricsView(viewModel: .init(metrics: metrics, temperatureScale: settingsStore.temperatureScale))

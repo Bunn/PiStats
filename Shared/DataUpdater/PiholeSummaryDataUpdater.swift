@@ -197,6 +197,25 @@ final class PiholeSummaryDataUpdater: Identifiable, ObservableObject, ErrorHandl
             Log.network.info("⏭️ Top domains disabled for \(piholeNameForLog, privacy: .public) (showTopDomains=false)")
         }
 
+        if pihole.showTopClients {
+            fetchTasks.append(Task { [weak self] in
+                guard let self else { return }
+                Log.network.info("👥 Fetching top clients for \(piholeNameForLog, privacy: .public) (version: \(piholeVersionForLog, privacy: .public))")
+                do {
+                    let result = try await service.fetchTopClients(count: 10)
+                    try Task.checkCancellation()
+                    Log.network.info("✅ Top clients fetched for \(piholeNameForLog, privacy: .public) - \(result.topActive.count, privacy: .public) active, \(result.topBlocked.count, privacy: .public) blocked")
+                    await updateTopClients(with: result)
+                } catch is CancellationError {
+                    Log.network.info("⏹️ Top clients fetch cancelled for \(piholeNameForLog, privacy: .public)")
+                } catch {
+                    Log.network.error("❌ Top clients fetch failed for \(piholeNameForLog, privacy: .public): \(String(describing: error), privacy: .public)")
+                }
+            })
+        } else {
+            Log.network.info("⏭️ Top clients disabled for \(piholeNameForLog, privacy: .public) (showTopClients=false)")
+        }
+
         if service.pihole.piMonitor != nil {
             fetchTasks.append(Task { [weak self] in
                 guard let self else { return }
@@ -278,6 +297,13 @@ extension PiholeSummaryDataUpdater {
     private func updateTopDomains(with result: TopDomainsResult) {
         withAnimation {
             summary.topDomains = result
+        }
+    }
+
+    @MainActor
+    private func updateTopClients(with result: TopClientsResult) {
+        withAnimation {
+            summary.topClients = result
         }
     }
 

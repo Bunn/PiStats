@@ -178,6 +178,7 @@
 				Views/MetricsView.swift,
 				Views/StatusHeaderView.swift,
 				Views/TestView.swift,
+				Views/TopClientsView.swift,
 				Views/TopDomainsView.swift,
 			);
 			target = 310D5F7A2D49698C008E611D /* Pi Stats Mobile */;
@@ -202,6 +203,7 @@
 				Views/MetricsView.swift,
 				Views/StatusHeaderView.swift,
 				Views/TestView.swift,
+				Views/TopClientsView.swift,
 				Views/TopDomainsView.swift,
 			);
 			target = 310D5FA82D496998008E611D /* Pi Stats */;

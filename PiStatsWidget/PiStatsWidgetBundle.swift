@@ -14,6 +14,7 @@ struct PiStatsWidgetBundle: WidgetBundle {
         PiStatsOverviewWidget()
         PiMonitorWidget()
         PiTopDomainsWidget()
+        PiTopClientsWidget()
 //        PiStatusControlWidget()
     }
 }
