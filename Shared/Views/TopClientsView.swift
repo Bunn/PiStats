@@ -10,11 +10,11 @@ import PiStatsCore
 
 struct TopClientsView: View {
     let topClients: TopClientsResult
-    @State private var selectedTab: ClientTab = .active
+    @State private var selectedTab: ClientTab = .blocked
 
     enum ClientTab: String, CaseIterable {
-        case active = "Most Active"
         case blocked = "Most Blocked"
+        case active = "Most Active"
     }
 
     var body: some View {
