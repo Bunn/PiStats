@@ -26,14 +26,10 @@ struct TopDomainsView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Picker("", selection: $selectedTab) {
-                ForEach(DomainTab.allCases, id: \.self) { tab in
-                    Text(tab.rawValue).tag(tab)
-                }
-            }
-            .pickerStyle(.segmented)
-            .labelsHidden()
-            .tint(selectedTab.tintColor)
+            ColoredSegmentedPicker(
+                selection: $selectedTab,
+                options: DomainTab.allCases
+            ) { $0.rawValue } color: { $0.tintColor }
 
             let items = selectedTab == .blocked ? topDomains.topBlocked : topDomains.topPermitted
 
