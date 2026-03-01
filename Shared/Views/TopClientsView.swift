@@ -15,17 +15,21 @@ struct TopClientsView: View {
     enum ClientTab: String, CaseIterable {
         case blocked = "Most Blocked"
         case active = "Most Active"
+
+        var tintColor: Color {
+            switch self {
+            case .blocked: AppColors.queriesBlocked
+            case .active: AppColors.totalQueries
+            }
+        }
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Picker("", selection: $selectedTab) {
-                ForEach(ClientTab.allCases, id: \.self) { tab in
-                    Text(tab.rawValue).tag(tab)
-                }
-            }
-            .pickerStyle(.segmented)
-            .labelsHidden()
+            ColoredSegmentedPicker(
+                selection: $selectedTab,
+                options: ClientTab.allCases
+            ) { $0.rawValue } color: { $0.tintColor }
 
             let items = selectedTab == .active ? topClients.topActive : topClients.topBlocked
 
