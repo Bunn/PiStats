@@ -15,6 +15,13 @@ struct TopDomainsView: View {
     enum DomainTab: String, CaseIterable {
         case blocked = "Top Blocked"
         case permitted = "Top Permitted"
+
+        var tintColor: Color {
+            switch self {
+            case .blocked: AppColors.queriesBlocked
+            case .permitted: AppColors.totalQueries
+            }
+        }
     }
 
     var body: some View {
@@ -26,6 +33,7 @@ struct TopDomainsView: View {
             }
             .pickerStyle(.segmented)
             .labelsHidden()
+            .tint(selectedTab.tintColor)
 
             let items = selectedTab == .blocked ? topDomains.topBlocked : topDomains.topPermitted
 

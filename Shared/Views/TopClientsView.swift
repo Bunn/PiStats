@@ -10,11 +10,18 @@ import PiStatsCore
 
 struct TopClientsView: View {
     let topClients: TopClientsResult
-    @State private var selectedTab: ClientTab = .active
+    @State private var selectedTab: ClientTab = .blocked
 
     enum ClientTab: String, CaseIterable {
-        case active = "Most Active"
         case blocked = "Most Blocked"
+        case active = "Most Active"
+
+        var tintColor: Color {
+            switch self {
+            case .blocked: AppColors.queriesBlocked
+            case .active: AppColors.totalQueries
+            }
+        }
     }
 
     var body: some View {
@@ -26,6 +33,7 @@ struct TopClientsView: View {
             }
             .pickerStyle(.segmented)
             .labelsHidden()
+            .tint(selectedTab.tintColor)
 
             let items = selectedTab == .active ? topClients.topActive : topClients.topBlocked
 
