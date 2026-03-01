@@ -223,6 +223,15 @@ final class PiholeSummaryDataUpdater: Identifiable, ObservableObject, ErrorHandl
         timer = nil
         cancelFetchTasks()
     }
+
+    /// Stops the timer without cancelling in-flight tasks.
+    /// Use when replacing this updater with a new one to avoid
+    /// TCP connection resets on URLSession.shared that can interfere
+    /// with the new updater's requests to the same host.
+    func prepareForReplacement() {
+        timer?.invalidate()
+        timer = nil
+    }
 }
 
 // MARK: - Error Handling Implementation

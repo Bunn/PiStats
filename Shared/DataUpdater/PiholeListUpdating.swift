@@ -76,12 +76,19 @@ final class PiholeListUpdater: PiholeListUpdating, ObservableObject {
     func updatePihole(_ pihole: Pihole) {
         if let index = dataUpdaters.firstIndex(where: { $0.pihole.uuid == pihole.uuid }) {
             let oldUpdater = dataUpdaters[index]
-            oldUpdater.stopUpdating()
-            
+            oldUpdater.prepareForReplacement()
+
             let newUpdater = PiholeSummaryDataUpdater(pihole: pihole)
             dataUpdaters[index] = newUpdater
             setupObservers()
             newUpdater.startUpdating()
         }
+    }
+
+    /// Stops all timers without cancelling in-flight network tasks.
+    /// Use before replacing the entire updater list to avoid
+    /// TCP connection resets interfering with new requests.
+    func prepareForReplacement() {
+        dataUpdaters.forEach { $0.prepareForReplacement() }
     }
 }

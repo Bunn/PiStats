@@ -116,7 +116,7 @@ class PiholeDataManager: ObservableObject {
     }
     
     func refreshData() {
-        listUpdater?.stopUpdating()
+        listUpdater?.prepareForReplacement()
         loadPiholes()
         listUpdater?.startUpdating()
     }
