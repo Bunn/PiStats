@@ -15,7 +15,7 @@ struct PopoverView: View {
     @State private var contentHeight: CGFloat = 0
 
     private var screenMax: CGFloat {
-        NSScreen.main.map { $0.visibleFrame.height * 0.85 } ?? 900
+        NSScreen.main.map { $0.visibleFrame.height * 0.8 } ?? 900
     }
 
     var body: some View {
@@ -43,7 +43,7 @@ struct PopoverView: View {
             }
         }
         .scrollBounceBehavior(.basedOnSize)
-        .frame(height: contentHeight > screenMax ? screenMax : nil)
+        .frame(height: contentHeight > 0 ? min(contentHeight, screenMax) : nil)
     }
 
     private var footerButtons: some View {
