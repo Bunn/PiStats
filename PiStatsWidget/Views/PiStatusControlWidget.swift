@@ -16,6 +16,7 @@ struct PiStatusControlWidget: Widget {
         }
         .configurationDisplayName("Pi-hole Control")
         .description("View status and quickly enable/disable your Pi-hole")
+        .contentMarginsDisabled()
         .supportedFamilies([.systemSmall, .systemMedium])
     }
 }
@@ -24,193 +25,233 @@ struct PiStatusControlWidget: Widget {
 
 struct PiStatusControlWidgetView: View {
     let entry: PiStatsEntry
-    
+    @Environment(\.widgetFamily) private var family
+
+    private var status: PiholeStatus {
+        entry.widgetData?.status ?? .unknown
+    }
+
     var body: some View {
-        VStack(spacing: 12) {
-            // Header with name and status
-            VStack(alignment: .leading, spacing: 4) {
-                HStack {
-                    Text(entry.widgetData?.pihole.name ?? "Select Pi-hole")
-                        .font(.headline)
-                        .foregroundColor(.primary)
-                        .lineLimit(1)
-                    Spacer()
-                }
-                
-                HStack {
-                    StatusBadge(status: entry.widgetData?.status ?? .unknown)
-                    Spacer()
-                    Text("Updated \(entry.date.formatted(date: .omitted, time: .shortened))")
-                        .font(.caption2)
-                        .foregroundColor(.secondary)
-                }
-            }
-            
-            // Main content
-            if let widgetData = entry.widgetData {
-                VStack(spacing: 8) {
-                    // Status display
-                    VStack(spacing: 4) {
-                        Image(systemName: statusIcon(for: widgetData.status))
-                            .font(.system(size: 32))
-                            .foregroundColor(statusColor(for: widgetData.status))
-                        
-                        Text(statusMessage(for: widgetData.status))
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                            .multilineTextAlignment(.center)
-                    }
-                    
-                    // Control button
-                    if widgetData.status != .unknown {
-                        Button(intent: TogglePiholeIntent(piholeId: widgetData.pihole.uuid.uuidString)) {
-                            HStack {
-                                Image(systemName: buttonIcon(for: widgetData.status))
-                                Text(buttonText(for: widgetData.status))
-                            }
-                            .font(.caption)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.white)
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 8)
-                            .background(buttonColor(for: widgetData.status))
-                            .cornerRadius(8)
-                        }
-                        .buttonStyle(.plain)
-                    }
-                }
+        Group {
+            if family == .systemMedium {
+                mediumLayout
             } else {
-                // Placeholder state with layout but no data
-                VStack(spacing: 8) {
-                    VStack(spacing: 4) {
-                        Image(systemName: statusIcon(for: .unknown))
-                            .font(.system(size: 32))
-                            .foregroundColor(statusColor(for: .unknown))
-                        Text(statusMessage(for: .unknown))
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                            .multilineTextAlignment(.center)
-                    }
-                    // No control button when state is unknown
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                smallLayout
             }
-            
-            Spacer()
         }
-        .padding()
         .widgetBackground {
-            Color(.systemGroupedBackground)
+            backgroundGradient
         }
     }
-    
-    private func statusIcon(for status: PiholeStatus) -> String {
-        switch status {
-        case .enabled:
-            return "checkmark.shield.fill"
-        case .disabled:
-            return "xmark.shield.fill"
-        case .unknown:
-            return "exclamationmark.shield.fill"
-        }
-    }
-    
-    private func statusColor(for status: PiholeStatus) -> Color {
-        switch status {
-        case .enabled:
-            return AppColors.statusOnline
-        case .disabled:
-            return AppColors.statusOffline
-        case .unknown:
-            return AppColors.statusWarning
-        }
-    }
-    
-    private func statusMessage(for status: PiholeStatus) -> String {
-        switch status {
-        case .enabled:
-            return "Pi-hole is actively blocking ads"
-        case .disabled:
-            return "Pi-hole is currently disabled"
-        case .unknown:
-            return "Unable to determine status"
-        }
-    }
-    
-    private func buttonText(for status: PiholeStatus) -> String {
-        switch status {
-        case .enabled:
-            return "Disable"
-        case .disabled:
-            return "Enable"
-        case .unknown:
-            return "Refresh"
-        }
-    }
-    
-    private func buttonIcon(for status: PiholeStatus) -> String {
-        switch status {
-        case .enabled:
-            return "stop.fill"
-        case .disabled:
-            return "play.fill"
-        case .unknown:
-            return "arrow.clockwise"
-        }
-    }
-    
-    private func buttonColor(for status: PiholeStatus) -> Color {
-        switch status {
-        case .enabled:
-            return .red
-        case .disabled:
-            return .green
-        case .unknown:
-            return .blue
-        }
-    }
-}
 
-// MARK: - Status Badge
+    // MARK: - Background
 
-struct StatusBadge: View {
-    let status: PiholeStatus
-    
-    var body: some View {
-        HStack(spacing: 4) {
-            Circle()
-                .fill(statusColor)
-                .frame(width: 6, height: 6)
-            
-            Text(statusText)
-                .font(.caption2)
-                .foregroundColor(.secondary)
-        }
-        .padding(.horizontal, 8)
-        .padding(.vertical, 4)
-        .background(Color(.systemGray6))
-        .cornerRadius(12)
+    private var backgroundGradient: some View {
+        ContainerRelativeShape()
+            .fill(
+                LinearGradient(
+                    colors: gradientColors,
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
     }
-    
+
+    private var gradientColors: [Color] {
+        switch status {
+        case .enabled:
+            return [
+                Color(.systemBackground),
+                AppColors.statusOnline.opacity(0.08)
+            ]
+        case .disabled:
+            return [
+                Color(.systemBackground),
+                AppColors.statusOffline.opacity(0.08)
+            ]
+        case .unknown:
+            return [
+                Color(.systemBackground),
+                Color(.secondarySystemBackground)
+            ]
+        }
+    }
+
+    // MARK: - Small Layout
+
+    private var smallLayout: some View {
+        VStack(spacing: 0) {
+            headerView
+
+            Spacer()
+
+            Image(systemName: shieldIcon)
+                .font(.system(size: 28, weight: .medium))
+                .foregroundStyle(statusColor)
+                .symbolRenderingMode(.hierarchical)
+
+            Text(statusLabel)
+                .font(.footnote)
+                .fontWeight(.medium)
+                .foregroundStyle(statusColor)
+                .padding(.top, 2)
+
+            Spacer()
+
+            if let widgetData = entry.widgetData, status != .unknown {
+                toggleButton(for: widgetData, expanded: true)
+            }
+
+            updatedTimestamp
+        }
+        .padding(16)
+    }
+
+    // MARK: - Medium Layout
+
+    private var mediumLayout: some View {
+        VStack(spacing: 0) {
+            headerView
+                .padding(.horizontal, 16)
+                .padding(.top, 16)
+
+            Spacer(minLength: 0)
+
+            HStack(spacing: 0) {
+                // Left: status info
+                HStack(spacing: 12) {
+                    Image(systemName: shieldIcon)
+                        .font(.system(size: 36, weight: .medium))
+                        .foregroundStyle(statusColor)
+                        .symbolRenderingMode(.hierarchical)
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(statusLabel)
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.primary)
+                        Text(statusDescription)
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                            .lineLimit(2)
+                    }
+                }
+
+                Spacer(minLength: 0)
+
+                // Right: action
+                if let widgetData = entry.widgetData, status != .unknown {
+                    toggleButton(for: widgetData, expanded: false)
+                }
+            }
+            .padding(.horizontal, 16)
+
+            Spacer(minLength: 0)
+
+            updatedTimestamp
+                .padding(.horizontal, 16)
+                .padding(.bottom, 16)
+        }
+    }
+
+    // MARK: - Subviews
+
+    private var headerView: some View {
+        VStack(spacing: 6) {
+            HStack(alignment: .top) {
+                Text(entry.widgetData?.pihole.name ?? "Pi-hole")
+                    .font(.headline)
+                    .foregroundStyle(.primary)
+                    .lineLimit(1)
+                Spacer()
+                Image(systemName: "shield.lefthalf.filled")
+                    .foregroundStyle(.secondary)
+            }
+            Divider()
+                .padding(.horizontal, -16)
+        }
+    }
+
+    private var updatedTimestamp: some View {
+        Text("Updated \(entry.date.formatted(date: .omitted, time: .shortened))")
+            .font(.caption2)
+            .foregroundStyle(.tertiary)
+            .padding(.top, 6)
+    }
+
+    // MARK: - Toggle Button
+
+    @ViewBuilder
+    private func toggleButton(for widgetData: WidgetData, expanded: Bool) -> some View {
+        Button(intent: TogglePiholeIntent(piholeId: widgetData.pihole.uuid.uuidString)) {
+            Label(buttonLabel, systemImage: buttonIcon)
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                .foregroundStyle(buttonTint)
+                .frame(maxWidth: expanded ? .infinity : nil)
+                .padding(.horizontal, expanded ? 0 : 20)
+                .padding(.vertical, 10)
+                .background(buttonTint.opacity(0.12))
+                .clipShape(Capsule())
+        }
+        .buttonStyle(.plain)
+    }
+
+    // MARK: - Status Helpers
+
+    private var shieldIcon: String {
+        switch status {
+        case .enabled: "checkmark.shield.fill"
+        case .disabled: "xmark.shield.fill"
+        case .unknown: "questionmark.shield.fill"
+        }
+    }
+
     private var statusColor: Color {
         switch status {
-        case .enabled:
-            return AppColors.statusOnline
-        case .disabled:
-            return AppColors.statusOffline
-        case .unknown:
-            return AppColors.statusWarning
+        case .enabled: AppColors.statusOnline
+        case .disabled: AppColors.statusOffline
+        case .unknown: .secondary
         }
     }
-    
-    private var statusText: String {
+
+    private var statusLabel: String {
         switch status {
-        case .enabled:
-            return "Active"
-        case .disabled:
-            return "Disabled"
-        case .unknown:
-            return "Unknown"
+        case .enabled: "Protected"
+        case .disabled: "Unprotected"
+        case .unknown: "Unavailable"
+        }
+    }
+
+    private var statusDescription: String {
+        switch status {
+        case .enabled: "Blocking ads & trackers"
+        case .disabled: "Ad blocking is paused"
+        case .unknown: "Unable to connect"
+        }
+    }
+
+    private var buttonLabel: String {
+        switch status {
+        case .enabled: "Disable"
+        case .disabled: "Enable"
+        case .unknown: "Retry"
+        }
+    }
+
+    private var buttonIcon: String {
+        switch status {
+        case .enabled: "pause.fill"
+        case .disabled: "play.fill"
+        case .unknown: "arrow.clockwise"
+        }
+    }
+
+    private var buttonTint: Color {
+        switch status {
+        case .enabled: AppColors.statusOffline
+        case .disabled: AppColors.statusOnline
+        case .unknown: .secondary
         }
     }
 }
@@ -279,4 +320,10 @@ enum IntentError: Error, LocalizedError {
     PiStatusControlWidget()
 } timeline: {
     PiStatsEntry.placeholder()
-} 
+}
+
+#Preview(as: .systemMedium) {
+    PiStatusControlWidget()
+} timeline: {
+    PiStatsEntry.placeholder()
+}
