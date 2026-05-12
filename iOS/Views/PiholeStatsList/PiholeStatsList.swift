@@ -22,9 +22,7 @@ struct PiholeStatsList: View {
         horizontalSizeClass == .regular
     }
 
-    private var gridColumns: [GridItem] {
-        [GridItem(.adaptive(minimum: 360, maximum: 520), spacing: 20, alignment: .top)]
-    }
+    private let cardSpacing: CGFloat = 20
 
     var body: some View {
         ScrollView {
@@ -76,11 +74,7 @@ struct PiholeStatsList: View {
             if listUpdater.dataUpdaters.isEmpty {
                 emptyStateView
             } else if isRegularWidth {
-                LazyVGrid(columns: gridColumns, spacing: 20) {
-                    ForEach(listUpdater.dataUpdaters) { dataUpdater in
-                        cardView(for: dataUpdater)
-                    }
-                }
+                columnGrid(columns: 2)
             } else {
                 VStack(spacing: 0) {
                     ForEach(listUpdater.dataUpdaters) { dataUpdater in
@@ -93,6 +87,22 @@ struct PiholeStatsList: View {
 
             if !isRegularWidth {
                 addPiholeButton()
+            }
+        }
+    }
+
+    private func columnGrid(columns: Int) -> some View {
+        let buckets = Array(repeating: [PiholeSummaryDataUpdater](), count: columns)
+        let distributed = listUpdater.dataUpdaters.enumerated().reduce(into: buckets) { acc, pair in
+            acc[pair.offset % columns].append(pair.element)
+        }
+        return HStack(alignment: .top, spacing: cardSpacing) {
+            ForEach(0..<columns, id: \.self) { column in
+                VStack(spacing: cardSpacing) {
+                    ForEach(distributed[column]) { dataUpdater in
+                        cardView(for: dataUpdater)
+                    }
+                }
             }
         }
     }
