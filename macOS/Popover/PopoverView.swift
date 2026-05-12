@@ -12,24 +12,38 @@ struct PopoverView: View {
     @ObservedObject var dataManager: PiholeDataManager
     @ObservedObject var prefs: MacPreferences
     @Environment(\.openWindow) private var openWindow
+    @State private var contentHeight: CGFloat = 0
+
+    private var screenMax: CGFloat {
+        NSScreen.main.map { $0.visibleFrame.height * 0.8 } ?? 900
+    }
 
     var body: some View {
-        VStack {
-            if let listUpdater = dataManager.listUpdater, !listUpdater.dataUpdaters.isEmpty {
-                if listUpdater.dataUpdaters.count > 1 {
-                    PiholesOverviewCard(listUpdater: listUpdater, prefs: prefs)
-                }
-                
-                ForEach(listUpdater.dataUpdaters.sortedByNameThenHost()) { dataUpdater in
-                    PiStatPopoverView(dataUpdater: dataUpdater, temperatureScale: prefs.temperatureScale, prefs: prefs)
-                }
-            } else {
-                emptyStateView
-            }
+        ScrollView {
+            VStack {
+                if let listUpdater = dataManager.listUpdater, !listUpdater.dataUpdaters.isEmpty {
+                    if listUpdater.dataUpdaters.count > 1 {
+                        PiholesOverviewCard(listUpdater: listUpdater, prefs: prefs)
+                    }
 
-            footerButtons
+                    ForEach(listUpdater.dataUpdaters.sortedByNameThenHost()) { dataUpdater in
+                        PiStatPopoverView(dataUpdater: dataUpdater, summary: dataUpdater.summary, temperatureScale: prefs.temperatureScale, prefs: prefs)
+                    }
+                } else {
+                    emptyStateView
+                }
+
+                footerButtons
+            }
+            .padding()
+            .onGeometryChange(for: CGFloat.self) { proxy in
+                proxy.size.height
+            } action: { newHeight in
+                contentHeight = newHeight
+            }
         }
-        .padding()
+        .scrollBounceBehavior(.basedOnSize)
+        .frame(height: contentHeight > 0 ? min(contentHeight, screenMax) : nil)
     }
 
     private var footerButtons: some View {
@@ -102,23 +116,24 @@ struct PopoverView: View {
 
 struct PiStatPopoverView: View {
     @ObservedObject var dataUpdater: PiholeSummaryDataUpdater
+    @ObservedObject var summary: PiholeSummaryData
     let temperatureScale: TemperatureScale
     @ObservedObject var prefs: MacPreferences
 
     var body: some View {
         VStack {
             HStack {
-                StatusHeaderView(data: dataUpdater.summary)
+                StatusHeaderView(data: summary)
                 Spacer()
                 ActionButtonView(
-                    status: dataUpdater.summary.status,
+                    status: summary.status,
                     prefs: prefs,
                     onEnable: { await dataUpdater.enable() },
                     onDisable: { timer in await dataUpdater.disable(timer: timer) }
                 )
             }
 
-            if dataUpdater.summary.hasError, let error = dataUpdater.summary.currentError {
+            if summary.hasError, let error = summary.currentError {
                 ErrorMessageView(error: error, isCollapsible: false)
             }
 
@@ -131,9 +146,31 @@ struct PiStatPopoverView: View {
                 Spacer()
             }
 
-            ListView(data: dataUpdater.summary)
+            ListView(data: summary)
 
-            if let metrics = dataUpdater.summary.monitorMetrics {
+            if let topDomains = summary.topDomains {
+                Divider()
+                HStack {
+                    Text("Top Domains")
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                }
+                TopDomainsView(topDomains: topDomains)
+            }
+
+            if let topClients = summary.topClients {
+                Divider()
+                HStack {
+                    Text("Top Clients")
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                }
+                TopClientsView(topClients: topClients)
+            }
+
+            if let metrics = summary.monitorMetrics {
                 Divider()
                 HStack {
                     Text(UserText.Popover.deviceSection)

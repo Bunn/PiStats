@@ -13,6 +13,8 @@ struct PiStatsWidgetBundle: WidgetBundle {
     var body: some Widget {
         PiStatsOverviewWidget()
         PiMonitorWidget()
-//        PiStatusControlWidget()
+        PiTopDomainsWidget()
+        PiTopClientsWidget()
+        PiStatusControlWidget()
     }
 }

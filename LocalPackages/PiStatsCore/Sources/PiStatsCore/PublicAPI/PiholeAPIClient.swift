@@ -42,6 +42,14 @@ public struct PiholeAPIClient: PiholeService {
         try await service.fetchHistory()
     }
 
+    public func fetchTopDomains(count: Int = 10) async throws -> TopDomainsResult {
+        try await service.fetchTopDomains(count: count)
+    }
+
+    public func fetchTopClients(count: Int = 10) async throws -> TopClientsResult {
+        try await service.fetchTopClients(count: count)
+    }
+
     public func enable() async throws -> PiholeStatus {
         try await service.enable()
     }

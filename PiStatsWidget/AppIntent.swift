@@ -102,11 +102,39 @@ struct PiStatsEntry: TimelineEntry {
             )
         )
         
+        let mockTopDomains = TopDomainsResult(
+            topPermitted: [
+                TopDomainItem(domain: "google.com", count: 500),
+                TopDomainItem(domain: "apple.com", count: 300),
+                TopDomainItem(domain: "github.com", count: 150),
+            ],
+            topBlocked: [
+                TopDomainItem(domain: "ads.doubleclick.net", count: 1200),
+                TopDomainItem(domain: "tracker.facebook.com", count: 800),
+                TopDomainItem(domain: "analytics.google.com", count: 400),
+            ]
+        )
+
+        let mockTopClients = TopClientsResult(
+            topActive: [
+                TopClientItem(ip: "192.168.1.100", name: "MacBook-Pro", count: 5000),
+                TopClientItem(ip: "192.168.1.101", name: "iPhone", count: 3200),
+                TopClientItem(ip: "192.168.1.150", name: "", count: 1500),
+            ],
+            topBlocked: [
+                TopClientItem(ip: "192.168.1.200", name: "IoT-Camera", count: 2400),
+                TopClientItem(ip: "192.168.1.201", name: "Smart-TV", count: 1800),
+                TopClientItem(ip: "192.168.1.202", name: "Echo-Dot", count: 900),
+            ]
+        )
+
         let widgetData = WidgetData(
             pihole: mockPihole,
             summary: mockSummary,
             status: .enabled,
             monitorMetrics: mockMetrics,
+            topDomains: mockTopDomains,
+            topClients: mockTopClients,
             error: nil
         )
         
@@ -119,6 +147,8 @@ struct WidgetData {
     let summary: PiholeSummary?
     let status: PiholeStatus
     let monitorMetrics: PiMonitorMetrics?
+    let topDomains: TopDomainsResult?
+    let topClients: TopClientsResult?
     let error: String?
 }
 
@@ -155,13 +185,35 @@ struct WidgetDataProvider {
                     Log.widget.error("Failed to fetch Pi Monitor metrics: \(String(describing: error), privacy: .public)")
                 }
             }
-            
+
+            // Fetch top domains if enabled
+            var topDomains: TopDomainsResult? = nil
+            if pihole.showTopDomains {
+                do {
+                    topDomains = try await client.fetchTopDomains(count: 10)
+                } catch {
+                    Log.widget.error("Failed to fetch top domains: \(String(describing: error), privacy: .public)")
+                }
+            }
+
+            // Fetch top clients if enabled
+            var topClients: TopClientsResult? = nil
+            if pihole.showTopClients {
+                do {
+                    topClients = try await client.fetchTopClients(count: 10)
+                } catch {
+                    Log.widget.error("Failed to fetch top clients: \(String(describing: error), privacy: .public)")
+                }
+            }
+
             Log.widget.info("Successfully fetched data for pihole \(pihole.name, privacy: .private(mask: .hash))")
             return WidgetData(
                 pihole: pihole,
                 summary: summary,
                 status: status,
                 monitorMetrics: monitorMetrics,
+                topDomains: topDomains,
+                topClients: topClients,
                 error: nil
             )
             
@@ -172,6 +224,8 @@ struct WidgetDataProvider {
                 summary: nil,
                 status: .unknown,
                 monitorMetrics: nil,
+                topDomains: nil,
+                topClients: nil,
                 error: error.localizedDescription
             )
         }
@@ -203,6 +257,8 @@ extension WidgetDataProvider: AppIntentTimelineProvider {
                 summary: nil,
                 status: .unknown,
                 monitorMetrics: nil,
+                topDomains: nil,
+                topClients: nil,
                 error: nil
             )
             return PiStatsEntry(date: Date(), widgetData: basicData)

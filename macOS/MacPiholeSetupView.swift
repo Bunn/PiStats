@@ -16,6 +16,8 @@ private final class MacPiholeSetupViewModel: ObservableObject {
     @Published var displayName = ""
     @Published var piMonitorPort = ""
     @Published var isPiMonitorEnabled = false
+    @Published var showTopDomains = true
+    @Published var showTopClients = true
     @Published var httpType: MacSecureTag = .http
     @Published var selectedVersion: PiholeVersion = .v6
 
@@ -35,7 +37,9 @@ private final class MacPiholeSetupViewModel: ObservableObject {
             self.token = pihole.token ?? ""
             self.selectedVersion = pihole.version
             self.httpType = pihole.secure ? .https : .http
-            
+            self.showTopDomains = pihole.showTopDomains
+            self.showTopClients = pihole.showTopClients
+
             // Setup PiMonitor fields if available
             if let piMonitor = pihole.piMonitor {
                 self.isPiMonitorEnabled = true
@@ -68,6 +72,8 @@ private final class MacPiholeSetupViewModel: ObservableObject {
             secure: isSecure,
             token: finalToken,
             piMonitor: piMonitor,
+            showTopDomains: showTopDomains,
+            showTopClients: showTopClients,
             uuid: pihole?.uuid ?? UUID()
         )
 
@@ -95,6 +101,7 @@ struct MacPiholeSetupView: View {
             // Content
             VStack(alignment: .leading, spacing: 16) {
                 piholeConfigurationSection
+                topDomainsConfigurationSection
                 piMonitorConfigurationSection
                 
                 if viewModel.pihole != nil {
@@ -179,19 +186,35 @@ struct MacPiholeSetupView: View {
                     text: $viewModel.displayName
                 )
                 
-                Picker("Version", selection: $viewModel.selectedVersion) {
-                    ForEach(PiholeVersion.allCases) { version in
-                        Text(version.userValue).tag(version)
+                HStack {
+                    Text("Version")
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                    Spacer()
+                    Picker("", selection: $viewModel.selectedVersion) {
+                        ForEach(PiholeVersion.allCases) { version in
+                            Text(version.userValue).tag(version)
+                        }
                     }
+                    .labelsHidden()
+                    .pickerStyle(.segmented)
+                    .fixedSize()
                 }
-                .pickerStyle(.segmented)
-                
-                Picker("Protocol", selection: $viewModel.httpType) {
-                    ForEach(MacSecureTag.allCases) { type in
-                        Text(type.rawValue).tag(type)
+
+                HStack {
+                    Text("Protocol")
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                    Spacer()
+                    Picker("", selection: $viewModel.httpType) {
+                        ForEach(MacSecureTag.allCases) { type in
+                            Text(type.rawValue).tag(type)
+                        }
                     }
+                    .labelsHidden()
+                    .pickerStyle(.segmented)
+                    .fixedSize()
                 }
-                .pickerStyle(.segmented)
                 
                 macOSTextField(
                     title: UserText.Setup.portLabel,
@@ -228,6 +251,40 @@ struct MacPiholeSetupView: View {
         }
     }
     
+    // MARK: - Statistics Configuration
+    private var topDomainsConfigurationSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            sectionHeader("Statistics")
+
+            VStack(spacing: 10) {
+                HStack {
+                    Text(UserText.Setup.showTopDomainsLabel)
+                    Spacer()
+                    Toggle("", isOn: $viewModel.showTopDomains)
+                        .toggleStyle(.switch)
+                        .labelsHidden()
+                }
+
+                Divider()
+
+                HStack {
+                    Text(UserText.Setup.showTopClientsLabel)
+                    Spacer()
+                    Toggle("", isOn: $viewModel.showTopClients)
+                        .toggleStyle(.switch)
+                        .labelsHidden()
+                }
+            }
+            .padding(12)
+            .background(Color(NSColor.controlBackgroundColor))
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(Color(NSColor.separatorColor), lineWidth: 1)
+            )
+        }
+    }
+
     // MARK: - Pi Monitor Configuration
     private var piMonitorConfigurationSection: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -235,17 +292,20 @@ struct MacPiholeSetupView: View {
             
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
-                    Toggle(UserText.Setup.enablePiMonitorLabel, isOn: $viewModel.isPiMonitorEnabled)
-                        .toggleStyle(.switch)
-                    
+                    Text(UserText.Setup.enablePiMonitorLabel)
+
                     Spacer()
-                    
+
                     Button(UserText.Setup.whatsThisButton) {
                         showPiMonitorInfo()
                     }
                     .buttonStyle(.plain)
                     .foregroundColor(.accentColor)
                     .font(.caption)
+
+                    Toggle("", isOn: $viewModel.isPiMonitorEnabled)
+                        .toggleStyle(.switch)
+                        .labelsHidden()
                 }
                 
                 if viewModel.isPiMonitorEnabled {

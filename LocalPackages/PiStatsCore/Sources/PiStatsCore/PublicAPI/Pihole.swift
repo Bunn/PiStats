@@ -26,7 +26,9 @@ public struct Pihole: Sendable, Identifiable {
     public let secure: Bool
     public let version: PiholeVersion
     public let piMonitor: PiMonitorEnvironment?
-    
+    public let showTopDomains: Bool
+    public let showTopClients: Bool
+
     public init(name: String,
                 address: String,
                 version: PiholeVersion = .v6,
@@ -34,6 +36,8 @@ public struct Pihole: Sendable, Identifiable {
                 secure: Bool = false,
                 token: String? = nil,
                 piMonitor: PiMonitorEnvironment? = nil,
+                showTopDomains: Bool = true,
+                showTopClients: Bool = true,
                 uuid: UUID = UUID()) {
         self.uuid = uuid
         self.name = name
@@ -43,6 +47,8 @@ public struct Pihole: Sendable, Identifiable {
         self.port = port
         self.secure = secure
         self.piMonitor = piMonitor
+        self.showTopDomains = showTopDomains
+        self.showTopClients = showTopClients
     }
 
     public var id: UUID {
@@ -83,4 +89,56 @@ public struct HistoryItem: Codable, Identifiable, Sendable {
     public let timestamp: Date
     public let blocked: Int
     public let forwarded: Int
+}
+
+// MARK: - TopDomainsResult Model
+
+public struct TopDomainsResult: Sendable {
+    public let topPermitted: [TopDomainItem]
+    public let topBlocked: [TopDomainItem]
+    
+    public init(topPermitted: [TopDomainItem], topBlocked: [TopDomainItem]) {
+        self.topPermitted = topPermitted
+        self.topBlocked = topBlocked
+    }
+}
+
+public struct TopDomainItem: Identifiable, Sendable {
+    public let id = UUID()
+    public let domain: String
+    public let count: Int
+
+    public init(domain: String, count: Int) {
+        self.domain = domain
+        self.count = count
+    }
+}
+
+// MARK: - TopClientsResult Model
+
+public struct TopClientsResult: Sendable {
+    public let topActive: [TopClientItem]
+    public let topBlocked: [TopClientItem]
+
+    public init(topActive: [TopClientItem], topBlocked: [TopClientItem]) {
+        self.topActive = topActive
+        self.topBlocked = topBlocked
+    }
+}
+
+public struct TopClientItem: Identifiable, Sendable {
+    public let id = UUID()
+    public let ip: String
+    public let name: String
+    public let count: Int
+
+    public init(ip: String, name: String, count: Int) {
+        self.ip = ip
+        self.name = name
+        self.count = count
+    }
+
+    public var displayName: String {
+        name.isEmpty ? ip : name
+    }
 }

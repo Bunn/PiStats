@@ -224,6 +224,75 @@ enum MockData {
         ]
     ]
     
+    // MARK: - V5 Top Domains Mock Response
+
+    nonisolated(unsafe) static let v5TopDomainsJSON: [String: Any] = [
+        "top_queries": [
+            "google.com": 500,
+            "apple.com": 300,
+            "github.com": 150
+        ],
+        "top_ads": [
+            "ads.doubleclick.net": 1200,
+            "tracker.facebook.com": 800,
+            "analytics.google.com": 400
+        ]
+    ]
+
+    // MARK: - V6 Top Domains Mock Responses
+
+    nonisolated(unsafe) static let v6TopDomainsPermittedJSON: [String: Any] = [
+        "domains": [
+            ["domain": "google.com", "count": 500],
+            ["domain": "apple.com", "count": 300],
+            ["domain": "github.com", "count": 150]
+        ]
+    ]
+
+    nonisolated(unsafe) static let v6TopDomainsBlockedJSON: [String: Any] = [
+        "domains": [
+            ["domain": "ads.doubleclick.net", "count": 1200],
+            ["domain": "tracker.facebook.com", "count": 800],
+            ["domain": "analytics.google.com", "count": 400]
+        ]
+    ]
+
+    // MARK: - V5 Top Clients Mock Response
+
+    nonisolated(unsafe) static let v5TopClientsActiveJSON: [String: Any] = [
+        "top_sources": [
+            "MacBook-Pro|192.168.1.100": 5000,
+            "iPhone|192.168.1.101": 3200,
+            "192.168.1.150": 1500
+        ]
+    ]
+
+    nonisolated(unsafe) static let v5TopClientsBlockedJSON: [String: Any] = [
+        "top_sources_blocked": [
+            "IoT-Camera|192.168.1.200": 2400,
+            "Smart-TV|192.168.1.201": 1800,
+            "Echo-Dot|192.168.1.202": 900
+        ]
+    ]
+
+    // MARK: - V6 Top Clients Mock Responses
+
+    nonisolated(unsafe) static let v6TopClientsActiveJSON: [String: Any] = [
+        "clients": [
+            ["name": "MacBook-Pro", "ip": "192.168.1.100", "count": 5000],
+            ["name": "iPhone", "ip": "192.168.1.101", "count": 3200],
+            ["name": "", "ip": "192.168.1.150", "count": 1500]
+        ]
+    ]
+
+    nonisolated(unsafe) static let v6TopClientsBlockedJSON: [String: Any] = [
+        "clients": [
+            ["name": "IoT-Camera", "ip": "192.168.1.200", "count": 2400],
+            ["name": "Smart-TV", "ip": "192.168.1.201", "count": 1800],
+            ["name": "Echo-Dot", "ip": "192.168.1.202", "count": 900]
+        ]
+    ]
+
     // MARK: - PiMonitor Mock Responses
     
     static let piMonitorMetricsJSON: Data = {
