@@ -293,6 +293,46 @@ enum MockData {
         ]
     ]
 
+    // MARK: - Query Types Mock Responses
+
+    nonisolated(unsafe) static let v5QueryTypesJSON: [String: Any] = [
+        "querytypes": [
+            "A (IPv4)": 60.0,
+            "AAAA (IPv6)": 30.0,
+            "HTTPS": 10.0,
+            "PTR": 0.0
+        ]
+    ]
+
+    nonisolated(unsafe) static let v6QueryTypesJSON: [String: Any] = [
+        "types": [
+            "A": 60,
+            "AAAA": 30,
+            "HTTPS": 10,
+            "PTR": 0
+        ]
+    ]
+
+    // MARK: - Upstreams Mock Responses
+
+    nonisolated(unsafe) static let v5ForwardDestinationsJSON: [String: Any] = [
+        "forward_destinations": [
+            "8.8.8.8#53|dns.google": 70.0,
+            "cache|cache": 20.0,
+            "blocklist|blocklist": 10.0
+        ]
+    ]
+
+    nonisolated(unsafe) static let v6UpstreamsJSON: [String: Any] = [
+        "upstreams": [
+            ["ip": "8.8.8.8", "name": "dns.google", "port": 53, "count": 60],
+            ["ip": "1.1.1.1", "name": "", "port": 53, "count": 30],
+            ["name": "cache", "port": -1, "count": 10]
+        ],
+        "forwarded_queries": 90,
+        "total_queries": 100
+    ]
+
     // MARK: - PiMonitor Mock Responses
     
     static let piMonitorMetricsJSON: Data = {

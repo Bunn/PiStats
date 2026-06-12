@@ -143,3 +143,53 @@ public struct TopClientItem: Identifiable, Sendable {
         name.isEmpty ? ip : name
     }
 }
+
+// MARK: - QueryTypesResult Model
+
+public struct QueryTypesResult: Sendable {
+    public let types: [QueryTypeItem]
+
+    public init(types: [QueryTypeItem]) {
+        self.types = types
+    }
+}
+
+public struct QueryTypeItem: Identifiable, Sendable {
+    public let id = UUID()
+    public let name: String
+    /// Share of total queries for this type, 0...100.
+    public let percentage: Double
+
+    public init(name: String, percentage: Double) {
+        self.name = name
+        self.percentage = percentage
+    }
+}
+
+// MARK: - UpstreamsResult Model
+
+public struct UpstreamsResult: Sendable {
+    public let upstreams: [UpstreamItem]
+
+    public init(upstreams: [UpstreamItem]) {
+        self.upstreams = upstreams
+    }
+}
+
+public struct UpstreamItem: Identifiable, Sendable {
+    public let id = UUID()
+    public let name: String
+    public let ip: String
+    /// Share of total queries handled by this upstream, 0...100.
+    public let percentage: Double
+
+    public init(name: String, ip: String, percentage: Double) {
+        self.name = name
+        self.ip = ip
+        self.percentage = percentage
+    }
+
+    public var displayName: String {
+        name.isEmpty ? ip : name
+    }
+}

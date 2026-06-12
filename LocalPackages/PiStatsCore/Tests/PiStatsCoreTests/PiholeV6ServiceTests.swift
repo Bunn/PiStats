@@ -365,6 +365,83 @@ struct PiholeV6ServiceTests {
         MockURLProtocol.reset()
     }
 
+    // MARK: - fetchQueryTypes Tests
+
+    @Test("fetchQueryTypes converts counts to sorted percentages")
+    func testFetchQueryTypesSuccess() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            if request.url?.absoluteString.contains("auth") == true {
+                return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v6AuthSuccessJSON))
+            } else if request.url?.absoluteString.contains("stats/query_types") == true {
+                return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v6QueryTypesJSON))
+            }
+            throw PiholeServiceError.unknownError
+        }
+
+        let result = try await service.fetchQueryTypes()
+
+        // Zero-count types are dropped; remaining are sorted descending.
+        #expect(result.types.count == 3)
+        #expect(result.types[0].name == "A")
+        #expect(result.types[0].percentage == 60)
+        #expect(result.types[1].name == "AAAA")
+        #expect(result.types[1].percentage == 30)
+        #expect(result.types[2].name == "HTTPS")
+        #expect(result.types[2].percentage == 10)
+
+        MockURLProtocol.reset()
+    }
+
+    @Test("fetchQueryTypes throws on invalid data")
+    func testFetchQueryTypesInvalidData() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            if request.url?.absoluteString.contains("auth") == true {
+                return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v6AuthSuccessJSON))
+            }
+            return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: ["types": "not an object"]))
+        }
+
+        await #expect(throws: PiholeServiceError.self) {
+            try await service.fetchQueryTypes()
+        }
+
+        MockURLProtocol.reset()
+    }
+
+    // MARK: - fetchUpstreams Tests
+
+    @Test("fetchUpstreams returns sorted percentages with display names")
+    func testFetchUpstreamsSuccess() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            if request.url?.absoluteString.contains("auth") == true {
+                return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v6AuthSuccessJSON))
+            } else if request.url?.absoluteString.contains("stats/upstreams") == true {
+                return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v6UpstreamsJSON))
+            }
+            throw PiholeServiceError.unknownError
+        }
+
+        let result = try await service.fetchUpstreams()
+
+        #expect(result.upstreams.count == 3)
+        #expect(result.upstreams[0].displayName == "dns.google")
+        #expect(result.upstreams[0].percentage == 60)
+        // Empty name falls back to IP.
+        #expect(result.upstreams[1].displayName == "1.1.1.1")
+        #expect(result.upstreams[1].percentage == 30)
+        // Cache pseudo-upstream has no IP, displays its name.
+        #expect(result.upstreams[2].displayName == "cache")
+        #expect(result.upstreams[2].percentage == 10)
+
+        MockURLProtocol.reset()
+    }
+
     // MARK: - enable Tests
 
     @Test("enable sets status to enabled")

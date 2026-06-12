@@ -223,6 +223,32 @@ final class PiholeSummaryDataUpdater: Identifiable, ObservableObject, ErrorHandl
             }
         })
 
+        fetchTasks.append(Task { [weak self] in
+            guard let self else { return }
+            do {
+                let result = try await service.fetchQueryTypes()
+                try Task.checkCancellation()
+                await updateQueryTypes(with: result)
+            } catch is CancellationError {
+                // Task was cancelled, do nothing
+            } catch {
+                Log.network.error("❌ Query types fetch failed for \(piholeNameForLog, privacy: .public): \(String(describing: error), privacy: .public)")
+            }
+        })
+
+        fetchTasks.append(Task { [weak self] in
+            guard let self else { return }
+            do {
+                let result = try await service.fetchUpstreams()
+                try Task.checkCancellation()
+                await updateUpstreams(with: result)
+            } catch is CancellationError {
+                // Task was cancelled, do nothing
+            } catch {
+                Log.network.error("❌ Upstreams fetch failed for \(piholeNameForLog, privacy: .public): \(String(describing: error), privacy: .public)")
+            }
+        })
+
         if service.pihole.piMonitor != nil {
             fetchTasks.append(Task { [weak self] in
                 guard let self else { return }
@@ -318,6 +344,20 @@ extension PiholeSummaryDataUpdater {
     private func updateHistory(with result: [HistoryItem]) {
         withAnimation {
             summary.history = result
+        }
+    }
+
+    @MainActor
+    private func updateQueryTypes(with result: QueryTypesResult) {
+        withAnimation {
+            summary.queryTypes = result
+        }
+    }
+
+    @MainActor
+    private func updateUpstreams(with result: UpstreamsResult) {
+        withAnimation {
+            summary.upstreams = result
         }
     }
 

@@ -37,6 +37,18 @@ struct PiholeDetailContentView: View {
                 }
             }
 
+            if let queryTypes = data.queryTypes, !queryTypes.types.isEmpty {
+                section(UserText.queryTypesSection) {
+                    QueryTypesView(result: queryTypes)
+                }
+            }
+
+            if let upstreams = data.upstreams, !upstreams.upstreams.isEmpty {
+                section(UserText.upstreamsSection) {
+                    UpstreamsView(result: upstreams)
+                }
+            }
+
             if let topDomains = data.topDomains {
                 section(UserText.topDomainsSection) {
                     TopDomainsView(topDomains: topDomains)
@@ -61,14 +73,37 @@ struct PiholeDetailContentView: View {
     @ViewBuilder
     private func section<Content: View>(_ title: String,
                                         @ViewBuilder content: () -> Content) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 10) {
             Text(title)
-                .font(.subheadline)
-                .fontWeight(.semibold)
-                .foregroundStyle(.secondary)
+                .font(.headline)
             content()
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .padding()
+        .modifier(DetailSectionCardStyle())
+    }
+}
+
+// MARK: - Section Card Style
+
+/// A titled card background for detail sections: Liquid Glass on iOS,
+/// a material-style stroked card on macOS.
+private struct DetailSectionCardStyle: ViewModifier {
+    func body(content: Content) -> some View {
+        #if os(iOS)
+        content
+            .glassEffect(in: .rect(cornerRadius: LayoutConstants.defaultCornerRadius))
+        #else
+        content
+            .background(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(Color(nsColor: .windowBackgroundColor).opacity(0.5))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .strokeBorder(Color.secondary.opacity(0.25), lineWidth: 1)
+            )
+        #endif
     }
 }
 

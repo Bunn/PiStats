@@ -124,6 +124,8 @@ public struct UserText {
     public static let queryHistory = "Last 24 Hours"
     public static let topDomainsSection = "Top Domains"
     public static let topClientsSection = "Top Clients"
+    public static let queryTypesSection = "Query Types"
+    public static let upstreamsSection = "Upstream Servers"
     public static let deviceSection = "Device"
     
     // MARK: - Pi-hole Setup

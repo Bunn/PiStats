@@ -139,6 +139,58 @@ internal final class PiholeV6Service: PiholeService {
         return TopClientsResult(topActive: topActive, topBlocked: topBlocked)
     }
 
+    func fetchQueryTypes() async throws -> QueryTypesResult {
+        Log.network.info("📊 [V6] Fetching query types for \(self.pihole.name)")
+
+        let authResponse = try await ensureAuthenticated(self.pihole)
+        let url = try makeURL(for: self.pihole, endpoint: .queryTypes)
+        let json = try await fetchJSON(from: url, with: authResponse)
+
+        guard let counts = json[JSONKeys.types.rawValue] as? [String: Int] else {
+            Log.network.error("❌ [V6] Failed to parse query types for \(self.pihole.name)")
+            throw PiholeServiceError.cannotParseResponse
+        }
+
+        let total = counts.values.reduce(0, +)
+        let types = counts.compactMap { name, count -> QueryTypeItem? in
+            guard count > 0 else { return nil }
+            let percentage = total > 0 ? (Double(count) * 100) / Double(total) : 0
+            return QueryTypeItem(name: name, percentage: percentage)
+        }
+        .sorted { $0.percentage > $1.percentage }
+
+        Log.network.info("✅ [V6] Query types fetched for \(self.pihole.name) - \(types.count) types")
+        return QueryTypesResult(types: types)
+    }
+
+    func fetchUpstreams() async throws -> UpstreamsResult {
+        Log.network.info("🔀 [V6] Fetching upstreams for \(self.pihole.name)")
+
+        let authResponse = try await ensureAuthenticated(self.pihole)
+        let url = try makeURL(for: self.pihole, endpoint: .upstreams)
+        let json = try await fetchJSON(from: url, with: authResponse)
+
+        guard let upstreams = json[JSONKeys.upstreams.rawValue] as? [[String: Any]] else {
+            Log.network.error("❌ [V6] Failed to parse upstreams for \(self.pihole.name)")
+            throw PiholeServiceError.cannotParseResponse
+        }
+
+        let total = json[JSONKeys.totalQueries.rawValue] as? Int
+            ?? upstreams.compactMap { $0["count"] as? Int }.reduce(0, +)
+
+        let items = upstreams.compactMap { item -> UpstreamItem? in
+            guard let count = item["count"] as? Int else { return nil }
+            let name = item["name"] as? String ?? ""
+            let ip = item["ip"] as? String ?? ""
+            let percentage = total > 0 ? (Double(count) * 100) / Double(total) : 0
+            return UpstreamItem(name: name, ip: ip, percentage: percentage)
+        }
+        .sorted { $0.percentage > $1.percentage }
+
+        Log.network.info("✅ [V6] Upstreams fetched for \(self.pihole.name) - \(items.count) upstreams")
+        return UpstreamsResult(upstreams: items)
+    }
+
     func enable() async throws -> PiholeStatus {
         try await setBlocking(.enable, for: self.pihole)
     }
@@ -386,6 +438,8 @@ extension PiholeV6Service {
         case auth = "auth"
         case topDomains = "stats/top_domains"
         case topClients = "stats/top_clients"
+        case queryTypes = "stats/query_types"
+        case upstreams = "stats/upstreams"
     }
 
     private enum JSONKeys: String {
@@ -407,6 +461,9 @@ extension PiholeV6Service {
         case error
         case apiSeatsExceeded = "api_seats_exceeded"
         case key
+        case types
+        case upstreams
+        case totalQueries = "total_queries"
     }
 
     private enum BlockingStatus: String {

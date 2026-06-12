@@ -106,6 +106,54 @@ internal final class PiholeV5Service: PiholeService {
         return TopClientsResult(topActive: topActive, topBlocked: topBlocked)
     }
 
+    func fetchQueryTypes() async throws -> QueryTypesResult {
+        Log.network.info("📊 [V5] Fetching query types for \(self.pihole.name)")
+
+        let url = try makeURL(for: self.pihole, endpoint: .custom("getQueryTypes"))
+        let json = try await fetchJSON(from: url)
+
+        guard let types = json[JSONKeys.queryTypes.rawValue] as? [String: Any] else {
+            Log.network.error("❌ [V5] Failed to parse query types for \(self.pihole.name)")
+            throw PiholeServiceError.cannotParseResponse
+        }
+
+        // V5 already returns per-type percentages.
+        let items = types.compactMap { name, value -> QueryTypeItem? in
+            guard let percentage = (value as? NSNumber)?.doubleValue, percentage > 0 else { return nil }
+            return QueryTypeItem(name: name, percentage: percentage)
+        }
+        .sorted { $0.percentage > $1.percentage }
+
+        Log.network.info("✅ [V5] Query types fetched for \(self.pihole.name) - \(items.count) types")
+        return QueryTypesResult(types: items)
+    }
+
+    func fetchUpstreams() async throws -> UpstreamsResult {
+        Log.network.info("🔀 [V5] Fetching upstreams for \(self.pihole.name)")
+
+        let url = try makeURL(for: self.pihole, endpoint: .custom("getForwardDestinations"))
+        let json = try await fetchJSON(from: url)
+
+        guard let destinations = json[JSONKeys.forwardDestinations.rawValue] as? [String: Any] else {
+            Log.network.error("❌ [V5] Failed to parse forward destinations for \(self.pihole.name)")
+            throw PiholeServiceError.cannotParseResponse
+        }
+
+        // V5 keys are "ip#port|name" (e.g. "8.8.8.8#53|dns.google") or "name|name"
+        // (e.g. "cache|cache"); values are percentages.
+        let items = destinations.compactMap { key, value -> UpstreamItem? in
+            guard let percentage = (value as? NSNumber)?.doubleValue, percentage > 0 else { return nil }
+            let parts = key.components(separatedBy: "|")
+            let name = parts.count > 1 ? parts[1] : ""
+            let ip = (parts.first ?? key).components(separatedBy: "#").first ?? key
+            return UpstreamItem(name: name, ip: ip, percentage: percentage)
+        }
+        .sorted { $0.percentage > $1.percentage }
+
+        Log.network.info("✅ [V5] Upstreams fetched for \(self.pihole.name) - \(items.count) upstreams")
+        return UpstreamsResult(upstreams: items)
+    }
+
     func enable() async throws -> PiholeStatus {
         try await setBlocking(.enable, for: self.pihole)
     }
@@ -269,5 +317,7 @@ extension PiholeV5Service {
         case topAds = "top_ads"
         case topSources = "top_sources"
         case topSourcesBlocked = "top_sources_blocked"
+        case queryTypes = "querytypes"
+        case forwardDestinations = "forward_destinations"
     }
 }

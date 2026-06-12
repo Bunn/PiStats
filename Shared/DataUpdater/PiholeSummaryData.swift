@@ -21,6 +21,8 @@ final class PiholeSummaryData: Identifiable, ObservableObject {
     @Published var topDomains: TopDomainsResult? = nil
     @Published var topClients: TopClientsResult? = nil
     @Published var history: [HistoryItem]? = nil
+    @Published var queryTypes: QueryTypesResult? = nil
+    @Published var upstreams: UpstreamsResult? = nil
     @Published var monitorMetrics: PiMonitorMetrics? = nil
     @Published var currentError: PiholeError? = nil
     @Published var hasError: Bool = false
