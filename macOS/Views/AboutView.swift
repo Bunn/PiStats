@@ -61,11 +61,15 @@ struct AboutView: View {
                 .foregroundStyle(.secondary)
             
             HStack(spacing: LayoutConstants.About.linkSpacing) {
-                Link(UserText.About.websiteButton, 
+                Link(UserText.About.websiteButton,
                      destination: URL(string: UserText.About.websiteURL)!)
                     .font(.caption)
-                
-                Link(UserText.About.supportButton, 
+
+                Link(UserText.About.developerWebsiteButton,
+                     destination: URL(string: UserText.About.developerWebsiteURL)!)
+                    .font(.caption)
+
+                Link(UserText.About.supportButton,
                      destination: URL(string: UserText.About.supportURL)!)
                     .font(.caption)
             }

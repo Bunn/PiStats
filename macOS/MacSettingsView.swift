@@ -13,8 +13,16 @@ struct MacSettingsView: View {
                 }
                 .pickerStyle(.segmented)
                 
-                Toggle(UserText.Settings.alwaysDisablePermanentlyToggle, isOn: $prefs.disablePermanently)
-                    .toggleStyle(.switch)
+                Toggle(isOn: $prefs.disablePermanently) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(UserText.Settings.alwaysDisablePermanentlyToggle)
+                        Text(UserText.Settings.alwaysDisablePermanentlyDescription)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .toggleStyle(.switch)
                 
                 Toggle(UserText.Settings.startAtLoginToggle, isOn: $prefs.startAtLogin)
                     .toggleStyle(.switch)
