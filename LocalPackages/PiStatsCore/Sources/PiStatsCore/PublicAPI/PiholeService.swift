@@ -20,6 +20,9 @@ public protocol PiholeService: Sendable {
     func fetchTopClients(count: Int) async throws -> TopClientsResult
     func fetchQueryTypes() async throws -> QueryTypesResult
     func fetchUpstreams() async throws -> UpstreamsResult
+    func fetchQueries(count: Int) async throws -> [QueryLogEntry]
+    func fetchHealth() async throws -> PiholeHealth
+    func clearMessages() async throws
     func enable() async throws -> PiholeStatus
     func disable(timer: Int?) async throws -> PiholeStatus
 }

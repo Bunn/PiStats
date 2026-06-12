@@ -23,6 +23,7 @@ final class PiholeSummaryData: Identifiable, ObservableObject {
     @Published var history: [HistoryItem]? = nil
     @Published var queryTypes: QueryTypesResult? = nil
     @Published var upstreams: UpstreamsResult? = nil
+    @Published var health: PiholeHealth? = nil
     @Published var monitorMetrics: PiMonitorMetrics? = nil
     @Published var currentError: PiholeError? = nil
     @Published var hasError: Bool = false

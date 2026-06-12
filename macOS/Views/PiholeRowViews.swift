@@ -20,7 +20,8 @@ struct MacPiholeRowFromDataUpdater: View {
             PiholeDetailContentView(
                 data: summary,
                 temperatureScale: temperatureScale,
-                displayStatsAsList: true
+                displayStatsAsList: true,
+                onClearMessages: { await dataUpdater.clearMessages() }
             )
         }
         .padding(.vertical, LayoutConstants.MainView.rowVerticalPadding)

@@ -635,5 +635,50 @@ struct PiholeV5ServiceTests {
 
         MockURLProtocol.reset()
     }
+
+    // MARK: - fetchQueries Tests
+
+    @Test("fetchQueries parses positional rows and status codes")
+    func testFetchQueriesSuccess() async throws {
+        let service = PiholeV5Service(MockData.testPiholeV5, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            #expect(request.url?.absoluteString.contains("getAllQueries") == true)
+            return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v5AllQueriesJSON))
+        }
+
+        let entries = try await service.fetchQueries(count: 200)
+
+        #expect(entries.count == 3)
+        #expect(entries[0].domain == "google.com")
+        #expect(entries[0].client == "192.168.1.10")
+        #expect(entries[0].type == "A")
+        #expect(entries[0].status == .forwarded)   // code 2
+        #expect(entries[1].status == .blocked)     // code 1
+        #expect(entries[2].status == .cached)      // code 3
+
+        MockURLProtocol.reset()
+    }
+
+    // MARK: - fetchHealth Tests
+
+    @Test("fetchHealth reports versions and update availability")
+    func testFetchHealthSuccess() async throws {
+        let service = PiholeV5Service(MockData.testPiholeV5, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            #expect(request.url?.absoluteString.contains("versions") == true)
+            return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v5VersionsJSON))
+        }
+
+        let health = try await service.fetchHealth()
+
+        #expect(health.coreVersion == "v5.18")
+        #expect(health.ftlVersion == "v5.25")
+        #expect(health.updateAvailable == true)   // web_update == true
+        #expect(health.messages.isEmpty)          // v5 has no messages endpoint
+
+        MockURLProtocol.reset()
+    }
 }
 

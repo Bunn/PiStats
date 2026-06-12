@@ -154,6 +154,67 @@ internal final class PiholeV5Service: PiholeService {
         return UpstreamsResult(upstreams: items)
     }
 
+    func fetchQueries(count: Int) async throws -> [QueryLogEntry] {
+        Log.network.info("📜 [V5] Fetching queries for \(self.pihole.name)")
+
+        let url = try makeURL(for: self.pihole, endpoint: .custom("getAllQueries=\(count)"))
+        let json = try await fetchJSON(from: url)
+
+        guard let data = json[JSONKeys.data.rawValue] as? [[Any]] else {
+            Log.network.error("❌ [V5] Failed to parse queries for \(self.pihole.name)")
+            throw PiholeServiceError.cannotParseResponse
+        }
+
+        // V5 rows are positional: [timestamp, type, domain, client, status, …]
+        let entries: [QueryLogEntry] = data.compactMap { row in
+            guard row.count >= 5,
+                  let timestamp = Self.timeInterval(from: row[0]),
+                  let type = row[1] as? String,
+                  let domain = row[2] as? String,
+                  let client = row[3] as? String,
+                  let statusCode = Self.intValue(from: row[4]) else {
+                return nil
+            }
+            return QueryLogEntry(
+                timestamp: Date(timeIntervalSince1970: timestamp),
+                domain: domain,
+                client: client,
+                type: type,
+                status: Self.queryStatus(fromV5Code: statusCode)
+            )
+        }
+
+        Log.network.info("✅ [V5] Queries fetched for \(self.pihole.name) - \(entries.count) entries")
+        return entries
+    }
+
+    func fetchHealth() async throws -> PiholeHealth {
+        Log.network.info("❤️ [V5] Fetching health for \(self.pihole.name)")
+
+        let url = try makeURL(for: self.pihole, endpoint: .custom("versions"))
+        let json = try await fetchJSON(from: url)
+
+        let updateAvailable = (json[JSONKeys.coreUpdate.rawValue] as? Bool ?? false)
+            || (json[JSONKeys.webUpdate.rawValue] as? Bool ?? false)
+            || (json[JSONKeys.ftlUpdate.rawValue] as? Bool ?? false)
+
+        // V5 has no diagnosis-message endpoint.
+        let health = PiholeHealth(
+            coreVersion: json[JSONKeys.coreCurrent.rawValue] as? String,
+            webVersion: json[JSONKeys.webCurrent.rawValue] as? String,
+            ftlVersion: json[JSONKeys.ftlCurrent.rawValue] as? String,
+            updateAvailable: updateAvailable,
+            messages: []
+        )
+
+        Log.network.info("✅ [V5] Health fetched for \(self.pihole.name) - update: \(updateAvailable)")
+        return health
+    }
+
+    func clearMessages() async throws {
+        // V5 has no diagnosis-message endpoint; nothing to clear.
+    }
+
     func enable() async throws -> PiholeStatus {
         try await setBlocking(.enable, for: self.pihole)
     }
@@ -220,6 +281,33 @@ extension PiholeV5Service {
             return TopClientItem(ip: ip, name: name, count: entry.value)
         }
         .sorted { $0.count > $1.count }
+    }
+
+    private static func timeInterval(from value: Any) -> TimeInterval? {
+        if let string = value as? String { return TimeInterval(string) }
+        if let number = value as? NSNumber { return number.doubleValue }
+        return nil
+    }
+
+    private static func intValue(from value: Any) -> Int? {
+        if let number = value as? NSNumber { return number.intValue }
+        if let string = value as? String { return Int(string) }
+        return nil
+    }
+
+    /// Maps V5 numeric query status codes to a coarse status.
+    /// 2/14 = forwarded, 3 = cached, 1/4-11/15/16 = blocked variants.
+    private static func queryStatus(fromV5Code code: Int) -> QueryStatus {
+        switch code {
+        case 2, 14:
+            return .forwarded
+        case 3:
+            return .cached
+        case 1, 4, 5, 6, 7, 8, 9, 10, 11, 15, 16:
+            return .blocked
+        default:
+            return .unknown
+        }
     }
 
     private func setBlocking(_ action: BlockingAction, for pihole: Pihole, timer: Int? = nil) async throws -> PiholeStatus {
@@ -319,5 +407,12 @@ extension PiholeV5Service {
         case topSourcesBlocked = "top_sources_blocked"
         case queryTypes = "querytypes"
         case forwardDestinations = "forward_destinations"
+        case data
+        case coreUpdate = "core_update"
+        case webUpdate = "web_update"
+        case ftlUpdate = "FTL_update"
+        case coreCurrent = "core_current"
+        case webCurrent = "web_current"
+        case ftlCurrent = "FTL_current"
     }
 }

@@ -442,6 +442,97 @@ struct PiholeV6ServiceTests {
         MockURLProtocol.reset()
     }
 
+    // MARK: - fetchQueries Tests
+
+    @Test("fetchQueries maps v6 status strings and client names")
+    func testFetchQueriesSuccess() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            if request.url?.absoluteString.contains("auth") == true {
+                return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v6AuthSuccessJSON))
+            } else if request.url?.absoluteString.contains("queries") == true {
+                return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v6QueriesJSON))
+            }
+            throw PiholeServiceError.unknownError
+        }
+
+        let entries = try await service.fetchQueries(count: 200)
+
+        #expect(entries.count == 3)
+        #expect(entries[0].domain == "google.com")
+        #expect(entries[0].client == "laptop")
+        #expect(entries[0].type == "A")
+        #expect(entries[0].status == .forwarded)
+        // Empty client name falls back to IP; GRAVITY maps to blocked.
+        #expect(entries[1].client == "192.168.1.11")
+        #expect(entries[1].status == .blocked)
+        // Missing client name; CACHE maps to cached.
+        #expect(entries[2].client == "192.168.1.12")
+        #expect(entries[2].status == .cached)
+
+        MockURLProtocol.reset()
+    }
+
+    // MARK: - fetchHealth Tests
+
+    @Test("fetchHealth reports versions, update availability, and messages")
+    func testFetchHealthSuccess() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            let url = request.url?.absoluteString ?? ""
+            if url.contains("auth") {
+                return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v6AuthSuccessJSON))
+            } else if url.contains("info/version") {
+                return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v6VersionJSON))
+            } else if url.contains("info/messages") {
+                return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v6MessagesJSON))
+            }
+            throw PiholeServiceError.unknownError
+        }
+
+        let health = try await service.fetchHealth()
+
+        #expect(health.coreVersion == "v6.0")
+        #expect(health.ftlVersion == "v6.1")
+        // core local v6.0 != remote v6.1 → update available.
+        #expect(health.updateAvailable == true)
+        #expect(health.messages.count == 1)
+        #expect(health.messages.first?.text == "Rate-limiting 192.168.2.42")
+        #expect(health.messages.first?.timestamp == Date(timeIntervalSince1970: 1609459200))
+
+        MockURLProtocol.reset()
+    }
+
+    // MARK: - clearMessages Tests
+
+    @Test("clearMessages deletes the reported message ids")
+    func testClearMessagesSuccess() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)
+
+        var deletedPath: String?
+        MockURLProtocol.requestHandler = { request in
+            let url = request.url?.absoluteString ?? ""
+            if url.contains("auth") {
+                return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v6AuthSuccessJSON))
+            } else if request.httpMethod == "DELETE" {
+                deletedPath = request.url?.path
+                return MockURLProtocol.successResponse(for: request, data: nil, statusCode: 204)
+            } else if url.contains("info/messages") {
+                return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v6MessagesJSON))
+            }
+            throw PiholeServiceError.unknownError
+        }
+
+        try await service.clearMessages()
+
+        // The single mock message has id 1.
+        #expect(deletedPath == "/api/info/messages/1")
+
+        MockURLProtocol.reset()
+    }
+
     // MARK: - enable Tests
 
     @Test("enable sets status to enabled")

@@ -333,6 +333,49 @@ enum MockData {
         "total_queries": 100
     ]
 
+    // MARK: - Query Log Mock Responses
+
+    nonisolated(unsafe) static let v5AllQueriesJSON: [String: Any] = [
+        "data": [
+            ["1609459200", "A", "google.com", "192.168.1.10", "2"],
+            ["1609459100", "AAAA", "ads.example.com", "192.168.1.11", "1"],
+            ["1609459000", "A", "cdn.example.com", "192.168.1.12", "3"]
+        ]
+    ]
+
+    nonisolated(unsafe) static let v6QueriesJSON: [String: Any] = [
+        "queries": [
+            ["time": 1609459200.0, "type": "A", "domain": "google.com", "client": ["ip": "192.168.1.10", "name": "laptop"], "status": "FORWARDED"],
+            ["time": 1609459100.0, "type": "AAAA", "domain": "ads.example.com", "client": ["ip": "192.168.1.11", "name": ""], "status": "GRAVITY"],
+            ["time": 1609459000.0, "type": "A", "domain": "cdn.example.com", "client": ["ip": "192.168.1.12"], "status": "CACHE"]
+        ]
+    ]
+
+    // MARK: - Health Mock Responses
+
+    nonisolated(unsafe) static let v5VersionsJSON: [String: Any] = [
+        "core_update": false,
+        "web_update": true,
+        "FTL_update": false,
+        "core_current": "v5.18",
+        "web_current": "v5.21",
+        "FTL_current": "v5.25"
+    ]
+
+    nonisolated(unsafe) static let v6VersionJSON: [String: Any] = [
+        "version": [
+            "core": ["local": ["version": "v6.0"], "remote": ["version": "v6.1"]],
+            "web": ["local": ["version": "v6.1"], "remote": ["version": "v6.1"]],
+            "ftl": ["local": ["version": "v6.1"], "remote": ["version": "v6.1"]]
+        ]
+    ]
+
+    nonisolated(unsafe) static let v6MessagesJSON: [String: Any] = [
+        "messages": [
+            ["id": 1, "timestamp": 1609459200.0, "type": "SUBNET", "plain": "Rate-limiting 192.168.2.42", "html": "<code>192.168.2.42</code>"]
+        ]
+    ]
+
     // MARK: - PiMonitor Mock Responses
     
     static let piMonitorMetricsJSON: Data = {

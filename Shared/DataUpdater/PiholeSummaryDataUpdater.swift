@@ -114,6 +114,22 @@ final class PiholeSummaryDataUpdater: Identifiable, ObservableObject, ErrorHandl
         }
     }
 
+    /// Fetches the query log on demand (not part of the periodic refresh).
+    func fetchQueries(count: Int = 200) async throws -> [QueryLogEntry] {
+        try await service.fetchQueries(count: count)
+    }
+
+    /// Clears the Pi-hole's FTL diagnosis messages, then refreshes health.
+    func clearMessages() async {
+        do {
+            try await service.clearMessages()
+            let health = try await service.fetchHealth()
+            await updateHealth(with: health)
+        } catch {
+            Log.network.error("❌ Failed to clear messages for \(self.pihole.name, privacy: .public): \(String(describing: error), privacy: .public)")
+        }
+    }
+
     func enable() async {
         do {
             let result = try await service.enable()
@@ -249,6 +265,19 @@ final class PiholeSummaryDataUpdater: Identifiable, ObservableObject, ErrorHandl
             }
         })
 
+        fetchTasks.append(Task { [weak self] in
+            guard let self else { return }
+            do {
+                let result = try await service.fetchHealth()
+                try Task.checkCancellation()
+                await updateHealth(with: result)
+            } catch is CancellationError {
+                // Task was cancelled, do nothing
+            } catch {
+                Log.network.error("❌ Health fetch failed for \(piholeNameForLog, privacy: .public): \(String(describing: error), privacy: .public)")
+            }
+        })
+
         if service.pihole.piMonitor != nil {
             fetchTasks.append(Task { [weak self] in
                 guard let self else { return }
@@ -358,6 +387,13 @@ extension PiholeSummaryDataUpdater {
     private func updateUpstreams(with result: UpstreamsResult) {
         withAnimation {
             summary.upstreams = result
+        }
+    }
+
+    @MainActor
+    private func updateHealth(with result: PiholeHealth) {
+        withAnimation {
+            summary.health = result
         }
     }
 

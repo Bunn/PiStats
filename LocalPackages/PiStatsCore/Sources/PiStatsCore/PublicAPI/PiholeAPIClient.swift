@@ -58,6 +58,18 @@ public struct PiholeAPIClient: PiholeService {
         try await service.fetchUpstreams()
     }
 
+    public func fetchQueries(count: Int = 200) async throws -> [QueryLogEntry] {
+        try await service.fetchQueries(count: count)
+    }
+
+    public func fetchHealth() async throws -> PiholeHealth {
+        try await service.fetchHealth()
+    }
+
+    public func clearMessages() async throws {
+        try await service.clearMessages()
+    }
+
     public func enable() async throws -> PiholeStatus {
         try await service.enable()
     }

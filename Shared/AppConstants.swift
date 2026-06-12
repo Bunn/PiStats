@@ -46,6 +46,8 @@ public struct SystemImages {
 
     // Detail / Actions
     public static let moreDetails = "list.bullet.rectangle"
+    public static let healthUpdate = "arrow.down.circle.fill"
+    public static let healthUpToDate = "checkmark.circle.fill"
 
     // Statistics
     public static let globe = "globe"
@@ -127,6 +129,16 @@ public struct UserText {
     public static let queryTypesSection = "Query Types"
     public static let upstreamsSection = "Upstream Servers"
     public static let deviceSection = "Device"
+    public static let healthSection = "Health"
+    public static let healthUpdateAvailable = "Update available"
+    public static let healthUpToDate = "Up to date"
+    public static let clearMessages = "Clear Messages"
+    public static let clearMessagesConfirmTitle = "Clear Messages?"
+    public static let clearMessagesConfirmMessage = "This permanently removes all diagnosis messages from this Pi-hole."
+    public static let queryLogTitle = "Query Log"
+    public static let queryLogSearchPrompt = "Search domain or client"
+    public static let queryLogCardTitle = "Query Log"
+    public static let queryLogCardSubtitle = "Browse and search recent queries"
     
     // MARK: - Pi-hole Setup
     public static let piholeSetupTitle = "Pi-hole Setup"

@@ -17,6 +17,7 @@ struct PiholeDetailContentView: View {
     var showsStats: Bool = true
     var showsMetrics: Bool = true
     var displayStatsAsList: Bool = true
+    var onClearMessages: (() async -> Void)? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -58,6 +59,12 @@ struct PiholeDetailContentView: View {
             if let topClients = data.topClients {
                 section(UserText.topClientsSection) {
                     TopClientsView(topClients: topClients)
+                }
+            }
+
+            if let health = data.health {
+                section(UserText.healthSection) {
+                    HealthView(health: health, onClear: onClearMessages)
                 }
             }
 

@@ -160,17 +160,46 @@ struct PiholeDetailView: View {
 
     var body: some View {
         ScrollView {
-            PiholeDetailContentView(
-                data: data,
-                temperatureScale: settingsStore.temperatureScale,
-                showsStats: false,
-                showsMetrics: false
-            )
+            VStack(spacing: 16) {
+                PiholeDetailContentView(
+                    data: data,
+                    temperatureScale: settingsStore.temperatureScale,
+                    showsStats: false,
+                    showsMetrics: false,
+                    onClearMessages: { await updater.clearMessages() }
+                )
+                queryLogCard
+            }
             .padding()
         }
         .navigationTitle(data.name)
         .navigationBarTitleDisplayMode(.inline)
         .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
+    }
+
+    private var queryLogCard: some View {
+        NavigationLink {
+            QueryLogView(updater: updater)
+        } label: {
+            HStack(spacing: 12) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(UserText.queryLogCardTitle)
+                        .font(.headline)
+                        .foregroundStyle(.primary)
+                    Text(UserText.queryLogCardSubtitle)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .foregroundStyle(.secondary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding()
+            .glassEffect(in: .rect(cornerRadius: LayoutConstants.defaultCornerRadius))
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
     }
 }
 

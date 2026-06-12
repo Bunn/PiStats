@@ -191,6 +191,107 @@ internal final class PiholeV6Service: PiholeService {
         return UpstreamsResult(upstreams: items)
     }
 
+    func fetchQueries(count: Int) async throws -> [QueryLogEntry] {
+        Log.network.info("📜 [V6] Fetching queries for \(self.pihole.name)")
+
+        let authResponse = try await ensureAuthenticated(self.pihole)
+        let url = try makeURL(for: self.pihole, endpoint: .queries, queryItems: [
+            URLQueryItem(name: "length", value: "\(count)")
+        ])
+        let json = try await fetchJSON(from: url, with: authResponse)
+
+        guard let queries = json["queries"] as? [[String: Any]] else {
+            Log.network.error("❌ [V6] Failed to parse queries for \(self.pihole.name)")
+            throw PiholeServiceError.cannotParseResponse
+        }
+
+        let entries: [QueryLogEntry] = queries.compactMap { item in
+            guard let time = item["time"] as? TimeInterval,
+                  let domain = item["domain"] as? String,
+                  let type = item["type"] as? String else {
+                return nil
+            }
+            let clientDict = item["client"] as? [String: Any]
+            let clientName = clientDict?["name"] as? String
+            let clientIP = clientDict?["ip"] as? String ?? ""
+            let client = (clientName?.isEmpty == false) ? clientName! : clientIP
+            let statusString = item["status"] as? String ?? ""
+            return QueryLogEntry(
+                timestamp: Date(timeIntervalSince1970: time),
+                domain: domain,
+                client: client,
+                type: type,
+                status: Self.queryStatus(fromV6Status: statusString)
+            )
+        }
+
+        Log.network.info("✅ [V6] Queries fetched for \(self.pihole.name) - \(entries.count) entries")
+        return entries
+    }
+
+    func fetchHealth() async throws -> PiholeHealth {
+        Log.network.info("❤️ [V6] Fetching health for \(self.pihole.name)")
+
+        let authResponse = try await ensureAuthenticated(self.pihole)
+        let versionURL = try makeURL(for: self.pihole, endpoint: .version)
+        let messagesURL = try makeURL(for: self.pihole, endpoint: .messages)
+
+        async let versionJSON = fetchJSON(from: versionURL, with: authResponse)
+        async let messagesJSON = fetchJSON(from: messagesURL, with: authResponse)
+        let (versionData, messagesData) = try await (versionJSON, messagesJSON)
+
+        let version = versionData["version"] as? [String: Any] ?? [:]
+        func localVersion(_ component: String) -> String? {
+            ((version[component] as? [String: Any])?["local"] as? [String: Any])?["version"] as? String
+        }
+        func remoteVersion(_ component: String) -> String? {
+            ((version[component] as? [String: Any])?["remote"] as? [String: Any])?["version"] as? String
+        }
+        let updateAvailable = ["core", "web", "ftl"].contains { component in
+            guard let local = localVersion(component),
+                  let remote = remoteVersion(component),
+                  !remote.isEmpty else { return false }
+            return local != remote
+        }
+
+        let messagesArray = messagesData["messages"] as? [[String: Any]] ?? []
+        let messages: [DiagnosisMessage] = messagesArray.compactMap { item in
+            guard let text = item["plain"] as? String else { return nil }
+            let timestamp = (item["timestamp"] as? TimeInterval).map { Date(timeIntervalSince1970: $0) }
+            return DiagnosisMessage(text: text, timestamp: timestamp)
+        }
+
+        Log.network.info("✅ [V6] Health fetched for \(self.pihole.name) - update: \(updateAvailable), \(messages.count) messages")
+        return PiholeHealth(
+            coreVersion: localVersion("core"),
+            webVersion: localVersion("web"),
+            ftlVersion: localVersion("ftl"),
+            updateAvailable: updateAvailable,
+            messages: messages
+        )
+    }
+
+    func clearMessages() async throws {
+        Log.network.info("🧹 [V6] Clearing messages for \(self.pihole.name)")
+
+        let authResponse = try await ensureAuthenticated(self.pihole)
+        let messagesURL = try makeURL(for: self.pihole, endpoint: .messages)
+        let json = try await fetchJSON(from: messagesURL, with: authResponse)
+
+        let ids = (json["messages"] as? [[String: Any]] ?? []).compactMap { $0["id"] as? Int }
+        guard !ids.isEmpty else {
+            Log.network.info("ℹ️ [V6] No messages to clear for \(self.pihole.name)")
+            return
+        }
+
+        // FTL accepts multiple comma-separated IDs in the path.
+        let idPath = ids.map(String.init).joined(separator: ",")
+        let deleteURL = try makeURL(for: self.pihole, path: "info/messages/\(idPath)")
+        try await delete(url: deleteURL, with: authResponse)
+
+        Log.network.info("✅ [V6] Cleared \(ids.count) message(s) for \(self.pihole.name)")
+    }
+
     func enable() async throws -> PiholeStatus {
         try await setBlocking(.enable, for: self.pihole)
     }
@@ -272,17 +373,21 @@ extension PiholeV6Service {
     }
 
     private func makeURL(for pihole: Pihole, endpoint: Endpoint, queryItems: [URLQueryItem] = []) throws -> URL {
+        try makeURL(for: pihole, path: endpoint.rawValue, queryItems: queryItems)
+    }
+
+    private func makeURL(for pihole: Pihole, path: String, queryItems: [URLQueryItem] = []) throws -> URL {
         let scheme = pihole.secure ? "https" : "http"
         let portString = ":\(pihole.port)"
-        
-        guard var components = URLComponents(string: "\(scheme)://\(pihole.address)\(portString)/api/\(endpoint.rawValue)") else {
+
+        guard var components = URLComponents(string: "\(scheme)://\(pihole.address)\(portString)/api/\(path)") else {
             throw PiholeServiceError.badURL
         }
-        
+
         if !queryItems.isEmpty {
             components.queryItems = queryItems
         }
-        
+
         guard let url = components.url else {
             throw PiholeServiceError.badURL
         }
@@ -313,6 +418,20 @@ extension PiholeV6Service {
             }
             let name = item["name"] as? String ?? ""
             return TopClientItem(ip: ip, name: name, count: count)
+        }
+    }
+
+    private static func queryStatus(fromV6Status status: String) -> QueryStatus {
+        switch status.uppercased() {
+        case "FORWARDED":
+            return .forwarded
+        case "CACHE", "CACHE_STALE":
+            return .cached
+        case "RETRIED", "RETRIED_DNSSEC", "IN_PROGRESS":
+            return .unknown
+        default:
+            // GRAVITY, DENYLIST, REGEX, EXTERNAL_BLOCKED_*, SPECIAL_DOMAIN, *_CNAME, …
+            return status.isEmpty ? .unknown : .blocked
         }
     }
 
@@ -400,6 +519,36 @@ extension PiholeV6Service {
         }
     }
 
+    private func delete(url: URL, with auth: PiholeV6AuthResponse) async throws {
+        Log.network.info("🗑️ [V6] Starting DELETE request to: \(url.absoluteString)")
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        request.addValue(auth.sid, forHTTPHeaderField: HeaderFields.sid)
+        request.addValue(auth.csrf, forHTTPHeaderField: HeaderFields.csrf)
+
+        do {
+            let (_, response) = try await urlSession.data(for: request)
+
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode == 401 || httpResponse.statusCode == 403 {
+                    await clearSessionAuth()
+                    throw PiholeServiceError.invalidAuthenticationResponse
+                }
+                guard (200...299).contains(httpResponse.statusCode) else {
+                    Log.network.error("❌ [V6] DELETE failed with status \(httpResponse.statusCode) for \(url.absoluteString)")
+                    throw PiholeServiceError.unknownStatus
+                }
+            }
+        } catch let error as PiholeServiceError {
+            throw error
+        } catch {
+            Log.network.error("💥 [V6] DELETE request failed for \(url.absoluteString): \(error.localizedDescription)")
+            await clearSessionAuth()
+            throw PiholeServiceError.networkError(error)
+        }
+    }
+
     private func setBlocking(_ action: BlockingAction, for pihole: Pihole, timer: Int? = nil) async throws -> PiholeStatus {
         let actionName = action == .enable ? "enable" : "disable"
         Log.network.info("🔄 [V6] Setting blocking action: \(actionName) for \(self.pihole.name)")
@@ -440,6 +589,9 @@ extension PiholeV6Service {
         case topClients = "stats/top_clients"
         case queryTypes = "stats/query_types"
         case upstreams = "stats/upstreams"
+        case queries = "queries"
+        case version = "info/version"
+        case messages = "info/messages"
     }
 
     private enum JSONKeys: String {
