@@ -1,0 +1,13 @@
+{
+  "id" : "07999ca7-9155-4ea0-b1f9-3d3b8ff66e8b",
+  "targets" : [
+    {
+      "id" : "3D716623-D726-4EFA-9677-D583AEF51B62",
+      "name" : "Pi Stats"
+    },
+    {
+      "id" : "5A9F0A38-9E31-47E1-80A6-32DB0202CB12",
+      "name" : "Pi Stats Mobile"
+    }
+  ]
+}

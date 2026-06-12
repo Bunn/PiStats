@@ -119,9 +119,10 @@ struct PiStatPopoverView: View {
     @ObservedObject var summary: PiholeSummaryData
     let temperatureScale: TemperatureScale
     @ObservedObject var prefs: MacPreferences
+    @Environment(\.openWindow) private var openWindow
 
     var body: some View {
-        VStack {
+        VStack(spacing: 8) {
             HStack {
                 StatusHeaderView(data: summary)
                 Spacer()
@@ -148,28 +149,6 @@ struct PiStatPopoverView: View {
 
             ListView(data: summary)
 
-            if let topDomains = summary.topDomains {
-                Divider()
-                HStack {
-                    Text("Top Domains")
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.secondary)
-                    Spacer()
-                }
-                TopDomainsView(topDomains: topDomains)
-            }
-
-            if let topClients = summary.topClients {
-                Divider()
-                HStack {
-                    Text("Top Clients")
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.secondary)
-                    Spacer()
-                }
-                TopClientsView(topClients: topClients)
-            }
-
             if let metrics = summary.monitorMetrics {
                 Divider()
                 HStack {
@@ -178,8 +157,20 @@ struct PiStatPopoverView: View {
                         .foregroundStyle(.secondary)
                     Spacer()
                 }
-                
                 MetricsView(viewModel: .init(metrics: metrics, temperatureScale: temperatureScale))
+            }
+
+            Divider()
+
+            HStack {
+                Button(action: openDetailWindow) {
+                    HStack {
+                        Image(systemName: SystemImages.moreDetails)
+                        Text(UserText.moreDetails)
+                    }
+                    .foregroundStyle(.primary)
+                }
+                Spacer()
             }
         }
         .padding()
@@ -191,6 +182,11 @@ struct PiStatPopoverView: View {
             RoundedRectangle(cornerRadius: 12, style: .continuous)
                 .strokeBorder(Color.secondary.opacity(0.25), lineWidth: 1)
         )
+    }
+
+    private func openDetailWindow() {
+        NSApp.activate(ignoringOtherApps: true)
+        openWindow(id: AppIdentifiers.detailWindowSceneId, value: dataUpdater.pihole.uuid)
     }
 
     private var backgroundOpacity: CGFloat {

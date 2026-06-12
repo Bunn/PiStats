@@ -585,5 +585,100 @@ struct PiholeV5ServiceTests {
         let _ = try await service.fetchStatus()
         MockURLProtocol.reset()
     }
+
+    // MARK: - fetchQueryTypes Tests
+
+    @Test("fetchQueryTypes returns sorted percentages")
+    func testFetchQueryTypesSuccess() async throws {
+        let service = PiholeV5Service(MockData.testPiholeV5, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            #expect(request.url?.absoluteString.contains("getQueryTypes") == true)
+            let data = MockData.jsonData(from: MockData.v5QueryTypesJSON)
+            return MockURLProtocol.successResponse(for: request, data: data)
+        }
+
+        let result = try await service.fetchQueryTypes()
+
+        // Zero-percentage types are dropped; remaining are sorted descending.
+        #expect(result.types.count == 3)
+        #expect(result.types[0].name == "A (IPv4)")
+        #expect(result.types[0].percentage == 60.0)
+        #expect(result.types[1].name == "AAAA (IPv6)")
+        #expect(result.types[1].percentage == 30.0)
+        #expect(result.types[2].name == "HTTPS")
+        #expect(result.types[2].percentage == 10.0)
+
+        MockURLProtocol.reset()
+    }
+
+    // MARK: - fetchUpstreams Tests
+
+    @Test("fetchUpstreams parses ip#port|name keys and sorts by percentage")
+    func testFetchUpstreamsSuccess() async throws {
+        let service = PiholeV5Service(MockData.testPiholeV5, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            #expect(request.url?.absoluteString.contains("getForwardDestinations") == true)
+            let data = MockData.jsonData(from: MockData.v5ForwardDestinationsJSON)
+            return MockURLProtocol.successResponse(for: request, data: data)
+        }
+
+        let result = try await service.fetchUpstreams()
+
+        #expect(result.upstreams.count == 3)
+        #expect(result.upstreams[0].displayName == "dns.google")
+        #expect(result.upstreams[0].ip == "8.8.8.8")
+        #expect(result.upstreams[0].percentage == 70.0)
+        #expect(result.upstreams[1].displayName == "cache")
+        #expect(result.upstreams[2].displayName == "blocklist")
+
+        MockURLProtocol.reset()
+    }
+
+    // MARK: - fetchQueries Tests
+
+    @Test("fetchQueries parses positional rows and status codes")
+    func testFetchQueriesSuccess() async throws {
+        let service = PiholeV5Service(MockData.testPiholeV5, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            #expect(request.url?.absoluteString.contains("getAllQueries") == true)
+            return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v5AllQueriesJSON))
+        }
+
+        let entries = try await service.fetchQueries(count: 200)
+
+        #expect(entries.count == 3)
+        #expect(entries[0].domain == "google.com")
+        #expect(entries[0].client == "192.168.1.10")
+        #expect(entries[0].type == "A")
+        #expect(entries[0].status == .forwarded)   // code 2
+        #expect(entries[1].status == .blocked)     // code 1
+        #expect(entries[2].status == .cached)      // code 3
+
+        MockURLProtocol.reset()
+    }
+
+    // MARK: - fetchHealth Tests
+
+    @Test("fetchHealth reports versions and update availability")
+    func testFetchHealthSuccess() async throws {
+        let service = PiholeV5Service(MockData.testPiholeV5, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            #expect(request.url?.absoluteString.contains("versions") == true)
+            return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v5VersionsJSON))
+        }
+
+        let health = try await service.fetchHealth()
+
+        #expect(health.coreVersion == "v5.18")
+        #expect(health.ftlVersion == "v5.25")
+        #expect(health.updateAvailable == true)   // web_update == true
+        #expect(health.messages.isEmpty)          // v5 has no messages endpoint
+
+        MockURLProtocol.reset()
+    }
 }
 

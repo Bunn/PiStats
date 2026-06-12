@@ -108,24 +108,25 @@ struct PiholeStatsList: View {
     }
 
     private func cardView(for dataUpdater: PiholeSummaryDataUpdater) -> some View {
-        PiStatsCardView(data: dataUpdater.summary, updater: dataUpdater, settingsStore: settingsStore)
-            .contentShape(Rectangle())
-            .onTapGesture {
+        PiStatsCardView(
+            data: dataUpdater.summary,
+            updater: dataUpdater,
+            settingsStore: settingsStore,
+            onSettings: { editingPihole = dataUpdater.pihole }
+        )
+        .contextMenu {
+            Button(action: {
                 editingPihole = dataUpdater.pihole
+            }) {
+                Label("Edit", systemImage: "pencil")
             }
-            .contextMenu {
-                Button(action: {
-                    editingPihole = dataUpdater.pihole
-                }) {
-                    Label("Edit", systemImage: "pencil")
-                }
 
-                Button(role: .destructive, action: {
-                    deletePihole(dataUpdater.pihole)
-                }) {
-                    Label("Delete", systemImage: "trash")
-                }
+            Button(role: .destructive, action: {
+                deletePihole(dataUpdater.pihole)
+            }) {
+                Label("Delete", systemImage: "trash")
             }
+        }
     }
 
     private func handlePiholeChange(_ pihole: Pihole, isDelete: Bool) {

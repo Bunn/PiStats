@@ -114,6 +114,22 @@ final class PiholeSummaryDataUpdater: Identifiable, ObservableObject, ErrorHandl
         }
     }
 
+    /// Fetches the query log on demand (not part of the periodic refresh).
+    func fetchQueries(count: Int = 200) async throws -> [QueryLogEntry] {
+        try await service.fetchQueries(count: count)
+    }
+
+    /// Clears the Pi-hole's FTL diagnosis messages, then refreshes health.
+    func clearMessages() async {
+        do {
+            try await service.clearMessages()
+            let health = try await service.fetchHealth()
+            await updateHealth(with: health)
+        } catch {
+            Log.network.error("❌ Failed to clear messages for \(self.pihole.name, privacy: .public): \(String(describing: error), privacy: .public)")
+        }
+    }
+
     func enable() async {
         do {
             let result = try await service.enable()
@@ -178,43 +194,89 @@ final class PiholeSummaryDataUpdater: Identifiable, ObservableObject, ErrorHandl
 
         let piholeNameForLog = pihole.name
         let piholeVersionForLog = pihole.version.rawValue
-        if pihole.showTopDomains {
-            fetchTasks.append(Task { [weak self] in
-                guard let self else { return }
-                Log.network.info("📊 Fetching top domains for \(piholeNameForLog, privacy: .public) (version: \(piholeVersionForLog, privacy: .public))")
-                do {
-                    let result = try await service.fetchTopDomains(count: 10)
-                    try Task.checkCancellation()
-                    Log.network.info("✅ Top domains fetched for \(piholeNameForLog, privacy: .public) - \(result.topPermitted.count, privacy: .public) permitted, \(result.topBlocked.count, privacy: .public) blocked")
-                    await updateTopDomains(with: result)
-                } catch is CancellationError {
-                    Log.network.info("⏹️ Top domains fetch cancelled for \(piholeNameForLog, privacy: .public)")
-                } catch {
-                    Log.network.error("❌ Top domains fetch failed for \(piholeNameForLog, privacy: .public): \(String(describing: error), privacy: .public)")
-                }
-            })
-        } else {
-            Log.network.info("⏭️ Top domains disabled for \(piholeNameForLog, privacy: .public) (showTopDomains=false)")
-        }
+        fetchTasks.append(Task { [weak self] in
+            guard let self else { return }
+            Log.network.info("📊 Fetching top domains for \(piholeNameForLog, privacy: .public) (version: \(piholeVersionForLog, privacy: .public))")
+            do {
+                let result = try await service.fetchTopDomains(count: 10)
+                try Task.checkCancellation()
+                Log.network.info("✅ Top domains fetched for \(piholeNameForLog, privacy: .public) - \(result.topPermitted.count, privacy: .public) permitted, \(result.topBlocked.count, privacy: .public) blocked")
+                await updateTopDomains(with: result)
+            } catch is CancellationError {
+                Log.network.info("⏹️ Top domains fetch cancelled for \(piholeNameForLog, privacy: .public)")
+            } catch {
+                Log.network.error("❌ Top domains fetch failed for \(piholeNameForLog, privacy: .public): \(String(describing: error), privacy: .public)")
+            }
+        })
 
-        if pihole.showTopClients {
-            fetchTasks.append(Task { [weak self] in
-                guard let self else { return }
-                Log.network.info("👥 Fetching top clients for \(piholeNameForLog, privacy: .public) (version: \(piholeVersionForLog, privacy: .public))")
-                do {
-                    let result = try await service.fetchTopClients(count: 10)
-                    try Task.checkCancellation()
-                    Log.network.info("✅ Top clients fetched for \(piholeNameForLog, privacy: .public) - \(result.topActive.count, privacy: .public) active, \(result.topBlocked.count, privacy: .public) blocked")
-                    await updateTopClients(with: result)
-                } catch is CancellationError {
-                    Log.network.info("⏹️ Top clients fetch cancelled for \(piholeNameForLog, privacy: .public)")
-                } catch {
-                    Log.network.error("❌ Top clients fetch failed for \(piholeNameForLog, privacy: .public): \(String(describing: error), privacy: .public)")
-                }
-            })
-        } else {
-            Log.network.info("⏭️ Top clients disabled for \(piholeNameForLog, privacy: .public) (showTopClients=false)")
-        }
+        fetchTasks.append(Task { [weak self] in
+            guard let self else { return }
+            Log.network.info("👥 Fetching top clients for \(piholeNameForLog, privacy: .public) (version: \(piholeVersionForLog, privacy: .public))")
+            do {
+                let result = try await service.fetchTopClients(count: 10)
+                try Task.checkCancellation()
+                Log.network.info("✅ Top clients fetched for \(piholeNameForLog, privacy: .public) - \(result.topActive.count, privacy: .public) active, \(result.topBlocked.count, privacy: .public) blocked")
+                await updateTopClients(with: result)
+            } catch is CancellationError {
+                Log.network.info("⏹️ Top clients fetch cancelled for \(piholeNameForLog, privacy: .public)")
+            } catch {
+                Log.network.error("❌ Top clients fetch failed for \(piholeNameForLog, privacy: .public): \(String(describing: error), privacy: .public)")
+            }
+        })
+
+        fetchTasks.append(Task { [weak self] in
+            guard let self else { return }
+            Log.network.info("📈 Fetching history for \(piholeNameForLog, privacy: .public) (version: \(piholeVersionForLog, privacy: .public))")
+            do {
+                let result = try await service.fetchHistory()
+                try Task.checkCancellation()
+                Log.network.info("✅ History fetched for \(piholeNameForLog, privacy: .public) - \(result.count, privacy: .public) buckets")
+                await updateHistory(with: result)
+            } catch is CancellationError {
+                Log.network.info("⏹️ History fetch cancelled for \(piholeNameForLog, privacy: .public)")
+            } catch {
+                Log.network.error("❌ History fetch failed for \(piholeNameForLog, privacy: .public): \(String(describing: error), privacy: .public)")
+            }
+        })
+
+        fetchTasks.append(Task { [weak self] in
+            guard let self else { return }
+            do {
+                let result = try await service.fetchQueryTypes()
+                try Task.checkCancellation()
+                await updateQueryTypes(with: result)
+            } catch is CancellationError {
+                // Task was cancelled, do nothing
+            } catch {
+                Log.network.error("❌ Query types fetch failed for \(piholeNameForLog, privacy: .public): \(String(describing: error), privacy: .public)")
+            }
+        })
+
+        fetchTasks.append(Task { [weak self] in
+            guard let self else { return }
+            do {
+                let result = try await service.fetchUpstreams()
+                try Task.checkCancellation()
+                await updateUpstreams(with: result)
+            } catch is CancellationError {
+                // Task was cancelled, do nothing
+            } catch {
+                Log.network.error("❌ Upstreams fetch failed for \(piholeNameForLog, privacy: .public): \(String(describing: error), privacy: .public)")
+            }
+        })
+
+        fetchTasks.append(Task { [weak self] in
+            guard let self else { return }
+            do {
+                let result = try await service.fetchHealth()
+                try Task.checkCancellation()
+                await updateHealth(with: result)
+            } catch is CancellationError {
+                // Task was cancelled, do nothing
+            } catch {
+                Log.network.error("❌ Health fetch failed for \(piholeNameForLog, privacy: .public): \(String(describing: error), privacy: .public)")
+            }
+        })
 
         if service.pihole.piMonitor != nil {
             fetchTasks.append(Task { [weak self] in
@@ -304,6 +366,34 @@ extension PiholeSummaryDataUpdater {
     private func updateTopClients(with result: TopClientsResult) {
         withAnimation {
             summary.topClients = result
+        }
+    }
+
+    @MainActor
+    private func updateHistory(with result: [HistoryItem]) {
+        withAnimation {
+            summary.history = result
+        }
+    }
+
+    @MainActor
+    private func updateQueryTypes(with result: QueryTypesResult) {
+        withAnimation {
+            summary.queryTypes = result
+        }
+    }
+
+    @MainActor
+    private func updateUpstreams(with result: UpstreamsResult) {
+        withAnimation {
+            summary.upstreams = result
+        }
+    }
+
+    @MainActor
+    private func updateHealth(with result: PiholeHealth) {
+        withAnimation {
+            summary.health = result
         }
     }
 

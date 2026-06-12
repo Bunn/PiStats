@@ -365,6 +365,174 @@ struct PiholeV6ServiceTests {
         MockURLProtocol.reset()
     }
 
+    // MARK: - fetchQueryTypes Tests
+
+    @Test("fetchQueryTypes converts counts to sorted percentages")
+    func testFetchQueryTypesSuccess() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            if request.url?.absoluteString.contains("auth") == true {
+                return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v6AuthSuccessJSON))
+            } else if request.url?.absoluteString.contains("stats/query_types") == true {
+                return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v6QueryTypesJSON))
+            }
+            throw PiholeServiceError.unknownError
+        }
+
+        let result = try await service.fetchQueryTypes()
+
+        // Zero-count types are dropped; remaining are sorted descending.
+        #expect(result.types.count == 3)
+        #expect(result.types[0].name == "A")
+        #expect(result.types[0].percentage == 60)
+        #expect(result.types[1].name == "AAAA")
+        #expect(result.types[1].percentage == 30)
+        #expect(result.types[2].name == "HTTPS")
+        #expect(result.types[2].percentage == 10)
+
+        MockURLProtocol.reset()
+    }
+
+    @Test("fetchQueryTypes throws on invalid data")
+    func testFetchQueryTypesInvalidData() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            if request.url?.absoluteString.contains("auth") == true {
+                return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v6AuthSuccessJSON))
+            }
+            return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: ["types": "not an object"]))
+        }
+
+        await #expect(throws: PiholeServiceError.self) {
+            try await service.fetchQueryTypes()
+        }
+
+        MockURLProtocol.reset()
+    }
+
+    // MARK: - fetchUpstreams Tests
+
+    @Test("fetchUpstreams returns sorted percentages with display names")
+    func testFetchUpstreamsSuccess() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            if request.url?.absoluteString.contains("auth") == true {
+                return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v6AuthSuccessJSON))
+            } else if request.url?.absoluteString.contains("stats/upstreams") == true {
+                return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v6UpstreamsJSON))
+            }
+            throw PiholeServiceError.unknownError
+        }
+
+        let result = try await service.fetchUpstreams()
+
+        #expect(result.upstreams.count == 3)
+        #expect(result.upstreams[0].displayName == "dns.google")
+        #expect(result.upstreams[0].percentage == 60)
+        // Empty name falls back to IP.
+        #expect(result.upstreams[1].displayName == "1.1.1.1")
+        #expect(result.upstreams[1].percentage == 30)
+        // Cache pseudo-upstream has no IP, displays its name.
+        #expect(result.upstreams[2].displayName == "cache")
+        #expect(result.upstreams[2].percentage == 10)
+
+        MockURLProtocol.reset()
+    }
+
+    // MARK: - fetchQueries Tests
+
+    @Test("fetchQueries maps v6 status strings and client names")
+    func testFetchQueriesSuccess() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            if request.url?.absoluteString.contains("auth") == true {
+                return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v6AuthSuccessJSON))
+            } else if request.url?.absoluteString.contains("queries") == true {
+                return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v6QueriesJSON))
+            }
+            throw PiholeServiceError.unknownError
+        }
+
+        let entries = try await service.fetchQueries(count: 200)
+
+        #expect(entries.count == 3)
+        #expect(entries[0].domain == "google.com")
+        #expect(entries[0].client == "laptop")
+        #expect(entries[0].type == "A")
+        #expect(entries[0].status == .forwarded)
+        // Empty client name falls back to IP; GRAVITY maps to blocked.
+        #expect(entries[1].client == "192.168.1.11")
+        #expect(entries[1].status == .blocked)
+        // Missing client name; CACHE maps to cached.
+        #expect(entries[2].client == "192.168.1.12")
+        #expect(entries[2].status == .cached)
+
+        MockURLProtocol.reset()
+    }
+
+    // MARK: - fetchHealth Tests
+
+    @Test("fetchHealth reports versions, update availability, and messages")
+    func testFetchHealthSuccess() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            let url = request.url?.absoluteString ?? ""
+            if url.contains("auth") {
+                return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v6AuthSuccessJSON))
+            } else if url.contains("info/version") {
+                return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v6VersionJSON))
+            } else if url.contains("info/messages") {
+                return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v6MessagesJSON))
+            }
+            throw PiholeServiceError.unknownError
+        }
+
+        let health = try await service.fetchHealth()
+
+        #expect(health.coreVersion == "v6.0")
+        #expect(health.ftlVersion == "v6.1")
+        // core local v6.0 != remote v6.1 → update available.
+        #expect(health.updateAvailable == true)
+        #expect(health.messages.count == 1)
+        #expect(health.messages.first?.text == "Rate-limiting 192.168.2.42")
+        #expect(health.messages.first?.timestamp == Date(timeIntervalSince1970: 1609459200))
+
+        MockURLProtocol.reset()
+    }
+
+    // MARK: - clearMessages Tests
+
+    @Test("clearMessages deletes the reported message ids")
+    func testClearMessagesSuccess() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)
+
+        var deletedPath: String?
+        MockURLProtocol.requestHandler = { request in
+            let url = request.url?.absoluteString ?? ""
+            if url.contains("auth") {
+                return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v6AuthSuccessJSON))
+            } else if request.httpMethod == "DELETE" {
+                deletedPath = request.url?.path
+                return MockURLProtocol.successResponse(for: request, data: nil, statusCode: 204)
+            } else if url.contains("info/messages") {
+                return MockURLProtocol.successResponse(for: request, data: MockData.jsonData(from: MockData.v6MessagesJSON))
+            }
+            throw PiholeServiceError.unknownError
+        }
+
+        try await service.clearMessages()
+
+        // The single mock message has id 1.
+        #expect(deletedPath == "/api/info/messages/1")
+
+        MockURLProtocol.reset()
+    }
+
     // MARK: - enable Tests
 
     @Test("enable sets status to enabled")

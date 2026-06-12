@@ -41,6 +41,14 @@ public struct SystemImages {
     // Top Clients
     public static let topClients = "person.2"
 
+    // Query History
+    public static let queryHistory = "chart.xyaxis.line"
+
+    // Detail / Actions
+    public static let moreDetails = "list.bullet.rectangle"
+    public static let healthUpdate = "arrow.down.circle.fill"
+    public static let healthUpToDate = "checkmark.circle.fill"
+
     // Statistics
     public static let globe = "globe"
     public static let totalQueries = "globe"
@@ -91,6 +99,7 @@ public struct UserText {
     public static let disableButton = "Disable"
     public static let closeButton = "Close"
     public static let doneButton = "Done"
+    public static let settingsButton = "Settings"
     
     // MARK: - Pi-hole Status
     public static let statusEnabled = "Active"
@@ -111,6 +120,25 @@ public struct UserText {
     public static let percentBlocked = "Percent Blocked"
     public static let domainsOnList = "Domains on List"
     public static let queriesBlocked = "Queries Blocked"
+
+    // MARK: - Detail Sections
+    public static let moreDetails = "More Details"
+    public static let queryHistory = "Last 24 Hours"
+    public static let topDomainsSection = "Top Domains"
+    public static let topClientsSection = "Top Clients"
+    public static let queryTypesSection = "Query Types"
+    public static let upstreamsSection = "Upstream Servers"
+    public static let deviceSection = "Device"
+    public static let healthSection = "Health"
+    public static let healthUpdateAvailable = "Update available"
+    public static let healthUpToDate = "Up to date"
+    public static let clearMessages = "Clear Messages"
+    public static let clearMessagesConfirmTitle = "Clear Messages?"
+    public static let clearMessagesConfirmMessage = "This permanently removes all diagnosis messages from this Pi-hole."
+    public static let queryLogTitle = "Query Log"
+    public static let queryLogSearchPrompt = "Search domain or client"
+    public static let queryLogCardTitle = "Query Log"
+    public static let queryLogCardSubtitle = "Browse and search recent queries"
     
     // MARK: - Pi-hole Setup
     public static let piholeSetupTitle = "Pi-hole Setup"
@@ -120,6 +148,7 @@ public struct UserText {
     public static let piholeSetupTokenPlaceholder = "Token (Optional)"
     public static let piholeSetupShowTopDomains = "Show Top Domains"
     public static let piholeSetupShowTopClients = "Show Top Clients"
+    public static let piholeSetupShowHistory = "Show History Chart"
     public static let piholeSetupEnablePiMonitor = "Enable Pi Monitor"
     public static let piholeTokenFooterSection = "Token is required for some functionalities like disable/enable your pi-hole.\\n\\nYou can find the API Token on /etc/pihole/setupVars.conf under WEBPASSWORD or you can open the web UI and go to Settings -> API -> Show API Token"
     public static let piholeTokenFooterV6Section = "For version 6.x, you can use your actual password for authenticating"
@@ -153,6 +182,7 @@ public struct UserText {
         public static let displayAsListToggle = "Display Pi-hole stats as list"
         public static let displayAllPiholesToggle = "Display all Pi-holes in a single card"
         public static let alwaysDisablePermanentlyToggle = "Always disable Pi-hole permanently"
+        public static let alwaysDisablePermanentlyDescription = "When on, disabling a Pi-hole turns it off indefinitely instead of for a set time."
         public static let temperatureScaleLabel = "Temperature Scale"
         public static let startAtLoginToggle = "Start Pi Stats when macOS begins"
         public static let versionLabel = "Version"
@@ -254,6 +284,7 @@ public struct UserText {
         public static let passwordHelp = "Use your Pi-hole web interface password"
         public static let showTopDomainsLabel = "Show Top Domains"
         public static let showTopClientsLabel = "Show Top Clients"
+        public static let showHistoryLabel = "Show History Chart"
         public static let enablePiMonitorLabel = "Enable Pi Monitor"
         public static let piMonitorPortPlaceholder = "8088"
         public static let whatsThisButton = "What's this?"
@@ -272,9 +303,11 @@ public struct UserText {
         public static let versionFormat = "Version %@ (%@)"
         public static let copyright = "© 2025 Fernando Bunn"
         public static let websiteButton = "Website"
+        public static let developerWebsiteButton = "Developer Website"
         public static let supportButton = "Support"
         public static let closeButton = "Close"
-        public static let websiteURL = "https://github.com/bunn/PiStats"
+        public static let websiteURL = "https://pistats.app/"
+        public static let developerWebsiteURL = "https://bunn.dev"
         public static let supportURL = "https://github.com/bunn/PiStats/issues"
         public static let sourceCodeURL = "https://github.com/Bunn/PiStats"
         public static let macOSURL = "https://github.com/Bunn/PiStats"
@@ -379,6 +412,7 @@ public struct AppColors {
 // MARK: - App Identifiers
 public struct AppIdentifiers {
     public static let mainWindowSceneId = "main"
+    public static let detailWindowSceneId = "pihole-detail"
 }
 
 // MARK: - Preferences Constants

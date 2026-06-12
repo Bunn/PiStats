@@ -26,8 +26,6 @@ public struct Pihole: Sendable, Identifiable {
     public let secure: Bool
     public let version: PiholeVersion
     public let piMonitor: PiMonitorEnvironment?
-    public let showTopDomains: Bool
-    public let showTopClients: Bool
 
     public init(name: String,
                 address: String,
@@ -36,8 +34,6 @@ public struct Pihole: Sendable, Identifiable {
                 secure: Bool = false,
                 token: String? = nil,
                 piMonitor: PiMonitorEnvironment? = nil,
-                showTopDomains: Bool = true,
-                showTopClients: Bool = true,
                 uuid: UUID = UUID()) {
         self.uuid = uuid
         self.name = name
@@ -47,8 +43,6 @@ public struct Pihole: Sendable, Identifiable {
         self.port = port
         self.secure = secure
         self.piMonitor = piMonitor
-        self.showTopDomains = showTopDomains
-        self.showTopClients = showTopClients
     }
 
     public var id: UUID {
@@ -89,6 +83,13 @@ public struct HistoryItem: Codable, Identifiable, Sendable {
     public let timestamp: Date
     public let blocked: Int
     public let forwarded: Int
+
+    public init(id: UUID = UUID(), timestamp: Date, blocked: Int, forwarded: Int) {
+        self.id = id
+        self.timestamp = timestamp
+        self.blocked = blocked
+        self.forwarded = forwarded
+    }
 }
 
 // MARK: - TopDomainsResult Model
@@ -140,5 +141,117 @@ public struct TopClientItem: Identifiable, Sendable {
 
     public var displayName: String {
         name.isEmpty ? ip : name
+    }
+}
+
+// MARK: - QueryTypesResult Model
+
+public struct QueryTypesResult: Sendable {
+    public let types: [QueryTypeItem]
+
+    public init(types: [QueryTypeItem]) {
+        self.types = types
+    }
+}
+
+public struct QueryTypeItem: Identifiable, Sendable {
+    public let id = UUID()
+    public let name: String
+    /// Share of total queries for this type, 0...100.
+    public let percentage: Double
+
+    public init(name: String, percentage: Double) {
+        self.name = name
+        self.percentage = percentage
+    }
+}
+
+// MARK: - UpstreamsResult Model
+
+public struct UpstreamsResult: Sendable {
+    public let upstreams: [UpstreamItem]
+
+    public init(upstreams: [UpstreamItem]) {
+        self.upstreams = upstreams
+    }
+}
+
+public struct UpstreamItem: Identifiable, Sendable {
+    public let id = UUID()
+    public let name: String
+    public let ip: String
+    /// Share of total queries handled by this upstream, 0...100.
+    public let percentage: Double
+
+    public init(name: String, ip: String, percentage: Double) {
+        self.name = name
+        self.ip = ip
+        self.percentage = percentage
+    }
+
+    public var displayName: String {
+        name.isEmpty ? ip : name
+    }
+}
+
+// MARK: - Query Log Model
+
+public enum QueryStatus: Sendable, Equatable {
+    case blocked
+    case forwarded
+    case cached
+    case unknown
+}
+
+public struct QueryLogEntry: Identifiable, Sendable {
+    public let id = UUID()
+    public let timestamp: Date
+    public let domain: String
+    /// Display name of the requesting client (hostname when known, else IP).
+    public let client: String
+    public let type: String
+    public let status: QueryStatus
+
+    public init(timestamp: Date, domain: String, client: String, type: String, status: QueryStatus) {
+        self.timestamp = timestamp
+        self.domain = domain
+        self.client = client
+        self.type = type
+        self.status = status
+    }
+}
+
+// MARK: - Pihole Health Model
+
+public struct PiholeHealth: Sendable {
+    public let coreVersion: String?
+    public let webVersion: String?
+    public let ftlVersion: String?
+    public let updateAvailable: Bool
+    /// Diagnosis/warning messages reported by FTL (v6 only; empty on v5).
+    public let messages: [DiagnosisMessage]
+
+    public init(coreVersion: String?,
+                webVersion: String?,
+                ftlVersion: String?,
+                updateAvailable: Bool,
+                messages: [DiagnosisMessage]) {
+        self.coreVersion = coreVersion
+        self.webVersion = webVersion
+        self.ftlVersion = ftlVersion
+        self.updateAvailable = updateAvailable
+        self.messages = messages
+    }
+}
+
+public struct DiagnosisMessage: Identifiable, Sendable {
+    public let id = UUID()
+    public let text: String
+    /// When FTL recorded the message (v6 only).
+    public let timestamp: Date?
+
+    public init(text: String, timestamp: Date? = nil) {
+        self.text = text
+        self.timestamp = timestamp
     }
 }

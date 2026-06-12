@@ -29,6 +29,10 @@ struct macOSApp: App {
         }
         .menuBarExtraStyle(.window)
 
+        WindowGroup(id: AppIdentifiers.detailWindowSceneId, for: UUID.self) { piholeID in
+            MacPiholeDetailWindow(dataManager: dataManager, prefs: prefs, piholeID: piholeID.wrappedValue)
+        }
+
         WindowGroup(UserText.MenuBar.appName, id: AppIdentifiers.mainWindowSceneId) {
             MacMainView(prefs: prefs, dataManager: dataManager)
                 .frame(

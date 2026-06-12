@@ -32,7 +32,16 @@ struct SettingsView: View {
             
             Section(header: Text(UserText.Settings.Sections.enableDisable)) {
                 Toggle(isOn: $viewModel.disablePermanently.animation()) {
-                    Label(UserText.Settings.alwaysDisablePermanentlyToggle, systemImage: SystemImages.settingsDisablePermanently)
+                    Label {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(UserText.Settings.alwaysDisablePermanentlyToggle)
+                            Text(UserText.Settings.alwaysDisablePermanentlyDescription)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                    } icon: {
+                        Image(systemName: SystemImages.settingsDisablePermanently)
+                    }
                 }
                 
                 if viewModel.disablePermanently == false {

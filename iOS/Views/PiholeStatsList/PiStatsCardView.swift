@@ -10,10 +10,11 @@ struct PiStatsCardView: View {
     @ObservedObject var data: PiholeSummaryData
     let updater: PiholeSummaryDataUpdater
     @ObservedObject var settingsStore: SettingsStore
+    var onSettings: () -> Void = {}
     @State private var showingDisableActionSheet = false
 
     var body: some View {
-        VStack {
+        VStack(spacing: 12) {
             HStack {
                 StatusHeaderView(data: data)
                 Spacer()
@@ -21,25 +22,12 @@ struct PiStatsCardView: View {
 
             if data.hasError, let error = data.currentError {
                 ErrorMessageView(error: error)
-                    .padding(.top, 8)
             }
 
             if settingsStore.displayStatsAsList {
                 ListView(data: data)
-                    .padding(.vertical)
             } else {
                 CardViewGrid(data: data)
-                    .padding(.vertical)
-            }
-
-            if let topDomains = data.topDomains {
-                Divider()
-                TopDomainsView(topDomains: topDomains)
-            }
-
-            if let topClients = data.topClients {
-                Divider()
-                TopClientsView(topClients: topClients)
             }
 
             if let metrics = data.monitorMetrics {
@@ -47,6 +35,9 @@ struct PiStatsCardView: View {
                 MetricsView(viewModel: .init(metrics: metrics, temperatureScale: settingsStore.temperatureScale))
                     .contentTransition(.numericText())
             }
+
+            actionButtons
+
             toggleButton()
         }
         .padding()
@@ -61,11 +52,35 @@ struct PiStatsCardView: View {
 }
 
 #Preview {
-    PiStatsCardView(data: .mockData, updater: .init(pihole: .init(name: "Test", address: "1234", version: .v5)), settingsStore: SettingsStore())
-        .padding()
+    NavigationStack {
+        PiStatsCardView(data: .mockData, updater: .init(pihole: .init(name: "Test", address: "1234", version: .v5)), settingsStore: SettingsStore())
+            .padding()
+    }
 }
 
 extension PiStatsCardView {
+    private var actionButtons: some View {
+        HStack(spacing: 12) {
+            Button(action: onSettings) {
+                Label(UserText.settingsButton, systemImage: SystemImages.gearshape)
+                    .font(.headline)
+                    .frame(maxWidth: .infinity, minHeight: 48)
+                    .glassEffect(.regular.interactive(), in: .rect(cornerRadius: LayoutConstants.defaultCornerRadius))
+            }
+            .buttonStyle(.plain)
+
+            NavigationLink {
+                PiholeDetailView(data: data, updater: updater, settingsStore: settingsStore)
+            } label: {
+                Label(UserText.moreDetails, systemImage: SystemImages.moreDetails)
+                    .font(.headline)
+                    .frame(maxWidth: .infinity, minHeight: 48)
+                    .glassEffect(.regular.interactive(), in: .rect(cornerRadius: LayoutConstants.defaultCornerRadius))
+            }
+            .buttonStyle(.plain)
+        }
+    }
+
     private func toggleButton() -> some View {
         if data.status == .disabled {
             return AnyView(enableButton())
@@ -131,7 +146,67 @@ extension PiStatsCardView {
         })
         
         buttons.append(.cancel())
-        
+
         return buttons
+    }
+}
+
+// MARK: - Detail Screen
+
+struct PiholeDetailView: View {
+    @ObservedObject var data: PiholeSummaryData
+    let updater: PiholeSummaryDataUpdater
+    @ObservedObject var settingsStore: SettingsStore
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 16) {
+                PiholeDetailContentView(
+                    data: data,
+                    temperatureScale: settingsStore.temperatureScale,
+                    showsStats: false,
+                    showsMetrics: false,
+                    onClearMessages: { await updater.clearMessages() }
+                )
+                queryLogCard
+            }
+            .padding()
+        }
+        .navigationTitle(data.name)
+        .navigationBarTitleDisplayMode(.inline)
+        .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
+    }
+
+    private var queryLogCard: some View {
+        NavigationLink {
+            QueryLogView(updater: updater)
+        } label: {
+            HStack(spacing: 12) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(UserText.queryLogCardTitle)
+                        .font(.headline)
+                        .foregroundStyle(.primary)
+                    Text(UserText.queryLogCardSubtitle)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .foregroundStyle(.secondary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding()
+            .glassEffect(in: .rect(cornerRadius: LayoutConstants.defaultCornerRadius))
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+#Preview("Detail") {
+    NavigationStack {
+        PiholeDetailView(data: .mockData,
+                         updater: .init(pihole: .init(name: "Test", address: "1234", version: .v5)),
+                         settingsStore: SettingsStore())
     }
 }
