@@ -173,6 +173,9 @@
 				TemperatureScale.swift,
 				UserDefaultExtensions.swift,
 				Views/CardViewGrid.swift,
+				Views/CompactStatsView.swift,
+				Views/PiholeDetailContentView.swift,
+				Views/QueryHistoryChartView.swift,
 				Views/ErrorMessageView.swift,
 				Views/ListView.swift,
 				Views/MetricsView.swift,
@@ -198,6 +201,9 @@
 				TemperatureScale.swift,
 				UserDefaultExtensions.swift,
 				Views/CardViewGrid.swift,
+				Views/CompactStatsView.swift,
+				Views/PiholeDetailContentView.swift,
+				Views/QueryHistoryChartView.swift,
 				Views/ErrorMessageView.swift,
 				Views/ListView.swift,
 				Views/MetricsView.swift,
@@ -1147,7 +1153,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = PiStatsWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 34;
+				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = B2RUA6XMHC;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PiStatsWidget/Info.plist;
@@ -1177,7 +1183,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = PiStatsWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 34;
+				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = B2RUA6XMHC;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PiStatsWidget/Info.plist;

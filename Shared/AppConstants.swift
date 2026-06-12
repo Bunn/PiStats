@@ -41,6 +41,12 @@ public struct SystemImages {
     // Top Clients
     public static let topClients = "person.2"
 
+    // Query History
+    public static let queryHistory = "chart.xyaxis.line"
+
+    // Detail / Actions
+    public static let moreDetails = "list.bullet.rectangle"
+
     // Statistics
     public static let globe = "globe"
     public static let totalQueries = "globe"
@@ -91,6 +97,7 @@ public struct UserText {
     public static let disableButton = "Disable"
     public static let closeButton = "Close"
     public static let doneButton = "Done"
+    public static let settingsButton = "Settings"
     
     // MARK: - Pi-hole Status
     public static let statusEnabled = "Active"
@@ -111,6 +118,13 @@ public struct UserText {
     public static let percentBlocked = "Percent Blocked"
     public static let domainsOnList = "Domains on List"
     public static let queriesBlocked = "Queries Blocked"
+
+    // MARK: - Detail Sections
+    public static let moreDetails = "More Details"
+    public static let queryHistory = "Last 24 Hours"
+    public static let topDomainsSection = "Top Domains"
+    public static let topClientsSection = "Top Clients"
+    public static let deviceSection = "Device"
     
     // MARK: - Pi-hole Setup
     public static let piholeSetupTitle = "Pi-hole Setup"
@@ -120,6 +134,7 @@ public struct UserText {
     public static let piholeSetupTokenPlaceholder = "Token (Optional)"
     public static let piholeSetupShowTopDomains = "Show Top Domains"
     public static let piholeSetupShowTopClients = "Show Top Clients"
+    public static let piholeSetupShowHistory = "Show History Chart"
     public static let piholeSetupEnablePiMonitor = "Enable Pi Monitor"
     public static let piholeTokenFooterSection = "Token is required for some functionalities like disable/enable your pi-hole.\\n\\nYou can find the API Token on /etc/pihole/setupVars.conf under WEBPASSWORD or you can open the web UI and go to Settings -> API -> Show API Token"
     public static let piholeTokenFooterV6Section = "For version 6.x, you can use your actual password for authenticating"
@@ -254,6 +269,7 @@ public struct UserText {
         public static let passwordHelp = "Use your Pi-hole web interface password"
         public static let showTopDomainsLabel = "Show Top Domains"
         public static let showTopClientsLabel = "Show Top Clients"
+        public static let showHistoryLabel = "Show History Chart"
         public static let enablePiMonitorLabel = "Enable Pi Monitor"
         public static let piMonitorPortPlaceholder = "8088"
         public static let whatsThisButton = "What's this?"

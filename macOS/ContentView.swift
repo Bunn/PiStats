@@ -58,6 +58,8 @@ struct MacMainView: View {
         List(dataUpdaters.sortedByNameThenHost()) { dataUpdater in
             MacPiholeRowFromDataUpdater(
                 dataUpdater: dataUpdater,
+                summary: dataUpdater.summary,
+                temperatureScale: prefs.temperatureScale,
                 onEditTapped: { editingPihole = dataUpdater.pihole }
             )
             .contextMenu {

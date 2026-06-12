@@ -119,9 +119,10 @@ struct PiStatPopoverView: View {
     @ObservedObject var summary: PiholeSummaryData
     let temperatureScale: TemperatureScale
     @ObservedObject var prefs: MacPreferences
+    @Environment(\.openWindow) private var openWindow
 
     var body: some View {
-        VStack {
+        VStack(spacing: 8) {
             HStack {
                 StatusHeaderView(data: summary)
                 Spacer()
@@ -139,48 +140,29 @@ struct PiStatPopoverView: View {
 
             Divider()
 
-            HStack {
-                Text(UserText.Popover.dataSection)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.secondary)
-                Spacer()
+            CompactStatsView(data: summary)
+
+            if let history = summary.history, !history.isEmpty {
+                QueryHistoryChartView(items: history,
+                                      permittedColor: AppColors.statusOnline,
+                                      blockedColor: AppColors.queriesBlocked,
+                                      showsAxis: false,
+                                      showsLegend: false)
+                    .frame(height: 56)
             }
 
-            ListView(data: summary)
+            Divider()
 
-            if let topDomains = summary.topDomains {
-                Divider()
+            Button(action: openMainWindow) {
                 HStack {
-                    Text("Top Domains")
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.secondary)
+                    Text(UserText.moreDetails)
                     Spacer()
+                    Image(systemName: "chevron.right")
                 }
-                TopDomainsView(topDomains: topDomains)
+                .contentShape(Rectangle())
             }
-
-            if let topClients = summary.topClients {
-                Divider()
-                HStack {
-                    Text("Top Clients")
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.secondary)
-                    Spacer()
-                }
-                TopClientsView(topClients: topClients)
-            }
-
-            if let metrics = summary.monitorMetrics {
-                Divider()
-                HStack {
-                    Text(UserText.Popover.deviceSection)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.secondary)
-                    Spacer()
-                }
-                
-                MetricsView(viewModel: .init(metrics: metrics, temperatureScale: temperatureScale))
-            }
+            .buttonStyle(.plain)
+            .foregroundStyle(.secondary)
         }
         .padding()
         .background(
@@ -191,6 +173,15 @@ struct PiStatPopoverView: View {
             RoundedRectangle(cornerRadius: 12, style: .continuous)
                 .strokeBorder(Color.secondary.opacity(0.25), lineWidth: 1)
         )
+    }
+
+    private func openMainWindow() {
+        NSApp.activate(ignoringOtherApps: true)
+        for window in NSApp.windows where window.title == UserText.MenuBar.appName && window.isVisible {
+            window.makeKeyAndOrderFront(nil)
+            return
+        }
+        openWindow(id: AppIdentifiers.mainWindowSceneId)
     }
 
     private var backgroundOpacity: CGFloat {

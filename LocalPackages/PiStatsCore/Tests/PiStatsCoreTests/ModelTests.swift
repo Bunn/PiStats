@@ -47,16 +47,8 @@ struct ModelTests {
         #expect(pihole.port == 80)
         #expect(pihole.token == nil)
         #expect(pihole.piMonitor == nil)
-        #expect(pihole.showTopDomains == true)
     }
 
-    @Test("Pihole showTopDomains can be set to false")
-    func testPiholeShowTopDomainsFalse() {
-        let pihole = Pihole(name: "Test", address: "192.168.1.100", showTopDomains: false)
-
-        #expect(pihole.showTopDomains == false)
-    }
-    
     // MARK: - PiholeVersion Tests
     
     @Test("PiholeVersion has correct raw values")

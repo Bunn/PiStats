@@ -159,8 +159,6 @@ final class DefaultPiholeStorage: PiholeStorage {
             secure: pihole.secure,
             token: nil,
             piMonitor: pihole.piMonitor,
-            showTopDomains: pihole.showTopDomains,
-            showTopClients: pihole.showTopClients,
             uuid: pihole.uuid
         )
 
@@ -237,8 +235,6 @@ final class DefaultPiholeStorage: PiholeStorage {
                         secure: stored.secure,
                         token: finalToken,
                         piMonitor: stored.piMonitor,
-                        showTopDomains: stored.showTopDomains,
-                        showTopClients: stored.showTopClients,
                         uuid: stored.uuid
                     )
                 }
@@ -345,8 +341,6 @@ extension Pihole: Codable {
         case secure
         case version
         case piMonitor
-        case showTopDomains
-        case showTopClients
     }
 
     public init(from decoder: Decoder) throws {
@@ -360,8 +354,6 @@ extension Pihole: Codable {
         let secure = try container.decodeIfPresent(Bool.self, forKey: .secure) ?? false
         let version = try container.decode(PiholeVersion.self, forKey: .version)
         let piMonitor = try container.decodeIfPresent(PiMonitorEnvironment.self, forKey: .piMonitor)
-        let showTopDomains = try container.decodeIfPresent(Bool.self, forKey: .showTopDomains) ?? true
-        let showTopClients = try container.decodeIfPresent(Bool.self, forKey: .showTopClients) ?? true
 
         self.init(
             name: name,
@@ -371,8 +363,6 @@ extension Pihole: Codable {
             secure: secure,
             token: token,
             piMonitor: piMonitor,
-            showTopDomains: showTopDomains,
-            showTopClients: showTopClients,
             uuid: uuid
         )
     }
@@ -387,8 +377,6 @@ extension Pihole: Codable {
         try container.encode(secure, forKey: .secure)
         try container.encode(version, forKey: .version)
         try container.encodeIfPresent(piMonitor, forKey: .piMonitor)
-        try container.encode(showTopDomains, forKey: .showTopDomains)
-        try container.encode(showTopClients, forKey: .showTopClients)
     }
 }
 

@@ -26,8 +26,6 @@ public struct Pihole: Sendable, Identifiable {
     public let secure: Bool
     public let version: PiholeVersion
     public let piMonitor: PiMonitorEnvironment?
-    public let showTopDomains: Bool
-    public let showTopClients: Bool
 
     public init(name: String,
                 address: String,
@@ -36,8 +34,6 @@ public struct Pihole: Sendable, Identifiable {
                 secure: Bool = false,
                 token: String? = nil,
                 piMonitor: PiMonitorEnvironment? = nil,
-                showTopDomains: Bool = true,
-                showTopClients: Bool = true,
                 uuid: UUID = UUID()) {
         self.uuid = uuid
         self.name = name
@@ -47,8 +43,6 @@ public struct Pihole: Sendable, Identifiable {
         self.port = port
         self.secure = secure
         self.piMonitor = piMonitor
-        self.showTopDomains = showTopDomains
-        self.showTopClients = showTopClients
     }
 
     public var id: UUID {
@@ -89,6 +83,13 @@ public struct HistoryItem: Codable, Identifiable, Sendable {
     public let timestamp: Date
     public let blocked: Int
     public let forwarded: Int
+
+    public init(id: UUID = UUID(), timestamp: Date, blocked: Int, forwarded: Int) {
+        self.id = id
+        self.timestamp = timestamp
+        self.blocked = blocked
+        self.forwarded = forwarded
+    }
 }
 
 // MARK: - TopDomainsResult Model

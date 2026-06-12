@@ -186,24 +186,20 @@ struct WidgetDataProvider {
                 }
             }
 
-            // Fetch top domains if enabled
+            // Fetch top domains
             var topDomains: TopDomainsResult? = nil
-            if pihole.showTopDomains {
-                do {
-                    topDomains = try await client.fetchTopDomains(count: 10)
-                } catch {
-                    Log.widget.error("Failed to fetch top domains: \(String(describing: error), privacy: .public)")
-                }
+            do {
+                topDomains = try await client.fetchTopDomains(count: 10)
+            } catch {
+                Log.widget.error("Failed to fetch top domains: \(String(describing: error), privacy: .public)")
             }
 
-            // Fetch top clients if enabled
+            // Fetch top clients
             var topClients: TopClientsResult? = nil
-            if pihole.showTopClients {
-                do {
-                    topClients = try await client.fetchTopClients(count: 10)
-                } catch {
-                    Log.widget.error("Failed to fetch top clients: \(String(describing: error), privacy: .public)")
-                }
+            do {
+                topClients = try await client.fetchTopClients(count: 10)
+            } catch {
+                Log.widget.error("Failed to fetch top clients: \(String(describing: error), privacy: .public)")
             }
 
             Log.widget.info("Successfully fetched data for pihole \(pihole.name, privacy: .private(mask: .hash))")

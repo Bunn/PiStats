@@ -10,26 +10,32 @@ import PiStatsCore
 
 struct MacPiholeRowFromDataUpdater: View {
     @ObservedObject var dataUpdater: PiholeSummaryDataUpdater
+    @ObservedObject var summary: PiholeSummaryData
+    let temperatureScale: TemperatureScale
     let onEditTapped: () -> Void
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: LayoutConstants.MainView.rowInternalSpacing) {
             headerRow
-            statsRow
+            PiholeDetailContentView(
+                data: summary,
+                temperatureScale: temperatureScale,
+                displayStatsAsList: true
+            )
         }
         .padding(.vertical, LayoutConstants.MainView.rowVerticalPadding)
     }
-    
+
     private var headerRow: some View {
         HStack {
-            PiholeStatusIcon(status: dataUpdater.summary.status, 
-                           hasError: dataUpdater.summary.hasError)
-            
+            PiholeStatusIcon(status: summary.status,
+                           hasError: summary.hasError)
+
             Text(dataUpdater.pihole.name)
                 .font(.headline)
-            
+
             Spacer()
-            
+
             Button(action: onEditTapped) {
                 Image(systemName: SystemImages.gearshape)
                     .foregroundStyle(.secondary)
@@ -37,19 +43,6 @@ struct MacPiholeRowFromDataUpdater: View {
             .buttonStyle(.plain)
             .help(UserText.MainView.editTooltip)
         }
-    }
-    
-    private var statsRow: some View {
-        HStack(spacing: LayoutConstants.MainView.rowItemSpacing) {
-            Label(dataUpdater.summary.totalQueries, 
-                  systemImage: SystemImages.globe)
-            Label(dataUpdater.summary.queriesBlocked, 
-                  systemImage: SystemImages.handRaised)
-            Label(dataUpdater.summary.percentageBlocked, 
-                  systemImage: SystemImages.chartPie)
-        }
-        .font(.caption)
-        .foregroundStyle(.secondary)
     }
 }
 
@@ -74,9 +67,12 @@ struct PiholeStatusIcon: View {
 }
 
 #Preview {
-    VStack(spacing: 8) {
+    let updater = PiholeSummaryDataUpdater(pihole: Pihole(name: "Test Pi-hole", address: "192.168.1.1"))
+    return VStack(spacing: 8) {
         MacPiholeRowFromDataUpdater(
-            dataUpdater: PiholeSummaryDataUpdater(pihole: Pihole(name: "Test Pi-hole", address: "192.168.1.1")),
+            dataUpdater: updater,
+            summary: updater.summary,
+            temperatureScale: .celsius,
             onEditTapped: {}
         )
     }
