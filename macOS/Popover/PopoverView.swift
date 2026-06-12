@@ -140,29 +140,38 @@ struct PiStatPopoverView: View {
 
             Divider()
 
-            CompactStatsView(data: summary)
+            HStack {
+                Text(UserText.Popover.dataSection)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.secondary)
+                Spacer()
+            }
 
-            if let history = summary.history, !history.isEmpty {
-                QueryHistoryChartView(items: history,
-                                      permittedColor: AppColors.statusOnline,
-                                      blockedColor: AppColors.queriesBlocked,
-                                      showsAxis: false,
-                                      showsLegend: false)
-                    .frame(height: 56)
+            ListView(data: summary)
+
+            if let metrics = summary.monitorMetrics {
+                Divider()
+                HStack {
+                    Text(UserText.Popover.deviceSection)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                }
+                MetricsView(viewModel: .init(metrics: metrics, temperatureScale: temperatureScale))
             }
 
             Divider()
 
-            Button(action: openMainWindow) {
-                HStack {
-                    Text(UserText.moreDetails)
-                    Spacer()
-                    Image(systemName: "chevron.right")
+            HStack {
+                Button(action: openDetailWindow) {
+                    HStack {
+                        Image(systemName: SystemImages.moreDetails)
+                        Text(UserText.moreDetails)
+                    }
+                    .foregroundStyle(.primary)
                 }
-                .contentShape(Rectangle())
+                Spacer()
             }
-            .buttonStyle(.plain)
-            .foregroundStyle(.secondary)
         }
         .padding()
         .background(
@@ -175,13 +184,9 @@ struct PiStatPopoverView: View {
         )
     }
 
-    private func openMainWindow() {
+    private func openDetailWindow() {
         NSApp.activate(ignoringOtherApps: true)
-        for window in NSApp.windows where window.title == UserText.MenuBar.appName && window.isVisible {
-            window.makeKeyAndOrderFront(nil)
-            return
-        }
-        openWindow(id: AppIdentifiers.mainWindowSceneId)
+        openWindow(id: AppIdentifiers.detailWindowSceneId, value: dataUpdater.pihole.uuid)
     }
 
     private var backgroundOpacity: CGFloat {

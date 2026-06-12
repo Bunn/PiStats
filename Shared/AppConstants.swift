@@ -409,6 +409,7 @@ public struct AppColors {
 // MARK: - App Identifiers
 public struct AppIdentifiers {
     public static let mainWindowSceneId = "main"
+    public static let detailWindowSceneId = "pihole-detail"
 }
 
 // MARK: - Preferences Constants

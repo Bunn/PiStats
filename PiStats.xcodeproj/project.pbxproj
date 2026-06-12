@@ -141,6 +141,7 @@
 				Views/EmptyStateView.swift,
 				Views/MenuBarIconView.swift,
 				Views/PiholeRowViews.swift,
+				Views/MacPiholeDetailView.swift,
 			);
 			target = 310D5FA82D496998008E611D /* Pi Stats */;
 		};
@@ -174,9 +175,9 @@
 				TemperatureScale.swift,
 				UserDefaultExtensions.swift,
 				Views/CardViewGrid.swift,
-				Views/HealthView.swift,
 				Views/CompactStatsView.swift,
 				Views/ErrorMessageView.swift,
+				Views/HealthView.swift,
 				Views/ListView.swift,
 				Views/MetricsView.swift,
 				Views/PiholeDetailContentView.swift,
@@ -205,9 +206,9 @@
 				TemperatureScale.swift,
 				UserDefaultExtensions.swift,
 				Views/CardViewGrid.swift,
-				Views/HealthView.swift,
 				Views/CompactStatsView.swift,
 				Views/ErrorMessageView.swift,
+				Views/HealthView.swift,
 				Views/ListView.swift,
 				Views/MetricsView.swift,
 				Views/PiholeDetailContentView.swift,
