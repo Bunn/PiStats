@@ -46,7 +46,6 @@ struct MacMainView: View {
         }
         .onAppear(perform: setupView)
         .onDisappear {
-            dataManager.stopUpdating()
             if let observer = notificationObserver {
                 NotificationCenter.default.removeObserver(observer)
                 notificationObserver = nil
