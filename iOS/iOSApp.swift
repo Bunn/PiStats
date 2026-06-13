@@ -24,7 +24,7 @@ struct iOSApp: App {
                 }
         }
     }
-    
+
     private func updateAllWidgets() {
         Task {
             WidgetCenter.shared.reloadAllTimelines()

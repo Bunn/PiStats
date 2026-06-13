@@ -19,6 +19,13 @@ class PiholeDataManager: ObservableObject {
     
     private var hasInitialized = false
     private var cancellables = Set<AnyCancellable>()
+
+    private let alertEngine = AlertEngine(rules: AlertEngine.defaultRules,
+                                          notifier: LocalNotificationDispatcher(),
+                                          settings: AlertSettingsStore.load())
+    private lazy var monitoringScheduler = MacMonitoringScheduler(engine: alertEngine) { [weak self] in
+        self?.currentSnapshots() ?? []
+    }
     
     /// Computed overall status for menu bar icon
     var overallStatus: PiholeStatus {
@@ -55,6 +62,7 @@ class PiholeDataManager: ObservableObject {
     
     init() {
         setupInitialData()
+        NotificationActionHandler.shared.registerCategories()
     }
     
     private func setupListUpdaterObservation() {
@@ -109,15 +117,28 @@ class PiholeDataManager: ObservableObject {
     
     func startUpdating() {
         listUpdater?.startUpdating()
+        monitoringScheduler.start()
     }
-    
+
     func stopUpdating() {
         listUpdater?.stopUpdating()
+        monitoringScheduler.stop()
     }
-    
+
     func refreshData() {
         listUpdater?.prepareForReplacement()
         loadPiholes()
         listUpdater?.startUpdating()
+    }
+
+    private func currentSnapshots() -> [PiholeSnapshot] {
+        guard let updaters = listUpdater?.dataUpdaters else { return [] }
+        return updaters.map {
+            PiholeSnapshot(piholeID: $0.pihole.uuid,
+                           piholeName: $0.pihole.name,
+                           reachable: !$0.summary.hasError,
+                           status: $0.summary.status,
+                           health: $0.summary.health)
+        }
     }
 }

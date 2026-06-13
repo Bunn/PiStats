@@ -277,24 +277,15 @@ struct TogglePiholeIntent: AppIntent {
             throw IntentError.message("Pi-hole not found")
         }
         
-        let client = PiholeAPIClient(pihole)
-        
         do {
-            let currentStatus = try await client.fetchStatus()
-            
-            let newStatus: PiholeStatus
-            if currentStatus == .enabled {
-                newStatus = try await client.disable()
-            } else {
-                newStatus = try await client.enable()
-            }
-            
+            let newStatus = try await PiholeActionService().toggle(pihole)
+
             // Refresh widget data
             WidgetCenter.shared.reloadTimelines(ofKind: "PiStatusControlWidget")
-            
+
             let statusText = newStatus == .enabled ? "enabled" : "disabled"
             return .result(dialog: "Pi-hole has been \(statusText)")
-            
+
         } catch {
             throw IntentError.message("Failed to toggle Pi-hole: \(error.localizedDescription)")
         }

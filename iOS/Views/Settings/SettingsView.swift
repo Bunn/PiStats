@@ -50,7 +50,7 @@ struct SettingsView: View {
                     }
                 }
             }
-            
+
             Section(header: Text(UserText.Settings.Sections.piMonitor)) {
                 Label(UserText.Settings.temperatureScaleLabel, systemImage: SystemImages.piMonitorTemperature)
                 

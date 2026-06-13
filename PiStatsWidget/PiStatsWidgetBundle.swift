@@ -16,5 +16,8 @@ struct PiStatsWidgetBundle: WidgetBundle {
         PiTopDomainsWidget()
         PiTopClientsWidget()
         PiStatusControlWidget()
+        DisableLiveActivity()
+        PiStatsWidgetControl()
+        PiholeQuickDisableControl()
     }
 }
