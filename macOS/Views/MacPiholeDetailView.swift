@@ -40,34 +40,77 @@ struct MacPiholeDetailView: View {
     @ObservedObject var prefs: MacPreferences
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
-                HStack {
-                    StatusHeaderView(data: summary)
-                    Spacer()
-                    ActionButtonView(
-                        status: summary.status,
-                        prefs: prefs,
-                        onEnable: { await dataUpdater.enable() },
-                        onDisable: { timer in await dataUpdater.disable(timer: timer) }
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 16) {
+                    HStack {
+                        StatusHeaderView(data: summary)
+                        Spacer()
+                        ActionButtonView(
+                            status: summary.status,
+                            prefs: prefs,
+                            onEnable: { await dataUpdater.enable() },
+                            onDisable: { timer in await dataUpdater.disable(timer: timer) }
+                        )
+                    }
+
+                    if summary.hasError, let error = summary.currentError {
+                        ErrorMessageView(error: error, isCollapsible: false)
+                    }
+
+                    PiholeDetailContentView(
+                        data: summary,
+                        temperatureScale: prefs.temperatureScale,
+                        showsStats: true,
+                        showsMetrics: true,
+                        displayStatsAsList: true,
+                        onClearMessages: { await dataUpdater.clearMessages() },
+                        onLoadDenyRules: dataUpdater.pihole.version == .v6 ? { try await dataUpdater.fetchDenyRegexRules() } : nil,
+                        onBlockRules: dataUpdater.pihole.version == .v6 ? { rules in try await dataUpdater.addDenyRegexRules(rules) } : nil,
+                        onUnblockRules: dataUpdater.pihole.version == .v6 ? { rules in try await dataUpdater.removeDenyRegexRules(rules) } : nil
                     )
-                }
 
-                if summary.hasError, let error = summary.currentError {
-                    ErrorMessageView(error: error, isCollapsible: false)
+                    if dataUpdater.pihole.version == .v6 {
+                        blocklistsCard
+                    }
                 }
-
-                PiholeDetailContentView(
-                    data: summary,
-                    temperatureScale: prefs.temperatureScale,
-                    showsStats: true,
-                    showsMetrics: true,
-                    displayStatsAsList: true,
-                    onClearMessages: { await dataUpdater.clearMessages() }
-                )
+                .padding()
             }
-            .padding()
+            .navigationTitle(summary.name)
         }
-        .navigationTitle(summary.name)
+    }
+
+    private var blocklistsCard: some View {
+        NavigationLink {
+            AdListsView(load: { try await dataUpdater.fetchAdlists() },
+                        toggle: { list, enabled in try await dataUpdater.setAdlist(list, enabled: enabled) },
+                        updateGravity: { try await dataUpdater.updateGravity() },
+                        gravityLastUpdated: { try await dataUpdater.fetchGravityLastUpdated() })
+        } label: {
+            HStack(spacing: 12) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(UserText.blocklistsCardTitle)
+                        .font(.headline)
+                    Text(UserText.blocklistsCardSubtitle)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .foregroundStyle(.secondary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(Color(nsColor: .windowBackgroundColor).opacity(0.5))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .strokeBorder(Color.secondary.opacity(0.25), lineWidth: 1)
+            )
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
     }
 }

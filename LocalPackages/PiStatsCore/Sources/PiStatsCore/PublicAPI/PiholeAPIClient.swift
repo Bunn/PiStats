@@ -77,4 +77,32 @@ public struct PiholeAPIClient: PiholeService {
     public func disable(timer: Int? = nil) async throws -> PiholeStatus {
         try await service.disable(timer: timer)
     }
+
+    public func updateGravity() async throws {
+        try await service.updateGravity()
+    }
+
+    public func fetchAdlists() async throws -> [AdList] {
+        try await service.fetchAdlists()
+    }
+
+    public func setAdlist(_ adlist: AdList, enabled: Bool) async throws {
+        try await service.setAdlist(adlist, enabled: enabled)
+    }
+
+    public func fetchDenyRegexRules() async throws -> [String] {
+        try await service.fetchDenyRegexRules()
+    }
+
+    public func addDenyRegexRules(_ rules: [String]) async throws {
+        try await service.addDenyRegexRules(rules)
+    }
+
+    public func removeDenyRegexRules(_ rules: [String]) async throws {
+        try await service.removeDenyRegexRules(rules)
+    }
+
+    public func fetchGravityLastUpdated() async throws -> Date? {
+        try await service.fetchGravityLastUpdated()
+    }
 }

@@ -222,6 +222,37 @@ internal final class PiholeV5Service: PiholeService {
     func disable(timer: Int?) async throws -> PiholeStatus {
         try await setBlocking(.disable, for: self.pihole, timer: timer)
     }
+
+    func updateGravity() async throws {
+        // The v5 web API has no gravity-update endpoint (it's a CLI/`pihole -g`
+        // operation), so this is unsupported.
+        throw PiholeServiceError.notSupported
+    }
+
+    func fetchAdlists() async throws -> [AdList] {
+        // Adlist management is exposed only through the v6 REST API.
+        throw PiholeServiceError.notSupported
+    }
+
+    func setAdlist(_ adlist: AdList, enabled: Bool) async throws {
+        throw PiholeServiceError.notSupported
+    }
+
+    func fetchDenyRegexRules() async throws -> [String] {
+        throw PiholeServiceError.notSupported
+    }
+
+    func addDenyRegexRules(_ rules: [String]) async throws {
+        throw PiholeServiceError.notSupported
+    }
+
+    func removeDenyRegexRules(_ rules: [String]) async throws {
+        throw PiholeServiceError.notSupported
+    }
+
+    func fetchGravityLastUpdated() async throws -> Date? {
+        throw PiholeServiceError.notSupported
+    }
 }
 
 // MARK: - Private Methods

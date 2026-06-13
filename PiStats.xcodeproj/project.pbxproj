@@ -91,6 +91,7 @@
 		310D60262D496A0F008E611D /* Exceptions for "iOS" folder in "Pi Stats Mobile" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Alerting/IOSMonitoringScheduler.swift,
 				Assets.xcassets,
 				ContentView.swift,
 				iOSApp.swift,
@@ -126,6 +127,7 @@
 		310D60292D496A0F008E611D /* Exceptions for "macOS" folder in "Pi Stats" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Alerting/MacMonitoringScheduler.swift,
 				Assets.xcassets,
 				ContentView.swift,
 				macOSApp.swift,
@@ -139,9 +141,9 @@
 				Views/AboutView.swift,
 				Views/ActionButtonView.swift,
 				Views/EmptyStateView.swift,
+				Views/MacPiholeDetailView.swift,
 				Views/MenuBarIconView.swift,
 				Views/PiholeRowViews.swift,
-				Views/MacPiholeDetailView.swift,
 			);
 			target = 310D5FA82D496998008E611D /* Pi Stats */;
 		};
@@ -163,6 +165,10 @@
 		310D602F2D496A33008E611D /* Exceptions for "Shared" folder in "Pi Stats Mobile" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Actions/PiholeActionService.swift,
+				Alerting/AlertSettingsStore.swift,
+				Alerting/LocalNotificationDispatcher.swift,
+				Alerting/NotificationActionHandler.swift,
 				AppConstants.swift,
 				AppGroup.swift,
 				Colors.xcassets,
@@ -170,13 +176,17 @@
 				DataUpdater/PiholeSummaryData.swift,
 				DataUpdater/PiholeSummaryDataUpdater.swift,
 				KeyChainPasswordItem.swift,
+				LiveActivity/DisableActivityController.swift,
+				LiveActivity/PiholeDisableActivityAttributes.swift,
 				PiholeStorage.swift,
 				StatType.swift,
 				TemperatureScale.swift,
 				UserDefaultExtensions.swift,
+				Views/AdListsView.swift,
 				Views/CardViewGrid.swift,
 				Views/CompactStatsView.swift,
 				Views/ErrorMessageView.swift,
+				Views/GravityUpdateButton.swift,
 				Views/HealthView.swift,
 				Views/ListView.swift,
 				Views/MetricsView.swift,
@@ -188,12 +198,18 @@
 				Views/TopClientsView.swift,
 				Views/TopDomainsView.swift,
 				Views/UpstreamsView.swift,
+			
+				Views/BlockServicesView.swift,
 			);
 			target = 310D5F7A2D49698C008E611D /* Pi Stats Mobile */;
 		};
 		310D60312D496A7A008E611D /* Exceptions for "Shared" folder in "Pi Stats" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Actions/PiholeActionService.swift,
+				Alerting/AlertSettingsStore.swift,
+				Alerting/LocalNotificationDispatcher.swift,
+				Alerting/NotificationActionHandler.swift,
 				AppConstants.swift,
 				AppGroup.swift,
 				Colors.xcassets,
@@ -205,9 +221,11 @@
 				StatType.swift,
 				TemperatureScale.swift,
 				UserDefaultExtensions.swift,
+				Views/AdListsView.swift,
 				Views/CardViewGrid.swift,
 				Views/CompactStatsView.swift,
 				Views/ErrorMessageView.swift,
+				Views/GravityUpdateButton.swift,
 				Views/HealthView.swift,
 				Views/ListView.swift,
 				Views/MetricsView.swift,
@@ -219,6 +237,8 @@
 				Views/TopClientsView.swift,
 				Views/TopDomainsView.swift,
 				Views/UpstreamsView.swift,
+			
+				Views/BlockServicesView.swift,
 			);
 			target = 310D5FA82D496998008E611D /* Pi Stats */;
 		};
@@ -232,9 +252,12 @@
 		311A98EA2E11C13C00C36B1C /* Exceptions for "Shared" folder in "PiStatsWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Actions/PiholeActionService.swift,
 				AppGroup.swift,
 				Colors.xcassets,
 				KeyChainPasswordItem.swift,
+				LiveActivity/DisableActivityController.swift,
+				LiveActivity/PiholeDisableActivityAttributes.swift,
 				PiholeStorage.swift,
 				UserDefaultExtensions.swift,
 			);

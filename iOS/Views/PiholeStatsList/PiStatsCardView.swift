@@ -166,8 +166,14 @@ struct PiholeDetailView: View {
                     temperatureScale: settingsStore.temperatureScale,
                     showsStats: false,
                     showsMetrics: false,
-                    onClearMessages: { await updater.clearMessages() }
+                    onClearMessages: { await updater.clearMessages() },
+                    onLoadDenyRules: updater.pihole.version == .v6 ? { try await updater.fetchDenyRegexRules() } : nil,
+                    onBlockRules: updater.pihole.version == .v6 ? { rules in try await updater.addDenyRegexRules(rules) } : nil,
+                    onUnblockRules: updater.pihole.version == .v6 ? { rules in try await updater.removeDenyRegexRules(rules) } : nil
                 )
+                if updater.pihole.version == .v6 {
+                    blocklistsCard
+                }
                 queryLogCard
             }
             .padding()
@@ -187,6 +193,34 @@ struct PiholeDetailView: View {
                         .font(.headline)
                         .foregroundStyle(.primary)
                     Text(UserText.queryLogCardSubtitle)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .foregroundStyle(.secondary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding()
+            .glassEffect(in: .rect(cornerRadius: LayoutConstants.defaultCornerRadius))
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var blocklistsCard: some View {
+        NavigationLink {
+            AdListsView(load: { try await updater.fetchAdlists() },
+                        toggle: { list, enabled in try await updater.setAdlist(list, enabled: enabled) },
+                        updateGravity: { try await updater.updateGravity() },
+                        gravityLastUpdated: { try await updater.fetchGravityLastUpdated() })
+        } label: {
+            HStack(spacing: 12) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(UserText.blocklistsCardTitle)
+                        .font(.headline)
+                        .foregroundStyle(.primary)
+                    Text(UserText.blocklistsCardSubtitle)
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }

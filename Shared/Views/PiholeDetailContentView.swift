@@ -18,9 +18,19 @@ struct PiholeDetailContentView: View {
     var showsMetrics: Bool = true
     var displayStatsAsList: Bool = true
     var onClearMessages: (() async -> Void)? = nil
+    /// Supplied only for Pi-hole v6 (where service blocking is supported).
+    var onLoadDenyRules: (() async throws -> [String])? = nil
+    var onBlockRules: (([String]) async throws -> Void)? = nil
+    var onUnblockRules: (([String]) async throws -> Void)? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
+            if let health = data.health {
+                section(UserText.healthSection) {
+                    HealthView(health: health, onClear: onClearMessages)
+                }
+            }
+
             if showsStats {
                 if displayStatsAsList {
                     ListView(data: data)
@@ -62,9 +72,9 @@ struct PiholeDetailContentView: View {
                 }
             }
 
-            if let health = data.health {
-                section(UserText.healthSection) {
-                    HealthView(health: health, onClear: onClearMessages)
+            if let onLoadDenyRules, let onBlockRules, let onUnblockRules {
+                section(UserText.blockServicesSection) {
+                    BlockServicesView(loadRules: onLoadDenyRules, block: onBlockRules, unblock: onUnblockRules)
                 }
             }
 

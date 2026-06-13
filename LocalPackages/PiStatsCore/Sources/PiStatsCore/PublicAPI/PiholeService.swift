@@ -25,6 +25,28 @@ public protocol PiholeService: Sendable {
     func clearMessages() async throws
     func enable() async throws -> PiholeStatus
     func disable(timer: Int?) async throws -> PiholeStatus
+
+    /// Triggers a gravity (blocklist) rebuild on the Pi-hole. Pi-hole v6 only;
+    /// v5 throws `PiholeServiceError.notSupported`.
+    func updateGravity() async throws
+
+    /// Returns the configured adlists (block + allow). Pi-hole v6 only.
+    func fetchAdlists() async throws -> [AdList]
+
+    /// Enables or disables a single adlist. Pi-hole v6 only.
+    func setAdlist(_ adlist: AdList, enabled: Bool) async throws
+
+    /// Returns the configured regex deny rules. Pi-hole v6 only.
+    func fetchDenyRegexRules() async throws -> [String]
+
+    /// Adds regex deny rules (used to block whole services). Pi-hole v6 only.
+    func addDenyRegexRules(_ rules: [String]) async throws
+
+    /// Removes regex deny rules. Pi-hole v6 only.
+    func removeDenyRegexRules(_ rules: [String]) async throws
+
+    /// When gravity last ran (most recent adlist update). Pi-hole v6 only.
+    func fetchGravityLastUpdated() async throws -> Date?
 }
 
 extension PiholeService {
@@ -45,7 +67,8 @@ public enum PiholeServiceError: Error, LocalizedError {
     case piMonitorNotSet
     case piMonitorError(PiMonitorError)
     case apiSeatsExceeded
-    
+    case notSupported
+
     public var errorDescription: String? {
         switch self {
         case .missingToken:
@@ -70,6 +93,8 @@ public enum PiholeServiceError: Error, LocalizedError {
             return "Pi Monitor error: \(error.localizedDescription)"
         case .apiSeatsExceeded:
             return "Maximum number of API sessions exceeded on Pi-hole. Please close some other Pi-hole clients or increase the session limit."
+        case .notSupported:
+            return "This action isn't supported on this Pi-hole version."
         }
     }
 }
