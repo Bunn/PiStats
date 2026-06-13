@@ -54,7 +54,7 @@ struct PiholeErrorMapper {
                 return .invalidConfiguration
             case .piMonitorError:
                 return .monitorError
-            case .unknownError:
+            case .unknownError, .notSupported:
                 return .unknown
             }
         }
@@ -117,6 +117,41 @@ final class PiholeSummaryDataUpdater: Identifiable, ObservableObject, ErrorHandl
     /// Fetches the query log on demand (not part of the periodic refresh).
     func fetchQueries(count: Int = 200) async throws -> [QueryLogEntry] {
         try await service.fetchQueries(count: count)
+    }
+
+    /// Triggers a gravity (blocklist) rebuild on demand. Pi-hole v6 only.
+    func updateGravity() async throws {
+        try await service.updateGravity()
+    }
+
+    /// Fetches the configured adlists on demand. Pi-hole v6 only.
+    func fetchAdlists() async throws -> [AdList] {
+        try await service.fetchAdlists()
+    }
+
+    /// Enables/disables a single adlist. Pi-hole v6 only.
+    func setAdlist(_ adlist: AdList, enabled: Bool) async throws {
+        try await service.setAdlist(adlist, enabled: enabled)
+    }
+
+    /// Fetches the configured regex deny rules. Pi-hole v6 only.
+    func fetchDenyRegexRules() async throws -> [String] {
+        try await service.fetchDenyRegexRules()
+    }
+
+    /// Adds regex deny rules (block a whole service). Pi-hole v6 only.
+    func addDenyRegexRules(_ rules: [String]) async throws {
+        try await service.addDenyRegexRules(rules)
+    }
+
+    /// Removes regex deny rules (unblock a service). Pi-hole v6 only.
+    func removeDenyRegexRules(_ rules: [String]) async throws {
+        try await service.removeDenyRegexRules(rules)
+    }
+
+    /// When gravity last ran. Pi-hole v6 only.
+    func fetchGravityLastUpdated() async throws -> Date? {
+        try await service.fetchGravityLastUpdated()
     }
 
     /// Clears the Pi-hole's FTL diagnosis messages, then refreshes health.

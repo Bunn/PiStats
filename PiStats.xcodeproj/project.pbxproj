@@ -176,13 +176,17 @@
 				DataUpdater/PiholeSummaryData.swift,
 				DataUpdater/PiholeSummaryDataUpdater.swift,
 				KeyChainPasswordItem.swift,
+				LiveActivity/DisableActivityController.swift,
+				LiveActivity/PiholeDisableActivityAttributes.swift,
 				PiholeStorage.swift,
 				StatType.swift,
 				TemperatureScale.swift,
 				UserDefaultExtensions.swift,
+				Views/AdListsView.swift,
 				Views/CardViewGrid.swift,
 				Views/CompactStatsView.swift,
 				Views/ErrorMessageView.swift,
+				Views/GravityUpdateButton.swift,
 				Views/HealthView.swift,
 				Views/ListView.swift,
 				Views/MetricsView.swift,
@@ -195,8 +199,7 @@
 				Views/TopDomainsView.swift,
 				Views/UpstreamsView.swift,
 			
-				LiveActivity/PiholeDisableActivityAttributes.swift,
-				LiveActivity/DisableActivityController.swift,
+				Views/BlockServicesView.swift,
 			);
 			target = 310D5F7A2D49698C008E611D /* Pi Stats Mobile */;
 		};
@@ -218,9 +221,11 @@
 				StatType.swift,
 				TemperatureScale.swift,
 				UserDefaultExtensions.swift,
+				Views/AdListsView.swift,
 				Views/CardViewGrid.swift,
 				Views/CompactStatsView.swift,
 				Views/ErrorMessageView.swift,
+				Views/GravityUpdateButton.swift,
 				Views/HealthView.swift,
 				Views/ListView.swift,
 				Views/MetricsView.swift,
@@ -232,6 +237,8 @@
 				Views/TopClientsView.swift,
 				Views/TopDomainsView.swift,
 				Views/UpstreamsView.swift,
+			
+				Views/BlockServicesView.swift,
 			);
 			target = 310D5FA82D496998008E611D /* Pi Stats */;
 		};
@@ -249,11 +256,10 @@
 				AppGroup.swift,
 				Colors.xcassets,
 				KeyChainPasswordItem.swift,
+				LiveActivity/DisableActivityController.swift,
+				LiveActivity/PiholeDisableActivityAttributes.swift,
 				PiholeStorage.swift,
 				UserDefaultExtensions.swift,
-			
-				LiveActivity/PiholeDisableActivityAttributes.swift,
-				LiveActivity/DisableActivityController.swift,
 			);
 			target = 311A98C02E11BEDB00C36B1C /* PiStatsWidgetExtension */;
 		};

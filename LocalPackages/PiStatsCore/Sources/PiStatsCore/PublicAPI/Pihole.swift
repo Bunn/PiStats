@@ -255,3 +255,72 @@ public struct DiagnosisMessage: Identifiable, Sendable {
         self.timestamp = timestamp
     }
 }
+
+// MARK: - Adlist
+
+/// A blocklist/allowlist subscription configured on the Pi-hole (v6).
+public struct AdList: Identifiable, Sendable, Equatable {
+    public let id: Int
+    public let address: String
+    public let enabled: Bool
+    /// "block" or "allow".
+    public let type: String
+    public let comment: String?
+    public let groups: [Int]
+    /// When gravity last successfully pulled this list (v6).
+    public let dateUpdated: Date?
+
+    public init(id: Int, address: String, enabled: Bool, type: String, comment: String?, groups: [Int], dateUpdated: Date? = nil) {
+        self.id = id
+        self.address = address
+        self.enabled = enabled
+        self.type = type
+        self.comment = comment
+        self.groups = groups
+        self.dateUpdated = dateUpdated
+    }
+
+    public var isBlocklist: Bool { type == "block" }
+}
+
+// MARK: - Blockable Service
+
+/// A well-known service that can be blocked as a whole via regex deny rules
+/// (which cover the domain and all its subdomains). Pi-hole v6 only.
+public struct BlockableService: Identifiable, Sendable, Equatable {
+    public let id: String
+    public let name: String
+    public let systemImage: String
+    /// Regex deny rules that, together, block this service.
+    public let rules: [String]
+
+    public init(id: String, name: String, systemImage: String, rules: [String]) {
+        self.id = id
+        self.name = name
+        self.systemImage = systemImage
+        self.rules = rules
+    }
+
+    /// True when every one of this service's rules is present in `denyRules`.
+    public func isBlocked(in denyRules: Set<String>) -> Bool {
+        !rules.isEmpty && rules.allSatisfy { denyRules.contains($0) }
+    }
+
+    /// Curated set of commonly-blocked services.
+    public static let catalog: [BlockableService] = [
+        BlockableService(id: "tiktok", name: "TikTok", systemImage: "music.note",
+                         rules: [#"(\.|^)tiktok\.com$"#, #"(\.|^)tiktokcdn\.com$"#, #"(\.|^)byteoversea\.com$"#]),
+        BlockableService(id: "youtube", name: "YouTube", systemImage: "play.rectangle.fill",
+                         rules: [#"(\.|^)youtube\.com$"#, #"(\.|^)youtu\.be$"#, #"(\.|^)googlevideo\.com$"#, #"(\.|^)ytimg\.com$"#]),
+        BlockableService(id: "facebook", name: "Facebook", systemImage: "person.2.fill",
+                         rules: [#"(\.|^)facebook\.com$"#, #"(\.|^)fbcdn\.net$"#, #"(\.|^)fbsbx\.com$"#]),
+        BlockableService(id: "instagram", name: "Instagram", systemImage: "camera.fill",
+                         rules: [#"(\.|^)instagram\.com$"#, #"(\.|^)cdninstagram\.com$"#]),
+        BlockableService(id: "x", name: "X / Twitter", systemImage: "at",
+                         rules: [#"(\.|^)twitter\.com$"#, #"(\.|^)x\.com$"#, #"(\.|^)t\.co$"#, #"(\.|^)twimg\.com$"#]),
+        BlockableService(id: "snapchat", name: "Snapchat", systemImage: "bolt.fill",
+                         rules: [#"(\.|^)snapchat\.com$"#, #"(\.|^)sc-cdn\.net$"#]),
+        BlockableService(id: "reddit", name: "Reddit", systemImage: "bubble.left.and.bubble.right.fill",
+                         rules: [#"(\.|^)reddit\.com$"#, #"(\.|^)redd\.it$"#, #"(\.|^)redditstatic\.com$"#]),
+    ]
+}

@@ -299,6 +299,78 @@ internal final class PiholeV6Service: PiholeService {
     func disable(timer: Int?) async throws -> PiholeStatus {
         try await setBlocking(.disable, for: self.pihole, timer: timer)
     }
+
+    func updateGravity() async throws {
+        Log.network.info("🌍 [V6] Updating gravity for \(self.pihole.name)")
+        let authResponse = try await ensureAuthenticated(self.pihole)
+        let url = try makeURL(for: self.pihole, endpoint: .gravity)
+        try await postAction(on: url, with: authResponse)
+        Log.network.info("✅ [V6] Gravity update completed for \(self.pihole.name)")
+    }
+
+    func fetchAdlists() async throws -> [AdList] {
+        Log.network.info("📃 [V6] Fetching adlists for \(self.pihole.name)")
+        let auth = try await ensureAuthenticated(self.pihole)
+        let url = try makeURL(for: self.pihole, endpoint: .lists)
+        let json = try await fetchJSON(from: url, with: auth)
+        return parseAdlists(from: json)
+    }
+
+    func setAdlist(_ adlist: AdList, enabled: Bool) async throws {
+        Log.network.info("📃 [V6] Setting adlist \(adlist.address) enabled=\(enabled) for \(self.pihole.name)")
+        let auth = try await ensureAuthenticated(self.pihole)
+
+        // The list address identifies the resource and must be percent-encoded
+        // for the path (including its slashes).
+        var allowed = CharacterSet.alphanumerics
+        allowed.insert(charactersIn: "-._~")
+        let encoded = adlist.address.addingPercentEncoding(withAllowedCharacters: allowed) ?? adlist.address
+
+        let url = try makeURL(for: self.pihole, path: "lists/\(encoded)",
+                              queryItems: [URLQueryItem(name: "type", value: adlist.type)])
+        // FTL replaces the resource, so resend the existing fields with the
+        // toggled `enabled` value.
+        let body = AdListUpdateBody(type: adlist.type, comment: adlist.comment, groups: adlist.groups, enabled: enabled)
+        try await put(body, on: url, with: auth)
+    }
+
+    func fetchDenyRegexRules() async throws -> [String] {
+        Log.network.info("🚫 [V6] Fetching deny regex rules for \(self.pihole.name)")
+        let auth = try await ensureAuthenticated(self.pihole)
+        let url = try makeURL(for: self.pihole, endpoint: .denyRegex)
+        let json = try await fetchJSON(from: url, with: auth)
+        let domains = json["domains"] as? [[String: Any]] ?? []
+        return domains.compactMap { $0["domain"] as? String }
+    }
+
+    func addDenyRegexRules(_ rules: [String]) async throws {
+        guard !rules.isEmpty else { return }
+        Log.network.info("🚫 [V6] Adding \(rules.count) deny regex rule(s) for \(self.pihole.name)")
+        let auth = try await ensureAuthenticated(self.pihole)
+        let url = try makeURL(for: self.pihole, endpoint: .denyRegex)
+        let body = AddDomainsBody(domain: rules, comment: "Blocked by PiStats", groups: [0], enabled: true)
+        _ = try await postJSON(body, on: url, with: auth)
+    }
+
+    func removeDenyRegexRules(_ rules: [String]) async throws {
+        guard !rules.isEmpty else { return }
+        Log.network.info("🚫 [V6] Removing \(rules.count) deny regex rule(s) for \(self.pihole.name)")
+        let auth = try await ensureAuthenticated(self.pihole)
+        var allowed = CharacterSet.alphanumerics
+        allowed.insert(charactersIn: "-._~")
+        for rule in rules {
+            let encoded = rule.addingPercentEncoding(withAllowedCharacters: allowed) ?? rule
+            let url = try makeURL(for: self.pihole, path: "domains/deny/regex/\(encoded)")
+            try await delete(url: url, with: auth)
+        }
+    }
+
+    func fetchGravityLastUpdated() async throws -> Date? {
+        // Derived from the most recent per-list `date_updated`, which gravity
+        // stamps on each list it successfully pulls.
+        let lists = try await fetchAdlists()
+        return lists.compactMap { $0.dateUpdated }.max()
+    }
 }
 
 // MARK: - Private Methods
@@ -549,6 +621,117 @@ extension PiholeV6Service {
         }
     }
 
+    /// POSTs to an action endpoint and verifies a 2xx status. Used for endpoints
+    /// like gravity that stream a progress log rather than returning JSON.
+    private func postAction(on url: URL, with auth: PiholeV6AuthResponse) async throws {
+        Log.network.info("📤 [V6] Starting action POST to: \(url.absoluteString)")
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.addValue(auth.sid, forHTTPHeaderField: HeaderFields.sid)
+        request.addValue(auth.csrf, forHTTPHeaderField: HeaderFields.csrf)
+
+        do {
+            let (_, response) = try await urlSession.data(for: request)
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode == 401 || httpResponse.statusCode == 403 {
+                    await clearSessionAuth()
+                    throw PiholeServiceError.invalidAuthenticationResponse
+                }
+                guard (200...299).contains(httpResponse.statusCode) else {
+                    Log.network.error("❌ [V6] Action POST failed with status \(httpResponse.statusCode) for \(url.absoluteString)")
+                    throw PiholeServiceError.unknownStatus
+                }
+            }
+        } catch let error as PiholeServiceError {
+            throw error
+        } catch {
+            Log.network.error("💥 [V6] Action POST failed for \(url.absoluteString): \(error.localizedDescription)")
+            await clearSessionAuth()
+            throw PiholeServiceError.networkError(error)
+        }
+    }
+
+    private struct AdListUpdateBody: Codable {
+        let type: String
+        let comment: String?
+        let groups: [Int]
+        let enabled: Bool
+    }
+
+    private struct AddDomainsBody: Codable {
+        let domain: [String]
+        let comment: String?
+        let groups: [Int]
+        let enabled: Bool
+    }
+
+    /// PUTs a Codable body and verifies a 2xx status.
+    private func put(_ body: Codable, on url: URL, with auth: PiholeV6AuthResponse) async throws {
+        Log.network.info("📤 [V6] Starting PUT request to: \(url.absoluteString)")
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.addValue(auth.sid, forHTTPHeaderField: HeaderFields.sid)
+        request.addValue(auth.csrf, forHTTPHeaderField: HeaderFields.csrf)
+
+        do {
+            request.httpBody = try JSONEncoder().encode(body)
+        } catch {
+            throw PiholeServiceError.encodingError(error)
+        }
+
+        do {
+            let (_, response) = try await urlSession.data(for: request)
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode == 401 || httpResponse.statusCode == 403 {
+                    await clearSessionAuth()
+                    throw PiholeServiceError.invalidAuthenticationResponse
+                }
+                guard (200...299).contains(httpResponse.statusCode) else {
+                    Log.network.error("❌ [V6] PUT failed with status \(httpResponse.statusCode) for \(url.absoluteString)")
+                    throw PiholeServiceError.unknownStatus
+                }
+            }
+        } catch let error as PiholeServiceError {
+            throw error
+        } catch {
+            Log.network.error("💥 [V6] PUT request failed for \(url.absoluteString): \(error.localizedDescription)")
+            await clearSessionAuth()
+            throw PiholeServiceError.networkError(error)
+        }
+    }
+
+    private func parseAdlists(from json: [String: Any]) -> [AdList] {
+        guard let lists = json["lists"] as? [[String: Any]] else { return [] }
+        return lists.compactMap { item in
+            guard let address = item["address"] as? String,
+                  let type = item["type"] as? String else { return nil }
+            let id = item["id"] as? Int ?? 0
+            let enabled: Bool
+            if let value = item["enabled"] as? Bool {
+                enabled = value
+            } else if let value = item["enabled"] as? Int {
+                enabled = value != 0
+            } else {
+                enabled = true
+            }
+            let comment = item["comment"] as? String
+            let groups = (item["groups"] as? [Int]) ?? []
+            let dateUpdated: Date?
+            if let ts = item["date_updated"] as? Double, ts > 0 {
+                dateUpdated = Date(timeIntervalSince1970: ts)
+            } else if let ts = item["date_updated"] as? Int, ts > 0 {
+                dateUpdated = Date(timeIntervalSince1970: TimeInterval(ts))
+            } else {
+                dateUpdated = nil
+            }
+            return AdList(id: id, address: address, enabled: enabled, type: type, comment: comment, groups: groups, dateUpdated: dateUpdated)
+        }
+    }
+
     private func setBlocking(_ action: BlockingAction, for pihole: Pihole, timer: Int? = nil) async throws -> PiholeStatus {
         let actionName = action == .enable ? "enable" : "disable"
         Log.network.info("🔄 [V6] Setting blocking action: \(actionName) for \(self.pihole.name)")
@@ -592,6 +775,9 @@ extension PiholeV6Service {
         case queries = "queries"
         case version = "info/version"
         case messages = "info/messages"
+        case gravity = "action/gravity"
+        case lists = "lists"
+        case denyRegex = "domains/deny/regex"
     }
 
     private enum JSONKeys: String {

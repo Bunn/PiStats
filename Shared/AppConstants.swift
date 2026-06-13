@@ -129,6 +129,8 @@ public struct UserText {
     public static let queryTypesSection = "Query Types"
     public static let upstreamsSection = "Upstream Servers"
     public static let deviceSection = "Device"
+    public static let blocklistSection = "Blocklist"
+    public static let blockServicesSection = "Block Services"
     public static let healthSection = "Health"
     public static let healthUpdateAvailable = "Update available"
     public static let healthUpToDate = "Up to date"
@@ -139,6 +141,8 @@ public struct UserText {
     public static let queryLogSearchPrompt = "Search domain or client"
     public static let queryLogCardTitle = "Query Log"
     public static let queryLogCardSubtitle = "Browse and search recent queries"
+    public static let blocklistsCardTitle = "Blocklists"
+    public static let blocklistsCardSubtitle = "Manage your block & allow lists"
     
     // MARK: - Pi-hole Setup
     public static let piholeSetupTitle = "Pi-hole Setup"
