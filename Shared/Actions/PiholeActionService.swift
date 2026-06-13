@@ -10,8 +10,6 @@ import Foundation
 import PiStatsCore
 
 struct PiholeActionService {
-    /// Invoked after a successful timed disable so iOS can start a Live Activity.
-    /// macOS / contexts without Live Activities pass `nil`.
     typealias DisableStarted = @Sendable (_ piholeID: UUID, _ name: String, _ until: Date) -> Void
 
     private let onDisableWithTimer: DisableStarted?
@@ -39,5 +37,44 @@ struct PiholeActionService {
     @discardableResult
     func enable(_ pihole: Pihole) async throws -> PiholeStatus {
         try await PiholeAPIClient(pihole).enable()
+    }
+
+    // MARK: - Acting on every Pi-hole
+
+    func areAllEnabled(_ piholes: [Pihole]) async -> Bool {
+        guard !piholes.isEmpty else { return false }
+        let statuses = await withTaskGroup(of: PiholeStatus.self) { group -> [PiholeStatus] in
+            for pihole in piholes {
+                group.addTask { (try? await PiholeAPIClient(pihole).fetchStatus()) ?? .unknown }
+            }
+            var results: [PiholeStatus] = []
+            for await status in group { results.append(status) }
+            return results
+        }
+        return !statuses.contains(.disabled)
+    }
+
+    func enableAll(_ piholes: [Pihole]) async throws {
+        try await forEachPihole(piholes) { try await enable($0) }
+    }
+
+    func disableAll(_ piholes: [Pihole], timer: Int?) async throws {
+        try await forEachPihole(piholes) { try await disable($0, timer: timer) }
+    }
+
+    private func forEachPihole(_ piholes: [Pihole],
+                               _ action: @Sendable @escaping (Pihole) async throws -> Void) async throws {
+        guard !piholes.isEmpty else { return }
+        let errors = await withTaskGroup(of: Error?.self) { group -> [Error] in
+            for pihole in piholes {
+                group.addTask {
+                    do { try await action(pihole); return nil } catch { return error }
+                }
+            }
+            var collected: [Error] = []
+            for await error in group where error != nil { collected.append(error!) }
+            return collected
+        }
+        if errors.count == piholes.count, let first = errors.first { throw first }
     }
 }
