@@ -183,8 +183,10 @@
 				TemperatureScale.swift,
 				UserDefaultExtensions.swift,
 				Views/AdListsView.swift,
+				Views/BlockServicesView.swift,
 				Views/CardViewGrid.swift,
 				Views/CompactStatsView.swift,
+				Views/DomainListView.swift,
 				Views/ErrorMessageView.swift,
 				Views/GravityUpdateButton.swift,
 				Views/HealthView.swift,
@@ -198,8 +200,6 @@
 				Views/TopClientsView.swift,
 				Views/TopDomainsView.swift,
 				Views/UpstreamsView.swift,
-			
-				Views/BlockServicesView.swift,
 			);
 			target = 310D5F7A2D49698C008E611D /* Pi Stats Mobile */;
 		};
@@ -222,8 +222,10 @@
 				TemperatureScale.swift,
 				UserDefaultExtensions.swift,
 				Views/AdListsView.swift,
+				Views/BlockServicesView.swift,
 				Views/CardViewGrid.swift,
 				Views/CompactStatsView.swift,
+				Views/DomainListView.swift,
 				Views/ErrorMessageView.swift,
 				Views/GravityUpdateButton.swift,
 				Views/HealthView.swift,
@@ -237,8 +239,6 @@
 				Views/TopClientsView.swift,
 				Views/TopDomainsView.swift,
 				Views/UpstreamsView.swift,
-			
-				Views/BlockServicesView.swift,
 			);
 			target = 310D5FA82D496998008E611D /* Pi Stats */;
 		};

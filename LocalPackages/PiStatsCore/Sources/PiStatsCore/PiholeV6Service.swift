@@ -334,35 +334,65 @@ internal final class PiholeV6Service: PiholeService {
         try await put(body, on: url, with: auth)
     }
 
-    func fetchDenyRegexRules() async throws -> [String] {
-        Log.network.info("🚫 [V6] Fetching deny regex rules for \(self.pihole.name)")
+    func fetchDomains(type: DomainListType, kind: DomainListKind) async throws -> [DomainRule] {
+        Log.network.info("🌐 [V6] Fetching \(type.rawValue)/\(kind.rawValue) domains for \(self.pihole.name)")
         let auth = try await ensureAuthenticated(self.pihole)
-        let url = try makeURL(for: self.pihole, endpoint: .denyRegex)
+        let url = try makeURL(for: self.pihole, path: "domains/\(type.rawValue)/\(kind.rawValue)")
         let json = try await fetchJSON(from: url, with: auth)
         let domains = json["domains"] as? [[String: Any]] ?? []
-        return domains.compactMap { $0["domain"] as? String }
+        return domains.compactMap { item in
+            guard let domain = item["domain"] as? String else { return nil }
+            return DomainRule(
+                domain: domain,
+                type: type,
+                kind: kind,
+                enabled: item["enabled"] as? Bool ?? true,
+                comment: item["comment"] as? String,
+                groups: item["groups"] as? [Int] ?? [0]
+            )
+        }
     }
 
-    func addDenyRegexRules(_ rules: [String]) async throws {
-        guard !rules.isEmpty else { return }
-        Log.network.info("🚫 [V6] Adding \(rules.count) deny regex rule(s) for \(self.pihole.name)")
+    func addDomains(_ domains: [DomainRule]) async throws {
+        guard !domains.isEmpty else { return }
+        Log.network.info("➕ [V6] Adding \(domains.count) domain rule(s) for \(self.pihole.name)")
         let auth = try await ensureAuthenticated(self.pihole)
-        let url = try makeURL(for: self.pihole, endpoint: .denyRegex)
-        let body = AddDomainsBody(domain: rules, comment: "Blocked by PiStats", groups: [0], enabled: true)
-        _ = try await postJSON(body, on: url, with: auth)
+        // The POST endpoint is per bucket, so group rules by (type, kind).
+        let buckets = Dictionary(grouping: domains) { DomainBucket(type: $0.type, kind: $0.kind) }
+        for (bucket, rules) in buckets {
+            let url = try makeURL(for: self.pihole, path: "domains/\(bucket.type.rawValue)/\(bucket.kind.rawValue)")
+            let body = AddDomainsBody(
+                domain: rules.map(\.domain),
+                comment: rules.first?.comment,
+                groups: rules.first?.groups ?? [0],
+                enabled: rules.first?.enabled ?? true
+            )
+            _ = try await postJSON(body, on: url, with: auth)
+        }
     }
 
-    func removeDenyRegexRules(_ rules: [String]) async throws {
-        guard !rules.isEmpty else { return }
-        Log.network.info("🚫 [V6] Removing \(rules.count) deny regex rule(s) for \(self.pihole.name)")
+    func removeDomains(_ domains: [DomainRule]) async throws {
+        guard !domains.isEmpty else { return }
+        Log.network.info("➖ [V6] Removing \(domains.count) domain rule(s) for \(self.pihole.name)")
         let auth = try await ensureAuthenticated(self.pihole)
         var allowed = CharacterSet.alphanumerics
         allowed.insert(charactersIn: "-._~")
-        for rule in rules {
-            let encoded = rule.addingPercentEncoding(withAllowedCharacters: allowed) ?? rule
-            let url = try makeURL(for: self.pihole, path: "domains/deny/regex/\(encoded)")
+        for rule in domains {
+            let encoded = rule.domain.addingPercentEncoding(withAllowedCharacters: allowed) ?? rule.domain
+            let url = try makeURL(for: self.pihole, path: "domains/\(rule.type.rawValue)/\(rule.kind.rawValue)/\(encoded)")
             try await delete(url: url, with: auth)
         }
+    }
+
+    func setDomain(_ domain: DomainRule, enabled: Bool) async throws {
+        Log.network.info("🔁 [V6] Setting \(domain.domain) enabled=\(enabled) for \(self.pihole.name)")
+        let auth = try await ensureAuthenticated(self.pihole)
+        var allowed = CharacterSet.alphanumerics
+        allowed.insert(charactersIn: "-._~")
+        let encoded = domain.domain.addingPercentEncoding(withAllowedCharacters: allowed) ?? domain.domain
+        let url = try makeURL(for: self.pihole, path: "domains/\(domain.type.rawValue)/\(domain.kind.rawValue)/\(encoded)")
+        let body = DomainUpdateBody(comment: domain.comment, groups: domain.groups, enabled: enabled)
+        try await put(body, on: url, with: auth)
     }
 
     func fetchGravityLastUpdated() async throws -> Date? {
@@ -667,6 +697,19 @@ extension PiholeV6Service {
         let enabled: Bool
     }
 
+    /// Body for PUT /domains/{type}/{kind}/{domain} — type/kind/domain are in the path.
+    private struct DomainUpdateBody: Codable {
+        let comment: String?
+        let groups: [Int]
+        let enabled: Bool
+    }
+
+    /// Groups domain rules that share the same POST endpoint.
+    private struct DomainBucket: Hashable {
+        let type: DomainListType
+        let kind: DomainListKind
+    }
+
     /// PUTs a Codable body and verifies a 2xx status.
     private func put(_ body: Codable, on url: URL, with auth: PiholeV6AuthResponse) async throws {
         Log.network.info("📤 [V6] Starting PUT request to: \(url.absoluteString)")
@@ -777,7 +820,6 @@ extension PiholeV6Service {
         case messages = "info/messages"
         case gravity = "action/gravity"
         case lists = "lists"
-        case denyRegex = "domains/deny/regex"
     }
 
     private enum JSONKeys: String {

@@ -238,15 +238,19 @@ internal final class PiholeV5Service: PiholeService {
         throw PiholeServiceError.notSupported
     }
 
-    func fetchDenyRegexRules() async throws -> [String] {
+    func fetchDomains(type: DomainListType, kind: DomainListKind) async throws -> [DomainRule] {
         throw PiholeServiceError.notSupported
     }
 
-    func addDenyRegexRules(_ rules: [String]) async throws {
+    func addDomains(_ domains: [DomainRule]) async throws {
         throw PiholeServiceError.notSupported
     }
 
-    func removeDenyRegexRules(_ rules: [String]) async throws {
+    func removeDomains(_ domains: [DomainRule]) async throws {
+        throw PiholeServiceError.notSupported
+    }
+
+    func setDomain(_ domain: DomainRule, enabled: Bool) async throws {
         throw PiholeServiceError.notSupported
     }
 

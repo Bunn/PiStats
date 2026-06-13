@@ -49,6 +49,11 @@ public struct SystemImages {
     public static let healthUpdate = "arrow.down.circle.fill"
     public static let healthUpToDate = "checkmark.circle.fill"
 
+    // Domains
+    public static let manageDomains = "globe"
+    public static let allowDomain = "checkmark.shield"
+    public static let blockDomain = "hand.raised"
+
     // Statistics
     public static let globe = "globe"
     public static let totalQueries = "globe"
@@ -143,7 +148,19 @@ public struct UserText {
     public static let queryLogCardSubtitle = "Browse and search recent queries"
     public static let blocklistsCardTitle = "Blocklists"
     public static let blocklistsCardSubtitle = "Manage your block & allow lists"
-    
+
+    // MARK: - Domain Management
+    public static let domainsCardTitle = "Domains"
+    public static let domainsCardSubtitle = "Manage allow & deny lists"
+    public static let domainsTitle = "Domains"
+    public static let addDomainTitle = "Add Domain"
+    public static let allowDomainAction = "Allow"
+    public static let blockDomainAction = "Block"
+    public static let domainFieldPlaceholder = "Domain or regex"
+    public static let commentFieldPlaceholder = "Comment (optional)"
+    public static func domainAddedToAllow(_ domain: String) -> String { "Allowed \(domain)" }
+    public static func domainAddedToBlock(_ domain: String) -> String { "Blocked \(domain)" }
+
     // MARK: - Pi-hole Setup
     public static let piholeSetupTitle = "Pi-hole Setup"
     public static let piholeSetupHostPlaceholder = "Host"

@@ -134,19 +134,29 @@ final class PiholeSummaryDataUpdater: Identifiable, ObservableObject, ErrorHandl
         try await service.setAdlist(adlist, enabled: enabled)
     }
 
-    /// Fetches the configured regex deny rules. Pi-hole v6 only.
-    func fetchDenyRegexRules() async throws -> [String] {
-        try await service.fetchDenyRegexRules()
+    /// Fetches a single domain bucket (allow/deny × exact/regex) on demand. Pi-hole v6 only.
+    func fetchDomains(type: DomainListType, kind: DomainListKind) async throws -> [DomainRule] {
+        try await service.fetchDomains(type: type, kind: kind)
     }
 
-    /// Adds regex deny rules (block a whole service). Pi-hole v6 only.
-    func addDenyRegexRules(_ rules: [String]) async throws {
-        try await service.addDenyRegexRules(rules)
+    /// Fetches all four domain buckets on demand. Pi-hole v6 only.
+    func fetchAllDomains() async throws -> [DomainRule] {
+        try await service.fetchAllDomains()
     }
 
-    /// Removes regex deny rules (unblock a service). Pi-hole v6 only.
-    func removeDenyRegexRules(_ rules: [String]) async throws {
-        try await service.removeDenyRegexRules(rules)
+    /// Adds domain rules. Pi-hole v6 only.
+    func addDomains(_ domains: [DomainRule]) async throws {
+        try await service.addDomains(domains)
+    }
+
+    /// Removes domain rules. Pi-hole v6 only.
+    func removeDomains(_ domains: [DomainRule]) async throws {
+        try await service.removeDomains(domains)
+    }
+
+    /// Enables/disables a single domain rule. Pi-hole v6 only.
+    func setDomain(_ domain: DomainRule, enabled: Bool) async throws {
+        try await service.setDomain(domain, enabled: enabled)
     }
 
     /// When gravity last ran. Pi-hole v6 only.

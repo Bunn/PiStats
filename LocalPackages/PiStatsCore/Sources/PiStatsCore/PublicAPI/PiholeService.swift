@@ -36,14 +36,19 @@ public protocol PiholeService: Sendable {
     /// Enables or disables a single adlist. Pi-hole v6 only.
     func setAdlist(_ adlist: AdList, enabled: Bool) async throws
 
-    /// Returns the configured regex deny rules. Pi-hole v6 only.
-    func fetchDenyRegexRules() async throws -> [String]
+    /// Returns the domain rules in a single bucket (allow/deny × exact/regex).
+    /// Pi-hole v6 only; v5 throws `PiholeServiceError.notSupported`.
+    func fetchDomains(type: DomainListType, kind: DomainListKind) async throws -> [DomainRule]
 
-    /// Adds regex deny rules (used to block whole services). Pi-hole v6 only.
-    func addDenyRegexRules(_ rules: [String]) async throws
+    /// Adds domain rules. Rules spanning multiple buckets are grouped and sent
+    /// per bucket. Pi-hole v6 only.
+    func addDomains(_ domains: [DomainRule]) async throws
 
-    /// Removes regex deny rules. Pi-hole v6 only.
-    func removeDenyRegexRules(_ rules: [String]) async throws
+    /// Removes domain rules (one DELETE per rule). Pi-hole v6 only.
+    func removeDomains(_ domains: [DomainRule]) async throws
+
+    /// Enables or disables a single existing domain rule. Pi-hole v6 only.
+    func setDomain(_ domain: DomainRule, enabled: Bool) async throws
 
     /// When gravity last ran (most recent adlist update). Pi-hole v6 only.
     func fetchGravityLastUpdated() async throws -> Date?
@@ -52,6 +57,20 @@ public protocol PiholeService: Sendable {
 extension PiholeService {
     func disable() async throws -> PiholeStatus {
         try await disable(timer: nil)
+    }
+
+    /// Fetches all four domain buckets concurrently. Pi-hole v6 only.
+    public func fetchAllDomains() async throws -> [DomainRule] {
+        try await withThrowingTaskGroup(of: [DomainRule].self) { group in
+            for type in DomainListType.allCases {
+                for kind in DomainListKind.allCases {
+                    group.addTask { try await self.fetchDomains(type: type, kind: kind) }
+                }
+            }
+            var all: [DomainRule] = []
+            for try await chunk in group { all.append(contentsOf: chunk) }
+            return all
+        }
     }
 }
 

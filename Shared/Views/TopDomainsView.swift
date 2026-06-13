@@ -10,6 +10,8 @@ import PiStatsCore
 
 struct TopDomainsView: View {
     let topDomains: TopDomainsResult
+    /// Supplied only for Pi-hole v6: adds the tapped domain to an allow/deny list.
+    var onAddDomain: ((DomainRule) async -> Void)? = nil
     @State private var selectedTab: DomainTab = .blocked
 
     enum DomainTab: String, CaseIterable {
@@ -37,7 +39,24 @@ struct TopDomainsView: View {
             } else {
                 ForEach(Array(items.prefix(5).enumerated()), id: \.element.id) { index, item in
                     TopDomainRow(item: item, rank: index + 1, maxCount: items.first?.count ?? 1, isBlocked: selectedTab == .blocked)
+                        .contextMenu { domainActions(for: item) }
                 }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func domainActions(for item: TopDomainItem) -> some View {
+        if let onAddDomain {
+            Button {
+                Task { await onAddDomain(DomainRule(domain: item.domain, type: .allow, kind: .exact)) }
+            } label: {
+                Label(UserText.allowDomainAction, systemImage: SystemImages.allowDomain)
+            }
+            Button {
+                Task { await onAddDomain(DomainRule(domain: item.domain, type: .deny, kind: .exact)) }
+            } label: {
+                Label(UserText.blockDomainAction, systemImage: SystemImages.blockDomain)
             }
         }
     }

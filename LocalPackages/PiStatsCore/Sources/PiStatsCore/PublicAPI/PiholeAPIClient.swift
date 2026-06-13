@@ -90,16 +90,20 @@ public struct PiholeAPIClient: PiholeService {
         try await service.setAdlist(adlist, enabled: enabled)
     }
 
-    public func fetchDenyRegexRules() async throws -> [String] {
-        try await service.fetchDenyRegexRules()
+    public func fetchDomains(type: DomainListType, kind: DomainListKind) async throws -> [DomainRule] {
+        try await service.fetchDomains(type: type, kind: kind)
     }
 
-    public func addDenyRegexRules(_ rules: [String]) async throws {
-        try await service.addDenyRegexRules(rules)
+    public func addDomains(_ domains: [DomainRule]) async throws {
+        try await service.addDomains(domains)
     }
 
-    public func removeDenyRegexRules(_ rules: [String]) async throws {
-        try await service.removeDenyRegexRules(rules)
+    public func removeDomains(_ domains: [DomainRule]) async throws {
+        try await service.removeDomains(domains)
+    }
+
+    public func setDomain(_ domain: DomainRule, enabled: Bool) async throws {
+        try await service.setDomain(domain, enabled: enabled)
     }
 
     public func fetchGravityLastUpdated() async throws -> Date? {

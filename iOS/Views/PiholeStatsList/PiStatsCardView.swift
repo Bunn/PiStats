@@ -5,6 +5,7 @@
 //  Created by Fernando Bunn on 22/02/2025.
 //
 import SwiftUI
+import PiStatsCore
 
 struct PiStatsCardView: View {
     @ObservedObject var data: PiholeSummaryData
@@ -157,6 +158,10 @@ struct PiholeDetailView: View {
     @ObservedObject var data: PiholeSummaryData
     let updater: PiholeSummaryDataUpdater
     @ObservedObject var settingsStore: SettingsStore
+    @State private var toast: String?
+    @State private var actionError: String?
+
+    private var isV6: Bool { updater.pihole.version == .v6 }
 
     var body: some View {
         ScrollView {
@@ -167,12 +172,14 @@ struct PiholeDetailView: View {
                     showsStats: false,
                     showsMetrics: false,
                     onClearMessages: { await updater.clearMessages() },
-                    onLoadDenyRules: updater.pihole.version == .v6 ? { try await updater.fetchDenyRegexRules() } : nil,
-                    onBlockRules: updater.pihole.version == .v6 ? { rules in try await updater.addDenyRegexRules(rules) } : nil,
-                    onUnblockRules: updater.pihole.version == .v6 ? { rules in try await updater.removeDenyRegexRules(rules) } : nil
+                    onLoadDenyRules: isV6 ? { try await updater.fetchDomains(type: .deny, kind: .regex).map(\.domain) } : nil,
+                    onBlockRules: isV6 ? { rules in try await updater.addDomains(rules.map { DomainRule(domain: $0, type: .deny, kind: .regex, comment: "Blocked by PiStats") }) } : nil,
+                    onUnblockRules: isV6 ? { rules in try await updater.removeDomains(rules.map { DomainRule(domain: $0, type: .deny, kind: .regex) }) } : nil,
+                    onQuickAddDomain: isV6 ? { rule in await quickAdd(rule) } : nil
                 )
-                if updater.pihole.version == .v6 {
+                if isV6 {
                     blocklistsCard
+                    domainsCard
                 }
                 queryLogCard
             }
@@ -181,6 +188,30 @@ struct PiholeDetailView: View {
         .navigationTitle(data.name)
         .navigationBarTitleDisplayMode(.inline)
         .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
+        .domainActionToast($toast)
+        .alert("Couldn't update list", isPresented: Binding(get: { actionError != nil }, set: { if !$0 { actionError = nil } })) {
+            Button("OK", role: .cancel) { actionError = nil }
+        } message: {
+            Text(actionError ?? "")
+        }
+    }
+
+    private func quickAdd(_ rule: DomainRule) async {
+        do {
+            try await updater.addDomains([rule])
+            toast = rule.type == .allow ? UserText.domainAddedToAllow(rule.domain) : UserText.domainAddedToBlock(rule.domain)
+        } catch {
+            actionError = error.localizedDescription
+        }
+    }
+
+    private var domainActions: DomainManagementActions {
+        DomainManagementActions(
+            loadAll: { try await updater.fetchAllDomains() },
+            add: { try await updater.addDomains($0) },
+            remove: { try await updater.removeDomains($0) },
+            setEnabled: { rule, enabled in try await updater.setDomain(rule, enabled: enabled) }
+        )
     }
 
     private var queryLogCard: some View {
@@ -221,6 +252,31 @@ struct PiholeDetailView: View {
                         .font(.headline)
                         .foregroundStyle(.primary)
                     Text(UserText.blocklistsCardSubtitle)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .foregroundStyle(.secondary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding()
+            .glassEffect(in: .rect(cornerRadius: LayoutConstants.defaultCornerRadius))
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var domainsCard: some View {
+        NavigationLink {
+            DomainListView(actions: domainActions)
+        } label: {
+            HStack(spacing: 12) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(UserText.domainsCardTitle)
+                        .font(.headline)
+                        .foregroundStyle(.primary)
+                    Text(UserText.domainsCardSubtitle)
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }

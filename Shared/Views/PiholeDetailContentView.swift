@@ -22,6 +22,9 @@ struct PiholeDetailContentView: View {
     var onLoadDenyRules: (() async throws -> [String])? = nil
     var onBlockRules: (([String]) async throws -> Void)? = nil
     var onUnblockRules: (([String]) async throws -> Void)? = nil
+    /// Supplied only for Pi-hole v6: adds a domain to an allow/deny list from
+    /// the Top Domains context menu.
+    var onQuickAddDomain: ((DomainRule) async -> Void)? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -62,7 +65,7 @@ struct PiholeDetailContentView: View {
 
             if let topDomains = data.topDomains {
                 section(UserText.topDomainsSection) {
-                    TopDomainsView(topDomains: topDomains)
+                    TopDomainsView(topDomains: topDomains, onAddDomain: onQuickAddDomain)
                 }
             }
 
