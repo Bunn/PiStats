@@ -2,9 +2,6 @@
 //  DisableLiveActivity.swift
 //  PiStatsWidget
 //
-//  Lock Screen + Dynamic Island UI for the "blocking paused" countdown, with a
-//  Re-enable action.
-//
 
 import ActivityKit
 import WidgetKit
@@ -17,79 +14,81 @@ struct DisableLiveActivity: Widget {
         ActivityConfiguration(for: PiholeDisableActivityAttributes.self) { context in
             // Lock Screen / banner presentation.
             HStack(spacing: 12) {
-                Image(systemName: "xmark.shield.fill")
+                Image(systemName: context.isStale ? "checkmark.shield.fill" : "exclamationmark.shield.fill")
                     .font(.title2)
-                    .foregroundStyle(.orange)
+                    .foregroundStyle(context.isStale ? .green : .orange)
+
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("\(context.attributes.piholeName) blocking paused")
+                    Text("Ad blocking")
                         .font(.headline)
                         .lineLimit(1)
-                    Text(timerInterval: Date.now...context.state.endDate, countsDown: true)
+                    Text(context.isStale
+                         ? "Resumed"
+                         : "Paused until \(context.state.endDate, style: .time)")
                         .font(.caption)
-                        .monospacedDigit()
                         .foregroundStyle(.secondary)
                 }
+
                 Spacer(minLength: 0)
-                Button(intent: ReenableIntent(piholeId: context.attributes.piholeID)) {
-                    Text("Re-enable")
-                        .font(.caption.weight(.semibold))
+
+                if !context.isStale {
+                    Button(intent: ReenableIntent()) {
+                        Text("Re-enable")
+                            .font(.caption.weight(.semibold))
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(.green)
                 }
-                .buttonStyle(.borderedProminent)
-                .tint(.green)
             }
-            .padding()
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
             .activityBackgroundTint(Color.black.opacity(0.4))
         } dynamicIsland: { context in
             DynamicIsland {
                 DynamicIslandExpandedRegion(.leading) {
-                    Image(systemName: "xmark.shield.fill").foregroundStyle(.orange)
-                }
-                DynamicIslandExpandedRegion(.center) {
-                    Text(context.attributes.piholeName).font(.caption).lineLimit(1)
-                }
-                DynamicIslandExpandedRegion(.trailing) {
-                    Text(timerInterval: Date.now...context.state.endDate, countsDown: true)
-                        .monospacedDigit()
-                        .multilineTextAlignment(.trailing)
-                        .frame(width: 56)
+                    Image(systemName: context.isStale ? "checkmark.shield.fill" : "exclamationmark.shield.fill")
+                        .font(.title3)
+                        .foregroundStyle(context.isStale ? .green : .orange)
+                        .padding(.leading, 4)
                 }
                 DynamicIslandExpandedRegion(.bottom) {
-                    Button(intent: ReenableIntent(piholeId: context.attributes.piholeID)) {
-                        Label("Re-enable now", systemImage: "checkmark.shield.fill")
+                    VStack(spacing: 10) {
+                        Text(context.isStale
+                             ? "Ad blocking resumed"
+                             : "Ad blocking paused until \(context.state.endDate, style: .time)")
+                            .font(.subheadline.weight(.semibold))
+                            .frame(maxWidth: .infinity, alignment: .leading)
+
+                        if context.isStale {
+                            Label("Pi-hole is blocking again", systemImage: "checkmark.circle.fill")
+                                .font(.caption)
+                                .foregroundStyle(.green)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        } else {
+                            Button(intent: ReenableIntent()) {
+                                Label("Re-enable now", systemImage: "checkmark.shield.fill")
+                                    .font(.body.weight(.semibold))
+                                    .frame(maxWidth: .infinity)
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .tint(.green)
+                        }
                     }
-                    .tint(.green)
+                    .padding(.top, 4)
+                    .padding(.horizontal, 4)
                 }
             } compactLeading: {
-                Image(systemName: "xmark.shield.fill").foregroundStyle(.orange)
+                Image(systemName: context.isStale ? "checkmark.shield.fill" : "exclamationmark.shield.fill")
+                    .foregroundStyle(context.isStale ? .green : .orange)
             } compactTrailing: {
-                Text(timerInterval: Date.now...context.state.endDate, countsDown: true)
-                    .monospacedDigit()
-                    .frame(width: 44)
+                if !context.isStale {
+                    Text(context.state.endDate, style: .time)
+                        .foregroundStyle(.orange)
+                }
             } minimal: {
-                Image(systemName: "xmark.shield.fill").foregroundStyle(.orange)
+                Image(systemName: context.isStale ? "checkmark.shield.fill" : "exclamationmark.shield.fill")
+                    .foregroundStyle(context.isStale ? .green : .orange)
             }
         }
-    }
-}
-
-struct ReenableIntent: AppIntent {
-    static var title: LocalizedStringResource = "Re-enable Pi-hole"
-    static var description = IntentDescription("Turn Pi-hole blocking back on")
-
-    @Parameter(title: "Pi-hole ID")
-    var piholeId: String
-
-    init() {}
-    init(piholeId: String) { self.piholeId = piholeId }
-
-    func perform() async throws -> some IntentResult {
-        guard let uuid = UUID(uuidString: piholeId),
-              let pihole = widgetPiholeStorage.restorePihole(uuid) else {
-            throw IntentError.message("Pi-hole not found")
-        }
-        _ = try await PiholeActionService().enable(pihole)
-        DisableActivityController().end(piholeID: piholeId)
-        WidgetCenter.shared.reloadTimelines(ofKind: "PiStatusControlWidget")
-        return .result()
     }
 }

@@ -97,6 +97,7 @@ extension PiStatsCardView {
             if settingsStore.disablePermanently {
                 Task {
                     await updater.disable()
+                    await DisableActivityController().end()
                 }
             } else {
                 showingDisableActionSheet = true
@@ -117,6 +118,7 @@ extension PiStatsCardView {
         Button {
             Task {
                 await updater.enable()
+                await DisableActivityController().end()
             }
         } label: {
             HStack(spacing: 0) {
@@ -136,13 +138,15 @@ extension PiStatsCardView {
             buttons.append(.default(Text(disableTime.displayName)) {
                 Task {
                     await updater.disable(timer: disableTime.seconds)
+                    DisableActivityController().start(until: Date().addingTimeInterval(TimeInterval(disableTime.seconds)))
                 }
             })
         }
-        
+
         buttons.append(.destructive(Text(UserText.disablePiholeOptionsPermanently)) {
             Task {
                 await updater.disable()
+                await DisableActivityController().end()
             }
         })
         

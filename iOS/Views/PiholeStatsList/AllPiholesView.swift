@@ -40,8 +40,11 @@ struct AllPiholesView: View {
                 }
             }
         }
+        if let timer {
+            DisableActivityController().start(until: Date().addingTimeInterval(TimeInterval(timer)))
+        }
     }
-    
+
     private func enableAllPiholes() async {
         await withTaskGroup(of: Void.self) { group in
             for updater in listUpdater.dataUpdaters {
@@ -52,6 +55,7 @@ struct AllPiholesView: View {
                 }
             }
         }
+        await DisableActivityController().end()
     }
 }
 

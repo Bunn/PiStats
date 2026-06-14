@@ -1335,6 +1335,9 @@
         }
       }
     },
+    "Re-enable Pi-hole" : {
+
+    },
     "Regex" : {
       "localizations" : {
         "pt-BR" : {
@@ -1607,6 +1610,9 @@
           }
         }
       }
+    },
+    "Turn Pi-hole blocking back on" : {
+
     },
     "Type" : {
 

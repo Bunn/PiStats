@@ -11,6 +11,7 @@
 
     },
     "%@ blocking paused" : {
+      "extractionState" : "stale",
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
@@ -19,6 +20,15 @@
           }
         }
       }
+    },
+    "Ad blocking" : {
+
+    },
+    "Ad blocking paused until %@" : {
+
+    },
+    "Ad blocking resumed" : {
+
     },
     "Blocking" : {
 
@@ -47,6 +57,9 @@
     "Paused" : {
 
     },
+    "Paused until %@" : {
+
+    },
     "Pi Monitor" : {
 
     },
@@ -63,6 +76,9 @@
 
     },
     "Pi-hole ID" : {
+
+    },
+    "Pi-hole is blocking again" : {
 
     },
     "Pi-hole Quick Disable" : {
@@ -91,6 +107,9 @@
 
     },
     "Re-enable Pi-hole" : {
+
+    },
+    "Resumed" : {
 
     },
     "Seconds" : {
