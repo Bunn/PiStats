@@ -18,19 +18,30 @@ struct PiholeStatsList: View {
         DefaultPiholeStorage().restoreAllPiholes()
     )
 
+    @State private var columnCount = 2
+
     private var isRegularWidth: Bool {
         horizontalSizeClass == .regular
     }
 
     private let cardSpacing: CGFloat = 20
+    private let maxColumns = 2
+    private let minCardWidth: CGFloat = 340
+    private let maxContentWidth: CGFloat = 1100
+    private let regularHorizontalInset: CGFloat = 24
 
     var body: some View {
         ScrollView {
             content
-                .frame(maxWidth: isRegularWidth ? 1100 : .infinity)
+                .frame(maxWidth: isRegularWidth ? maxContentWidth : .infinity)
                 .frame(maxWidth: .infinity)
-                .padding(.horizontal, isRegularWidth ? 24 : 0)
+                .padding(.horizontal, isRegularWidth ? regularHorizontalInset : 0)
                 .padding(.vertical, isRegularWidth ? 16 : 0)
+        }
+        .onGeometryChange(for: Int.self) { proxy in
+            resolvedColumnCount(for: proxy.size.width)
+        } action: { newValue in
+            columnCount = newValue
         }
         .sheet(item: $editingPihole) { pihole in
             PiholeSetupView(pihole: pihole) { updatedPihole, isDelete in
@@ -74,7 +85,7 @@ struct PiholeStatsList: View {
             if listUpdater.dataUpdaters.isEmpty {
                 emptyStateView
             } else if isRegularWidth {
-                columnGrid(columns: 2)
+                columnGrid(columns: columnCount)
             } else {
                 VStack(spacing: 0) {
                     ForEach(listUpdater.dataUpdaters) { dataUpdater in
@@ -89,6 +100,14 @@ struct PiholeStatsList: View {
                 addPiholeButton()
             }
         }
+    }
+
+    private func resolvedColumnCount(for paneWidth: CGFloat) -> Int {
+        guard isRegularWidth else { return 1 }
+        let usableWidth = min(paneWidth, maxContentWidth) - regularHorizontalInset * 2
+        guard usableWidth > 0 else { return 1 }
+        let fitting = Int((usableWidth + cardSpacing) / (minCardWidth + cardSpacing))
+        return max(1, min(fitting, maxColumns))
     }
 
     private func columnGrid(columns: Int) -> some View {
