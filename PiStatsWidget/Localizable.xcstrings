@@ -22,13 +22,34 @@
       }
     },
     "Ad blocking" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bloqueio de anúncios"
+          }
+        }
+      }
     },
     "Ad blocking paused until %@" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bloqueio de anúncios pausado até %@"
+          }
+        }
+      }
     },
     "Ad blocking resumed" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bloqueio de anúncios retomado"
+          }
+        }
+      }
     },
     "Blocking" : {
 
@@ -37,10 +58,24 @@
 
     },
     "Disable %@" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desativar %@"
+          }
+        }
+      }
     },
     "Duration (minutes)" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duração (minutos)"
+          }
+        }
+      }
     },
     "Enable or disable the Pi-hole" : {
 
@@ -52,13 +87,27 @@
 
     },
     "Pause blocking on all your Pi-holes for a set time." : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pausa o bloqueio em todos os seus Pi-holes por um tempo determinado."
+          }
+        }
+      }
     },
     "Paused" : {
 
     },
     "Paused until %@" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pausado até %@"
+          }
+        }
+      }
     },
     "Pi Monitor" : {
 
@@ -79,19 +128,47 @@
 
     },
     "Pi-hole is blocking again" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Pi-hole está bloqueando novamente"
+          }
+        }
+      }
     },
     "Pi-hole Quick Disable" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desativação Rápida do Pi-hole"
+          }
+        }
+      }
     },
     "Pi-hole Stats" : {
 
     },
     "Quick Disable Configuration" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configuração de Desativação Rápida"
+          }
+        }
+      }
     },
     "Quick Disable Pi-hole" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desativação Rápida do Pi-hole"
+          }
+        }
+      }
     },
     "Re-enable" : {
       "localizations" : {
@@ -104,16 +181,44 @@
       }
     },
     "Re-enable now" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reativar agora"
+          }
+        }
+      }
     },
     "Re-enable Pi-hole" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reativar Pi-hole"
+          }
+        }
+      }
     },
     "Resumed" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retomado"
+          }
+        }
+      }
     },
     "Seconds" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Segundos"
+          }
+        }
+      }
     },
     "See which devices make the most queries and get the most blocks" : {
 
@@ -140,7 +245,14 @@
 
     },
     "Turn Pi-hole blocking back on" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reativar o bloqueio do Pi-hole"
+          }
+        }
+      }
     },
     "Updated %@" : {
       "localizations" : {

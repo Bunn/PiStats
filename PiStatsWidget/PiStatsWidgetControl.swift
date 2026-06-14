@@ -106,20 +106,3 @@ struct QuickDisableConfiguration: ControlConfigurationIntent {
     var seconds: Int { max(1, minutes) * 60 }
     var label: String { "\(max(1, minutes))m" }
 }
-
-struct QuickDisableIntent: LiveActivityIntent {
-    static let title: LocalizedStringResource = "Quick Disable Pi-hole"
-    @Parameter(title: "Seconds") var seconds: Int
-
-    init() {}
-    init(seconds: Int) { self.seconds = seconds }
-
-    func perform() async throws -> some IntentResult {
-        let piholes = widgetPiholeStorage.restoreAllPiholes()
-        guard !piholes.isEmpty else { throw IntentError.message("No Pi-holes configured") }
-        try await PiholeActionService().disableAll(piholes, timer: seconds)
-        DisableActivityController().start(until: Date().addingTimeInterval(TimeInterval(seconds)))
-        WidgetCenter.shared.reloadTimelines(ofKind: "PiStatusControlWidget")
-        return .result()
-    }
-}

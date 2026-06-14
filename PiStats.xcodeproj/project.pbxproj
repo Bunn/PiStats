@@ -179,6 +179,7 @@
 				LiveActivity/DisableActivityController.swift,
 				LiveActivity/PiholeDisableActivityAttributes.swift,
 				LiveActivity/ReenableIntent.swift,
+				LiveActivity/QuickDisableIntent.swift,
 				Localizable.xcstrings,
 				PiholeStorage.swift,
 				StatType.swift,
@@ -262,6 +263,7 @@
 				LiveActivity/DisableActivityController.swift,
 				LiveActivity/PiholeDisableActivityAttributes.swift,
 				LiveActivity/ReenableIntent.swift,
+				LiveActivity/QuickDisableIntent.swift,
 				PiholeStorage.swift,
 				UserDefaultExtensions.swift,
 			);

@@ -1325,6 +1325,16 @@
         }
       }
     },
+    "Quick Disable Pi-hole" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desativação Rápida do Pi-hole"
+          }
+        }
+      }
+    },
     "Quit Pi Stats" : {
       "localizations" : {
         "pt-BR" : {
@@ -1336,7 +1346,14 @@
       }
     },
     "Re-enable Pi-hole" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reativar Pi-hole"
+          }
+        }
+      }
     },
     "Regex" : {
       "localizations" : {
@@ -1398,6 +1415,16 @@
         }
       }
     },
+    "Seconds" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Segundos"
+          }
+        }
+      }
+    },
     "Session Error" : {
       "localizations" : {
         "pt-BR" : {
@@ -1428,6 +1455,16 @@
         }
       }
     },
+    "Show Live Activity" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar Atividade ao Vivo"
+          }
+        }
+      }
+    },
     "Show Pi Stats" : {
       "localizations" : {
         "pt-BR" : {
@@ -1454,6 +1491,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mostrar principais domínios"
+          }
+        }
+      }
+    },
+    "Shows a Lock Screen and Dynamic Island countdown when you pause blocking for a set time." : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exibe uma contagem regressiva na Tela Bloqueada e na Ilha Dinâmica quando você pausa o bloqueio por um tempo determinado."
           }
         }
       }
@@ -1612,7 +1659,14 @@
       }
     },
     "Turn Pi-hole blocking back on" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reativar o bloqueio do Pi-hole"
+          }
+        }
+      }
     },
     "Type" : {
 

@@ -12,6 +12,7 @@ import PiStatsCore
 struct DisableActivityController {
 
     func start(until: Date) {
+        guard UserDefaults.isLiveActivityEnabled else { return }
         guard ActivityAuthorizationInfo().areActivitiesEnabled else {
             Log.widget.error("Live Activities are disabled; cannot start countdown")
             return
