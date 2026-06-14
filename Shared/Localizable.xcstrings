@@ -1,0 +1,1732 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "·" : {
+
+    },
+    "%@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        }
+      }
+    },
+    "%lld blocklists" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld listas de bloqueio"
+          }
+        }
+      }
+    },
+    "1 hour" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 hora"
+          }
+        }
+      }
+    },
+    "1 minute" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 minuto"
+          }
+        }
+      }
+    },
+    "1. Make sure your Pi-hole is running" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. Verifique se o seu Pi-hole está em execução"
+          }
+        }
+      }
+    },
+    "2. Note your Pi-hole's IP address" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2. Anote o endereço IP do seu Pi-hole"
+          }
+        }
+      }
+    },
+    "3. Get your API token or password from Pi-hole settings" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3. Obtenha o token da API ou a senha nas configurações do Pi-hole"
+          }
+        }
+      }
+    },
+    "4. Click the button below to add it" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4. Clique no botão abaixo para adicioná-lo"
+          }
+        }
+      }
+    },
+    "5 minutes" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5 minutos"
+          }
+        }
+      }
+    },
+    "10 minutes" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "10 minutos"
+          }
+        }
+      }
+    },
+    "30 minutes" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30 minutos"
+          }
+        }
+      }
+    },
+    "30 seconds" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30 segundos"
+          }
+        }
+      }
+    },
+    "About" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sobre"
+          }
+        }
+      }
+    },
+    "Active" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ativo"
+          }
+        }
+      }
+    },
+    "Add" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicionar"
+          }
+        }
+      }
+    },
+    "Add Disable Time" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicionar tempo de desativação"
+          }
+        }
+      }
+    },
+    "Add Domain" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicionar domínio"
+          }
+        }
+      }
+    },
+    "Add Pi-hole" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicionar Pi-hole"
+          }
+        }
+      }
+    },
+    "Add Pi-hole…" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicionar Pi-hole…"
+          }
+        }
+      }
+    },
+    "Add Your First Pi-hole" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicione seu primeiro Pi-hole"
+          }
+        }
+      }
+    },
+    "All Pi-holes" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todos os Pi-holes"
+          }
+        }
+      }
+    },
+    "All Pi-holes Combined" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todos os Pi-holes combinados"
+          }
+        }
+      }
+    },
+    "Allow" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permitir"
+          }
+        }
+      }
+    },
+    "Allowed %@" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permitido %@"
+          }
+        }
+      }
+    },
+    "Always disable Pi-hole permanently" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sempre desativar o Pi-hole permanentemente"
+          }
+        }
+      }
+    },
+    "API Token" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Token da API"
+          }
+        }
+      }
+    },
+    "Back online" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De volta online"
+          }
+        }
+      }
+    },
+    "Block" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bloquear"
+          }
+        }
+      }
+    },
+    "Block Services" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bloquear serviços"
+          }
+        }
+      }
+    },
+    "Blocked %@" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bloqueado %@"
+          }
+        }
+      }
+    },
+    "Blocking disabled" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bloqueio desativado"
+          }
+        }
+      }
+    },
+    "Blocklist" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lista de bloqueio"
+          }
+        }
+      }
+    },
+    "Blocklists" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Listas de bloqueio"
+          }
+        }
+      }
+    },
+    "Browse and search recent queries" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navegue e busque consultas recentes"
+          }
+        }
+      }
+    },
+    "Can't add new item" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível adicionar novo item"
+          }
+        }
+      }
+    },
+    "Can't decode response" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível decodificar a resposta"
+          }
+        }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        }
+      }
+    },
+    "Clear Messages" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpar mensagens"
+          }
+        }
+      }
+    },
+    "Clear Messages?" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpar mensagens?"
+          }
+        }
+      }
+    },
+    "Click 'Manage' below to add your first Pi-hole" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clique em “Gerenciar” abaixo para adicionar seu primeiro Pi-hole"
+          }
+        }
+      }
+    },
+    "Close" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fechar"
+          }
+        }
+      }
+    },
+    "Comment (optional)" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comentário (opcional)"
+          }
+        }
+      }
+    },
+    "Couldn't Load Queries" : {
+
+    },
+    "Couldn't update list" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível atualizar a lista"
+          }
+        }
+      }
+    },
+    "Customize disable times" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personalizar tempos de desativação"
+          }
+        }
+      }
+    },
+    "Danger Zone" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zona de perigo"
+          }
+        }
+      }
+    },
+    "Data" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dados"
+          }
+        }
+      }
+    },
+    "Delete" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Excluir"
+          }
+        }
+      }
+    },
+    "Delete Pi-hole" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Excluir Pi-hole"
+          }
+        }
+      }
+    },
+    "Developer Website" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Site do desenvolvedor"
+          }
+        }
+      }
+    },
+    "Device" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dispositivo"
+          }
+        }
+      }
+    },
+    "Diagnostic messages" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mensagens de diagnóstico"
+          }
+        }
+      }
+    },
+    "Disable" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desativar"
+          }
+        }
+      }
+    },
+    "Disable All Pi-holes" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desativar todos os Pi-holes"
+          }
+        }
+      }
+    },
+    "Disable Pi-hole" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desativar Pi-hole"
+          }
+        }
+      }
+    },
+    "Disable Time" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempo de desativação"
+          }
+        }
+      }
+    },
+    "Disabled" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desativado"
+          }
+        }
+      }
+    },
+    "Display all Pi-holes in a single card" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exibir todos os Pi-holes em um único cartão"
+          }
+        }
+      }
+    },
+    "Display Name" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome de exibição"
+          }
+        }
+      }
+    },
+    "Display Name (Optional)" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome de exibição (opcional)"
+          }
+        }
+      }
+    },
+    "Display Pi-hole stats as list" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exibir estatísticas do Pi-hole como lista"
+          }
+        }
+      }
+    },
+    "Domain or regex" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domínio ou regex"
+          }
+        }
+      }
+    },
+    "Domains" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domínios"
+          }
+        }
+      }
+    },
+    "Domains on List" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domínios na lista"
+          }
+        }
+      }
+    },
+    "Done" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Concluído"
+          }
+        }
+      }
+    },
+    "Edit" : {
+
+    },
+    "Edit Pi-hole" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar Pi-hole"
+          }
+        }
+      }
+    },
+    "Edit Pi-hole settings" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar configurações do Pi-hole"
+          }
+        }
+      }
+    },
+    "Enable" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ativar"
+          }
+        }
+      }
+    },
+    "Enable / Disable" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ativar / Desativar"
+          }
+        }
+      }
+    },
+    "Enable All Pi-holes" : {
+
+    },
+    "Enable notifications" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ativar notificações"
+          }
+        }
+      }
+    },
+    "Enable Pi Monitor" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ativar Pi Monitor"
+          }
+        }
+      }
+    },
+    "Error" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erro"
+          }
+        }
+      }
+    },
+    "Exact" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exato"
+          }
+        }
+      }
+    },
+    "Find in /etc/pihole/setupVars.conf under WEBPASSWORD or in Web UI → Settings → API" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Encontre em /etc/pihole/setupVars.conf sob WEBPASSWORD ou na interface web → Settings → API"
+          }
+        }
+      }
+    },
+    "For version 6.x, you can use your actual password for authenticating" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para a versão 6.x, você pode usar sua senha real para autenticação"
+          }
+        }
+      }
+    },
+    "Get started by adding your first Pi-hole:" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comece adicionando seu primeiro Pi-hole:"
+          }
+        }
+      }
+    },
+    "Gravity Update Failed" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Falha na atualização do Gravity"
+          }
+        }
+      }
+    },
+    "Health" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saúde"
+          }
+        }
+      }
+    },
+    "Host" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Host"
+          }
+        }
+      }
+    },
+    "Interface" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Interface"
+          }
+        }
+      }
+    },
+    "Invalid API Token" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Token da API inválido"
+          }
+        }
+      }
+    },
+    "Invalid Response" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resposta inválida"
+          }
+        }
+      }
+    },
+    "Invalid URL" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "URL inválida"
+          }
+        }
+      }
+    },
+    "iOS" : {
+
+    },
+    "Last 24 Hours" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Últimas 24 horas"
+          }
+        }
+      }
+    },
+    "Last updated %@" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atualizado pela última vez %@"
+          }
+        }
+      }
+    },
+    "Learn More" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saiba mais"
+          }
+        }
+      }
+    },
+    "Loading…" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carregando…"
+          }
+        }
+      }
+    },
+    "Manage" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerenciar"
+          }
+        }
+      }
+    },
+    "Manage allow & deny lists" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerencie listas de permissão e negação"
+          }
+        }
+      }
+    },
+    "Manage your block & allow lists" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerencie suas listas de bloqueio e permissão"
+          }
+        }
+      }
+    },
+    "Match" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Correspondência"
+          }
+        }
+      }
+    },
+    "Monitor your Pi-hole instances" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitore suas instâncias do Pi-hole"
+          }
+        }
+      }
+    },
+    "More Details" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mais detalhes"
+          }
+        }
+      }
+    },
+    "Needs Attention" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Requer atenção"
+          }
+        }
+      }
+    },
+    "No API Token Provided" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhum token da API fornecido"
+          }
+        }
+      }
+    },
+    "No blocklists configured." : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhuma lista de bloqueio configurada."
+          }
+        }
+      }
+    },
+    "No data available" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhum dado disponível"
+          }
+        }
+      }
+    },
+    "No Pi-holes configured" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhum Pi-hole configurado"
+          }
+        }
+      }
+    },
+    "No Pi-holes Configured" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhum Pi-hole configurado"
+          }
+        }
+      }
+    },
+    "No Pi-holes configured or loading..." : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhum Pi-hole configurado ou carregando..."
+          }
+        }
+      }
+    },
+    "None" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhum"
+          }
+        }
+      }
+    },
+    "Offline" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Offline"
+          }
+        }
+      }
+    },
+    "OK" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
+    },
+    "Optional - enables additional features" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opcional - ativa recursos adicionais"
+          }
+        }
+      }
+    },
+    "Optional friendly name" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome amigável opcional"
+          }
+        }
+      }
+    },
+    "Partially Active" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parcialmente ativo"
+          }
+        }
+      }
+    },
+    "Password" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Senha"
+          }
+        }
+      }
+    },
+    "Percent Blocked" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Percentual bloqueado"
+          }
+        }
+      }
+    },
+    "Permanently" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permanentemente"
+          }
+        }
+      }
+    },
+    "Pi Monitor (Optional)" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pi Monitor (opcional)"
+          }
+        }
+      }
+    },
+    "Pi Monitor is a service that helps you monitor your Raspberry Pi by showing information like temperature, memory usage and more! To use it, you'll need to install Pi Monitor on your Raspberry Pi." : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Pi Monitor é um serviço que ajuda você a monitorar seu Raspberry Pi mostrando informações como temperatura, uso de memória e muito mais! Para usá-lo, você precisará instalar o Pi Monitor no seu Raspberry Pi."
+          }
+        }
+      }
+    },
+    "Pi Monitor is a service that helps you to monitor your Raspberry Pi by showing you information like temperature, memory usage and more!\\n\\nIn order to use it you'll need to install it in your Raspberry Pi." : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Pi Monitor é um serviço que ajuda você a monitorar seu Raspberry Pi mostrando informações como temperatura, uso de memória e muito mais!\\n\\nPara usá-lo, você precisará instalá-lo no seu Raspberry Pi."
+          }
+        }
+      }
+    },
+    "Pi Monitor is not enabled on" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Pi Monitor não está ativado em"
+          }
+        }
+      }
+    },
+    "Pi Stats" : {
+
+    },
+    "Pi Stats - %d enabled, %d disabled" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pi Stats - %d ativados, %d desativados"
+          }
+        }
+      }
+    },
+    "Pi Stats - %d of %d Pi-holes have errors" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pi Stats - %d de %d Pi-holes com erros"
+          }
+        }
+      }
+    },
+    "Pi Stats - All %d Pi-holes are disabled" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pi Stats - Todos os %d Pi-holes estão desativados"
+          }
+        }
+      }
+    },
+    "Pi Stats - All %d Pi-holes are enabled" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pi Stats - Todos os %d Pi-holes estão ativados"
+          }
+        }
+      }
+    },
+    "Pi Stats - No Pi-holes configured" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pi Stats - Nenhum Pi-hole configurado"
+          }
+        }
+      }
+    },
+    "Pi Stats for macOS" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pi Stats para macOS"
+          }
+        }
+      }
+    },
+    "Pi Stats source code" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Código-fonte do Pi Stats"
+          }
+        }
+      }
+    },
+    "Pi-hole Configuration" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configuração do Pi-hole"
+          }
+        }
+      }
+    },
+    "Pi-hole offline" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pi-hole offline"
+          }
+        }
+      }
+    },
+    "Pi-hole Setup" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configuração do Pi-hole"
+          }
+        }
+      }
+    },
+    "Port" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Porta"
+          }
+        }
+      }
+    },
+    "Port (80)" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Porta (80)"
+          }
+        }
+      }
+    },
+    "Port (8088)" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Porta (8088)"
+          }
+        }
+      }
+    },
+    "Protocol" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protocolo"
+          }
+        }
+      }
+    },
+    "Pull down to try again." : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puxe para baixo para tentar novamente."
+          }
+        }
+      }
+    },
+    "Queries" : {
+
+    },
+    "Queries Blocked" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consultas bloqueadas"
+          }
+        }
+      }
+    },
+    "Query Log" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registro de consultas"
+          }
+        }
+      }
+    },
+    "Query Types" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tipos de consulta"
+          }
+        }
+      }
+    },
+    "Quit Pi Stats" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Encerrar o Pi Stats"
+          }
+        }
+      }
+    },
+    "Regex" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regex"
+          }
+        }
+      }
+    },
+    "Required for Pi-hole v6" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Necessário para o Pi-hole v6"
+          }
+        }
+      }
+    },
+    "Retry" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tentar novamente"
+          }
+        }
+      }
+    },
+    "Save" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salvar"
+          }
+        }
+      }
+    },
+    "Scanner" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leitor"
+          }
+        }
+      }
+    },
+    "Search domain or client" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar domínio ou cliente"
+          }
+        }
+      }
+    },
+    "Session Error" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erro de sessão"
+          }
+        }
+      }
+    },
+    "Settings" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajustes"
+          }
+        }
+      }
+    },
+    "Show History Chart" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar gráfico de histórico"
+          }
+        }
+      }
+    },
+    "Show Pi Stats" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar Pi Stats"
+          }
+        }
+      }
+    },
+    "Show Top Clients" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar principais clientes"
+          }
+        }
+      }
+    },
+    "Show Top Domains" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar principais domínios"
+          }
+        }
+      }
+    },
+    "Start Pi Stats when macOS begins" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iniciar o Pi Stats quando o macOS for iniciado"
+          }
+        }
+      }
+    },
+    "Startup" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inicialização"
+          }
+        }
+      }
+    },
+    "Support" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suporte"
+          }
+        }
+      }
+    },
+    "Tap here to add a custom disable time" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toque aqui para adicionar um tempo de desativação personalizado"
+          }
+        }
+      }
+    },
+    "Tap here to add your first pi-hole" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toque aqui para adicionar seu primeiro Pi-hole"
+          }
+        }
+      }
+    },
+    "Technical Details:" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detalhes técnicos:"
+          }
+        }
+      }
+    },
+    "Temperature Scale" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escala de temperatura"
+          }
+        }
+      }
+    },
+    "This permanently removes all diagnosis messages from this Pi-hole." : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Isto remove permanentemente todas as mensagens de diagnóstico deste Pi-hole."
+          }
+        }
+      }
+    },
+    "This will permanently remove this Pi-hole from Pi Stats." : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Isto removerá permanentemente este Pi-hole do Pi Stats."
+          }
+        }
+      }
+    },
+    "Time" : {
+
+    },
+    "Time: %@" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hora: %@"
+          }
+        }
+      }
+    },
+    "Token (Optional)" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Token (opcional)"
+          }
+        }
+      }
+    },
+    "Token is required for some functionalities like disable/enable your pi-hole.\\n\\nYou can find the API Token on /etc/pihole/setupVars.conf under WEBPASSWORD or you can open the web UI and go to Settings -> API -> Show API Token" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O token é necessário para algumas funcionalidades, como desativar/ativar seu Pi-hole.\\n\\nVocê pode encontrar o token da API em /etc/pihole/setupVars.conf sob WEBPASSWORD ou abrir a interface web e ir em Settings -> API -> Show API Token"
+          }
+        }
+      }
+    },
+    "Top Clients" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Principais clientes"
+          }
+        }
+      }
+    },
+    "Top Domains" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Principais domínios"
+          }
+        }
+      }
+    },
+    "Total Queries" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total de consultas"
+          }
+        }
+      }
+    },
+    "Type" : {
+
+    },
+    "Unknown" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desconhecido"
+          }
+        }
+      }
+    },
+    "Up to date" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atualizado"
+          }
+        }
+      }
+    },
+    "Update available" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atualização disponível"
+          }
+        }
+      }
+    },
+    "Update Gravity" : {
+
+    },
+    "Updating Gravity…" : {
+
+    },
+    "Upstream Servers" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Servidores upstream"
+          }
+        }
+      }
+    },
+    "Use your Pi-hole web interface password" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use a senha da interface web do seu Pi-hole"
+          }
+        }
+      }
+    },
+    "Version" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versão"
+          }
+        }
+      }
+    },
+    "Version %@ (%@)" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versão %@ (%@)"
+          }
+        }
+      }
+    },
+    "Website" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Site"
+          }
+        }
+      }
+    },
+    "What's this?" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O que é isto?"
+          }
+        }
+      }
+    },
+    "When on, disabling a Pi-hole turns it off indefinitely instead of for a set time." : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quando ativado, desativar um Pi-hole o desliga indefinidamente em vez de por um tempo determinado."
+          }
+        }
+      }
+    },
+    "Write a review on the App Store" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escreva uma avaliação na App Store"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

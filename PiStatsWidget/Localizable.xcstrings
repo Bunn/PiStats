@@ -1,0 +1,144 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "---" : {
+
+    },
+    "—" : {
+
+    },
+    "%@" : {
+
+    },
+    "%@ blocking paused" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bloqueio pausado em %@"
+          }
+        }
+      }
+    },
+    "Blocking" : {
+
+    },
+    "Choose which Pi-hole to display in the widget" : {
+
+    },
+    "Disable %@" : {
+
+    },
+    "Duration (minutes)" : {
+
+    },
+    "Enable or disable the Pi-hole" : {
+
+    },
+    "Enabled" : {
+
+    },
+    "Monitor your Raspberry Pi's system metrics" : {
+
+    },
+    "Pause blocking on all your Pi-holes for a set time." : {
+
+    },
+    "Paused" : {
+
+    },
+    "Pi Monitor" : {
+
+    },
+    "Pi-hole" : {
+
+    },
+    "Pi-hole Blocking" : {
+
+    },
+    "Pi-hole Control" : {
+
+    },
+    "Pi-hole has been %@" : {
+
+    },
+    "Pi-hole ID" : {
+
+    },
+    "Pi-hole Quick Disable" : {
+
+    },
+    "Pi-hole Stats" : {
+
+    },
+    "Quick Disable Configuration" : {
+
+    },
+    "Quick Disable Pi-hole" : {
+
+    },
+    "Re-enable" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reativar"
+          }
+        }
+      }
+    },
+    "Re-enable now" : {
+
+    },
+    "Re-enable Pi-hole" : {
+
+    },
+    "Seconds" : {
+
+    },
+    "See which devices make the most queries and get the most blocks" : {
+
+    },
+    "See your most blocked domains at a glance" : {
+
+    },
+    "Select Pi-hole" : {
+
+    },
+    "Set Pi-hole Blocking" : {
+
+    },
+    "Toggle ad blocking for all your Pi-holes." : {
+
+    },
+    "Toggle Pi-hole" : {
+
+    },
+    "Top Blocked Domains" : {
+
+    },
+    "Top Clients" : {
+
+    },
+    "Turn Pi-hole blocking back on" : {
+
+    },
+    "Updated %@" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atualizado %@"
+          }
+        }
+      }
+    },
+    "View all Pi-hole statistics at a glance" : {
+
+    },
+    "View status and quickly enable/disable your Pi-hole" : {
+
+    }
+  },
+  "version" : "1.0"
+}

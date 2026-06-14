@@ -165,6 +165,7 @@
 		310D602F2D496A33008E611D /* Exceptions for "Shared" folder in "Pi Stats Mobile" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Localizable.xcstrings,
 				Actions/PiholeActionService.swift,
 				Alerting/AlertSettingsStore.swift,
 				Alerting/LocalNotificationDispatcher.swift,
@@ -206,6 +207,7 @@
 		310D60312D496A7A008E611D /* Exceptions for "Shared" folder in "Pi Stats" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Localizable.xcstrings,
 				Actions/PiholeActionService.swift,
 				Alerting/AlertSettingsStore.swift,
 				Alerting/LocalNotificationDispatcher.swift,
@@ -612,6 +614,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"pt-BR",
 			);
 			mainGroup = 310D5F0E2D4967F1008E611D;
 			minimizedProjectReferenceProxies = 1;
