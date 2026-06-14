@@ -73,6 +73,7 @@ public struct SystemImages {
     public static let settingsDisplayIconBadgeForOffline = "app.badge"
     public static let settingsDisablePermanently = "xmark.shield"
     public static let customizeDisableTimes = "clock"
+    public static let settingsLiveActivity = "timer"
     public static let addNewCustomDisableTime = "plus"
     
     // Pi Monitor
@@ -204,6 +205,8 @@ public struct UserText {
         public static let displayAllPiholesToggle = String(localized: "Display all Pi-holes in a single card")
         public static let alwaysDisablePermanentlyToggle = String(localized: "Always disable Pi-hole permanently")
         public static let alwaysDisablePermanentlyDescription = String(localized: "When on, disabling a Pi-hole turns it off indefinitely instead of for a set time.")
+        public static let liveActivityToggle = String(localized: "Show Live Activity")
+        public static let liveActivityDescription = String(localized: "Shows a Lock Screen and Dynamic Island countdown when you pause blocking for a set time.")
         public static let temperatureScaleLabel = String(localized: "Temperature Scale")
         public static let startAtLoginToggle = String(localized: "Start Pi Stats when macOS begins")
         public static let versionLabel = String(localized: "Version")

@@ -49,6 +49,19 @@ struct SettingsView: View {
                         Label(UserText.Settings.customizeDisableTimes, systemImage: SystemImages.customizeDisableTimes)
                     }
                 }
+
+                Toggle(isOn: $viewModel.liveActivityEnabled) {
+                    Label {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(UserText.Settings.liveActivityToggle)
+                            Text(UserText.Settings.liveActivityDescription)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                    } icon: {
+                        Image(systemName: SystemImages.settingsLiveActivity)
+                    }
+                }
             }
 
             Section(header: Text(UserText.Settings.Sections.piMonitor)) {

@@ -60,7 +60,13 @@ class SettingsViewModel: ObservableObject {
             userDefaults.set(disablePermanently, forKey: Keys.disablePermanently)
         }
     }
-    
+
+    @Published var liveActivityEnabled: Bool {
+        didSet {
+            userDefaults.set(liveActivityEnabled, forKey: Keys.liveActivityEnabled)
+        }
+    }
+
     @Published var temperatureScale: TemperatureScale {
         didSet {
             userDefaults.set(temperatureScale.rawValue, forKey: Keys.temperatureScale)
@@ -81,6 +87,7 @@ class SettingsViewModel: ObservableObject {
         static let disablePermanently = "disablePermanently"
         static let temperatureScale = "temperatureScale"
         static let customDisableTimes = "customDisableTimes"
+        static let liveActivityEnabled = UserDefaults.LiveActivity.enabledKey
     }
 
     init(userDefaults: UserDefaultsProtocol = UserDefaults.standard) {
@@ -97,6 +104,14 @@ class SettingsViewModel: ObservableObject {
             userDefaults.set(true, forKey: Keys.disablePermanently)
         } else {
             self.disablePermanently = userDefaults.bool(forKey: Keys.disablePermanently)
+        }
+
+        // Live Activity is on by default; check for key existence so the default isn't lost
+        if (userDefaults as? UserDefaults)?.object(forKey: Keys.liveActivityEnabled) == nil {
+            self.liveActivityEnabled = true
+            userDefaults.set(true, forKey: Keys.liveActivityEnabled)
+        } else {
+            self.liveActivityEnabled = userDefaults.bool(forKey: Keys.liveActivityEnabled)
         }
         
         // For temperatureScale, use device's locale as default if never set
