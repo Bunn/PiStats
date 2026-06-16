@@ -37,7 +37,7 @@ struct TopDomainsView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.vertical, 8)
             } else {
-                ForEach(Array(items.prefix(5).enumerated()), id: \.element.id) { index, item in
+                ForEach(Array(items.prefix(5).enumerated()), id: \.element.domain) { index, item in
                     TopDomainRow(item: item, rank: index + 1, maxCount: items.first?.count ?? 1, isBlocked: selectedTab == .blocked)
                         .contextMenu { domainActions(for: item) }
                 }

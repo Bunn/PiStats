@@ -374,12 +374,13 @@ extension PiholeSummaryDataUpdater {
     private func setError(_ error: PiholeError) {
         withAnimation {
             summary.currentError = error
-            summary.hasError = true
+            if !summary.hasError { summary.hasError = true }
         }
     }
-    
+
     @MainActor
     private func clearError() {
+        guard summary.hasError || summary.currentError != nil else { return }
         withAnimation {
             summary.currentError = nil
             summary.hasError = false
@@ -392,67 +393,57 @@ extension PiholeSummaryDataUpdater {
 
     @MainActor
     private func updateSummary(with result: PiholeSummary) {
+        let blocked = result.adsBlocked.formatted()
+        let domains = result.domainsBeingBlocked.formatted()
+        let percentage = result.adsPercentageToday.formattedPercentage()
+        let queries = result.queries.formatted()
         withAnimation {
-            summary.queriesBlocked = result.adsBlocked.formatted()
-            summary.domainsOnList = result.domainsBeingBlocked.formatted()
-            summary.percentageBlocked = result.adsPercentageToday.formattedPercentage()
-            summary.totalQueries = result.queries.formatted()
+            if summary.queriesBlocked != blocked { summary.queriesBlocked = blocked }
+            if summary.domainsOnList != domains { summary.domainsOnList = domains }
+            if summary.percentageBlocked != percentage { summary.percentageBlocked = percentage }
+            if summary.totalQueries != queries { summary.totalQueries = queries }
         }
     }
 
     @MainActor
     private func updateTopDomains(with result: TopDomainsResult) {
-        withAnimation {
-            summary.topDomains = result
-        }
+        withAnimation { summary.topDomains = result }
     }
 
     @MainActor
     private func updateTopClients(with result: TopClientsResult) {
-        withAnimation {
-            summary.topClients = result
-        }
+        withAnimation { summary.topClients = result }
     }
 
     @MainActor
     private func updateHistory(with result: [HistoryItem]) {
-        withAnimation {
-            summary.history = result
-        }
+        withAnimation { summary.history = result }
     }
 
     @MainActor
     private func updateQueryTypes(with result: QueryTypesResult) {
-        withAnimation {
-            summary.queryTypes = result
-        }
+        withAnimation { summary.queryTypes = result }
     }
 
     @MainActor
     private func updateUpstreams(with result: UpstreamsResult) {
-        withAnimation {
-            summary.upstreams = result
-        }
+        withAnimation { summary.upstreams = result }
     }
 
     @MainActor
     private func updateHealth(with result: PiholeHealth) {
-        withAnimation {
-            summary.health = result
-        }
+        withAnimation { summary.health = result }
     }
 
     @MainActor
     private func updateMonitorMetrics(with metrics: PiMonitorMetrics) {
-        withAnimation {
-            summary.monitorMetrics = metrics
-        }
+        withAnimation { summary.monitorMetrics = metrics }
     }
 
     @MainActor
     private func updateStatus(with status: PiholeStatus) {
         withAnimation {
-            summary.status = status
+            if summary.status != status { summary.status = status }
         }
     }
 }

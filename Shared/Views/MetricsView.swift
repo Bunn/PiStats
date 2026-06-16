@@ -8,6 +8,14 @@
 import SwiftUI
 import PiStatsCore
 
+private let metricMeasurementFormatter: MeasurementFormatter = {
+    let formatter = MeasurementFormatter()
+    formatter.locale = Locale.current
+    formatter.unitOptions = .providedUnit
+    formatter.numberFormatter.maximumFractionDigits = 1
+    return formatter
+}()
+
 struct MetricItemViewModel {
     internal init(metrics: PiMonitorMetrics, temperatureScale: TemperatureScale = .celsius) {
         self.metrics = metrics
@@ -19,15 +27,9 @@ struct MetricItemViewModel {
 
     var temperature: String {
         let temperatureValue = Measurement(value: metrics.socTemperature, unit: UnitTemperature.celsius)
-        let locale = Locale.current
-        let measurementFormatter = MeasurementFormatter()
-        measurementFormatter.locale = locale
-        measurementFormatter.unitOptions = .providedUnit
-        measurementFormatter.numberFormatter.maximumFractionDigits = 1
-
         let targetUnit: UnitTemperature = temperatureScale == .celsius ? .celsius : .fahrenheit
         let convertedTemperature = temperatureValue.converted(to: targetUnit)
-        return measurementFormatter.string(from: convertedTemperature)
+        return metricMeasurementFormatter.string(from: convertedTemperature)
     }
 
     var uptime: String {
@@ -50,7 +52,7 @@ fileprivate struct MetricItem: Identifiable {
     let value: String
     let systemName: String
     let helpText: String
-    let id: UUID = UUID()
+    var id: String { systemName }
 }
 
 struct MetricsView: View {
@@ -92,7 +94,6 @@ struct MetricsView: View {
                 .minimumScaleFactor(0.5)
                 .lineLimit(1)
                 .font(font)
-                .help(item.helpText)
             }
         }
     }

@@ -35,7 +35,7 @@ struct TopClientsView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.vertical, 8)
             } else {
-                ForEach(Array(items.prefix(5).enumerated()), id: \.element.id) { index, item in
+                ForEach(Array(items.prefix(5).enumerated()), id: \.element.ip) { index, item in
                     TopClientRow(item: item, rank: index + 1, maxCount: items.first?.count ?? 1, isBlocked: selectedTab == .blocked)
                 }
             }

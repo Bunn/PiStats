@@ -10,7 +10,14 @@ import PiStatsCore
 
 struct MacPiholeRowFromDataUpdater: View {
     @ObservedObject var dataUpdater: PiholeSummaryDataUpdater
+    @ObservedObject var summary: PiholeSummaryData
     let onEditTapped: () -> Void
+
+    init(dataUpdater: PiholeSummaryDataUpdater, onEditTapped: @escaping () -> Void) {
+        self.dataUpdater = dataUpdater
+        self.summary = dataUpdater.summary
+        self.onEditTapped = onEditTapped
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: LayoutConstants.MainView.rowInternalSpacing) {
@@ -22,8 +29,8 @@ struct MacPiholeRowFromDataUpdater: View {
 
     private var headerRow: some View {
         HStack {
-            PiholeStatusIcon(status: dataUpdater.summary.status,
-                           hasError: dataUpdater.summary.hasError)
+            PiholeStatusIcon(status: summary.status,
+                           hasError: summary.hasError)
 
             Text(dataUpdater.pihole.name)
                 .font(.headline)
@@ -35,17 +42,16 @@ struct MacPiholeRowFromDataUpdater: View {
                     .foregroundStyle(.secondary)
             }
             .buttonStyle(.plain)
-            .help(UserText.MainView.editTooltip)
         }
     }
 
     private var statsRow: some View {
         HStack(spacing: LayoutConstants.MainView.rowItemSpacing) {
-            Label(dataUpdater.summary.totalQueries,
+            Label(summary.totalQueries,
                   systemImage: SystemImages.globe)
-            Label(dataUpdater.summary.queriesBlocked,
+            Label(summary.queriesBlocked,
                   systemImage: SystemImages.handRaised)
-            Label(dataUpdater.summary.percentageBlocked,
+            Label(summary.percentageBlocked,
                   systemImage: SystemImages.chartPie)
         }
         .font(.caption)

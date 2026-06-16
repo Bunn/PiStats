@@ -24,7 +24,7 @@ struct HealthView: View {
 
             updateStatus
 
-            ForEach(health.messages) { message in
+            ForEach(Array(health.messages.enumerated()), id: \.offset) { _, message in
                 HStack(alignment: .firstTextBaseline, spacing: 6) {
                     Image(systemName: SystemImages.errorMessageWarning)
                         .font(.caption)

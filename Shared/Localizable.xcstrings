@@ -127,6 +127,9 @@
         }
       }
     },
+    "192.168.1.100 or pi.local" : {
+
+    },
     "About" : {
       "localizations" : {
         "pt-BR" : {
@@ -268,6 +271,7 @@
       }
     },
     "Back online" : {
+      "extractionState" : "stale",
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
@@ -308,6 +312,7 @@
       }
     },
     "Blocking disabled" : {
+      "extractionState" : "stale",
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
@@ -511,6 +516,7 @@
       }
     },
     "Diagnostic messages" : {
+      "extractionState" : "stale",
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
@@ -879,6 +885,9 @@
         }
       }
     },
+    "macOS" : {
+
+    },
     "Manage" : {
       "localizations" : {
         "pt-BR" : {
@@ -1212,6 +1221,9 @@
         }
       }
     },
+    "Pi-hole" : {
+
+    },
     "Pi-hole Configuration" : {
       "localizations" : {
         "pt-BR" : {
@@ -1223,6 +1235,7 @@
       }
     },
     "Pi-hole offline" : {
+      "extractionState" : "stale",
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {

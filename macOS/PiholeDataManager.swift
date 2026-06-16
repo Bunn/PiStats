@@ -67,32 +67,24 @@ class PiholeDataManager: ObservableObject {
     
     private func setupListUpdaterObservation() {
         cancellables.removeAll()
-        
+
         guard let listUpdater = listUpdater else { return }
-        
-        listUpdater.objectWillChange
-            .sink { [weak self] _ in
-                DispatchQueue.main.async {
-                    self?.objectWillChange.send()
-                }
-            }
+
+        listUpdater.$dataUpdaters
+            .sink { [weak self] _ in self?.objectWillChange.send() }
             .store(in: &cancellables)
-        
+
         for updater in listUpdater.dataUpdaters {
-            updater.objectWillChange
-                .sink { [weak self] _ in
-                    DispatchQueue.main.async {
-                        self?.objectWillChange.send()
-                    }
-                }
+            updater.summary.$status
+                .removeDuplicates()
+                .dropFirst()
+                .sink { [weak self] _ in self?.objectWillChange.send() }
                 .store(in: &cancellables)
-            
-            updater.summary.objectWillChange
-                .sink { [weak self] _ in
-                    DispatchQueue.main.async {
-                        self?.objectWillChange.send()
-                    }
-                }
+
+            updater.summary.$hasError
+                .removeDuplicates()
+                .dropFirst()
+                .sink { [weak self] _ in self?.objectWillChange.send() }
                 .store(in: &cancellables)
         }
     }
