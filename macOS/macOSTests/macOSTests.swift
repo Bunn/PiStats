@@ -90,4 +90,35 @@ struct macOSTests {
         let token = try? keychainItem.readPassword()
         #expect(token == nil)
     }
+
+    @Test("System metrics errors do not mark Pi-hole status as failed")
+    func systemMetricsErrorDoesNotAffectPiholeStatusAlerts() async {
+        let updater = PiholeSummaryDataUpdater(
+            pihole: Pihole(
+                name: "Test",
+                address: "1.2.3.4",
+                piMonitor: PiMonitorEnvironment(host: "1.2.3.4", port: 8088)
+            )
+        )
+
+        updater.handleError(PiholeServiceError.piMonitorError(.invalidResponse), context: .fetchingSystemMetrics)
+        await Task.yield()
+
+        #expect(updater.summary.hasError)
+        #expect(updater.summary.currentError?.type == .systemMetricsError)
+        #expect(updater.summary.hasPiholeError == false)
+    }
+
+    @Test("Pi-hole polling errors mark Pi-hole status as failed")
+    func piholePollingErrorAffectsPiholeStatusAlerts() async {
+        let updater = PiholeSummaryDataUpdater(
+            pihole: Pihole(name: "Test", address: "1.2.3.4")
+        )
+
+        updater.handleError(PiholeServiceError.networkError(URLError(.timedOut)), context: .fetchingStatus)
+        await Task.yield()
+
+        #expect(updater.summary.hasError)
+        #expect(updater.summary.hasPiholeError)
+    }
 }

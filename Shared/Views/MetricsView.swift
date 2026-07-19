@@ -26,7 +26,8 @@ struct MetricItemViewModel {
     private let temperatureScale: TemperatureScale
 
     var temperature: String {
-        let temperatureValue = Measurement(value: metrics.socTemperature, unit: UnitTemperature.celsius)
+        guard let socTemperature = metrics.socTemperature else { return "N/A" }
+        let temperatureValue = Measurement(value: socTemperature, unit: UnitTemperature.celsius)
         let targetUnit: UnitTemperature = temperatureScale == .celsius ? .celsius : .fahrenheit
         let convertedTemperature = temperatureValue.converted(to: targetUnit)
         return metricMeasurementFormatter.string(from: convertedTemperature)
@@ -38,13 +39,17 @@ struct MetricItemViewModel {
     }
 
     var loadAverage: String {
-        return metrics.loadAverage.map({"\($0)"}).joined(separator: ", ")
+        guard !metrics.loadAverage.isEmpty else { return "N/A" }
+        return metrics.loadAverage
+            .prefix(3)
+            .map { $0.formatted(.number.precision(.fractionLength(2))) }
+            .joined(separator: " · ")
     }
 
     var memoryUsage: String {
-        let usedMemory = metrics.memory.totalMemory - metrics.memory.availableMemory
-        let percentageUsed = Double(usedMemory) / Double(metrics.memory.totalMemory)
-        return percentageUsed.formatted(.percent.precision(.significantDigits(2)))
+        guard let usedFraction = metrics.memory.usedFraction else { return "N/A" }
+        let percentage = usedFraction.formatted(.percent.precision(.fractionLength(0)))
+        return String(localized: "\(percentage) used")
     }
 }
 
@@ -63,16 +68,16 @@ struct MetricsView: View {
         return [
             MetricItem(value: viewModel.temperature,
                        systemName: SystemImages.metricTemperature,
-                       helpText: "Raspberry Pi temperature"),
+                       helpText: "CPU temperature"),
             MetricItem(value: viewModel.uptime,
                        systemName: SystemImages.metricUptime,
-                       helpText: "Raspberry Pi uptime"),
+                       helpText: "System uptime"),
             MetricItem(value: viewModel.loadAverage,
                        systemName: SystemImages.metricLoadAverage,
-                       helpText: "Raspberry Pi load average"),
+                       helpText: "System load average over 1, 5, and 15 minutes"),
             MetricItem(value: viewModel.memoryUsage,
                        systemName: SystemImages.metricMemoryUsage,
-                       helpText: "Raspberry Pi memory usage"),
+                       helpText: "Memory used"),
         ]
     }
 
@@ -86,6 +91,7 @@ struct MetricsView: View {
             ForEach(getMetricItems()) { item in
                 Label(title: {
                     Text(item.value)
+                        .monospacedDigit()
                 }, icon: {
                     Image(systemName: item.systemName)
                         .frame(width: imageSize, height: imageSize)
@@ -94,6 +100,9 @@ struct MetricsView: View {
                 .minimumScaleFactor(0.5)
                 .lineLimit(1)
                 .font(font)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(item.helpText)
+                .accessibilityValue(item.value)
             }
         }
     }

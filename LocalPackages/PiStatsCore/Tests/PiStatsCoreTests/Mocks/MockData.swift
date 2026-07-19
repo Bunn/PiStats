@@ -29,7 +29,7 @@ enum MockData {
         version: .v6,
         port: 80,
         token: "test-token-v6",
-        piMonitor: PiMonitorEnvironment(host: "192.168.1.101", port: 8088),
+        systemMetricsEnabled: true,
         uuid: UUID(uuidString: "00000000-0000-0000-0000-000000000002")!
     )
     
@@ -376,6 +376,35 @@ enum MockData {
         ]
     ]
 
+    nonisolated(unsafe) static let v6SystemMetricsJSON: [String: Any] = [
+        "system": [
+            "uptime": 86_400,
+            "memory": [
+                "ram": [
+                    "total": 4_096_000,
+                    "free": 2_048_000,
+                    "available": 3_072_000,
+                    "used": 1_024_000,
+                    "%used": 25.0
+                ]
+            ],
+            "cpu": [
+                "load": [
+                    "raw": [0.5, 0.6, 0.7],
+                    "percent": [12.5, 15.0, 17.5]
+                ]
+            ]
+        ]
+    ]
+
+    nonisolated(unsafe) static let v6SensorsJSON: [String: Any] = [
+        "sensors": [
+            "cpu_temp": 45.5,
+            "hot_limit": 60.0,
+            "unit": "C"
+        ]
+    ]
+
     // MARK: - PiMonitor Mock Responses
     
     static let piMonitorMetricsJSON: Data = {
@@ -424,4 +453,3 @@ enum MockData {
         )
     }
 }
-

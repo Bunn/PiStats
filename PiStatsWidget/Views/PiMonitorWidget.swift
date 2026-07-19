@@ -30,11 +30,10 @@ private enum Constants {
     enum Formatting {
         static let temperatureMaxFractionDigits = 1
         static let percentageSignificantDigits = 2
-        static let loadAverageFormat = "%.2f"
     }
 }
 
-// MARK: - Pi Monitor Widget
+// MARK: - System Metrics Widget
 
 struct PiMonitorWidget: Widget {
     let kind: String = "PiMonitorWidget"
@@ -47,7 +46,7 @@ struct PiMonitorWidget: Widget {
         ) { entry in
             PiMonitorWidgetView(entry: entry)
         }
-        .configurationDisplayName("Pi Monitor")
+        .configurationDisplayName("System Metrics")
         .description("Monitor your Raspberry Pi's system metrics")
         .contentMarginsDisabled()
         .supportedFamilies([.systemSmall, .systemMedium])
@@ -96,7 +95,8 @@ struct WidgetMetricItemViewModel {
     // MARK: Computed Properties
     
     var temperature: String {
-        let temperatureValue = Measurement(value: metrics.socTemperature, unit: UnitTemperature.celsius)
+        guard let socTemperature = metrics.socTemperature else { return "N/A" }
+        let temperatureValue = Measurement(value: socTemperature, unit: UnitTemperature.celsius)
         let measurementFormatter = createTemperatureFormatter()
         
         let targetUnit: UnitTemperature = temperatureScale == .celsius ? .celsius : .fahrenheit
@@ -111,13 +111,12 @@ struct WidgetMetricItemViewModel {
     
     var loadAverage: String {
         guard !metrics.loadAverage.isEmpty else { return "N/A" }
-        return String(format: Constants.Formatting.loadAverageFormat, metrics.loadAverage[0])
+        return metrics.loadAverage[0].formatted(.number.precision(.fractionLength(2)))
     }
     
     var memoryUsage: String {
-        let usedMemory = metrics.memory.totalMemory - metrics.memory.availableMemory
-        let percentageUsed = Double(usedMemory) / Double(metrics.memory.totalMemory)
-        return percentageUsed.formatted(.percent.precision(.significantDigits(Constants.Formatting.percentageSignificantDigits)))
+        guard let usedFraction = metrics.memory.usedFraction else { return "N/A" }
+        return usedFraction.formatted(.percent.precision(.significantDigits(Constants.Formatting.percentageSignificantDigits)))
     }
     
     // MARK: Private Methods
@@ -131,7 +130,7 @@ struct WidgetMetricItemViewModel {
     }
 }
 
-// MARK: - Pi Monitor Widget View
+// MARK: - System Metrics Widget View
 
 struct PiMonitorWidgetView: View {
     let entry: PiStatsEntry
@@ -164,7 +163,7 @@ struct PiMonitorWidgetView: View {
     
     @ViewBuilder
     private var contentView: some View {
-        if let metrics = entry.widgetData?.monitorMetrics {
+        if let metrics = entry.widgetData?.systemMetrics {
             metricsView(for: metrics)
         } else if let widgetData = entry.widgetData {
             placeholderMetricsView(status: widgetData.status)
@@ -189,7 +188,7 @@ struct PiMonitorWidgetView: View {
             
             MetricRow(
                 icon: SystemImages.metricMemoryUsage,
-                title: "Memory",
+                title: "Memory Used",
                 value: viewModel.memoryUsage,
                 color: .totalQueries
             )
@@ -221,7 +220,7 @@ struct PiMonitorWidgetView: View {
             
             MetricRow(
                 icon: SystemImages.metricMemoryUsage,
-                title: "Memory",
+                title: "Memory Used",
                 value: "—",
                 color: .totalQueries
             )

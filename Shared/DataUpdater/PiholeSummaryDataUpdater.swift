@@ -18,9 +18,13 @@ protocol ErrorHandling {
 enum ErrorContext {
     case fetchingSummary
     case fetchingStatus
-    case fetchingMonitorMetrics
+    case fetchingSystemMetrics
     case enablingPihole
     case disablingPihole
+
+    var affectsPiholeStatus: Bool {
+        self != .fetchingSystemMetrics
+    }
 }
 
 // MARK: - Error Mapper
@@ -53,14 +57,14 @@ struct PiholeErrorMapper {
             case .piMonitorNotSet:
                 return .invalidConfiguration
             case .piMonitorError:
-                return .monitorError
+                return .systemMetricsError
             case .unknownError, .notSupported:
                 return .unknown
             }
         }
         
         if error is PiMonitorError {
-            return .monitorError
+            return .systemMetricsError
         }
         
         // Check for common network errors
@@ -323,17 +327,17 @@ final class PiholeSummaryDataUpdater: Identifiable, ObservableObject, ErrorHandl
             }
         })
 
-        if service.pihole.piMonitor != nil {
+        if service.pihole.systemMetricsEnabled {
             fetchTasks.append(Task { [weak self] in
                 guard let self else { return }
                 do {
-                    let result = try await service.fetchMonitorMetrics()
+                    let result = try await service.fetchSystemMetrics()
                     try Task.checkCancellation()
-                    await updateMonitorMetrics(with: result)
+                    await updateSystemMetrics(with: result)
                 } catch is CancellationError {
                     // Task was cancelled, do nothing
                 } catch {
-                    handleError(error, context: .fetchingMonitorMetrics)
+                    handleError(error, context: .fetchingSystemMetrics)
                 }
             })
         }
@@ -366,24 +370,28 @@ extension PiholeSummaryDataUpdater {
     func handleError(_ error: Error, context: ErrorContext) {
         let piholeError = PiholeErrorMapper.mapError(error, context: context)
         Task {
-            await setError(piholeError)
+            await setError(piholeError, context: context)
         }
     }
     
     @MainActor
-    private func setError(_ error: PiholeError) {
+    private func setError(_ error: PiholeError, context: ErrorContext) {
         withAnimation {
             summary.currentError = error
             if !summary.hasError { summary.hasError = true }
+            if context.affectsPiholeStatus, !summary.hasPiholeError {
+                summary.hasPiholeError = true
+            }
         }
     }
 
     @MainActor
     private func clearError() {
-        guard summary.hasError || summary.currentError != nil else { return }
+        guard summary.hasError || summary.currentError != nil || summary.hasPiholeError else { return }
         withAnimation {
             summary.currentError = nil
             summary.hasError = false
+            summary.hasPiholeError = false
         }
     }
 }
@@ -436,8 +444,8 @@ extension PiholeSummaryDataUpdater {
     }
 
     @MainActor
-    private func updateMonitorMetrics(with metrics: PiMonitorMetrics) {
-        withAnimation { summary.monitorMetrics = metrics }
+    private func updateSystemMetrics(with metrics: PiMonitorMetrics) {
+        withAnimation { summary.systemMetrics = metrics }
     }
 
     @MainActor

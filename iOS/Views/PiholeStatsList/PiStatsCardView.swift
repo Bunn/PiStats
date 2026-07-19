@@ -31,7 +31,7 @@ struct PiStatsCardView: View {
                 CardViewGrid(data: data)
             }
 
-            if let metrics = data.monitorMetrics {
+            if let metrics = data.systemMetrics {
                 Divider()
                 MetricsView(viewModel: .init(metrics: metrics, temperatureScale: settingsStore.temperatureScale))
                     .contentTransition(.numericText())

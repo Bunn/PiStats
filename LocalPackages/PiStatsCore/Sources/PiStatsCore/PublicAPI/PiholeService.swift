@@ -14,7 +14,7 @@ public protocol PiholeService: Sendable {
 
     func fetchSummary() async throws -> PiholeSummary
     func fetchStatus() async throws -> PiholeStatus
-    func fetchMonitorMetrics() async throws -> PiMonitorMetrics
+    func fetchSystemMetrics() async throws -> PiMonitorMetrics
     func fetchHistory() async throws -> [HistoryItem]
     func fetchTopDomains(count: Int) async throws -> TopDomainsResult
     func fetchTopClients(count: Int) async throws -> TopClientsResult
@@ -119,8 +119,10 @@ public enum PiholeServiceError: Error, LocalizedError {
 }
 
 extension PiholeService {
-    func fetchMonitorMetrics() async throws -> PiMonitorMetrics {
-        Log.network.info("🖥️ [Service] Fetching monitor metrics for \(pihole.name)")
+    /// Pi-hole v5 compatibility path. Pi-hole v6 implements this requirement
+    /// using FTL's authenticated system and sensor API endpoints.
+    func fetchSystemMetrics() async throws -> PiMonitorMetrics {
+        Log.network.info("🖥️ [Service] Fetching legacy system metrics for \(pihole.name)")
         
         guard let metric = pihole.piMonitor else { 
             Log.network.error("❌ [Service] PiMonitor not configured for \(pihole.name)")
@@ -131,10 +133,10 @@ extension PiholeService {
             PiMonitorService().fetchMetrics(host: metric.host, port: metric.port) { result in
                 switch result {
                 case .success(let metrics):
-                    Log.network.info("✅ [Service] Monitor metrics fetched for \(pihole.name)")
+                    Log.network.info("✅ [Service] Legacy system metrics fetched for \(pihole.name)")
                     continuation.resume(returning: metrics)
                 case .failure(let error):
-                    Log.network.error("💥 [Service] Monitor metrics failed for \(pihole.name): \(error)")
+                    Log.network.error("💥 [Service] Legacy system metrics failed for \(pihole.name): \(error)")
                     continuation.resume(throwing: PiholeServiceError.piMonitorError(error))
                 }
             }

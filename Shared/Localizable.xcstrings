@@ -17,6 +17,16 @@
         }
       }
     },
+    "%@ used" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ em uso"
+          }
+        }
+      }
+    },
     "%lld blocklists" : {
       "localizations" : {
         "pt-BR" : {
@@ -712,16 +722,6 @@
         }
       }
     },
-    "Enable Pi Monitor" : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ativar Pi Monitor"
-          }
-        }
-      }
-    },
     "Error" : {
       "localizations" : {
         "pt-BR" : {
@@ -866,6 +866,7 @@
       }
     },
     "Learn More" : {
+      "extractionState" : "stale",
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
@@ -1108,42 +1109,22 @@
         }
       }
     },
-    "Pi Monitor (Optional)" : {
+    "Pi Monitor port (8088)" : {
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pi Monitor (opcional)"
+            "value" : "Porta do Pi Monitor (8088)"
           }
         }
       }
     },
-    "Pi Monitor is a service that helps you monitor your Raspberry Pi by showing information like temperature, memory usage and more! To use it, you'll need to install Pi Monitor on your Raspberry Pi." : {
+    "Pi Monitor setup" : {
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O Pi Monitor é um serviço que ajuda você a monitorar seu Raspberry Pi mostrando informações como temperatura, uso de memória e muito mais! Para usá-lo, você precisará instalar o Pi Monitor no seu Raspberry Pi."
-          }
-        }
-      }
-    },
-    "Pi Monitor is a service that helps you to monitor your Raspberry Pi by showing you information like temperature, memory usage and more!\\n\\nIn order to use it you'll need to install it in your Raspberry Pi." : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "O Pi Monitor é um serviço que ajuda você a monitorar seu Raspberry Pi mostrando informações como temperatura, uso de memória e muito mais!\\n\\nPara usá-lo, você precisará instalá-lo no seu Raspberry Pi."
-          }
-        }
-      }
-    },
-    "Pi Monitor is not enabled on" : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "O Pi Monitor não está ativado em"
+            "value" : "Configuração do Pi Monitor"
           }
         }
       }
@@ -1224,6 +1205,16 @@
     "Pi-hole" : {
 
     },
+    "Pi-hole 5 requires Pi Monitor to provide system metrics." : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Pi-hole 5 requer o Pi Monitor para fornecer métricas do sistema."
+          }
+        }
+      }
+    },
     "Pi-hole Configuration" : {
       "localizations" : {
         "pt-BR" : {
@@ -1271,16 +1262,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Porta (80)"
-          }
-        }
-      }
-    },
-    "Port (8088)" : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Porta (8088)"
           }
         }
       }
@@ -1488,6 +1469,16 @@
         }
       }
     },
+    "Show System Metrics" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar Métricas do Sistema"
+          }
+        }
+      }
+    },
     "Show Top Clients" : {
       "localizations" : {
         "pt-BR" : {
@@ -1518,6 +1509,16 @@
         }
       }
     },
+    "Shows temperature, uptime, load, and memory reported by the Pi-hole API." : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra temperatura, tempo de atividade, carga e memória informados pela API do Pi-hole."
+          }
+        }
+      }
+    },
     "Start Pi Stats when macOS begins" : {
       "localizations" : {
         "pt-BR" : {
@@ -1544,6 +1545,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Suporte"
+          }
+        }
+      }
+    },
+    "System Metrics" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Métricas do Sistema"
           }
         }
       }
@@ -1766,16 +1777,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Site"
-          }
-        }
-      }
-    },
-    "What's this?" : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "O que é isto?"
           }
         }
       }

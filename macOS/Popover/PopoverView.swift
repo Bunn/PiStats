@@ -149,7 +149,7 @@ struct PiStatPopoverView: View {
 
             ListView(data: summary)
 
-            if let metrics = summary.monitorMetrics {
+            if let metrics = summary.systemMetrics {
                 Divider()
                 HStack {
                     Text(UserText.Popover.deviceSection)

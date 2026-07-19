@@ -30,8 +30,13 @@ public struct PiholeAPIClient: PiholeService {
         try await service.fetchSummary()
     }
 
+    public func fetchSystemMetrics() async throws -> PiMonitorMetrics {
+        try await service.fetchSystemMetrics()
+    }
+
+    @available(*, deprecated, renamed: "fetchSystemMetrics()")
     public func fetchMonitorMetrics() async throws -> PiMonitorMetrics {
-        try await service.fetchMonitorMetrics()
+        try await fetchSystemMetrics()
     }
 
     public func fetchStatus() async throws -> PiholeStatus {

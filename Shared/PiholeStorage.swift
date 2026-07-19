@@ -158,6 +158,7 @@ final class DefaultPiholeStorage: PiholeStorage {
             port: pihole.port,
             secure: pihole.secure,
             token: nil,
+            systemMetricsEnabled: pihole.systemMetricsEnabled,
             piMonitor: pihole.piMonitor,
             uuid: pihole.uuid
         )
@@ -234,6 +235,7 @@ final class DefaultPiholeStorage: PiholeStorage {
                         port: stored.port,
                         secure: stored.secure,
                         token: finalToken,
+                        systemMetricsEnabled: stored.systemMetricsEnabled,
                         piMonitor: stored.piMonitor,
                         uuid: stored.uuid
                     )
@@ -317,6 +319,7 @@ final class DefaultPiholeStorage: PiholeStorage {
             port: port,
             secure: legacy.secure,
             token: token,
+            systemMetricsEnabled: legacy.hasPiMonitor,
             piMonitor: piMonitor,
             uuid: legacy.id
         )
@@ -340,6 +343,7 @@ extension Pihole: Codable {
         case port
         case secure
         case version
+        case systemMetricsEnabled
         case piMonitor
     }
 
@@ -354,6 +358,10 @@ extension Pihole: Codable {
         let secure = try container.decodeIfPresent(Bool.self, forKey: .secure) ?? false
         let version = try container.decode(PiholeVersion.self, forKey: .version)
         let piMonitor = try container.decodeIfPresent(PiMonitorEnvironment.self, forKey: .piMonitor)
+        // Existing records used the presence of a Pi Monitor configuration as
+        // the feature toggle. Preserve that choice during migration.
+        let systemMetricsEnabled = try container.decodeIfPresent(Bool.self, forKey: .systemMetricsEnabled)
+            ?? (piMonitor != nil)
 
         self.init(
             name: name,
@@ -362,6 +370,7 @@ extension Pihole: Codable {
             port: port,
             secure: secure,
             token: token,
+            systemMetricsEnabled: systemMetricsEnabled,
             piMonitor: piMonitor,
             uuid: uuid
         )
@@ -376,6 +385,7 @@ extension Pihole: Codable {
         try container.encode(port, forKey: .port)
         try container.encode(secure, forKey: .secure)
         try container.encode(version, forKey: .version)
+        try container.encode(systemMetricsEnabled, forKey: .systemMetricsEnabled)
         try container.encodeIfPresent(piMonitor, forKey: .piMonitor)
     }
 }

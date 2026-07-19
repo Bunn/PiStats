@@ -34,6 +34,7 @@ struct ModelTests {
         #expect(pihole.version == .v6)
         #expect(pihole.port == 80)
         #expect(pihole.token == "test-token")
+        #expect(pihole.systemMetricsEnabled)
         #expect(pihole.piMonitor?.host == "192.168.1.100")
         #expect(pihole.uuid == uuid)
         #expect(pihole.id == uuid)
@@ -46,6 +47,7 @@ struct ModelTests {
         #expect(pihole.version == .v6)
         #expect(pihole.port == 80)
         #expect(pihole.token == nil)
+        #expect(pihole.systemMetricsEnabled == false)
         #expect(pihole.piMonitor == nil)
     }
 
@@ -180,6 +182,7 @@ struct ModelTests {
         #expect(metrics.memory.totalMemory == 4096000)
         #expect(metrics.memory.freeMemory == 2048000)
         #expect(metrics.memory.availableMemory == 3072000)
+        #expect(metrics.memory.usedFraction == 0.25)
     }
     
     @Test("PiMonitorMetrics is Codable")
@@ -398,4 +401,3 @@ struct ModelTests {
         }
     }
 }
-

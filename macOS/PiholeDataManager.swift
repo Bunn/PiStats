@@ -128,7 +128,7 @@ class PiholeDataManager: ObservableObject {
         return updaters.map {
             PiholeSnapshot(piholeID: $0.pihole.uuid,
                            piholeName: $0.pihole.name,
-                           reachable: !$0.summary.hasError,
+                           reachable: !$0.summary.hasPiholeError,
                            status: $0.summary.status,
                            health: $0.summary.health)
         }

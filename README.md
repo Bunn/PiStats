@@ -22,8 +22,11 @@ Monitor your Pi-hole instances right from your iPhone, iPad, or Mac menu bar. Pi
 -  Beautiful charts and metrics
 -  Support for multiple Pi-hole instances
 
-## Pi Monitor
-For optional monitoring of your Raspberry Pi, you can install [Pi Monitor](https://github.com/Bunn/pi_monitor). Once installed, enable it on Pi Stats for enhanced performance insights and real-time statistics.
+## System Metrics
+
+Pi Stats can show temperature, uptime, CPU load, and memory usage. With Pi-hole 6.x, these values come directly from Pi-hole's authenticated API, so no additional service or port is required.
+
+Pi-hole 5.x can continue to provide these values through the legacy [Pi Monitor](https://github.com/Bunn/pi_monitor) integration.
 
 
 ## Authentication Token

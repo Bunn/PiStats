@@ -25,6 +25,8 @@ public struct Pihole: Sendable, Identifiable {
     public let port: Int
     public let secure: Bool
     public let version: PiholeVersion
+    public let systemMetricsEnabled: Bool
+    /// Legacy Pi Monitor configuration used only by Pi-hole v5.
     public let piMonitor: PiMonitorEnvironment?
 
     public init(name: String,
@@ -33,6 +35,7 @@ public struct Pihole: Sendable, Identifiable {
                 port: Int = 80,
                 secure: Bool = false,
                 token: String? = nil,
+                systemMetricsEnabled: Bool = false,
                 piMonitor: PiMonitorEnvironment? = nil,
                 uuid: UUID = UUID()) {
         self.uuid = uuid
@@ -42,6 +45,7 @@ public struct Pihole: Sendable, Identifiable {
         self.version = version
         self.port = port
         self.secure = secure
+        self.systemMetricsEnabled = systemMetricsEnabled || piMonitor != nil
         self.piMonitor = piMonitor
     }
 

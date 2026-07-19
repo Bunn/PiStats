@@ -64,8 +64,8 @@ struct SettingsView: View {
                 }
             }
 
-            Section(header: Text(UserText.Settings.Sections.piMonitor)) {
-                Label(UserText.Settings.temperatureScaleLabel, systemImage: SystemImages.piMonitorTemperature)
+            Section(header: Text(UserText.Settings.Sections.systemMetrics)) {
+                Label(UserText.Settings.temperatureScaleLabel, systemImage: SystemImages.settingsTemperature)
                 
                 Picker(selection: $viewModel.temperatureScale, label: Text("")) {
                     ForEach(TemperatureScale.allCases, id: \.self) { scale in

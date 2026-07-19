@@ -60,7 +60,8 @@ internal struct PiMonitorService: PiMonitorServiceProtocol {
                     decoder.keyDecodingStrategy = .convertFromSnakeCase
                     do {
                         let piMetric = try decoder.decode(PiMonitorMetrics.self, from: data)
-                        Log.network.info("✅ [PiMonitor] Successfully fetched metrics from \(host) - Temp: \(piMetric.socTemperature)°C, Load: \(piMetric.loadAverage.first ?? 0)")
+                        let temperature = piMetric.socTemperature.map { String(describing: $0) } ?? "unavailable"
+                        Log.network.info("✅ [PiMonitor] Successfully fetched metrics from \(host) - Temp: \(temperature)°C, Load: \(piMetric.loadAverage.first ?? 0)")
                         completion(.success(piMetric))
                     } catch {
                         Log.network.error("❌ [PiMonitor] Failed to decode metrics from \(host): \(error.localizedDescription)")

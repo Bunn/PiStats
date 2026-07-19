@@ -185,7 +185,133 @@ struct PiholeV6ServiceTests {
         
         MockURLProtocol.reset()
     }
-    
+
+    // MARK: - fetchSystemMetrics Tests
+
+    @Test("fetchSystemMetrics combines authenticated system and sensor values")
+    func testFetchSystemMetricsSuccess() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            let url = request.url?.absoluteString ?? ""
+            if url.contains("auth") {
+                return MockURLProtocol.successResponse(
+                    for: request,
+                    data: MockData.jsonData(from: MockData.v6AuthSuccessJSON)
+                )
+            }
+
+            #expect(request.value(forHTTPHeaderField: "X-FTL-SID") == "test-session-id")
+            #expect(request.value(forHTTPHeaderField: "X-FTL-CSRF") == "test-csrf-token")
+
+            if url.contains("info/system") {
+                return MockURLProtocol.successResponse(
+                    for: request,
+                    data: MockData.jsonData(from: MockData.v6SystemMetricsJSON)
+                )
+            }
+            if url.contains("info/sensors") {
+                return MockURLProtocol.successResponse(
+                    for: request,
+                    data: MockData.jsonData(from: MockData.v6SensorsJSON)
+                )
+            }
+            throw PiholeServiceError.unknownError
+        }
+
+        let metrics = try await service.fetchSystemMetrics()
+
+        #expect(metrics.socTemperature == 45.5)
+        #expect(metrics.uptime == 86_400)
+        #expect(metrics.loadAverage == [0.5, 0.6, 0.7])
+        #expect(metrics.memory.totalMemory == 4_096_000)
+        #expect(metrics.memory.freeMemory == 2_048_000)
+        #expect(metrics.memory.availableMemory == 3_072_000)
+        #expect(metrics.memory.usedMemory == 1_024_000)
+        #expect(metrics.memory.percentageUsed == 25)
+        #expect(metrics.memory.usedFraction == 0.25)
+
+        MockURLProtocol.reset()
+    }
+
+    @Test("fetchSystemMetrics normalizes Fahrenheit")
+    func testFetchSystemMetricsNormalizesFahrenheit() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            let url = request.url?.absoluteString ?? ""
+            if url.contains("auth") {
+                return MockURLProtocol.successResponse(
+                    for: request,
+                    data: MockData.jsonData(from: MockData.v6AuthSuccessJSON)
+                )
+            }
+            if url.contains("info/system") {
+                return MockURLProtocol.successResponse(
+                    for: request,
+                    data: MockData.jsonData(from: MockData.v6SystemMetricsJSON)
+                )
+            }
+            if url.contains("info/sensors") {
+                let sensors: [String: Any] = [
+                    "sensors": [
+                        "cpu_temp": 113.9,
+                        "unit": "F"
+                    ]
+                ]
+                return MockURLProtocol.successResponse(
+                    for: request,
+                    data: MockData.jsonData(from: sensors)
+                )
+            }
+            throw PiholeServiceError.unknownError
+        }
+
+        let metrics = try await service.fetchSystemMetrics()
+        #expect(metrics.socTemperature.map { abs($0 - 45.5) < 0.001 } == true)
+
+        MockURLProtocol.reset()
+    }
+
+    @Test("fetchSystemMetrics tolerates a missing CPU sensor")
+    func testFetchSystemMetricsMissingSensor() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            let url = request.url?.absoluteString ?? ""
+            if url.contains("auth") {
+                return MockURLProtocol.successResponse(
+                    for: request,
+                    data: MockData.jsonData(from: MockData.v6AuthSuccessJSON)
+                )
+            }
+            if url.contains("info/system") {
+                return MockURLProtocol.successResponse(
+                    for: request,
+                    data: MockData.jsonData(from: MockData.v6SystemMetricsJSON)
+                )
+            }
+            if url.contains("info/sensors") {
+                let sensors: [String: Any] = [
+                    "sensors": [
+                        "cpu_temp": NSNull(),
+                        "unit": "C"
+                    ]
+                ]
+                return MockURLProtocol.successResponse(
+                    for: request,
+                    data: MockData.jsonData(from: sensors)
+                )
+            }
+            throw PiholeServiceError.unknownError
+        }
+
+        let metrics = try await service.fetchSystemMetrics()
+        #expect(metrics.socTemperature == nil)
+
+        MockURLProtocol.reset()
+    }
+
     // MARK: - fetchHistory Tests
     
     @Test("fetchHistory returns correct history data")
@@ -814,4 +940,3 @@ struct PiholeV6ServiceTests {
         MockURLProtocol.reset()
     }
 }
-

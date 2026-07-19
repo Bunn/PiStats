@@ -132,7 +132,7 @@ struct PiStatsEntry: TimelineEntry {
             pihole: mockPihole,
             summary: mockSummary,
             status: .enabled,
-            monitorMetrics: mockMetrics,
+            systemMetrics: mockMetrics,
             topDomains: mockTopDomains,
             topClients: mockTopClients,
             error: nil
@@ -146,7 +146,7 @@ struct WidgetData {
     let pihole: Pihole
     let summary: PiholeSummary?
     let status: PiholeStatus
-    let monitorMetrics: PiMonitorMetrics?
+    let systemMetrics: PiMonitorMetrics?
     let topDomains: TopDomainsResult?
     let topClients: TopClientsResult?
     let error: String?
@@ -170,19 +170,13 @@ struct WidgetDataProvider {
             let status = try await statusTask
             let summary = try await summaryTask
             
-            // Fetch monitor metrics if available (with shorter timeout)
-            var monitorMetrics: PiMonitorMetrics? = nil
-            if let piMonitor = pihole.piMonitor {
+            // Fetch system metrics when enabled for this Pi-hole.
+            var systemMetrics: PiMonitorMetrics? = nil
+            if pihole.systemMetricsEnabled {
                 do {
-                    let monitor = PiMonitor(
-                        host: piMonitor.host,
-                        port: piMonitor.port,
-                        timeoutInterval: 8,
-                        secure: piMonitor.secure
-                    )
-                    monitorMetrics = try await monitor.fetchMetrics()
+                    systemMetrics = try await client.fetchSystemMetrics()
                 } catch {
-                    Log.widget.error("Failed to fetch Pi Monitor metrics: \(String(describing: error), privacy: .public)")
+                    Log.widget.error("Failed to fetch system metrics: \(String(describing: error), privacy: .public)")
                 }
             }
 
@@ -207,7 +201,7 @@ struct WidgetDataProvider {
                 pihole: pihole,
                 summary: summary,
                 status: status,
-                monitorMetrics: monitorMetrics,
+                systemMetrics: systemMetrics,
                 topDomains: topDomains,
                 topClients: topClients,
                 error: nil
@@ -219,7 +213,7 @@ struct WidgetDataProvider {
                 pihole: pihole,
                 summary: nil,
                 status: .unknown,
-                monitorMetrics: nil,
+                systemMetrics: nil,
                 topDomains: nil,
                 topClients: nil,
                 error: error.localizedDescription
@@ -252,7 +246,7 @@ extension WidgetDataProvider: AppIntentTimelineProvider {
                 pihole: pihole,
                 summary: nil,
                 status: .unknown,
-                monitorMetrics: nil,
+                systemMetrics: nil,
                 topDomains: nil,
                 topClients: nil,
                 error: nil

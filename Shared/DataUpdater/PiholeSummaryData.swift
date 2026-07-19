@@ -24,9 +24,10 @@ final class PiholeSummaryData: Identifiable, ObservableObject {
     @Published var queryTypes: QueryTypesResult? = nil
     @Published var upstreams: UpstreamsResult? = nil
     @Published var health: PiholeHealth? = nil
-    @Published var monitorMetrics: PiMonitorMetrics? = nil
+    @Published var systemMetrics: PiMonitorMetrics? = nil
     @Published var currentError: PiholeError? = nil
     @Published var hasError: Bool = false
+    @Published var hasPiholeError: Bool = false
 }
 
 // MARK: - Error Model
@@ -51,7 +52,7 @@ struct PiholeError: Identifiable {
         case invalidConfiguration
         case serverError
         case parsingError
-        case monitorError
+        case systemMetricsError
         case unknown
         
         var humanReadableMessage: String {
@@ -66,8 +67,8 @@ struct PiholeError: Identifiable {
                 return "Pi-hole server returned an error. The service might be temporarily unavailable."
             case .parsingError:
                 return "Unable to parse response from Pi-hole. The API might have changed."
-            case .monitorError:
-                return "Unable to fetch monitoring metrics. Check if Pi Monitor is running."
+            case .systemMetricsError:
+                return "Unable to fetch system metrics from Pi-hole."
             case .unknown:
                 return "An unexpected error occurred."
             }

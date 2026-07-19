@@ -81,7 +81,7 @@ struct PiholeDetailContentView: View {
                 }
             }
 
-            if showsMetrics, let metrics = data.monitorMetrics {
+            if showsMetrics, let metrics = data.systemMetrics {
                 section(UserText.deviceSection) {
                     MetricsView(viewModel: .init(metrics: metrics, temperatureScale: temperatureScale))
                         .contentTransition(.numericText())

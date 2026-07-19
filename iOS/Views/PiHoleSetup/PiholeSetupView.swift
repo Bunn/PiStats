@@ -11,8 +11,6 @@ enum SecureTag: String, CaseIterable, Identifiable {
 
 @MainActor
 fileprivate class SetupViewModel: ObservableObject {
-    let piMonitorURL = URL(string: "https://github.com/Bunn/pi_monitor")!
-
     @Published var pihole: Pihole?
     @Published var host = ""
     @Published var port = ""
@@ -20,8 +18,7 @@ fileprivate class SetupViewModel: ObservableObject {
     @Published var displayName = ""
     @Published var isShowingScanner = false
     @Published var piMonitorPort = ""
-    @Published var isPiMonitorEnabled = false
-    @Published var displayPiMonitorAlert = false
+    @Published var showsSystemMetrics = false
     @Published var httpType: SecureTag = .unsecure
     @Published var selectedVersion: PiholeVersion = .v6
     
@@ -38,10 +35,10 @@ fileprivate class SetupViewModel: ObservableObject {
             self.token = pihole.token ?? ""
             self.selectedVersion = pihole.version
             self.httpType = pihole.secure ? .secure : .unsecure
+            self.showsSystemMetrics = pihole.systemMetricsEnabled
             
-            // Setup PiMonitor fields if available
+            // Pi-hole v5 can still use the legacy Pi Monitor service.
             if let piMonitor = pihole.piMonitor {
-                self.isPiMonitorEnabled = true
                 self.piMonitorPort = "\(piMonitor.port ?? 8088)"
             }
         } else {
@@ -56,8 +53,9 @@ fileprivate class SetupViewModel: ObservableObject {
         let finalToken = token.isEmpty ? nil : token
         let isSecure = httpType == .secure
         
-        // Setup PiMonitor if enabled
-        let piMonitor: PiMonitorEnvironment? = isPiMonitorEnabled ? 
+        // Pi-hole v6 reads these values from FTL's authenticated API. Keep
+        // Pi Monitor only as a compatibility path for Pi-hole v5.
+        let piMonitor: PiMonitorEnvironment? = showsSystemMetrics && selectedVersion == .v5 ?
             PiMonitorEnvironment(
                 host: host,
                 port: Int(piMonitorPort) ?? 8088,
@@ -71,6 +69,7 @@ fileprivate class SetupViewModel: ObservableObject {
             port: finalPort,
             secure: isSecure,
             token: finalToken,
+            systemMetricsEnabled: showsSystemMetrics,
             piMonitor: piMonitor,
             uuid: pihole?.uuid ?? UUID()
         )
@@ -88,7 +87,6 @@ fileprivate class SetupViewModel: ObservableObject {
 
 struct PiholeSetupView: View {
     @StateObject private var viewModel: SetupViewModel
-    @Environment(\.openURL) private var openURL
     @Environment(\.dismiss) private var dismiss
 
     private let imageWidthSize: CGFloat = 20
@@ -104,7 +102,7 @@ struct PiholeSetupView: View {
         NavigationView {
             Form {
                 piholeSettingsSection
-                piMonitorSettingsSection
+                systemMetricsSettingsSection
                 if viewModel.pihole != nil {
                     deleteSection
                 }
@@ -117,9 +115,6 @@ struct PiholeSetupView: View {
             )
             .sheet(isPresented: $viewModel.isShowingScanner) {
                 scannerSheet
-            }
-            .alert(isPresented: $viewModel.displayPiMonitorAlert) {
-                piMonitorAlert
             }
             .onAppear {
                 viewModel.onPiholeChanged = onPiholeChanged
@@ -202,32 +197,40 @@ struct PiholeSetupView: View {
         }
     }
 
-    private var piMonitorSettingsSection: some View {
-        Section(header: Text(UserText.Settings.Sections.piMonitor)) {
-            Toggle(isOn: $viewModel.isPiMonitorEnabled.animation()) {
-                HStack {
+    private var systemMetricsSettingsSection: some View {
+        Section {
+            Toggle(isOn: $viewModel.showsSystemMetrics.animation()) {
+                Label {
+                    Text(UserText.showSystemMetrics)
+                } icon: {
                     Image(systemName: SystemImages.piholeSetupMonitor)
                         .frame(width: imageWidthSize)
-                    Text(UserText.piholeSetupEnablePiMonitor)
-                        .lineLimit(1)
-                    Image(systemName: SystemImages.piMonitorInfoButton)
-                        .frame(width: imageWidthSize)
-                        .foregroundStyle(.blue)
-                        .onTapGesture { viewModel.displayPiMonitorAlert.toggle() }
                 }
             }
 
-            if viewModel.isPiMonitorEnabled {
+            if viewModel.showsSystemMetrics && viewModel.selectedVersion == .v5 {
                 LabeledTextField(
                     icon: SystemImages.piholeSetupPort,
-                    placeholder: UserText.piMonitorSetupPortPlaceholder,
+                    placeholder: UserText.legacySystemMetricsPortPlaceholder,
                     text: $viewModel.piMonitorPort,
                     width: imageWidthSize
                 )
                 .keyboardType(.numberPad)
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()
+
+                if let setupURL = URL(string: UserText.legacySystemMetricsSetupURL) {
+                    Link(UserText.legacySystemMetricsSetupLink, destination: setupURL)
+                }
             }
+        } header: {
+            Text(UserText.Settings.Sections.systemMetrics)
+        } footer: {
+            Text(
+                viewModel.selectedVersion == .v6
+                    ? UserText.systemMetricsV6Description
+                    : UserText.systemMetricsV5Description
+            )
         }
     }
 
@@ -257,17 +260,6 @@ struct PiholeSetupView: View {
                     viewModel.isShowingScanner = false
                 })
         }
-    }
-
-    private var piMonitorAlert: Alert {
-        Alert(
-            title: Text(UserText.piMonitorSetupAlertTitle),
-            message: Text(UserText.piMonitorExplanation),
-            primaryButton: .default(Text(UserText.piMonitorSetupAlertLearnMoreButton)) {
-                openURL(viewModel.piMonitorURL)
-            },
-            secondaryButton: .cancel(Text(UserText.piMonitorSetupAlertOKButton))
-        )
     }
 
     private func savePihole() {

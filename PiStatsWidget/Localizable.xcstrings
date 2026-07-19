@@ -83,6 +83,16 @@
     "Enabled" : {
 
     },
+    "Memory Used" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memória em Uso"
+          }
+        }
+      }
+    },
     "Monitor your Raspberry Pi's system metrics" : {
 
     },
@@ -109,8 +119,15 @@
         }
       }
     },
-    "Pi Monitor" : {
-
+    "System Metrics" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Métricas do Sistema"
+          }
+        }
+      }
     },
     "Pi-hole" : {
 

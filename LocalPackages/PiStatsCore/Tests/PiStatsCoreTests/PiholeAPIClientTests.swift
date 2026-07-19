@@ -246,14 +246,14 @@ struct PiholeAPIClientTests {
         MockURLProtocol.reset()
     }
     
-    // MARK: - fetchMonitorMetrics Tests
+    // MARK: - fetchSystemMetrics Tests
     
-    @Test("fetchMonitorMetrics throws when piMonitor not configured")
-    func testFetchMonitorMetricsNoPiMonitor() async throws {
+    @Test("fetchSystemMetrics throws for v5 when Pi Monitor is not configured")
+    func testFetchSystemMetricsNoPiMonitor() async throws {
         let client = PiholeAPIClient(MockData.testPiholeV5NoPiMonitor, urlSession: mockSession)
         
         do {
-            let _ = try await client.fetchMonitorMetrics()
+            let _ = try await client.fetchSystemMetrics()
             Issue.record("Should have thrown error")
         } catch let error as PiholeServiceError {
             if case .piMonitorNotSet = error {
@@ -266,4 +266,3 @@ struct PiholeAPIClientTests {
         }
     }
 }
-

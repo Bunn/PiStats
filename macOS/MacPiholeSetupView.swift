@@ -15,7 +15,7 @@ private final class MacPiholeSetupViewModel: ObservableObject {
     @Published var token = ""
     @Published var displayName = ""
     @Published var piMonitorPort = ""
-    @Published var isPiMonitorEnabled = false
+    @Published var showsSystemMetrics = false
     @Published var httpType: MacSecureTag = .http
     @Published var selectedVersion: PiholeVersion = .v6
 
@@ -35,9 +35,9 @@ private final class MacPiholeSetupViewModel: ObservableObject {
             self.token = pihole.token ?? ""
             self.selectedVersion = pihole.version
             self.httpType = pihole.secure ? .https : .http
-            // Setup PiMonitor fields if available
+            self.showsSystemMetrics = pihole.systemMetricsEnabled
+            // Pi-hole v5 can still use the legacy Pi Monitor service.
             if let piMonitor = pihole.piMonitor {
-                self.isPiMonitorEnabled = true
                 self.piMonitorPort = "\(piMonitor.port ?? 8088)"
             }
         } else {
@@ -52,7 +52,7 @@ private final class MacPiholeSetupViewModel: ObservableObject {
         let finalToken = token.isEmpty ? nil : token
         let isSecure = httpType == .https
 
-        let piMonitor: PiMonitorEnvironment? = isPiMonitorEnabled ?
+        let piMonitor: PiMonitorEnvironment? = showsSystemMetrics && selectedVersion == .v5 ?
             PiMonitorEnvironment(
                 host: host,
                 port: Int(piMonitorPort) ?? 8088,
@@ -66,6 +66,7 @@ private final class MacPiholeSetupViewModel: ObservableObject {
             port: finalPort,
             secure: isSecure,
             token: finalToken,
+            systemMetricsEnabled: showsSystemMetrics,
             piMonitor: piMonitor,
             uuid: pihole?.uuid ?? UUID()
         )
@@ -94,7 +95,7 @@ struct MacPiholeSetupView: View {
             // Content
             VStack(alignment: .leading, spacing: 16) {
                 piholeConfigurationSection
-                piMonitorConfigurationSection
+                systemMetricsConfigurationSection
                 
                 if viewModel.pihole != nil {
                     Divider()
@@ -243,39 +244,44 @@ struct MacPiholeSetupView: View {
         }
     }
     
-    // MARK: - Pi Monitor Configuration
-    private var piMonitorConfigurationSection: some View {
+    // MARK: - System Metrics Configuration
+    private var systemMetricsConfigurationSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            sectionHeader(UserText.Setup.piMonitorOptionalSection)
+            sectionHeader(UserText.Setup.systemMetricsSection)
             
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
-                    Text(UserText.Setup.enablePiMonitorLabel)
+                    Text(UserText.showSystemMetrics)
 
                     Spacer()
 
-                    Button(UserText.Setup.whatsThisButton) {
-                        showPiMonitorInfo()
-                    }
-                    .buttonStyle(.plain)
-                    .foregroundColor(.accentColor)
-                    .font(.caption)
-
-                    Toggle("", isOn: $viewModel.isPiMonitorEnabled)
+                    Toggle("", isOn: $viewModel.showsSystemMetrics)
                         .toggleStyle(.switch)
                         .labelsHidden()
                 }
+
+                Text(
+                    viewModel.selectedVersion == .v6
+                        ? UserText.systemMetricsV6Description
+                        : UserText.systemMetricsV5Description
+                )
+                .font(.caption)
+                .foregroundStyle(.secondary)
                 
-                if viewModel.isPiMonitorEnabled {
+                if viewModel.showsSystemMetrics && viewModel.selectedVersion == .v5 {
                     macOSTextField(
                         title: UserText.Setup.portLabel,
-                        placeholder: UserText.Setup.piMonitorPortPlaceholder,
+                        placeholder: UserText.Setup.legacySystemMetricsPortPlaceholder,
                         text: $viewModel.piMonitorPort
                     )
                     .transition(.opacity.combined(with: .move(edge: .top)))
+
+                    if let setupURL = URL(string: UserText.legacySystemMetricsSetupURL) {
+                        Link(UserText.legacySystemMetricsSetupLink, destination: setupURL)
+                    }
                 }
             }
-            .animation(.easeInOut(duration: 0.2), value: viewModel.isPiMonitorEnabled)
+            .animation(.easeInOut(duration: 0.2), value: viewModel.showsSystemMetrics)
             .padding(12)
             .background(Color(NSColor.controlBackgroundColor))
             .clipShape(RoundedRectangle(cornerRadius: 8))
@@ -354,20 +360,6 @@ struct MacPiholeSetupView: View {
         dismiss()
     }
     
-    private func showPiMonitorInfo() {
-        let alert = NSAlert()
-        alert.messageText = UserText.Setup.piMonitorInfoTitle
-        alert.informativeText = UserText.Setup.piMonitorInfoMessage
-        alert.addButton(withTitle: UserText.Setup.learnMoreButton)
-        alert.addButton(withTitle: UserText.Setup.okButton)
-        
-        let response = alert.runModal()
-        if response == .alertFirstButtonReturn {
-            if let url = URL(string: UserText.Setup.piMonitorURL) {
-                NSWorkspace.shared.open(url)
-            }
-        }
-    }
 }
 
 #Preview {

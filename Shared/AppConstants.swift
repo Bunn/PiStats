@@ -76,13 +76,12 @@ public struct SystemImages {
     public static let settingsLiveActivity = "timer"
     public static let addNewCustomDisableTime = "plus"
     
-    // Pi Monitor
-    public static let piMonitorInfoButton = "info.circle"
+    // System Metrics
     public static let metricTemperature = "thermometer"
     public static let metricUptime = "power"
     public static let metricLoadAverage = "cpu"
     public static let metricMemoryUsage = "memorychip"
-    public static let piMonitorTemperature = "thermometer"
+    public static let settingsTemperature = "thermometer"
     
     // App & Platform
     public static let shieldLefthalfFill = "shield.lefthalf.fill"
@@ -171,16 +170,14 @@ public struct UserText {
     public static let piholeSetupShowTopDomains = String(localized: "Show Top Domains")
     public static let piholeSetupShowTopClients = String(localized: "Show Top Clients")
     public static let piholeSetupShowHistory = String(localized: "Show History Chart")
-    public static let piholeSetupEnablePiMonitor = String(localized: "Enable Pi Monitor")
+    public static let showSystemMetrics = String(localized: "Show System Metrics")
+    public static let systemMetricsV6Description = String(localized: "Shows temperature, uptime, load, and memory reported by the Pi-hole API.")
+    public static let systemMetricsV5Description = String(localized: "Pi-hole 5 requires Pi Monitor to provide system metrics.")
+    public static let legacySystemMetricsSetupLink = String(localized: "Pi Monitor setup")
+    public static let legacySystemMetricsPortPlaceholder = String(localized: "Pi Monitor port (8088)")
+    public static let legacySystemMetricsSetupURL = "https://github.com/Bunn/pi_monitor"
     public static let piholeTokenFooterSection = String(localized: "Token is required for some functionalities like disable/enable your pi-hole.\\n\\nYou can find the API Token on /etc/pihole/setupVars.conf under WEBPASSWORD or you can open the web UI and go to Settings -> API -> Show API Token")
     public static let piholeTokenFooterV6Section = String(localized: "For version 6.x, you can use your actual password for authenticating")
-
-    // MARK: - Pi Monitor
-    public static let piMonitorSetupPortPlaceholder = String(localized: "Port (8088)")
-    public static let piMonitorSetupAlertTitle = "Pi Monitor"
-    public static let piMonitorSetupAlertOKButton = String(localized: "OK")
-    public static let piMonitorSetupAlertLearnMoreButton = String(localized: "Learn More")
-    public static let piMonitorExplanation = String(localized: "Pi Monitor is a service that helps you to monitor your Raspberry Pi by showing you information like temperature, memory usage and more!\\n\\nIn order to use it you'll need to install it in your Raspberry Pi.")
 
     // MARK: - Navigation
     public static let piholesNavigationTitle = "Pi-holes"
@@ -194,7 +191,7 @@ public struct UserText {
         public struct Sections {
             public static let interface = String(localized: "Interface")
             public static let enableDisable = String(localized: "Enable / Disable")
-            public static let piMonitor = "Pi Monitor"
+            public static let systemMetrics = String(localized: "System Metrics")
             public static let about = String(localized: "About")
             public static let pihole = "Pi-hole"
             public static let startup = String(localized: "Startup")
@@ -218,7 +215,6 @@ public struct UserText {
         // Legacy properties for backward compatibility
         public static let sectionInterface = Sections.interface
         public static let sectionEnableDisable = Sections.enableDisable
-        public static let sectionPiMonitor = Sections.piMonitor
         public static let about = Sections.about
         public static let displayAsList = displayAsListToggle
         public static let alwaysDisablePermanently = alwaysDisablePermanentlyToggle
@@ -228,7 +224,6 @@ public struct UserText {
         public static let piStatsForMacOS = macOSLink
         public static let leaveReview = String(localized: "Write a review on the App Store")
         public static let customizeDisableTimes = String(localized: "Customize disable times")
-        public static let piMonitorTemperature = temperatureScaleLabel
         public static let protocolHTTP = "HTTP"
         public static let protocolHTTPS = "HTTPS"
         
@@ -292,7 +287,7 @@ public struct UserText {
         public static let addPiholeTitle = String(localized: "Add Pi-hole")
         public static let editPiholeTitle = String(localized: "Edit Pi-hole")
         public static let piholeConfigurationSection = String(localized: "Pi-hole Configuration")
-        public static let piMonitorOptionalSection = String(localized: "Pi Monitor (Optional)")
+        public static let systemMetricsSection = String(localized: "System Metrics")
         public static let dangerZoneSection = String(localized: "Danger Zone")
         public static let hostLabel = String(localized: "Host")
         public static let hostPlaceholder = String(localized: "192.168.1.100 or pi.local")
@@ -309,16 +304,9 @@ public struct UserText {
         public static let showTopDomainsLabel = String(localized: "Show Top Domains")
         public static let showTopClientsLabel = String(localized: "Show Top Clients")
         public static let showHistoryLabel = String(localized: "Show History Chart")
-        public static let enablePiMonitorLabel = String(localized: "Enable Pi Monitor")
-        public static let piMonitorPortPlaceholder = "8088"
-        public static let whatsThisButton = String(localized: "What's this?")
+        public static let legacySystemMetricsPortPlaceholder = "8088"
         public static let deletePiholeLabel = String(localized: "Delete Pi-hole")
         public static let deletePiholeDescription = String(localized: "This will permanently remove this Pi-hole from Pi Stats.")
-        public static let piMonitorInfoTitle = "Pi Monitor"
-        public static let piMonitorInfoMessage = String(localized: "Pi Monitor is a service that helps you monitor your Raspberry Pi by showing information like temperature, memory usage and more! To use it, you'll need to install Pi Monitor on your Raspberry Pi.")
-        public static let learnMoreButton = String(localized: "Learn More")
-        public static let okButton = String(localized: "OK")
-        public static let piMonitorURL = "https://github.com/Bunn/pi_monitor"
     }
 
     public struct About {
@@ -350,11 +338,6 @@ public struct UserText {
     public struct CustomizeDisabletime {
         public static let emptyListMessage = String(localized: "Tap here to add a custom disable time")
         public static let title = String(localized: "Disable Time")
-    }
-
-    // MARK: - Widget
-    public struct Widget {
-        public static let piholeNotEnabledOn = String(localized: "Pi Monitor is not enabled on")
     }
 
     // MARK: - Error Messages

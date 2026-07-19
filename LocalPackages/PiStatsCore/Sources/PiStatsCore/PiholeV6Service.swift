@@ -63,6 +63,63 @@ internal final class PiholeV6Service: PiholeService {
         return status
     }
 
+    func fetchSystemMetrics() async throws -> PiMonitorMetrics {
+        Log.network.info("🖥️ [V6] Fetching system metrics for \(self.pihole.name)")
+
+        let authResponse = try await ensureAuthenticated(self.pihole)
+        let systemURL = try makeURL(for: self.pihole, endpoint: .system)
+        let sensorsURL = try makeURL(for: self.pihole, endpoint: .sensors)
+
+        async let systemRequest = fetchJSON(from: systemURL, with: authResponse)
+        async let sensorsRequest = fetchJSON(from: sensorsURL, with: authResponse)
+        let (systemJSON, sensorsJSON) = try await (systemRequest, sensorsRequest)
+
+        guard let system = systemJSON["system"] as? [String: Any],
+              let uptime = Self.doubleValue(system["uptime"]),
+              let memory = system["memory"] as? [String: Any],
+              let ram = memory["ram"] as? [String: Any],
+              let totalMemory = Self.intValue(ram["total"]),
+              let freeMemory = Self.intValue(ram["free"]),
+              let availableMemory = Self.intValue(ram["available"]),
+              let cpu = system["cpu"] as? [String: Any],
+              let load = cpu["load"] as? [String: Any],
+              let rawLoad = load["raw"] as? [Any] else {
+            Log.network.error("❌ [V6] Failed to parse system metrics for \(self.pihole.name)")
+            throw PiholeServiceError.cannotParseResponse
+        }
+
+        let loadAverage = rawLoad.compactMap { Self.doubleValue($0) }
+        guard loadAverage.count == rawLoad.count else {
+            Log.network.error("❌ [V6] Failed to parse load averages for \(self.pihole.name)")
+            throw PiholeServiceError.cannotParseResponse
+        }
+
+        let sensors = sensorsJSON["sensors"] as? [String: Any]
+        let temperature = Self.celsiusTemperature(
+            Self.doubleValue(sensors?["cpu_temp"]),
+            unit: sensors?["unit"] as? String
+        )
+        let usedMemory = Self.intValue(ram["used"])
+        let percentageUsed = Self.doubleValue(ram["%used"])
+
+        let metrics = PiMonitorMetrics(
+            socTemperature: temperature,
+            uptime: uptime,
+            loadAverage: loadAverage,
+            kernelRelease: "",
+            memory: PiMonitorMetrics.Memory(
+                totalMemory: totalMemory,
+                freeMemory: freeMemory,
+                availableMemory: availableMemory,
+                usedMemory: usedMemory,
+                percentageUsed: percentageUsed
+            )
+        )
+
+        Log.network.info("✅ [V6] System metrics fetched for \(self.pihole.name)")
+        return metrics
+    }
+
     func fetchHistory() async throws -> [HistoryItem] {
         Log.network.info("📈 [V6] Fetching history for \(self.pihole.name)")
         
@@ -537,6 +594,27 @@ extension PiholeV6Service {
         }
     }
 
+    private static func doubleValue(_ value: Any?) -> Double? {
+        (value as? NSNumber)?.doubleValue
+    }
+
+    private static func intValue(_ value: Any?) -> Int? {
+        (value as? NSNumber)?.intValue
+    }
+
+    private static func celsiusTemperature(_ value: Double?, unit: String?) -> Double? {
+        guard let value else { return nil }
+
+        switch unit?.uppercased() {
+        case "F":
+            return (value - 32) / 1.8
+        case "K":
+            return value - 273.15
+        default:
+            return value
+        }
+    }
+
     private func fetchJSON(from url: URL, with auth: PiholeV6AuthResponse) async throws -> [String: Any] {
         Log.network.info("🌐 [V6] Starting API request to: \(url.absoluteString)")
         
@@ -818,6 +896,8 @@ extension PiholeV6Service {
         case queries = "queries"
         case version = "info/version"
         case messages = "info/messages"
+        case system = "info/system"
+        case sensors = "info/sensors"
         case gravity = "action/gravity"
         case lists = "lists"
     }
