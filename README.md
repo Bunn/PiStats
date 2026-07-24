@@ -76,7 +76,6 @@ Pi Stats (and [SwiftHole](https://github.com/Bunn/SwiftHole)) is a free and open
 
 ### macOS
 - **[Mac App Store](https://apps.apple.com/us/app/pi-stats/id1514075262?ls=1)** - Recommended for automatic updates
-- **[Gumroad](https://gum.co/iqhwv)** - Pay what you want (direct download)
 
 ### iOS
 - **[iOS App Store](https://apps.apple.com/us/app/id1523024268)** - Available for iPhone and iPad
