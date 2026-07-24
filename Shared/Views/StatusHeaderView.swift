@@ -15,21 +15,31 @@ struct StatusHeaderView: View {
         HStack {
             Label {
                 Text(data.name)
-                    .foregroundColor(.primary)
+                    .foregroundStyle(.primary)
                     .fontWeight(.bold)
             } icon: {
-                if data.hasError || data.status == .unknown {
+                if data.isRefreshing && !data.hasLoadedStatus {
+                    ProgressView()
+                        .controlSize(.small)
+                        .accessibilityLabel(UserText.statusConnecting)
+                } else if data.hasError || data.status == .unknown {
                     Image(systemName: SystemImages.piholeStatusWarning)
-                        .foregroundColor(AppColors.statusWarning)
+                        .foregroundStyle(AppColors.statusWarning)
                 } else if data.status == .enabled {
                     Image(systemName: SystemImages.piholeStatusOnline)
-                        .foregroundColor(AppColors.statusOnline)
+                        .foregroundStyle(AppColors.statusOnline)
                 } else {
                     Image(systemName: SystemImages.piholeStatusOffline)
-                        .foregroundColor(AppColors.statusOffline)
+                        .foregroundStyle(AppColors.statusOffline)
                 }
             }
             .font(.title2)
+
+            if data.isRefreshing && data.hasLoadedStatus {
+                ProgressView()
+                    .controlSize(.small)
+                    .accessibilityLabel(UserText.statusUpdating)
+            }
         }
     }
 }

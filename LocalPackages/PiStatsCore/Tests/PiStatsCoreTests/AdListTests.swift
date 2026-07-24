@@ -9,6 +9,7 @@ import Testing
 import Foundation
 @testable import PiStatsCore
 
+extension MockNetworkTests {
 @Suite("AdList Tests", .serialized)
 struct AdListTests {
     private let mockSession: URLSession
@@ -99,4 +100,5 @@ struct AdListTests {
 
         MockURLProtocol.reset()
     }
+}
 }

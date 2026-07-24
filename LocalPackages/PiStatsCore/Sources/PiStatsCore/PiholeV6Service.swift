@@ -239,8 +239,9 @@ internal final class PiholeV6Service: PiholeService {
             guard let count = item["count"] as? Int else { return nil }
             let name = item["name"] as? String ?? ""
             let ip = item["ip"] as? String ?? ""
+            let port = item["port"] as? Int
             let percentage = total > 0 ? (Double(count) * 100) / Double(total) : 0
-            return UpstreamItem(name: name, ip: ip, percentage: percentage)
+            return UpstreamItem(name: name, ip: ip, port: port, percentage: percentage)
         }
         .sorted { $0.percentage > $1.percentage }
 
@@ -513,10 +514,12 @@ extension PiholeV6Service {
             }
 
             let authResponse = PiholeV6AuthResponse(sid: sid, csrf: csrf)
-            await authActor.setAuth(authResponse)
-            
+
             Log.network.info("✅ [V6] Successfully authenticated with \(self.pihole.name)")
             return authResponse
+        } catch let error as PiholeServiceError {
+            Log.network.error("💥 [V6] Authentication failed for \(self.pihole.name): \(error.localizedDescription)")
+            throw error
         } catch {
             Log.network.error("💥 [V6] Authentication failed for \(self.pihole.name): \(error.localizedDescription)")
             throw PiholeServiceError.networkError(error)
@@ -524,10 +527,8 @@ extension PiholeV6Service {
     }
 
     private func ensureAuthenticated(_ pihole: Pihole) async throws -> PiholeV6AuthResponse {
-        if let sessionAuth = await authActor.getAuth() {
-            return sessionAuth
-        } else {
-            return try await authenticate(self.pihole)
+        try await authActor.authentication {
+            try await self.authenticate(pihole)
         }
     }
 
@@ -615,7 +616,11 @@ extension PiholeV6Service {
         }
     }
 
-    private func fetchJSON(from url: URL, with auth: PiholeV6AuthResponse) async throws -> [String: Any] {
+    private func fetchJSON(
+        from url: URL,
+        with auth: PiholeV6AuthResponse,
+        allowsAuthenticationRetry: Bool = true
+    ) async throws -> [String: Any] {
         Log.network.info("🌐 [V6] Starting API request to: \(url.absoluteString)")
         
         var request = URLRequest(url: url)
@@ -631,8 +636,20 @@ extension PiholeV6Service {
                 
                 if httpResponse.statusCode == 401 || httpResponse.statusCode == 403 {
                     Log.network.warning("🔐 [V6] Session expired or unauthorized for \(url.absoluteString), clearing cached auth")
-                    await clearSessionAuth()
-                    throw PiholeServiceError.invalidAuthenticationResponse
+                    await authActor.invalidate(auth)
+                    guard allowsAuthenticationRetry else {
+                        throw PiholeServiceError.invalidAuthenticationResponse
+                    }
+                    let refreshedAuth = try await ensureAuthenticated(pihole)
+                    return try await fetchJSON(
+                        from: url,
+                        with: refreshedAuth,
+                        allowsAuthenticationRetry: false
+                    )
+                }
+
+                guard (200..<300).contains(httpResponse.statusCode) else {
+                    throw PiholeServiceError.unknownStatus
                 }
             }
             
@@ -647,7 +664,6 @@ extension PiholeV6Service {
             throw error
         } catch {
             Log.network.error("💥 [V6] Network error for \(url.absoluteString): \(error.localizedDescription)")
-            await clearSessionAuth()
             throw PiholeServiceError.networkError(error)
         }
     }
@@ -678,7 +694,7 @@ extension PiholeV6Service {
                 
                 if httpResponse.statusCode == 401 || httpResponse.statusCode == 403 {
                     Log.network.warning("🔐 [V6] Session expired or unauthorized for \(url.absoluteString), clearing cached auth")
-                    await clearSessionAuth()
+                    await authActor.invalidate(auth)
                     throw PiholeServiceError.invalidAuthenticationResponse
                 }
             }
@@ -694,7 +710,6 @@ extension PiholeV6Service {
             throw error
         } catch {
             Log.network.error("💥 [V6] POST request failed for \(url.absoluteString): \(error.localizedDescription)")
-            await clearSessionAuth()
             throw PiholeServiceError.networkError(error)
         }
     }
@@ -712,7 +727,7 @@ extension PiholeV6Service {
 
             if let httpResponse = response as? HTTPURLResponse {
                 if httpResponse.statusCode == 401 || httpResponse.statusCode == 403 {
-                    await clearSessionAuth()
+                    await authActor.invalidate(auth)
                     throw PiholeServiceError.invalidAuthenticationResponse
                 }
                 guard (200...299).contains(httpResponse.statusCode) else {
@@ -724,7 +739,6 @@ extension PiholeV6Service {
             throw error
         } catch {
             Log.network.error("💥 [V6] DELETE request failed for \(url.absoluteString): \(error.localizedDescription)")
-            await clearSessionAuth()
             throw PiholeServiceError.networkError(error)
         }
     }
@@ -744,7 +758,7 @@ extension PiholeV6Service {
             let (_, response) = try await urlSession.data(for: request)
             if let httpResponse = response as? HTTPURLResponse {
                 if httpResponse.statusCode == 401 || httpResponse.statusCode == 403 {
-                    await clearSessionAuth()
+                    await authActor.invalidate(auth)
                     throw PiholeServiceError.invalidAuthenticationResponse
                 }
                 guard (200...299).contains(httpResponse.statusCode) else {
@@ -756,7 +770,6 @@ extension PiholeV6Service {
             throw error
         } catch {
             Log.network.error("💥 [V6] Action POST failed for \(url.absoluteString): \(error.localizedDescription)")
-            await clearSessionAuth()
             throw PiholeServiceError.networkError(error)
         }
     }
@@ -808,7 +821,7 @@ extension PiholeV6Service {
             let (_, response) = try await urlSession.data(for: request)
             if let httpResponse = response as? HTTPURLResponse {
                 if httpResponse.statusCode == 401 || httpResponse.statusCode == 403 {
-                    await clearSessionAuth()
+                    await authActor.invalidate(auth)
                     throw PiholeServiceError.invalidAuthenticationResponse
                 }
                 guard (200...299).contains(httpResponse.statusCode) else {
@@ -820,7 +833,6 @@ extension PiholeV6Service {
             throw error
         } catch {
             Log.network.error("💥 [V6] PUT request failed for \(url.absoluteString): \(error.localizedDescription)")
-            await clearSessionAuth()
             throw PiholeServiceError.networkError(error)
         }
     }
@@ -944,29 +956,38 @@ extension PiholeV6Service {
 extension PiholeV6Service {
     private actor AuthActor {
         private var sessionAuth: PiholeV6AuthResponse?
+        private var authenticationTask: Task<PiholeV6AuthResponse, Error>?
 
-        func setAuth(_ auth: PiholeV6AuthResponse?) {
-            self.sessionAuth = auth
+        func authentication(
+            using operation: @escaping @Sendable () async throws -> PiholeV6AuthResponse
+        ) async throws -> PiholeV6AuthResponse {
+            if let sessionAuth {
+                return sessionAuth
+            }
+
+            if let authenticationTask {
+                return try await authenticationTask.value
+            }
+
+            let task = Task {
+                try await operation()
+            }
+            authenticationTask = task
+
+            do {
+                let auth = try await task.value
+                sessionAuth = auth
+                authenticationTask = nil
+                return auth
+            } catch {
+                authenticationTask = nil
+                throw error
+            }
         }
 
-        func getAuth() -> PiholeV6AuthResponse? {
-            self.sessionAuth
+        func invalidate(_ auth: PiholeV6AuthResponse) {
+            guard sessionAuth?.sid == auth.sid else { return }
+            sessionAuth = nil
         }
-        
-        func clearAuth() {
-            self.sessionAuth = nil
-        }
-    }
-
-    private func setSessionAuth(_ auth: PiholeV6AuthResponse?) async {
-        await authActor.setAuth(auth)
-    }
-
-    private func getSessionAuth() async -> PiholeV6AuthResponse? {
-        await authActor.getAuth()
-    }
-    
-    private func clearSessionAuth() async {
-        await authActor.clearAuth()
     }
 }

@@ -166,6 +166,13 @@ struct PiholeDetailView: View {
     @State private var actionError: String?
 
     private var isV6: Bool { updater.pihole.version == .v6 }
+    private var isAppStoreScreenshotMode: Bool {
+#if DEBUG
+        AppStoreScreenshotData.isEnabled
+#else
+        false
+#endif
+    }
 
     var body: some View {
         ScrollView {
@@ -176,9 +183,18 @@ struct PiholeDetailView: View {
                     showsStats: false,
                     showsMetrics: false,
                     onClearMessages: { await updater.clearMessages() },
-                    onLoadDenyRules: isV6 ? { try await updater.fetchDomains(type: .deny, kind: .regex).map(\.domain) } : nil,
-                    onBlockRules: isV6 ? { rules in try await updater.addDomains(rules.map { DomainRule(domain: $0, type: .deny, kind: .regex, comment: "Blocked by PiStats") }) } : nil,
-                    onUnblockRules: isV6 ? { rules in try await updater.removeDomains(rules.map { DomainRule(domain: $0, type: .deny, kind: .regex) }) } : nil,
+                    onLoadDenyRules: isV6 ? {
+                        if isAppStoreScreenshotMode { return [] }
+                        return try await updater.fetchDomains(type: .deny, kind: .regex).map(\.domain)
+                    } : nil,
+                    onBlockRules: isV6 ? { rules in
+                        guard !isAppStoreScreenshotMode else { return }
+                        try await updater.addDomains(rules.map { DomainRule(domain: $0, type: .deny, kind: .regex, comment: "Blocked by PiStats") })
+                    } : nil,
+                    onUnblockRules: isV6 ? { rules in
+                        guard !isAppStoreScreenshotMode else { return }
+                        try await updater.removeDomains(rules.map { DomainRule(domain: $0, type: .deny, kind: .regex) })
+                    } : nil,
                     onQuickAddDomain: isV6 ? { rule in await quickAdd(rule) } : nil
                 )
                 if isV6 {

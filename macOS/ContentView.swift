@@ -29,8 +29,8 @@ struct MacMainView: View {
             toolbarItems
         }
         .sheet(isPresented: $isPresentingAddSheet) {
-            MacPiholeSetupView { _, _ in
-                dataManager.refreshData()
+            MacPiholeSetupView { pihole, isDelete in
+                dataManager.handlePiholeChange(pihole, isDelete: isDelete)
             }
         }
         .sheet(isPresented: $isPresentingSettings) {
@@ -40,8 +40,8 @@ struct MacMainView: View {
             AboutView(isPresented: $isPresentingAbout)
         }
         .sheet(item: $editingPihole) { pihole in
-            MacPiholeSetupView(pihole: pihole) { _, _ in
-                dataManager.refreshData()
+            MacPiholeSetupView(pihole: pihole) { updatedPihole, isDelete in
+                dataManager.handlePiholeChange(updatedPihole, isDelete: isDelete)
             }
         }
         .onAppear(perform: setupView)
@@ -121,7 +121,7 @@ struct MacMainView: View {
     private func deletePihole(_ pihole: Pihole) {
         let storage = DefaultPiholeStorage()
         storage.deletePihole(pihole)
-        dataManager.refreshData()
+        dataManager.handlePiholeChange(pihole, isDelete: true)
     }
 }
 

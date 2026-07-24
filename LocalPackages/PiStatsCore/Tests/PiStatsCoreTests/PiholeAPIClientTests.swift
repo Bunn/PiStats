@@ -9,6 +9,7 @@ import Testing
 import Foundation
 @testable import PiStatsCore
 
+extension MockNetworkTests {
 @Suite("PiholeAPIClient Tests", .serialized)
 struct PiholeAPIClientTests {
     
@@ -265,4 +266,5 @@ struct PiholeAPIClientTests {
             Issue.record("Unexpected error: \(error)")
         }
     }
+}
 }

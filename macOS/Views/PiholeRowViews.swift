@@ -29,13 +29,27 @@ struct MacPiholeRowFromDataUpdater: View {
 
     private var headerRow: some View {
         HStack {
-            PiholeStatusIcon(status: summary.status,
-                           hasError: summary.hasError)
+            if summary.isRefreshing && !summary.hasLoadedStatus {
+                ProgressView()
+                    .controlSize(.small)
+                    .accessibilityLabel(UserText.statusConnecting)
+            } else {
+                PiholeStatusIcon(
+                    status: summary.status,
+                    hasError: summary.hasError
+                )
+            }
 
             Text(dataUpdater.pihole.name)
                 .font(.headline)
 
             Spacer()
+
+            if summary.isRefreshing && summary.hasLoadedStatus {
+                ProgressView()
+                    .controlSize(.small)
+                    .accessibilityLabel(UserText.statusUpdating)
+            }
 
             Button(action: onEditTapped) {
                 Image(systemName: SystemImages.gearshape)

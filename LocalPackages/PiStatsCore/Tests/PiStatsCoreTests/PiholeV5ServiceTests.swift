@@ -9,6 +9,7 @@ import Testing
 import Foundation
 @testable import PiStatsCore
 
+extension MockNetworkTests {
 @Suite("PiholeV5Service Tests", .serialized)
 struct PiholeV5ServiceTests {
     
@@ -629,6 +630,7 @@ struct PiholeV5ServiceTests {
         #expect(result.upstreams.count == 3)
         #expect(result.upstreams[0].displayName == "dns.google")
         #expect(result.upstreams[0].ip == "8.8.8.8")
+        #expect(result.upstreams[0].port == 53)
         #expect(result.upstreams[0].percentage == 70.0)
         #expect(result.upstreams[1].displayName == "cache")
         #expect(result.upstreams[2].displayName == "blocklist")
@@ -681,4 +683,4 @@ struct PiholeV5ServiceTests {
         MockURLProtocol.reset()
     }
 }
-
+}

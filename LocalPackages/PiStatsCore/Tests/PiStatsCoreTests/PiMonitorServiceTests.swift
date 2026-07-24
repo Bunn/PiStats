@@ -9,6 +9,7 @@ import Testing
 import Foundation
 @testable import PiStatsCore
 
+extension MockNetworkTests {
 @Suite("PiMonitorService Tests", .serialized)
 struct PiMonitorServiceTests {
     
@@ -201,4 +202,4 @@ struct PiMonitorServiceTests {
         #expect(monitor.timeoutInterval == 20)
     }
 }
-
+}

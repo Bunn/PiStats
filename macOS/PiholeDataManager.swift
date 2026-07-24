@@ -18,6 +18,7 @@ class PiholeDataManager: ObservableObject {
     }
     
     private var hasInitialized = false
+    private var isUpdating = false
     private var cancellables = Set<AnyCancellable>()
 
     private let alertEngine = AlertEngine(rules: AlertEngine.defaultRules,
@@ -34,7 +35,7 @@ class PiholeDataManager: ObservableObject {
         }
         
         let statuses = listUpdater.dataUpdaters.map { $0.summary.status }
-        let hasErrors = listUpdater.dataUpdaters.contains { $0.summary.hasError }
+        let hasErrors = listUpdater.dataUpdaters.contains { $0.summary.hasPiholeError }
         
         if hasErrors {
             return .unknown
@@ -70,23 +71,9 @@ class PiholeDataManager: ObservableObject {
 
         guard let listUpdater = listUpdater else { return }
 
-        listUpdater.$dataUpdaters
+        listUpdater.objectWillChange
             .sink { [weak self] _ in self?.objectWillChange.send() }
             .store(in: &cancellables)
-
-        for updater in listUpdater.dataUpdaters {
-            updater.summary.$status
-                .removeDuplicates()
-                .dropFirst()
-                .sink { [weak self] _ in self?.objectWillChange.send() }
-                .store(in: &cancellables)
-
-            updater.summary.$hasError
-                .removeDuplicates()
-                .dropFirst()
-                .sink { [weak self] _ in self?.objectWillChange.send() }
-                .store(in: &cancellables)
-        }
     }
     
     private func setupInitialData() {
@@ -108,19 +95,77 @@ class PiholeDataManager: ObservableObject {
     }
     
     func startUpdating() {
+        guard !isUpdating else { return }
+        isUpdating = true
         listUpdater?.startUpdating()
         monitoringScheduler.start()
     }
 
     func stopUpdating() {
+        guard isUpdating else { return }
+        isUpdating = false
         listUpdater?.stopUpdating()
         monitoringScheduler.stop()
     }
 
     func refreshData() {
-        listUpdater?.prepareForReplacement()
-        loadPiholes()
-        listUpdater?.startUpdating()
+        let storedPiholes = DefaultPiholeStorage().restoreAllPiholes()
+        guard !storedPiholes.isEmpty else {
+            listUpdater?.stopUpdating()
+            listUpdater = nil
+            return
+        }
+
+        guard let listUpdater else {
+            let updater = PiholeListUpdater(storedPiholes)
+            self.listUpdater = updater
+            if isUpdating {
+                updater.startUpdating()
+            }
+            return
+        }
+
+        let storedIDs = Set(storedPiholes.map(\.uuid))
+        for updater in listUpdater.dataUpdaters where !storedIDs.contains(updater.pihole.uuid) {
+            listUpdater.removePihole(updater.pihole)
+        }
+
+        for pihole in storedPiholes {
+            if let existing = listUpdater.dataUpdaters.first(where: { $0.pihole.uuid == pihole.uuid }) {
+                if existing.pihole != pihole {
+                    listUpdater.updatePihole(pihole)
+                }
+            } else {
+                listUpdater.addPihole(pihole)
+            }
+        }
+    }
+
+    func handlePiholeChange(_ pihole: Pihole, isDelete: Bool) {
+        if isDelete {
+            listUpdater?.removePihole(pihole)
+            if listUpdater?.dataUpdaters.isEmpty == true {
+                listUpdater = nil
+            }
+            return
+        }
+
+        guard let listUpdater else {
+            let updater = PiholeListUpdater([pihole])
+            self.listUpdater = updater
+            if isUpdating {
+                updater.startUpdating()
+            }
+            return
+        }
+
+        if let existing = listUpdater.dataUpdaters.first(where: { $0.pihole.uuid == pihole.uuid }) {
+            if existing.pihole != pihole {
+                listUpdater.updatePihole(pihole)
+            }
+        } else {
+            listUpdater.addPihole(pihole)
+        }
     }
 
     private func currentSnapshots() -> [PiholeSnapshot] {

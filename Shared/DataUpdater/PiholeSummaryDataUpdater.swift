@@ -11,6 +11,7 @@ import SwiftUI
 
 // MARK: - Error Handling Protocol
 
+@MainActor
 protocol ErrorHandling {
     func handleError(_ error: Error, context: ErrorContext)
 }
@@ -35,7 +36,7 @@ struct PiholeErrorMapper {
         return PiholeError(
             type: errorType,
             originalError: error,
-            timestamp: Date()
+            timestamp: .now
         )
     }
     
@@ -87,35 +88,101 @@ struct PiholeErrorMapper {
     }
 }
 
+@MainActor
 final class PiholeSummaryDataUpdater: Identifiable, ObservableObject, ErrorHandling {
     let id = UUID()
     let pihole: Pihole
     private let service: PiholeService
     @Published private(set) var summary: PiholeSummaryData
-    private var timer: Timer?
-    private var fetchTasks: [Task<Void, Never>] = []
 
-    init(pihole: Pihole) {
+    private let primaryPollInterval: Duration
+    private let primaryRetryInterval: Duration
+    private let supplementaryRefreshInterval: TimeInterval
+    private let transientFailureThreshold: Int
+
+    private var pollingTask: Task<Void, Never>?
+    private var primaryRefreshTask: Task<Bool, Never>?
+    private var supplementaryTask: Task<Void, Never>?
+    private var lastSupplementaryRefresh: Date?
+    private var consecutivePrimaryFailures = 0
+    private var refreshGeneration = 0
+
+    init(
+        pihole: Pihole,
+        service: PiholeService? = nil,
+        initialSummary: PiholeSummaryData? = nil,
+        primaryPollInterval: Duration = .seconds(5),
+        primaryRetryInterval: Duration = .seconds(1),
+        supplementaryRefreshInterval: TimeInterval = 30,
+        transientFailureThreshold: Int = 2
+    ) {
         self.pihole = pihole
-        self.service = PiholeAPIClient(pihole)
-        self.summary = PiholeSummaryData()
+        self.service = service ?? PiholeAPIClient(pihole)
+        self.summary = initialSummary ?? PiholeSummaryData()
+        self.primaryPollInterval = primaryPollInterval
+        self.primaryRetryInterval = primaryRetryInterval
+        self.supplementaryRefreshInterval = supplementaryRefreshInterval
+        self.transientFailureThreshold = max(1, transientFailureThreshold)
         setupInitialData()
     }
 
     private func setupInitialData() {
         summary.name = pihole.name
-        summary.queriesBlocked = "0"
-        summary.domainsOnList = "0"
-        summary.percentageBlocked = "0"
-        summary.totalQueries = "0"
     }
 
     func startUpdating() {
-        stopUpdating()
-        updateData()
-        timer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { [weak self] _ in
-            self?.updateData()
+        guard pollingTask == nil else { return }
+
+        if !summary.hasPrimaryData {
+            summary.connectionState = .connecting
         }
+
+        pollingTask = Task { [weak self] in
+            while !Task.isCancelled {
+                let succeeded = await self?.refreshNow() ?? true
+                let interval = self?.pollInterval(afterSuccessfulRefresh: succeeded) ?? .seconds(5)
+
+                do {
+                    try await Task.sleep(for: interval)
+                } catch {
+                    return
+                }
+            }
+        }
+    }
+
+    @discardableResult
+    func refreshNow(includeSupplementaryData: Bool = true) async -> Bool {
+        let generation = refreshGeneration
+
+        if let primaryRefreshTask {
+            let succeeded = await primaryRefreshTask.value
+            guard generation == refreshGeneration else { return false }
+
+            if includeSupplementaryData {
+                scheduleSupplementaryRefreshIfNeeded(primarySucceeded: succeeded)
+            }
+            return succeeded
+        }
+
+        let task = Task { [weak self] in
+            await self?.performPrimaryRefresh() ?? false
+        }
+        primaryRefreshTask = task
+
+        let succeeded = await task.value
+        guard generation == refreshGeneration else { return false }
+
+        primaryRefreshTask = nil
+
+        if includeSupplementaryData {
+            scheduleSupplementaryRefreshIfNeeded(primarySucceeded: succeeded)
+        }
+        return succeeded
+    }
+
+    private func pollInterval(afterSuccessfulRefresh succeeded: Bool) -> Duration {
+        succeeded ? primaryPollInterval : primaryRetryInterval
     }
 
     /// Fetches the query log on demand (not part of the periodic refresh).
@@ -173,7 +240,7 @@ final class PiholeSummaryDataUpdater: Identifiable, ObservableObject, ErrorHandl
         do {
             try await service.clearMessages()
             let health = try await service.fetchHealth()
-            await updateHealth(with: health)
+            updateHealth(with: health)
         } catch {
             Log.network.error("❌ Failed to clear messages for \(self.pihole.name, privacy: .public): \(String(describing: error), privacy: .public)")
         }
@@ -182,8 +249,8 @@ final class PiholeSummaryDataUpdater: Identifiable, ObservableObject, ErrorHandl
     func enable() async {
         do {
             let result = try await service.enable()
-            await updateStatus(with: result)
-            await clearError()
+            updateStatus(with: result)
+            recordPrimarySuccess()
         } catch {
             handleError(error, context: .enablingPihole)
         }
@@ -192,8 +259,8 @@ final class PiholeSummaryDataUpdater: Identifiable, ObservableObject, ErrorHandl
     func disable() async {
         do {
             let result = try await service.disable(timer: nil)
-            await updateStatus(with: result)
-            await clearError()
+            updateStatus(with: result)
+            recordPrimarySuccess()
         } catch {
             handleError(error, context: .disablingPihole)
         }
@@ -202,165 +269,235 @@ final class PiholeSummaryDataUpdater: Identifiable, ObservableObject, ErrorHandl
     func disable(timer: Int?) async {
         do {
             let result = try await service.disable(timer: timer)
-            await updateStatus(with: result)
-            await clearError()
+            updateStatus(with: result)
+            recordPrimarySuccess()
         } catch {
             handleError(error, context: .disablingPihole)
         }
     }
 
-    private func updateData() {
-        cancelFetchTasks()
+    func stopUpdating() {
+        refreshGeneration &+= 1
+        pollingTask?.cancel()
+        pollingTask = nil
+        primaryRefreshTask?.cancel()
+        primaryRefreshTask = nil
+        supplementaryTask?.cancel()
+        supplementaryTask = nil
+        summary.isRefreshing = false
+    }
 
-        fetchTasks.append(Task { [weak self] in
-            guard let self else { return }
-            do {
-                let result = try await service.fetchSummary()
-                try Task.checkCancellation()
-                await updateSummary(with: result)
-                await clearError()
-            } catch is CancellationError {
-                // Task was cancelled, do nothing
-            } catch {
-                handleError(error, context: .fetchingSummary)
+}
+
+private extension PiholeSummaryDataUpdater {
+    enum PrimaryRefreshOutcome: Sendable {
+        case success
+        case failure(PiholeError)
+        case cancelled
+
+        var error: PiholeError? {
+            if case .failure(let error) = self {
+                error
+            } else {
+                nil
             }
-        })
+        }
 
-        fetchTasks.append(Task { [weak self] in
-            guard let self else { return }
-            do {
-                let status = try await service.fetchStatus()
-                try Task.checkCancellation()
-                await updateStatus(with: status)
-                await clearError()
-            } catch is CancellationError {
-                // Task was cancelled, do nothing
-            } catch {
-                await updateStatus(with: .unknown)
-                handleError(error, context: .fetchingStatus)
+        var succeeded: Bool {
+            if case .success = self {
+                true
+            } else {
+                false
             }
-        })
-
-        let piholeNameForLog = pihole.name
-        let piholeVersionForLog = pihole.version.rawValue
-        fetchTasks.append(Task { [weak self] in
-            guard let self else { return }
-            Log.network.info("📊 Fetching top domains for \(piholeNameForLog, privacy: .public) (version: \(piholeVersionForLog, privacy: .public))")
-            do {
-                let result = try await service.fetchTopDomains(count: 10)
-                try Task.checkCancellation()
-                Log.network.info("✅ Top domains fetched for \(piholeNameForLog, privacy: .public) - \(result.topPermitted.count, privacy: .public) permitted, \(result.topBlocked.count, privacy: .public) blocked")
-                await updateTopDomains(with: result)
-            } catch is CancellationError {
-                Log.network.info("⏹️ Top domains fetch cancelled for \(piholeNameForLog, privacy: .public)")
-            } catch {
-                Log.network.error("❌ Top domains fetch failed for \(piholeNameForLog, privacy: .public): \(String(describing: error), privacy: .public)")
-            }
-        })
-
-        fetchTasks.append(Task { [weak self] in
-            guard let self else { return }
-            Log.network.info("👥 Fetching top clients for \(piholeNameForLog, privacy: .public) (version: \(piholeVersionForLog, privacy: .public))")
-            do {
-                let result = try await service.fetchTopClients(count: 10)
-                try Task.checkCancellation()
-                Log.network.info("✅ Top clients fetched for \(piholeNameForLog, privacy: .public) - \(result.topActive.count, privacy: .public) active, \(result.topBlocked.count, privacy: .public) blocked")
-                await updateTopClients(with: result)
-            } catch is CancellationError {
-                Log.network.info("⏹️ Top clients fetch cancelled for \(piholeNameForLog, privacy: .public)")
-            } catch {
-                Log.network.error("❌ Top clients fetch failed for \(piholeNameForLog, privacy: .public): \(String(describing: error), privacy: .public)")
-            }
-        })
-
-        fetchTasks.append(Task { [weak self] in
-            guard let self else { return }
-            Log.network.info("📈 Fetching history for \(piholeNameForLog, privacy: .public) (version: \(piholeVersionForLog, privacy: .public))")
-            do {
-                let result = try await service.fetchHistory()
-                try Task.checkCancellation()
-                Log.network.info("✅ History fetched for \(piholeNameForLog, privacy: .public) - \(result.count, privacy: .public) buckets")
-                await updateHistory(with: result)
-            } catch is CancellationError {
-                Log.network.info("⏹️ History fetch cancelled for \(piholeNameForLog, privacy: .public)")
-            } catch {
-                Log.network.error("❌ History fetch failed for \(piholeNameForLog, privacy: .public): \(String(describing: error), privacy: .public)")
-            }
-        })
-
-        fetchTasks.append(Task { [weak self] in
-            guard let self else { return }
-            do {
-                let result = try await service.fetchQueryTypes()
-                try Task.checkCancellation()
-                await updateQueryTypes(with: result)
-            } catch is CancellationError {
-                // Task was cancelled, do nothing
-            } catch {
-                Log.network.error("❌ Query types fetch failed for \(piholeNameForLog, privacy: .public): \(String(describing: error), privacy: .public)")
-            }
-        })
-
-        fetchTasks.append(Task { [weak self] in
-            guard let self else { return }
-            do {
-                let result = try await service.fetchUpstreams()
-                try Task.checkCancellation()
-                await updateUpstreams(with: result)
-            } catch is CancellationError {
-                // Task was cancelled, do nothing
-            } catch {
-                Log.network.error("❌ Upstreams fetch failed for \(piholeNameForLog, privacy: .public): \(String(describing: error), privacy: .public)")
-            }
-        })
-
-        fetchTasks.append(Task { [weak self] in
-            guard let self else { return }
-            do {
-                let result = try await service.fetchHealth()
-                try Task.checkCancellation()
-                await updateHealth(with: result)
-            } catch is CancellationError {
-                // Task was cancelled, do nothing
-            } catch {
-                Log.network.error("❌ Health fetch failed for \(piholeNameForLog, privacy: .public): \(String(describing: error), privacy: .public)")
-            }
-        })
-
-        if service.pihole.systemMetricsEnabled {
-            fetchTasks.append(Task { [weak self] in
-                guard let self else { return }
-                do {
-                    let result = try await service.fetchSystemMetrics()
-                    try Task.checkCancellation()
-                    await updateSystemMetrics(with: result)
-                } catch is CancellationError {
-                    // Task was cancelled, do nothing
-                } catch {
-                    handleError(error, context: .fetchingSystemMetrics)
-                }
-            })
         }
     }
 
-    private func cancelFetchTasks() {
-        fetchTasks.forEach { $0.cancel() }
-        fetchTasks.removeAll()
+    func performPrimaryRefresh() async -> Bool {
+        summary.isRefreshing = true
+        if !summary.hasPrimaryData {
+            summary.connectionState = .connecting
+        }
+        defer { summary.isRefreshing = false }
+
+        async let summaryOutcome = refreshSummary()
+        async let statusOutcome = refreshStatus()
+        let outcomes = await (summaryOutcome, statusOutcome)
+
+        guard !Task.isCancelled else { return false }
+
+        let results = [outcomes.0, outcomes.1]
+        if results.contains(where: \.succeeded) {
+            recordPrimarySuccess()
+            return true
+        }
+
+        let errors = results.compactMap(\.error)
+        guard let preferredError = errors.first(where: { !$0.type.isTransient }) ?? errors.first else {
+            return false
+        }
+
+        consecutivePrimaryFailures += 1
+        let shouldSurfaceError = !preferredError.type.isTransient
+            || consecutivePrimaryFailures >= transientFailureThreshold
+
+        summary.connectionState = shouldSurfaceError
+            ? .unavailable
+            : (summary.hasPrimaryData ? .stale : .connecting)
+
+        if shouldSurfaceError {
+            setError(preferredError, context: .fetchingSummary)
+        }
+        return false
     }
 
-    func stopUpdating() {
-        timer?.invalidate()
-        timer = nil
-        cancelFetchTasks()
+    func refreshSummary() async -> PrimaryRefreshOutcome {
+        do {
+            let result = try await service.fetchSummary()
+            try Task.checkCancellation()
+            updateSummary(with: result)
+            summary.hasLoadedSummary = true
+            return .success
+        } catch is CancellationError {
+            return .cancelled
+        } catch {
+            return .failure(PiholeErrorMapper.mapError(error, context: .fetchingSummary))
+        }
     }
 
-    /// Stops the timer without cancelling in-flight tasks.
-    /// Use when replacing this updater with a new one to avoid
-    /// TCP connection resets on URLSession.shared that can interfere
-    /// with the new updater's requests to the same host.
-    func prepareForReplacement() {
-        timer?.invalidate()
-        timer = nil
+    func refreshStatus() async -> PrimaryRefreshOutcome {
+        do {
+            let status = try await service.fetchStatus()
+            try Task.checkCancellation()
+            updateStatus(with: status)
+            summary.hasLoadedStatus = true
+            return .success
+        } catch is CancellationError {
+            return .cancelled
+        } catch {
+            return .failure(PiholeErrorMapper.mapError(error, context: .fetchingStatus))
+        }
+    }
+
+    func recordPrimarySuccess() {
+        consecutivePrimaryFailures = 0
+        summary.connectionState = .connected
+        summary.lastSuccessfulRefresh = .now
+        clearError()
+    }
+
+    func scheduleSupplementaryRefreshIfNeeded(primarySucceeded: Bool) {
+        guard primarySucceeded, supplementaryTask == nil else { return }
+
+        if let lastSupplementaryRefresh,
+           Date.now.timeIntervalSince(lastSupplementaryRefresh) < supplementaryRefreshInterval {
+            return
+        }
+
+        lastSupplementaryRefresh = .now
+        let generation = refreshGeneration
+        supplementaryTask = Task { [weak self] in
+            await self?.performSupplementaryRefresh()
+
+            guard let self, self.refreshGeneration == generation else { return }
+            self.supplementaryTask = nil
+        }
+    }
+
+    func performSupplementaryRefresh() async {
+        async let firstPipeline: Void = refreshSupplementaryFirstPipeline()
+        async let secondPipeline: Void = refreshSupplementarySecondPipeline()
+        _ = await (firstPipeline, secondPipeline)
+    }
+
+    func refreshSupplementaryFirstPipeline() async {
+        await refreshTopDomains()
+        await refreshQueryTypes()
+        await refreshHealth()
+    }
+
+    func refreshSupplementarySecondPipeline() async {
+        await refreshTopClients()
+        await refreshHistory()
+        await refreshUpstreams()
+        if service.pihole.systemMetricsEnabled {
+            await refreshSystemMetrics()
+        }
+    }
+
+    func refreshTopDomains() async {
+        await loadSupplementaryData("top domains") {
+            try await self.service.fetchTopDomains(count: 10)
+        } update: {
+            self.updateTopDomains(with: $0)
+        }
+    }
+
+    func refreshTopClients() async {
+        await loadSupplementaryData("top clients") {
+            try await self.service.fetchTopClients(count: 10)
+        } update: {
+            self.updateTopClients(with: $0)
+        }
+    }
+
+    func refreshHistory() async {
+        await loadSupplementaryData("history") {
+            try await self.service.fetchHistory()
+        } update: {
+            self.updateHistory(with: $0)
+        }
+    }
+
+    func refreshQueryTypes() async {
+        await loadSupplementaryData("query types") {
+            try await self.service.fetchQueryTypes()
+        } update: {
+            self.updateQueryTypes(with: $0)
+        }
+    }
+
+    func refreshUpstreams() async {
+        await loadSupplementaryData("upstreams") {
+            try await self.service.fetchUpstreams()
+        } update: {
+            self.updateUpstreams(with: $0)
+        }
+    }
+
+    func refreshHealth() async {
+        await loadSupplementaryData("health") {
+            try await self.service.fetchHealth()
+        } update: {
+            self.updateHealth(with: $0)
+        }
+    }
+
+    func refreshSystemMetrics() async {
+        await loadSupplementaryData("system metrics") {
+            try await self.service.fetchSystemMetrics()
+        } update: {
+            self.updateSystemMetrics(with: $0)
+        }
+    }
+
+    func loadSupplementaryData<Value: Sendable>(
+        _ label: String,
+        operation: () async throws -> Value,
+        update: (Value) -> Void
+    ) async {
+        guard !Task.isCancelled else { return }
+
+        do {
+            let value = try await operation()
+            try Task.checkCancellation()
+            update(value)
+        } catch is CancellationError {
+            return
+        } catch {
+            Log.network.error(
+                "❌ Supplementary \(label, privacy: .public) fetch failed for \(self.pihole.name, privacy: .public): \(String(describing: error), privacy: .public)"
+            )
+        }
     }
 }
 
@@ -368,13 +505,18 @@ final class PiholeSummaryDataUpdater: Identifiable, ObservableObject, ErrorHandl
 
 extension PiholeSummaryDataUpdater {
     func handleError(_ error: Error, context: ErrorContext) {
-        let piholeError = PiholeErrorMapper.mapError(error, context: context)
-        Task {
-            await setError(piholeError, context: context)
+        guard context.affectsPiholeStatus else {
+            Log.network.error(
+                "❌ Supplementary system metrics fetch failed for \(self.pihole.name, privacy: .public): \(String(describing: error), privacy: .public)"
+            )
+            return
         }
+
+        let piholeError = PiholeErrorMapper.mapError(error, context: context)
+        summary.connectionState = summary.hasPrimaryData ? .stale : .unavailable
+        setError(piholeError, context: context)
     }
     
-    @MainActor
     private func setError(_ error: PiholeError, context: ErrorContext) {
         withAnimation {
             summary.currentError = error
@@ -385,7 +527,6 @@ extension PiholeSummaryDataUpdater {
         }
     }
 
-    @MainActor
     private func clearError() {
         guard summary.hasError || summary.currentError != nil || summary.hasPiholeError else { return }
         withAnimation {
@@ -399,7 +540,6 @@ extension PiholeSummaryDataUpdater {
 // MARK: - Summary and Status Updates
 extension PiholeSummaryDataUpdater {
 
-    @MainActor
     private func updateSummary(with result: PiholeSummary) {
         let blocked = result.adsBlocked.formatted()
         let domains = result.domainsBeingBlocked.formatted()
@@ -410,48 +550,42 @@ extension PiholeSummaryDataUpdater {
             if summary.domainsOnList != domains { summary.domainsOnList = domains }
             if summary.percentageBlocked != percentage { summary.percentageBlocked = percentage }
             if summary.totalQueries != queries { summary.totalQueries = queries }
+            summary.hasLoadedSummary = true
         }
     }
 
-    @MainActor
     private func updateTopDomains(with result: TopDomainsResult) {
         withAnimation { summary.topDomains = result }
     }
 
-    @MainActor
     private func updateTopClients(with result: TopClientsResult) {
         withAnimation { summary.topClients = result }
     }
 
-    @MainActor
     private func updateHistory(with result: [HistoryItem]) {
         withAnimation { summary.history = result }
     }
 
-    @MainActor
     private func updateQueryTypes(with result: QueryTypesResult) {
         withAnimation { summary.queryTypes = result }
     }
 
-    @MainActor
     private func updateUpstreams(with result: UpstreamsResult) {
         withAnimation { summary.upstreams = result }
     }
 
-    @MainActor
     private func updateHealth(with result: PiholeHealth) {
         withAnimation { summary.health = result }
     }
 
-    @MainActor
     private func updateSystemMetrics(with metrics: PiMonitorMetrics) {
         withAnimation { summary.systemMetrics = metrics }
     }
 
-    @MainActor
     private func updateStatus(with status: PiholeStatus) {
         withAnimation {
             if summary.status != status { summary.status = status }
+            summary.hasLoadedStatus = true
         }
     }
 }

@@ -10,24 +10,41 @@ import PiStatsCore
 import PiStatsUI
 
 struct ContentView: View {
-    @StateObject private var settingsStore = SettingsStore(userDefaults: UserDefaults.shared())
+    @StateObject private var settingsStore: SettingsStore
+    private let screenshotListUpdater: PiholeListUpdater?
+
+    init() {
+        let settingsStore = SettingsStore(userDefaults: UserDefaults.shared())
+#if DEBUG
+        if AppStoreScreenshotData.isEnabled {
+            AppStoreScreenshotData.configure(settingsStore)
+            screenshotListUpdater = AppStoreScreenshotData.makeListUpdater()
+        } else {
+            screenshotListUpdater = nil
+        }
+#else
+        screenshotListUpdater = nil
+#endif
+        _settingsStore = StateObject(wrappedValue: settingsStore)
+    }
 
     var body: some View {
         if UIDevice.current.userInterfaceIdiom == .pad {
-            iPadRootView(settingsStore: settingsStore)
+            iPadRootView(settingsStore: settingsStore, listUpdater: screenshotListUpdater)
         } else {
-            iPhoneRootView(settingsStore: settingsStore)
+            iPhoneRootView(settingsStore: settingsStore, listUpdater: screenshotListUpdater)
         }
     }
 }
 
 private struct iPhoneRootView: View {
     @ObservedObject var settingsStore: SettingsStore
+    let listUpdater: PiholeListUpdater?
 
     var body: some View {
         TabView {
             NavigationStack {
-                PiholeStatsList(settingsStore: settingsStore)
+                PiholeStatsList(settingsStore: settingsStore, listUpdater: listUpdater)
             }
             .tabItem {
                 Image(systemName: "shield")
@@ -52,6 +69,7 @@ private enum SidebarItem: Hashable {
 
 private struct iPadRootView: View {
     @ObservedObject var settingsStore: SettingsStore
+    let listUpdater: PiholeListUpdater?
     @State private var selection: SidebarItem? = .piholes
 
     var body: some View {
@@ -70,7 +88,7 @@ private struct iPadRootView: View {
             switch selection ?? .piholes {
             case .piholes:
                 NavigationStack {
-                    PiholeStatsList(settingsStore: settingsStore)
+                    PiholeStatsList(settingsStore: settingsStore, listUpdater: listUpdater)
                 }
             case .settings:
                 NavigationStack {

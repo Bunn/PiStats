@@ -442,6 +442,17 @@
         }
       }
     },
+    "Connecting" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectando"
+          }
+        }
+      }
+    },
     "Couldn't Load Queries" : {
 
     },
@@ -1705,6 +1716,17 @@
         }
       }
     },
+    "Unavailable" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indisponível"
+          }
+        }
+      }
+    },
     "Up to date" : {
       "localizations" : {
         "pt-BR" : {
@@ -1727,6 +1749,17 @@
     },
     "Update Gravity" : {
 
+    },
+    "Updating" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atualizando"
+          }
+        }
+      }
     },
     "Updating Gravity…" : {
 

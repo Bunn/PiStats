@@ -22,7 +22,7 @@ struct UpstreamsView: View {
                     .padding(.vertical, 8)
             } else {
                 let maxPercentage = result.upstreams.first?.percentage ?? 1
-                ForEach(result.upstreams.prefix(8), id: \.displayName) { item in
+                ForEach(result.upstreams.prefix(8)) { item in
                     UpstreamRow(item: item, maxPercentage: maxPercentage)
                 }
             }

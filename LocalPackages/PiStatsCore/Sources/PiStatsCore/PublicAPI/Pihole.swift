@@ -17,7 +17,7 @@ public enum PiholeVersion: String, CaseIterable, Identifiable, Sendable {
     }
 }
 
-public struct Pihole: Sendable, Identifiable {
+public struct Pihole: Sendable, Identifiable, Equatable {
     public let uuid: UUID
     public let name: String
     public let address: String
@@ -181,15 +181,23 @@ public struct UpstreamsResult: Sendable {
 }
 
 public struct UpstreamItem: Identifiable, Sendable {
-    public let id = UUID()
+    public struct ID: Hashable, Sendable {
+        fileprivate let endpoint: String
+        fileprivate let port: Int?
+    }
+
+    public let id: ID
     public let name: String
     public let ip: String
+    public let port: Int?
     /// Share of total queries handled by this upstream, 0...100.
     public let percentage: Double
 
-    public init(name: String, ip: String, percentage: Double) {
+    public init(name: String, ip: String, port: Int? = nil, percentage: Double) {
+        self.id = ID(endpoint: ip.isEmpty ? name : ip, port: port)
         self.name = name
         self.ip = ip
+        self.port = port
         self.percentage = percentage
     }
 

@@ -9,6 +9,7 @@ import Testing
 import Foundation
 @testable import PiStatsCore
 
+extension MockNetworkTests {
 @Suite("Gravity Tests", .serialized)
 struct GravityTests {
     private let mockSession: URLSession
@@ -98,4 +99,5 @@ struct GravityTests {
 
         MockURLProtocol.reset()
     }
+}
 }

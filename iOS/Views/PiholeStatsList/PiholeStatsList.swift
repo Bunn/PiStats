@@ -13,10 +13,10 @@ struct PiholeStatsList: View {
     @State var editingPihole: Pihole? = nil
     @ObservedObject var settingsStore: SettingsStore
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.scenePhase) private var scenePhase
 
-    @StateObject var listUpdater = PiholeListUpdater(
-        DefaultPiholeStorage().restoreAllPiholes()
-    )
+    @StateObject var listUpdater: PiholeListUpdater
+    private let automaticallyUpdates: Bool
 
     @State private var columnCount = 2
 
@@ -29,6 +29,14 @@ struct PiholeStatsList: View {
     private let minCardWidth: CGFloat = 340
     private let maxContentWidth: CGFloat = 1100
     private let regularHorizontalInset: CGFloat = 24
+
+    init(settingsStore: SettingsStore, listUpdater: PiholeListUpdater? = nil) {
+        self.settingsStore = settingsStore
+        automaticallyUpdates = listUpdater == nil
+        _listUpdater = StateObject(
+            wrappedValue: listUpdater ?? PiholeListUpdater(DefaultPiholeStorage().restoreAllPiholes())
+        )
+    }
 
     var body: some View {
         ScrollView {
@@ -66,7 +74,17 @@ struct PiholeStatsList: View {
             }
         }
         .onAppear {
-            listUpdater.startUpdating()
+            if automaticallyUpdates, scenePhase == .active {
+                listUpdater.startUpdating()
+            }
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            guard automaticallyUpdates else { return }
+            if newPhase == .active {
+                listUpdater.startUpdating()
+            } else if newPhase == .background {
+                listUpdater.stopUpdating()
+            }
         }
         .background(Color(.systemGroupedBackground)
             .edgesIgnoringSafeArea(.all)

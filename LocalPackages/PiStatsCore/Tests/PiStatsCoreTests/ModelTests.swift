@@ -114,6 +114,40 @@ struct ModelTests {
         #expect(decodedSummary.adsBlocked == summary.adsBlocked)
         #expect(decodedSummary.adsPercentageToday == summary.adsPercentageToday)
     }
+
+    // MARK: - UpstreamItem Tests
+
+    @Test("Upstream identity is stable and distinguishes same-name endpoints")
+    func testUpstreamIdentity() {
+        let primary = UpstreamItem(
+            name: "one.one.one.one",
+            ip: "1.1.1.1",
+            port: 53,
+            percentage: 60
+        )
+        let refreshed = UpstreamItem(
+            name: "one.one.one.one",
+            ip: "1.1.1.1",
+            port: 53,
+            percentage: 55
+        )
+        let secondary = UpstreamItem(
+            name: "one.one.one.one",
+            ip: "1.0.0.1",
+            port: 53,
+            percentage: 35
+        )
+        let alternatePort = UpstreamItem(
+            name: "one.one.one.one",
+            ip: "1.1.1.1",
+            port: 5353,
+            percentage: 10
+        )
+
+        #expect(primary.id == refreshed.id)
+        #expect(primary.id != secondary.id)
+        #expect(primary.id != alternatePort.id)
+    }
     
     // MARK: - PiholeStatus Tests
     

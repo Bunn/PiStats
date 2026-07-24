@@ -145,8 +145,10 @@ internal final class PiholeV5Service: PiholeService {
             guard let percentage = (value as? NSNumber)?.doubleValue, percentage > 0 else { return nil }
             let parts = key.components(separatedBy: "|")
             let name = parts.count > 1 ? parts[1] : ""
-            let ip = (parts.first ?? key).components(separatedBy: "#").first ?? key
-            return UpstreamItem(name: name, ip: ip, percentage: percentage)
+            let endpointParts = (parts.first ?? key).components(separatedBy: "#")
+            let ip = endpointParts.first ?? key
+            let port = endpointParts.count > 1 ? Int(endpointParts[1]) : nil
+            return UpstreamItem(name: name, ip: ip, port: port, percentage: percentage)
         }
         .sorted { $0.percentage > $1.percentage }
 
@@ -287,6 +289,9 @@ extension PiholeV5Service {
             if let httpResponse = response as? HTTPURLResponse {
                 Log.network.info("✅ [V5] Received response: \(httpResponse.statusCode) for \(url.absoluteString)")
                 Log.network.debug("📊 [V5] Response data size: \(data.count) bytes")
+                guard (200..<300).contains(httpResponse.statusCode) else {
+                    throw PiholeServiceError.unknownStatus
+                }
             }
             
             guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {

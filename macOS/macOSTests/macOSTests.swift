@@ -7,7 +7,7 @@
 
 import Testing
 import Foundation
-@testable import macOS
+@testable import Pi_Stats
 @testable import PiStatsCore
 
 @MainActor
@@ -91,7 +91,7 @@ struct macOSTests {
         #expect(token == nil)
     }
 
-    @Test("System metrics errors do not mark Pi-hole status as failed")
+    @Test("System metrics errors do not replace the primary connection state")
     func systemMetricsErrorDoesNotAffectPiholeStatusAlerts() async {
         let updater = PiholeSummaryDataUpdater(
             pihole: Pihole(
@@ -102,10 +102,9 @@ struct macOSTests {
         )
 
         updater.handleError(PiholeServiceError.piMonitorError(.invalidResponse), context: .fetchingSystemMetrics)
-        await Task.yield()
 
-        #expect(updater.summary.hasError)
-        #expect(updater.summary.currentError?.type == .systemMetricsError)
+        #expect(updater.summary.hasError == false)
+        #expect(updater.summary.currentError == nil)
         #expect(updater.summary.hasPiholeError == false)
     }
 

@@ -13,7 +13,11 @@ public struct PiholeAPIClient: PiholeService {
     private let service: PiholeService
     public let pihole: Pihole
 
-    public init(_ pihole: Pihole, urlSession: URLSession = .shared) {
+    public init(_ pihole: Pihole) {
+        self.init(pihole, urlSession: Self.sharedURLSession)
+    }
+
+    public init(_ pihole: Pihole, urlSession: URLSession) {
         self.pihole = pihole
 
         switch pihole.version {
@@ -25,6 +29,16 @@ public struct PiholeAPIClient: PiholeService {
             Log.network.info("🔧 [Client] Initialized V6 service for \(pihole.name)")
         }
     }
+
+    private static let sharedURLSession: URLSession = {
+        let configuration = URLSessionConfiguration.default
+        configuration.waitsForConnectivity = true
+        configuration.timeoutIntervalForRequest = 10
+        configuration.timeoutIntervalForResource = 20
+        configuration.httpMaximumConnectionsPerHost = 4
+        configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
+        return URLSession(configuration: configuration)
+    }()
 
     public func fetchSummary() async throws -> PiholeSummary {
         try await service.fetchSummary()

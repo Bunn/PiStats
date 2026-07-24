@@ -197,7 +197,11 @@ private struct PiholeStatusRow: View {
     var body: some View {
         HStack {
             // Status Icon
-            if summary.hasError || summary.status == .unknown {
+            if summary.isRefreshing && !summary.hasLoadedStatus {
+                ProgressView()
+                    .controlSize(.small)
+                    .accessibilityLabel(UserText.statusConnecting)
+            } else if summary.hasError || summary.status == .unknown {
                 Image(systemName: SystemImages.piholeStatusWarning)
                     .foregroundColor(AppColors.statusWarning)
             } else if summary.status == .enabled {
@@ -217,20 +221,27 @@ private struct PiholeStatusRow: View {
             Spacer()
             
             // Status Text
-            Text(statusText(for: summary.status))
+            Text(statusText)
                 .font(.caption)
                 .foregroundColor(.secondary)
         }
     }
-    
-    private func statusText(for status: PiholeStatus) -> String {
-        switch status {
+
+    private var statusText: String {
+        if summary.hasError {
+            return UserText.statusUnavailable
+        }
+        if summary.isRefreshing && !summary.hasLoadedStatus {
+            return UserText.statusConnecting
+        }
+
+        switch summary.status {
         case .enabled:
-            return "Active"
+            return UserText.PiholeRow.statusActive
         case .disabled:
-            return "Disabled"
+            return UserText.PiholeRow.statusDisabled
         case .unknown:
-            return "Unknown"
+            return UserText.PiholeRow.statusUnknown
         }
     }
 }

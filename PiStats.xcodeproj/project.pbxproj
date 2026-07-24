@@ -92,6 +92,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Alerting/IOSMonitoringScheduler.swift,
+				AppStoreScreenshotData.swift,
 				Assets.xcassets,
 				ContentView.swift,
 				iOSApp.swift,
@@ -151,6 +152,8 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				macOSTests/macOSTests.swift,
+				macOSTests/PiholeSummaryDataUpdaterTests.swift,
+				macOSTests/ScriptedPiholeService.swift,
 			);
 			target = 310D5FB82D496999008E611D /* macOSTests */;
 		};
@@ -172,6 +175,7 @@
 				AppConstants.swift,
 				AppGroup.swift,
 				Colors.xcassets,
+				DataUpdater/PiholeConnectionState.swift,
 				DataUpdater/PiholeListUpdating.swift,
 				DataUpdater/PiholeSummaryData.swift,
 				DataUpdater/PiholeSummaryDataUpdater.swift,
@@ -216,6 +220,7 @@
 				AppConstants.swift,
 				AppGroup.swift,
 				Colors.xcassets,
+				DataUpdater/PiholeConnectionState.swift,
 				DataUpdater/PiholeListUpdating.swift,
 				DataUpdater/PiholeSummaryData.swift,
 				DataUpdater/PiholeSummaryDataUpdater.swift,
@@ -914,7 +919,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.2;
+				MARKETING_VERSION = 4.3;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.PiStatsMobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -951,7 +956,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.2;
+				MARKETING_VERSION = 4.3;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.PiStatsMobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -1067,7 +1072,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.2;
-				MARKETING_VERSION = 4.2;
+				MARKETING_VERSION = 4.3;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.holestats;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -1101,7 +1106,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.2;
-				MARKETING_VERSION = 4.2;
+				MARKETING_VERSION = 4.3;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.holestats;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -1125,7 +1130,7 @@
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/macOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/macOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pi Stats.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Pi Stats";
 			};
 			name = Debug;
 		};
@@ -1144,7 +1149,7 @@
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/macOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/macOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pi Stats.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Pi Stats";
 			};
 			name = Release;
 		};
@@ -1203,7 +1208,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 4.2;
+				MARKETING_VERSION = 4.3;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.PiStatsMobile.PiStatsWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -1233,7 +1238,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 4.2;
+				MARKETING_VERSION = 4.3;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.bunn.PiStatsMobile.PiStatsWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;

@@ -9,6 +9,7 @@ import Combine
 import Foundation
 import PiStatsCore
 
+@MainActor
 protocol PiholeListUpdating {
     func startUpdating()
     func stopUpdating()
@@ -16,9 +17,11 @@ protocol PiholeListUpdating {
     func removePihole(_ pihole: Pihole)
 }
 
+@MainActor
 final class PiholeListUpdater: PiholeListUpdating, ObservableObject {
     @Published private(set) var dataUpdaters: [PiholeSummaryDataUpdater]
     private var cancellables = Set<AnyCancellable>()
+    private(set) var isUpdating = false
 
     init(_ piholes: [Pihole]) {
         self.dataUpdaters = piholes.map { .init(pihole: $0) }
@@ -46,12 +49,16 @@ final class PiholeListUpdater: PiholeListUpdating, ObservableObject {
     }
 
     func startUpdating() {
+        guard !isUpdating else { return }
+        isUpdating = true
         dataUpdaters.forEach { updater in
             updater.startUpdating()
         }
     }
 
     func stopUpdating() {
+        guard isUpdating else { return }
+        isUpdating = false
         dataUpdaters.forEach { updater in
             updater.stopUpdating()
         }
@@ -61,7 +68,9 @@ final class PiholeListUpdater: PiholeListUpdating, ObservableObject {
         let newUpdater = PiholeSummaryDataUpdater(pihole: pihole)
         dataUpdaters.append(newUpdater)
         setupObservers()
-        newUpdater.startUpdating()
+        if isUpdating {
+            newUpdater.startUpdating()
+        }
     }
     
     func removePihole(_ pihole: Pihole) {
@@ -76,19 +85,23 @@ final class PiholeListUpdater: PiholeListUpdating, ObservableObject {
     func updatePihole(_ pihole: Pihole) {
         if let index = dataUpdaters.firstIndex(where: { $0.pihole.uuid == pihole.uuid }) {
             let oldUpdater = dataUpdaters[index]
-            oldUpdater.prepareForReplacement()
+            guard oldUpdater.pihole != pihole else { return }
 
-            let newUpdater = PiholeSummaryDataUpdater(pihole: pihole)
+            let retainedSummary = PiholeSummaryData(
+                copying: oldUpdater.summary,
+                name: pihole.name
+            )
+            oldUpdater.stopUpdating()
+
+            let newUpdater = PiholeSummaryDataUpdater(
+                pihole: pihole,
+                initialSummary: retainedSummary
+            )
             dataUpdaters[index] = newUpdater
             setupObservers()
-            newUpdater.startUpdating()
+            if isUpdating {
+                newUpdater.startUpdating()
+            }
         }
-    }
-
-    /// Stops all timers without cancelling in-flight network tasks.
-    /// Use before replacing the entire updater list to avoid
-    /// TCP connection resets interfering with new requests.
-    func prepareForReplacement() {
-        dataUpdaters.forEach { $0.prepareForReplacement() }
     }
 }

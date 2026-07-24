@@ -112,6 +112,9 @@ public struct UserText {
     public static let statusNeedsAttention = String(localized: "Needs Attention")
     public static let statusEnabledAndDisabled = String(localized: "Partially Active")
     public static let statusUnknown = String(localized: "Unknown")
+    public static let statusConnecting = String(localized: "Connecting")
+    public static let statusUpdating = String(localized: "Updating")
+    public static let statusUnavailable = String(localized: "Unavailable")
 
     // MARK: - Pi-hole Row Status Text
     public struct PiholeRow {

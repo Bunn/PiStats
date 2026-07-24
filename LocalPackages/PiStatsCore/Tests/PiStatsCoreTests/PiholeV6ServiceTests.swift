@@ -9,6 +9,7 @@ import Testing
 import Foundation
 @testable import PiStatsCore
 
+extension MockNetworkTests {
 @Suite("PiholeV6Service Tests", .serialized)
 struct PiholeV6ServiceTests {
     
@@ -71,6 +72,113 @@ struct PiholeV6ServiceTests {
             try await service.fetchSummary()
         }
         
+        MockURLProtocol.reset()
+    }
+
+    @Test("concurrent requests share a single authentication")
+    func concurrentRequestsShareAuthentication() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)
+        let authenticationCount = LockedCounter()
+
+        MockURLProtocol.requestHandler = { request in
+            let url = request.url?.absoluteString ?? ""
+            if url.contains("/auth") {
+                authenticationCount.increment()
+                Thread.sleep(forTimeInterval: 0.05)
+                return MockURLProtocol.successResponse(
+                    for: request,
+                    data: MockData.jsonData(from: MockData.v6AuthSuccessJSON)
+                )
+            }
+            if url.contains("stats/summary") {
+                return MockURLProtocol.successResponse(
+                    for: request,
+                    data: MockData.jsonData(from: MockData.v6SummaryJSON)
+                )
+            }
+            if url.contains("dns/blocking") {
+                return MockURLProtocol.successResponse(
+                    for: request,
+                    data: MockData.jsonData(from: MockData.v6StatusEnabledJSON)
+                )
+            }
+            if url.contains("history") {
+                return MockURLProtocol.successResponse(
+                    for: request,
+                    data: MockData.jsonData(from: MockData.v6HistoryJSON)
+                )
+            }
+            throw PiholeServiceError.unknownError
+        }
+
+        async let summary = service.fetchSummary()
+        async let status = service.fetchStatus()
+        async let history = service.fetchHistory()
+        _ = try await (summary, status, history)
+
+        #expect(authenticationCount.value == 1)
+        MockURLProtocol.reset()
+    }
+
+    @Test("expired authentication is refreshed and the request retries once")
+    func expiredAuthenticationRetriesOnce() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)
+        let authenticationCount = LockedCounter()
+        let summaryCount = LockedCounter()
+
+        MockURLProtocol.requestHandler = { request in
+            let url = request.url?.absoluteString ?? ""
+            if url.contains("/auth") {
+                authenticationCount.increment()
+                return MockURLProtocol.successResponse(
+                    for: request,
+                    data: MockData.jsonData(from: MockData.v6AuthSuccessJSON)
+                )
+            }
+            if url.contains("stats/summary") {
+                if summaryCount.increment() == 1 {
+                    return MockURLProtocol.successResponse(
+                        for: request,
+                        data: nil,
+                        statusCode: 401
+                    )
+                }
+                return MockURLProtocol.successResponse(
+                    for: request,
+                    data: MockData.jsonData(from: MockData.v6SummaryJSON)
+                )
+            }
+            throw PiholeServiceError.unknownError
+        }
+
+        let summary = try await service.fetchSummary()
+
+        #expect(summary.queries == 5_000)
+        #expect(authenticationCount.value == 2)
+        #expect(summaryCount.value == 2)
+        MockURLProtocol.reset()
+    }
+
+    @Test("API seat exhaustion remains an authentication error")
+    func apiSeatExhaustionIsNotWrappedAsNetworkError() async {
+        let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)
+
+        MockURLProtocol.requestHandler = { request in
+            MockURLProtocol.successResponse(
+                for: request,
+                data: MockData.jsonData(from: MockData.v6AuthSeatsExceededJSON)
+            )
+        }
+
+        do {
+            _ = try await service.fetchSummary()
+            Issue.record("Expected API seat exhaustion")
+        } catch PiholeServiceError.apiSeatsExceeded {
+            // Expected.
+        } catch {
+            Issue.record("Unexpected error: \(error)")
+        }
+
         MockURLProtocol.reset()
     }
     
@@ -557,6 +665,7 @@ struct PiholeV6ServiceTests {
 
         #expect(result.upstreams.count == 3)
         #expect(result.upstreams[0].displayName == "dns.google")
+        #expect(result.upstreams[0].port == 53)
         #expect(result.upstreams[0].percentage == 60)
         // Empty name falls back to IP.
         #expect(result.upstreams[1].displayName == "1.1.1.1")
@@ -939,4 +1048,5 @@ struct PiholeV6ServiceTests {
         let _ = try await service.fetchStatus()
         MockURLProtocol.reset()
     }
+}
 }

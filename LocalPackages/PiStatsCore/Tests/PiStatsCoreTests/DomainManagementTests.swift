@@ -10,6 +10,7 @@ import Testing
 import Foundation
 @testable import PiStatsCore
 
+extension MockNetworkTests {
 @Suite("Domain Management Tests", .serialized)
 struct DomainManagementTests {
     private let mockSession: URLSession
@@ -197,4 +198,5 @@ struct DomainManagementTests {
 
         MockURLProtocol.reset()
     }
+}
 }

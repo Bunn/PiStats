@@ -9,13 +9,14 @@ import Combine
 import Foundation
 import PiStatsCore
 
+@MainActor
 final class PiholeSummaryData: Identifiable, ObservableObject {
     let id = UUID()
 
-    @Published var totalQueries: String = ""
-    @Published var queriesBlocked: String = ""
-    @Published var percentageBlocked: String = ""
-    @Published var domainsOnList: String = ""
+    @Published var totalQueries: String = "—"
+    @Published var queriesBlocked: String = "—"
+    @Published var percentageBlocked: String = "—"
+    @Published var domainsOnList: String = "—"
     @Published var name: String = ""
     @Published var status: PiholeStatus = .unknown
     @Published var topDomains: TopDomainsResult? = nil
@@ -28,25 +29,58 @@ final class PiholeSummaryData: Identifiable, ObservableObject {
     @Published var currentError: PiholeError? = nil
     @Published var hasError: Bool = false
     @Published var hasPiholeError: Bool = false
+    @Published var connectionState: PiholeConnectionState = .idle
+    @Published var isRefreshing = false
+    @Published var hasLoadedSummary = false
+    @Published var hasLoadedStatus = false
+    @Published var lastSuccessfulRefresh: Date?
+
+    var hasPrimaryData: Bool {
+        hasLoadedSummary || hasLoadedStatus
+    }
+
+    init() {}
+
+    init(copying source: PiholeSummaryData, name: String) {
+        totalQueries = source.totalQueries
+        queriesBlocked = source.queriesBlocked
+        percentageBlocked = source.percentageBlocked
+        domainsOnList = source.domainsOnList
+        self.name = name
+        status = source.status
+        topDomains = source.topDomains
+        topClients = source.topClients
+        history = source.history
+        queryTypes = source.queryTypes
+        upstreams = source.upstreams
+        health = source.health
+        systemMetrics = source.systemMetrics
+        hasLoadedSummary = source.hasLoadedSummary
+        hasLoadedStatus = source.hasLoadedStatus
+        lastSuccessfulRefresh = source.lastSuccessfulRefresh
+        connectionState = source.hasPrimaryData ? .stale : .idle
+    }
 }
 
 // MARK: - Error Model
 
-struct PiholeError: Identifiable {
+struct PiholeError: Identifiable, Sendable {
     let id = UUID()
     let type: ErrorType
-    let originalError: Error
+    let technicalDetails: String
     let timestamp: Date
+
+    init(type: ErrorType, originalError: Error, timestamp: Date) {
+        self.type = type
+        self.technicalDetails = originalError.localizedDescription
+        self.timestamp = timestamp
+    }
     
     var humanReadableMessage: String {
-        return type.humanReadableMessage
+        type.humanReadableMessage
     }
     
-    var technicalDetails: String {
-        return originalError.localizedDescription
-    }
-    
-    enum ErrorType {
+    enum ErrorType: Sendable {
         case networkError
         case authenticationError
         case invalidConfiguration
@@ -54,6 +88,15 @@ struct PiholeError: Identifiable {
         case parsingError
         case systemMetricsError
         case unknown
+
+        var isTransient: Bool {
+            switch self {
+            case .networkError, .serverError, .unknown:
+                true
+            case .authenticationError, .invalidConfiguration, .parsingError, .systemMetricsError:
+                false
+            }
+        }
         
         var humanReadableMessage: String {
             switch self {
@@ -77,7 +120,7 @@ struct PiholeError: Identifiable {
 }
 
 extension PiholeSummaryData {
-    static var mockData: PiholeSummaryData = {
+    static let mockData: PiholeSummaryData = {
         let mock = PiholeSummaryData()
         mock.name = "Pi-hole"
         mock.totalQueries = "1000"
@@ -85,6 +128,9 @@ extension PiholeSummaryData {
         mock.percentageBlocked = "20%"
         mock.domainsOnList = "1500"
         mock.status = .enabled
+        mock.connectionState = .connected
+        mock.hasLoadedSummary = true
+        mock.hasLoadedStatus = true
         return mock
     }()
 }
