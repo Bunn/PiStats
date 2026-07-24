@@ -1,5 +1,5 @@
 //
-//  PiMetrics.swift
+//  PiholeSystemMetrics.swift
 //  
 //
 //  Created by Fernando Bunn on 25/07/2020.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct PiMonitorMetrics: Codable, Sendable {
+public struct PiholeSystemMetrics: Codable, Sendable {
     public struct Memory: Codable, Sendable {
         public let totalMemory: Int
         public let freeMemory: Int
@@ -30,8 +30,8 @@ public struct PiMonitorMetrics: Codable, Sendable {
         }
 
         /// Fraction of RAM in use on a 0...1 scale. Pi-hole's reported
-        /// percentage is preferred; legacy Pi Monitor values fall back to
-        /// total minus available memory, matching Linux's `free` calculation.
+        /// percentage is preferred; otherwise this falls back to total minus
+        /// available memory, matching Linux's `free` calculation.
         public var usedFraction: Double? {
             guard totalMemory > 0 else { return nil }
 

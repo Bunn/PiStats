@@ -1,56 +1,74 @@
 import Foundation
 
 // MARK: - Pihole Model
-public enum PiholeVersion: String, CaseIterable, Identifiable, Sendable {
-    case v5
-    case v6
-
-    public var id: String { self.rawValue }
-
-    public var userValue: String {
-        switch self {
-        case .v5:
-            return "Version 5.x"
-        case .v6:
-            return "Version 6.x"
-        }
-    }
-}
-
-public struct Pihole: Sendable, Identifiable, Equatable {
+public struct Pihole: Sendable, Identifiable, Equatable, Codable {
     public let uuid: UUID
     public let name: String
     public let address: String
-    public let token: String?
+    public let password: String?
     public let port: Int
     public let secure: Bool
-    public let version: PiholeVersion
     public let systemMetricsEnabled: Bool
-    /// Legacy Pi Monitor configuration used only by Pi-hole v5.
-    public let piMonitor: PiMonitorEnvironment?
 
     public init(name: String,
                 address: String,
-                version: PiholeVersion = .v6,
                 port: Int = 80,
                 secure: Bool = false,
-                token: String? = nil,
+                password: String? = nil,
                 systemMetricsEnabled: Bool = false,
-                piMonitor: PiMonitorEnvironment? = nil,
                 uuid: UUID = UUID()) {
         self.uuid = uuid
         self.name = name
         self.address = address
-        self.token = token
-        self.version = version
+        self.password = password
         self.port = port
         self.secure = secure
-        self.systemMetricsEnabled = systemMetricsEnabled || piMonitor != nil
-        self.piMonitor = piMonitor
+        self.systemMetricsEnabled = systemMetricsEnabled
     }
 
     public var id: UUID {
         return uuid
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case uuid
+        case name
+        case address
+        case legacyCredential = "token"
+        case port
+        case secure
+        case systemMetricsEnabled
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let uuid = try container.decodeIfPresent(UUID.self, forKey: .uuid) ?? UUID()
+        let name = try container.decode(String.self, forKey: .name)
+        let address = try container.decode(String.self, forKey: .address)
+        let password = try container.decodeIfPresent(String.self, forKey: .legacyCredential)
+        let port = try container.decode(Int.self, forKey: .port)
+        let secure = try container.decodeIfPresent(Bool.self, forKey: .secure) ?? false
+        let systemMetricsEnabled = try container.decodeIfPresent(Bool.self, forKey: .systemMetricsEnabled) ?? false
+
+        self.init(
+            name: name,
+            address: address,
+            port: port,
+            secure: secure,
+            password: password,
+            systemMetricsEnabled: systemMetricsEnabled,
+            uuid: uuid
+        )
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(uuid, forKey: .uuid)
+        try container.encode(name, forKey: .name)
+        try container.encode(address, forKey: .address)
+        try container.encode(port, forKey: .port)
+        try container.encode(secure, forKey: .secure)
+        try container.encode(systemMetricsEnabled, forKey: .systemMetricsEnabled)
     }
 }
 
@@ -240,7 +258,7 @@ public struct PiholeHealth: Sendable {
     public let webVersion: String?
     public let ftlVersion: String?
     public let updateAvailable: Bool
-    /// Diagnosis/warning messages reported by FTL (v6 only; empty on v5).
+    /// Diagnosis/warning messages reported by FTL.
     public let messages: [DiagnosisMessage]
 
     public init(coreVersion: String?,
@@ -259,7 +277,7 @@ public struct PiholeHealth: Sendable {
 public struct DiagnosisMessage: Identifiable, Sendable {
     public let id = UUID()
     public let text: String
-    /// When FTL recorded the message (v6 only).
+    /// When FTL recorded the message.
     public let timestamp: Date?
 
     public init(text: String, timestamp: Date? = nil) {

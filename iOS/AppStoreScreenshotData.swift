@@ -21,13 +21,11 @@ enum AppStoreScreenshotData {
         let home = Pihole(
             name: "Home Network",
             address: "home.pi",
-            version: .v6,
             systemMetricsEnabled: true
         )
         let studio = Pihole(
             name: "Studio Pi-hole",
             address: "studio.pi",
-            version: .v6,
             systemMetricsEnabled: true
         )
 
@@ -99,12 +97,12 @@ enum AppStoreScreenshotData {
             updateAvailable: false,
             messages: []
         )
-        summary.systemMetrics = PiMonitorMetrics(
+        summary.systemMetrics = PiholeSystemMetrics(
             socTemperature: 46.8,
             uptime: 889_740,
             loadAverage: [0.16, 0.21, 0.18],
             kernelRelease: "6.12.34+rpt-rpi-v8",
-            memory: PiMonitorMetrics.Memory(
+            memory: PiholeSystemMetrics.Memory(
                 totalMemory: 8_192_000,
                 freeMemory: 2_424_000,
                 availableMemory: 5_160_000,
@@ -170,12 +168,12 @@ enum AppStoreScreenshotData {
             updateAvailable: false,
             messages: []
         )
-        summary.systemMetrics = PiMonitorMetrics(
+        summary.systemMetrics = PiholeSystemMetrics(
             socTemperature: 43.2,
             uptime: 1_416_180,
             loadAverage: [0.08, 0.12, 0.10],
             kernelRelease: "6.12.34+rpt-rpi-v8",
-            memory: PiMonitorMetrics.Memory(
+            memory: PiholeSystemMetrics.Memory(
                 totalMemory: 4_096_000,
                 freeMemory: 1_312_000,
                 availableMemory: 2_826_000,

@@ -41,8 +41,6 @@ struct MacPiholeDetailView: View {
     @State private var toast: String?
     @State private var actionError: String?
 
-    private var isV6: Bool { dataUpdater.pihole.version == .v6 }
-
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -69,16 +67,14 @@ struct MacPiholeDetailView: View {
                         showsMetrics: true,
                         displayStatsAsList: true,
                         onClearMessages: { await dataUpdater.clearMessages() },
-                        onLoadDenyRules: isV6 ? { try await dataUpdater.fetchDomains(type: .deny, kind: .regex).map(\.domain) } : nil,
-                        onBlockRules: isV6 ? { rules in try await dataUpdater.addDomains(rules.map { DomainRule(domain: $0, type: .deny, kind: .regex, comment: "Blocked by PiStats") }) } : nil,
-                        onUnblockRules: isV6 ? { rules in try await dataUpdater.removeDomains(rules.map { DomainRule(domain: $0, type: .deny, kind: .regex) }) } : nil,
-                        onQuickAddDomain: isV6 ? { rule in await quickAdd(rule) } : nil
+                        onLoadDenyRules: { try await dataUpdater.fetchDomains(type: .deny, kind: .regex).map(\.domain) },
+                        onBlockRules: { rules in try await dataUpdater.addDomains(rules.map { DomainRule(domain: $0, type: .deny, kind: .regex, comment: "Blocked by PiStats") }) },
+                        onUnblockRules: { rules in try await dataUpdater.removeDomains(rules.map { DomainRule(domain: $0, type: .deny, kind: .regex) }) },
+                        onQuickAddDomain: { rule in await quickAdd(rule) }
                     )
 
-                    if isV6 {
-                        blocklistsCard
-                        domainsCard
-                    }
+                    blocklistsCard
+                    domainsCard
                 }
                 .padding()
             }

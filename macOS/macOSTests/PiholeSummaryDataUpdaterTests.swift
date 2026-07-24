@@ -7,8 +7,7 @@ struct PiholeSummaryDataUpdaterTests {
     private let pihole = Pihole(
         name: "Test",
         address: "192.0.2.1",
-        version: .v6,
-        token: "test"
+        password: "test"
     )
 
     @Test("Primary summary appears without waiting for status")
@@ -106,8 +105,7 @@ struct PiholeSummaryDataUpdaterTests {
         let renamed = Pihole(
             name: "Renamed",
             address: pihole.address,
-            version: pihole.version,
-            token: pihole.token,
+            password: pihole.password,
             uuid: pihole.uuid
         )
         listUpdater.updatePihole(renamed)

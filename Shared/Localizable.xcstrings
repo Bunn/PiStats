@@ -77,12 +77,12 @@
         }
       }
     },
-    "3. Get your API token or password from Pi-hole settings" : {
+    "3. Get your password from Pi-hole settings" : {
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3. Obtenha o token da API ou a senha nas configurações do Pi-hole"
+            "value" : "3. Obtenha sua senha nas configurações do Pi-hole"
           }
         }
       }
@@ -266,16 +266,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sempre desativar o Pi-hole permanentemente"
-          }
-        }
-      }
-    },
-    "API Token" : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Token da API"
           }
         }
       }
@@ -753,26 +743,6 @@
         }
       }
     },
-    "Find in /etc/pihole/setupVars.conf under WEBPASSWORD or in Web UI → Settings → API" : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Encontre em /etc/pihole/setupVars.conf sob WEBPASSWORD ou na interface web → Settings → API"
-          }
-        }
-      }
-    },
-    "For version 6.x, you can use your actual password for authenticating" : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Para a versão 6.x, você pode usar sua senha real para autenticação"
-          }
-        }
-      }
-    },
     "Get started by adding your first Pi-hole:" : {
       "localizations" : {
         "pt-BR" : {
@@ -819,16 +789,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Interface"
-          }
-        }
-      }
-    },
-    "Invalid API Token" : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Token da API inválido"
           }
         }
       }
@@ -970,16 +930,6 @@
         }
       }
     },
-    "No API Token Provided" : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nenhum token da API fornecido"
-          }
-        }
-      }
-    },
     "No blocklists configured." : {
       "localizations" : {
         "pt-BR" : {
@@ -1060,16 +1010,6 @@
         }
       }
     },
-    "Optional - enables additional features" : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Opcional - ativa recursos adicionais"
-          }
-        }
-      }
-    },
     "Optional friendly name" : {
       "localizations" : {
         "pt-BR" : {
@@ -1116,26 +1056,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Permanentemente"
-          }
-        }
-      }
-    },
-    "Pi Monitor port (8088)" : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Porta do Pi Monitor (8088)"
-          }
-        }
-      }
-    },
-    "Pi Monitor setup" : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Configuração do Pi Monitor"
           }
         }
       }
@@ -1215,16 +1135,6 @@
     },
     "Pi-hole" : {
 
-    },
-    "Pi-hole 5 requires Pi Monitor to provide system metrics." : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "O Pi-hole 5 requer o Pi Monitor para fornecer métricas do sistema."
-          }
-        }
-      }
     },
     "Pi-hole Configuration" : {
       "localizations" : {
@@ -1396,16 +1306,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Salvar"
-          }
-        }
-      }
-    },
-    "Scanner" : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Leitor"
           }
         }
       }
@@ -1639,26 +1539,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hora: %@"
-          }
-        }
-      }
-    },
-    "Token (Optional)" : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Token (opcional)"
-          }
-        }
-      }
-    },
-    "Token is required for some functionalities like disable/enable your pi-hole.\\n\\nYou can find the API Token on /etc/pihole/setupVars.conf under WEBPASSWORD or you can open the web UI and go to Settings -> API -> Show API Token" : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "O token é necessário para algumas funcionalidades, como desativar/ativar seu Pi-hole.\\n\\nVocê pode encontrar o token da API em /etc/pihole/setupVars.conf sob WEBPASSWORD ou abrir a interface web e ir em Settings -> API -> Show API Token"
           }
         }
       }

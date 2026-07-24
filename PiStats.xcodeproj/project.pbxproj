@@ -97,7 +97,6 @@
 				ContentView.swift,
 				iOSApp.swift,
 				"Preview Content/Preview Assets.xcassets",
-				Views/PiHoleSetup/CodeScannerView.swift,
 				Views/PiHoleSetup/PiholeSetupView.swift,
 				Views/PiholeStatsList/AllPiholesView.swift,
 				Views/PiholeStatsList/PiholeStatsList.swift,
@@ -182,8 +181,8 @@
 				KeyChainPasswordItem.swift,
 				LiveActivity/DisableActivityController.swift,
 				LiveActivity/PiholeDisableActivityAttributes.swift,
-				LiveActivity/ReenableIntent.swift,
 				LiveActivity/QuickDisableIntent.swift,
+				LiveActivity/ReenableIntent.swift,
 				Localizable.xcstrings,
 				PiholeStorage.swift,
 				StatType.swift,
@@ -267,8 +266,8 @@
 				KeyChainPasswordItem.swift,
 				LiveActivity/DisableActivityController.swift,
 				LiveActivity/PiholeDisableActivityAttributes.swift,
-				LiveActivity/ReenableIntent.swift,
 				LiveActivity/QuickDisableIntent.swift,
+				LiveActivity/ReenableIntent.swift,
 				PiholeStorage.swift,
 				UserDefaultExtensions.swift,
 			);
@@ -908,7 +907,6 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Pi Stats";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSCameraUsageDescription = "Camera permission is necessary to read the API Token QRCode";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -945,7 +943,6 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Pi Stats";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSCameraUsageDescription = "Camera permission is necessary to read the API Token QRCode";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

@@ -76,9 +76,8 @@ struct PiStatsEntry: TimelineEntry {
         let mockPihole = Pihole(
             name: "Home Pi-hole",
             address: "192.168.1.100",
-            version: .v6,
             port: 80,
-            token: "sample_token"
+            password: "sample-password"
         )
         
         let mockSummary = PiholeSummary(
@@ -90,12 +89,12 @@ struct PiStatsEntry: TimelineEntry {
             queriesForwarded: 42289
         )
         
-        let mockMetrics = PiMonitorMetrics(
+        let mockMetrics = PiholeSystemMetrics(
             socTemperature: 65.2,
             uptime: 432000, // 5 days
             loadAverage: [0.8, 0.7, 0.9],
             kernelRelease: "6.1.21-v8+",
-            memory: PiMonitorMetrics.Memory(
+            memory: PiholeSystemMetrics.Memory(
                 totalMemory: 4000000000, // 4GB
                 freeMemory: 800000000, // 800MB free
                 availableMemory: 1500000000 // 1.5GB available
@@ -146,7 +145,7 @@ struct WidgetData {
     let pihole: Pihole
     let summary: PiholeSummary?
     let status: PiholeStatus
-    let systemMetrics: PiMonitorMetrics?
+    let systemMetrics: PiholeSystemMetrics?
     let topDomains: TopDomainsResult?
     let topClients: TopClientsResult?
     let error: String?
@@ -171,7 +170,7 @@ struct WidgetDataProvider {
             let summary = try await summaryTask
             
             // Fetch system metrics when enabled for this Pi-hole.
-            var systemMetrics: PiMonitorMetrics? = nil
+            var systemMetrics: PiholeSystemMetrics? = nil
             if pihole.systemMetricsEnabled {
                 do {
                     systemMetrics = try await client.fetchSystemMetrics()

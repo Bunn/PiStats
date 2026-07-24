@@ -54,7 +54,7 @@ struct PiStatsCardView: View {
 
 #Preview {
     NavigationStack {
-        PiStatsCardView(data: .mockData, updater: .init(pihole: .init(name: "Test", address: "1234", version: .v5)), settingsStore: SettingsStore())
+        PiStatsCardView(data: .mockData, updater: .init(pihole: .init(name: "Test", address: "1234")), settingsStore: SettingsStore())
             .padding()
     }
 }
@@ -165,7 +165,6 @@ struct PiholeDetailView: View {
     @State private var toast: String?
     @State private var actionError: String?
 
-    private var isV6: Bool { updater.pihole.version == .v6 }
     private var isAppStoreScreenshotMode: Bool {
 #if DEBUG
         AppStoreScreenshotData.isEnabled
@@ -183,24 +182,22 @@ struct PiholeDetailView: View {
                     showsStats: false,
                     showsMetrics: false,
                     onClearMessages: { await updater.clearMessages() },
-                    onLoadDenyRules: isV6 ? {
+                    onLoadDenyRules: {
                         if isAppStoreScreenshotMode { return [] }
                         return try await updater.fetchDomains(type: .deny, kind: .regex).map(\.domain)
-                    } : nil,
-                    onBlockRules: isV6 ? { rules in
+                    },
+                    onBlockRules: { rules in
                         guard !isAppStoreScreenshotMode else { return }
                         try await updater.addDomains(rules.map { DomainRule(domain: $0, type: .deny, kind: .regex, comment: "Blocked by PiStats") })
-                    } : nil,
-                    onUnblockRules: isV6 ? { rules in
+                    },
+                    onUnblockRules: { rules in
                         guard !isAppStoreScreenshotMode else { return }
                         try await updater.removeDomains(rules.map { DomainRule(domain: $0, type: .deny, kind: .regex) })
-                    } : nil,
-                    onQuickAddDomain: isV6 ? { rule in await quickAdd(rule) } : nil
+                    },
+                    onQuickAddDomain: { rule in await quickAdd(rule) }
                 )
-                if isV6 {
-                    blocklistsCard
-                    domainsCard
-                }
+                blocklistsCard
+                domainsCard
                 queryLogCard
             }
             .padding()
@@ -316,7 +313,7 @@ struct PiholeDetailView: View {
 #Preview("Detail") {
     NavigationStack {
         PiholeDetailView(data: .mockData,
-                         updater: .init(pihole: .init(name: "Test", address: "1234", version: .v5)),
+                         updater: .init(pihole: .init(name: "Test", address: "1234")),
                          settingsStore: SettingsStore())
     }
 }

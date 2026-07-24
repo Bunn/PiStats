@@ -17,25 +17,21 @@ struct ModelTests {
     @Test("Pihole initializes with correct values")
     func testPiholeInitialization() {
         let uuid = UUID()
-        let piMonitor = PiMonitorEnvironment(host: "192.168.1.100", port: 8088, secure: false)
         
         let pihole = Pihole(
             name: "Test Pi-hole",
             address: "192.168.1.100",
-            version: .v6,
             port: 80,
-            token: "test-token",
-            piMonitor: piMonitor,
+            password: "test-password",
+            systemMetricsEnabled: true,
             uuid: uuid
         )
         
         #expect(pihole.name == "Test Pi-hole")
         #expect(pihole.address == "192.168.1.100")
-        #expect(pihole.version == .v6)
         #expect(pihole.port == 80)
-        #expect(pihole.token == "test-token")
+        #expect(pihole.password == "test-password")
         #expect(pihole.systemMetricsEnabled)
-        #expect(pihole.piMonitor?.host == "192.168.1.100")
         #expect(pihole.uuid == uuid)
         #expect(pihole.id == uuid)
     }
@@ -44,31 +40,9 @@ struct ModelTests {
     func testPiholeDefaults() {
         let pihole = Pihole(name: "Test", address: "192.168.1.100")
 
-        #expect(pihole.version == .v6)
         #expect(pihole.port == 80)
-        #expect(pihole.token == nil)
+        #expect(pihole.password == nil)
         #expect(pihole.systemMetricsEnabled == false)
-        #expect(pihole.piMonitor == nil)
-    }
-
-    // MARK: - PiholeVersion Tests
-    
-    @Test("PiholeVersion has correct raw values")
-    func testPiholeVersionRawValues() {
-        #expect(PiholeVersion.v5.rawValue == "v5")
-        #expect(PiholeVersion.v6.rawValue == "v6")
-    }
-    
-    @Test("PiholeVersion has correct user values")
-    func testPiholeVersionUserValues() {
-        #expect(PiholeVersion.v5.userValue == "Version 5.x")
-        #expect(PiholeVersion.v6.userValue == "Version 6.x")
-    }
-    
-    @Test("PiholeVersion conforms to Identifiable")
-    func testPiholeVersionIdentifiable() {
-        #expect(PiholeVersion.v5.id == "v5")
-        #expect(PiholeVersion.v6.id == "v6")
     }
     
     // MARK: - PiholeSummary Tests
@@ -191,17 +165,17 @@ struct ModelTests {
         #expect(item1.id != item2.id)
     }
     
-    // MARK: - PiMonitorMetrics Tests
+    // MARK: - PiholeSystemMetrics Tests
     
-    @Test("PiMonitorMetrics initializes correctly")
-    func testPiMonitorMetricsInitialization() {
-        let memory = PiMonitorMetrics.Memory(
+    @Test("PiholeSystemMetrics initializes correctly")
+    func testPiholeSystemMetricsInitialization() {
+        let memory = PiholeSystemMetrics.Memory(
             totalMemory: 4096000,
             freeMemory: 2048000,
             availableMemory: 3072000
         )
         
-        let metrics = PiMonitorMetrics(
+        let metrics = PiholeSystemMetrics(
             socTemperature: 45.5,
             uptime: 86400.0,
             loadAverage: [0.5, 0.6, 0.7],
@@ -219,15 +193,15 @@ struct ModelTests {
         #expect(metrics.memory.usedFraction == 0.25)
     }
     
-    @Test("PiMonitorMetrics is Codable")
-    func testPiMonitorMetricsCodable() throws {
-        let memory = PiMonitorMetrics.Memory(
+    @Test("PiholeSystemMetrics is Codable")
+    func testPiholeSystemMetricsCodable() throws {
+        let memory = PiholeSystemMetrics.Memory(
             totalMemory: 4096000,
             freeMemory: 2048000,
             availableMemory: 3072000
         )
         
-        let metrics = PiMonitorMetrics(
+        let metrics = PiholeSystemMetrics(
             socTemperature: 45.5,
             uptime: 86400.0,
             loadAverage: [0.5, 0.6, 0.7],
@@ -240,41 +214,11 @@ struct ModelTests {
         
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
-        let decoded = try decoder.decode(PiMonitorMetrics.self, from: data)
+        let decoded = try decoder.decode(PiholeSystemMetrics.self, from: data)
         
         #expect(decoded.socTemperature == metrics.socTemperature)
         #expect(decoded.uptime == metrics.uptime)
         #expect(decoded.kernelRelease == metrics.kernelRelease)
-    }
-    
-    // MARK: - PiMonitorEnvironment Tests
-    
-    @Test("PiMonitorEnvironment initializes correctly")
-    func testPiMonitorEnvironmentInitialization() {
-        let env = PiMonitorEnvironment(host: "192.168.1.100", port: 8088, secure: true)
-        
-        #expect(env.host == "192.168.1.100")
-        #expect(env.port == 8088)
-        #expect(env.secure == true)
-    }
-    
-    @Test("PiMonitorEnvironment uses default values")
-    func testPiMonitorEnvironmentDefaults() {
-        let env = PiMonitorEnvironment(host: "192.168.1.100")
-        
-        #expect(env.host == "192.168.1.100")
-        #expect(env.port == 8088)
-        #expect(env.secure == false)
-    }
-    
-    @Test("PiMonitorEnvironment is Hashable")
-    func testPiMonitorEnvironmentHashable() {
-        let env1 = PiMonitorEnvironment(host: "192.168.1.100", port: 8088, secure: false)
-        let env2 = PiMonitorEnvironment(host: "192.168.1.100", port: 8088, secure: false)
-        let env3 = PiMonitorEnvironment(host: "192.168.1.101", port: 8088, secure: false)
-        
-        #expect(env1 == env2)
-        #expect(env1 != env3)
     }
     
     // MARK: - TopDomainsResult Tests
@@ -379,36 +323,11 @@ struct ModelTests {
         #expect(item.displayName == "192.168.1.150")
     }
 
-    // MARK: - PiMonitorError Tests
-    
-    @Test("PiMonitorError enum cases exist")
-    func testPiMonitorErrorCases() {
-        let error1: PiMonitorError = .malformedURL
-        let _: PiMonitorError = .sessionError(TestHelpers.createNetworkError())
-        let error3: PiMonitorError = .invalidResponseCode(404)
-        let _: PiMonitorError = .invalidResponse
-        let _: PiMonitorError = .invalidDecode(TestHelpers.createNetworkError())
-        
-        switch error1 {
-        case .malformedURL:
-            break // Expected
-        default:
-            Issue.record("Wrong error case")
-        }
-        
-        switch error3 {
-        case .invalidResponseCode(let code):
-            #expect(code == 404)
-        default:
-            Issue.record("Wrong error case")
-        }
-    }
-    
     // MARK: - PiholeServiceError Tests
     
     @Test("PiholeServiceError enum cases exist")
     func testPiholeServiceErrorCases() {
-        let error1: PiholeServiceError = .missingToken
+        let error1: PiholeServiceError = .missingPassword
         let _: PiholeServiceError = .invalidAuthenticationResponse
         let _: PiholeServiceError = .badURL
         let _: PiholeServiceError = .cannotParseResponse
@@ -416,18 +335,16 @@ struct ModelTests {
         let _: PiholeServiceError = .networkError(TestHelpers.createNetworkError())
         let _: PiholeServiceError = .encodingError(TestHelpers.createNetworkError())
         let _: PiholeServiceError = .unknownError
-        let _: PiholeServiceError = .piMonitorNotSet
-        let _: PiholeServiceError = .piMonitorError(.malformedURL)
-        let error11: PiholeServiceError = .apiSeatsExceeded
+        let seatsError: PiholeServiceError = .apiSeatsExceeded
         
         switch error1 {
-        case .missingToken:
+        case .missingPassword:
             break // Expected
         default:
             Issue.record("Wrong error case")
         }
         
-        switch error11 {
+        switch seatsError {
         case .apiSeatsExceeded:
             break // Expected
         default:

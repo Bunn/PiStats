@@ -63,20 +63,6 @@ struct GravityTests {
         MockURLProtocol.reset()
     }
 
-    @Test("v5 updateGravity is not supported")
-    func testV5UpdateGravityNotSupported() async throws {
-        let service = PiholeV5Service(MockData.testPiholeV5, urlSession: mockSession)
-
-        do {
-            try await service.updateGravity()
-            Issue.record("Expected updateGravity to throw notSupported on v5")
-        } catch PiholeServiceError.notSupported {
-            // expected
-        }
-
-        MockURLProtocol.reset()
-    }
-
     @Test("v6 fetchGravityLastUpdated returns the most recent adlist date_updated")
     func testV6GravityLastUpdated() async throws {
         let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)

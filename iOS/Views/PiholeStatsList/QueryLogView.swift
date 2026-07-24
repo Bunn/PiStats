@@ -19,8 +19,6 @@ struct QueryLogView: View {
     @State private var toast: String?
     @State private var actionError: String?
 
-    private var supportsDomainActions: Bool { updater.pihole.version == .v6 }
-
     private var filteredEntries: [QueryLogEntry] {
         guard !searchText.isEmpty else { return entries }
         return entries.filter {
@@ -45,7 +43,7 @@ struct QueryLogView: View {
                 ForEach(filteredEntries) { entry in
                     QueryLogRow(
                         entry: entry,
-                        onAdd: supportsDomainActions ? { type in perform(domain: entry.domain, type: type) } : nil
+                        onAdd: { type in perform(domain: entry.domain, type: type) }
                     )
                 }
             }
@@ -98,8 +96,8 @@ struct QueryLogView: View {
 
 private struct QueryLogRow: View {
     let entry: QueryLogEntry
-    /// Adds this row's domain to the given list. Supplied only on Pi-hole v6.
-    var onAdd: ((DomainListType) -> Void)? = nil
+    /// Adds this row's domain to the given list.
+    let onAdd: (DomainListType) -> Void
 
     var body: some View {
         HStack(spacing: 12) {
@@ -131,28 +129,24 @@ private struct QueryLogRow: View {
         }
         .padding(.vertical, 2)
         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-            if let onAdd {
-                if entry.status == .blocked {
-                    Button { onAdd(.allow) } label: {
-                        Label(UserText.allowDomainAction, systemImage: SystemImages.allowDomain)
-                    }
-                    .tint(AppColors.statusOnline)
-                } else {
-                    Button { onAdd(.deny) } label: {
-                        Label(UserText.blockDomainAction, systemImage: SystemImages.blockDomain)
-                    }
-                    .tint(AppColors.queriesBlocked)
-                }
-            }
-        }
-        .contextMenu {
-            if let onAdd {
+            if entry.status == .blocked {
                 Button { onAdd(.allow) } label: {
                     Label(UserText.allowDomainAction, systemImage: SystemImages.allowDomain)
                 }
+                .tint(AppColors.statusOnline)
+            } else {
                 Button { onAdd(.deny) } label: {
                     Label(UserText.blockDomainAction, systemImage: SystemImages.blockDomain)
                 }
+                .tint(AppColors.queriesBlocked)
+            }
+        }
+        .contextMenu {
+            Button { onAdd(.allow) } label: {
+                Label(UserText.allowDomainAction, systemImage: SystemImages.allowDomain)
+            }
+            Button { onAdd(.deny) } label: {
+                Label(UserText.blockDomainAction, systemImage: SystemImages.blockDomain)
             }
         }
     }

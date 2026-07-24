@@ -12,12 +12,10 @@ private final class MacPiholeSetupViewModel: ObservableObject {
     @Published var pihole: Pihole?
     @Published var host = ""
     @Published var port = ""
-    @Published var token = ""
+    @Published var password = ""
     @Published var displayName = ""
-    @Published var piMonitorPort = ""
     @Published var showsSystemMetrics = false
     @Published var httpType: MacSecureTag = .http
-    @Published var selectedVersion: PiholeVersion = .v6
 
     private let storage = DefaultPiholeStorage()
 
@@ -32,16 +30,10 @@ private final class MacPiholeSetupViewModel: ObservableObject {
             self.displayName = pihole.name
             self.host = pihole.address
             self.port = "\(pihole.port)"
-            self.token = pihole.token ?? ""
-            self.selectedVersion = pihole.version
+            self.password = pihole.password ?? ""
             self.httpType = pihole.secure ? .https : .http
             self.showsSystemMetrics = pihole.systemMetricsEnabled
-            // Pi-hole v5 can still use the legacy Pi Monitor service.
-            if let piMonitor = pihole.piMonitor {
-                self.piMonitorPort = "\(piMonitor.port ?? 8088)"
-            }
         } else {
-            self.selectedVersion = .v6
             self.port = "80" // Default port
         }
     }
@@ -49,25 +41,16 @@ private final class MacPiholeSetupViewModel: ObservableObject {
     func save() -> Pihole {
         let finalDisplayName = displayName.isEmpty ? host : displayName
         let finalPort = Int(port) ?? 80
-        let finalToken = token.isEmpty ? nil : token
+        let finalPassword = password.isEmpty ? nil : password
         let isSecure = httpType == .https
-
-        let piMonitor: PiMonitorEnvironment? = showsSystemMetrics && selectedVersion == .v5 ?
-            PiMonitorEnvironment(
-                host: host,
-                port: Int(piMonitorPort) ?? 8088,
-                secure: isSecure
-            ) : nil
 
         let newPihole = Pihole(
             name: finalDisplayName,
             address: host,
-            version: selectedVersion,
             port: finalPort,
             secure: isSecure,
-            token: finalToken,
+            password: finalPassword,
             systemMetricsEnabled: showsSystemMetrics,
-            piMonitor: piMonitor,
             uuid: pihole?.uuid ?? UUID()
         )
 
@@ -180,21 +163,6 @@ struct MacPiholeSetupView: View {
                 )
                 
                 HStack {
-                    Text("Version")
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                    Spacer()
-                    Picker("", selection: $viewModel.selectedVersion) {
-                        ForEach(PiholeVersion.allCases) { version in
-                            Text(version.userValue).tag(version)
-                        }
-                    }
-                    .labelsHidden()
-                    .pickerStyle(.segmented)
-                    .fixedSize()
-                }
-
-                HStack {
                     Text("Protocol")
                         .font(.subheadline)
                         .fontWeight(.medium)
@@ -216,21 +184,19 @@ struct MacPiholeSetupView: View {
                 )
                 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(viewModel.selectedVersion == .v5 ? UserText.Setup.apiTokenLabel : UserText.Setup.passwordLabel)
+                    Text(UserText.Setup.passwordLabel)
                         .font(.subheadline)
                         .fontWeight(.medium)
                     
                     SecureField(
-                        viewModel.selectedVersion == .v5 ? UserText.Setup.apiTokenPlaceholder : UserText.Setup.passwordPlaceholder,
-                        text: $viewModel.token
+                        UserText.Setup.passwordPlaceholder,
+                        text: $viewModel.password
                     )
                     .textFieldStyle(.roundedBorder)
                     
-                    Text(viewModel.selectedVersion == .v5 ? 
-                         UserText.Setup.apiTokenHelp :
-                         UserText.Setup.passwordHelp)
+                    Text(UserText.Setup.passwordHelp)
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
@@ -260,28 +226,10 @@ struct MacPiholeSetupView: View {
                         .labelsHidden()
                 }
 
-                Text(
-                    viewModel.selectedVersion == .v6
-                        ? UserText.systemMetricsV6Description
-                        : UserText.systemMetricsV5Description
-                )
+                Text(UserText.systemMetricsDescription)
                 .font(.caption)
                 .foregroundStyle(.secondary)
-                
-                if viewModel.showsSystemMetrics && viewModel.selectedVersion == .v5 {
-                    macOSTextField(
-                        title: UserText.Setup.portLabel,
-                        placeholder: UserText.Setup.legacySystemMetricsPortPlaceholder,
-                        text: $viewModel.piMonitorPort
-                    )
-                    .transition(.opacity.combined(with: .move(edge: .top)))
-
-                    if let setupURL = URL(string: UserText.legacySystemMetricsSetupURL) {
-                        Link(UserText.legacySystemMetricsSetupLink, destination: setupURL)
-                    }
-                }
             }
-            .animation(.easeInOut(duration: 0.2), value: viewModel.showsSystemMetrics)
             .padding(12)
             .background(Color(NSColor.controlBackgroundColor))
             .clipShape(RoundedRectangle(cornerRadius: 8))

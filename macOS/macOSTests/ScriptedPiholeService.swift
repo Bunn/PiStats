@@ -61,9 +61,9 @@ actor ScriptedPiholeService: PiholeService {
         return try await response.resolve()
     }
 
-    func fetchSystemMetrics() async throws -> PiMonitorMetrics {
+    func fetchSystemMetrics() async throws -> PiholeSystemMetrics {
         supplementaryRequestCount += 1
-        throw PiholeServiceError.piMonitorError(.invalidResponse)
+        throw PiholeServiceError.cannotParseResponse
     }
 
     func fetchHistory() async throws -> [HistoryItem] {

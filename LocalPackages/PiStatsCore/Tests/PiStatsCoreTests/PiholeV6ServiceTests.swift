@@ -26,7 +26,7 @@ struct PiholeV6ServiceTests {
     
     // MARK: - Authentication Tests
     
-    @Test("authenticate succeeds with valid token")
+    @Test("authenticate succeeds with a valid password")
     func testAuthenticateSuccess() async throws {
         let service = PiholeV6Service(MockData.testPiholeV6, urlSession: mockSession)
         
@@ -41,7 +41,7 @@ struct PiholeV6ServiceTests {
                 // Verify request body contains password
                 if let body = request.httpBody {
                     let json = try? JSONSerialization.jsonObject(with: body) as? [String: String]
-                    #expect(json?["password"] == "test-token-v6")
+                    #expect(json?["password"] == "test-password-v6")
                 }
                 
                 let data = MockData.jsonData(from: MockData.v6AuthSuccessJSON)
@@ -60,12 +60,12 @@ struct PiholeV6ServiceTests {
         MockURLProtocol.reset()
     }
     
-    @Test("authenticate throws on missing token")
-    func testAuthenticateMissingToken() async throws {
-        let service = PiholeV6Service(MockData.testPiholeV6NoToken, urlSession: mockSession)
+    @Test("authenticate throws on missing password")
+    func testAuthenticateMissingPassword() async throws {
+        let service = PiholeV6Service(MockData.testPiholeV6NoPassword, urlSession: mockSession)
         
         MockURLProtocol.requestHandler = { request in
-            throw PiholeServiceError.missingToken
+            throw PiholeServiceError.missingPassword
         }
         
         await #expect(throws: PiholeServiceError.self) {

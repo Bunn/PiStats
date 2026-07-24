@@ -25,7 +25,7 @@ final class PiholeSummaryData: Identifiable, ObservableObject {
     @Published var queryTypes: QueryTypesResult? = nil
     @Published var upstreams: UpstreamsResult? = nil
     @Published var health: PiholeHealth? = nil
-    @Published var systemMetrics: PiMonitorMetrics? = nil
+    @Published var systemMetrics: PiholeSystemMetrics? = nil
     @Published var currentError: PiholeError? = nil
     @Published var hasError: Bool = false
     @Published var hasPiholeError: Bool = false
@@ -103,7 +103,7 @@ struct PiholeError: Identifiable, Sendable {
             case .networkError:
                 return "Unable to connect to Pi-hole. Check your network connection and Pi-hole address."
             case .authenticationError:
-                return "Authentication failed. Please check your API token or password."
+                return "Authentication failed. Please check your Pi-hole password."
             case .invalidConfiguration:
                 return "Pi-hole configuration is invalid. Please check your settings."
             case .serverError:

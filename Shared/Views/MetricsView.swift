@@ -17,12 +17,12 @@ private let metricMeasurementFormatter: MeasurementFormatter = {
 }()
 
 struct MetricItemViewModel {
-    internal init(metrics: PiMonitorMetrics, temperatureScale: TemperatureScale = .celsius) {
+    internal init(metrics: PiholeSystemMetrics, temperatureScale: TemperatureScale = .celsius) {
         self.metrics = metrics
         self.temperatureScale = temperatureScale
     }
     
-    private let metrics: PiMonitorMetrics
+    private let metrics: PiholeSystemMetrics
     private let temperatureScale: TemperatureScale
 
     var temperature: String {
@@ -128,7 +128,7 @@ extension MetricItemViewModel {
         let free: Int = 536_870_912    // 512 MB
 
         // Ensure parameter order matches the model: freeMemory before availableMemory
-        let memory = PiMonitorMetrics.Memory(
+        let memory = PiholeSystemMetrics.Memory(
             totalMemory: total,
             freeMemory: free,
             availableMemory: free
@@ -143,7 +143,7 @@ extension MetricItemViewModel {
         let load: [Double] = [0.23, 0.35, 0.40]
 
         // Provide kernelRelease before memory to match the initializer order
-        let metrics = PiMonitorMetrics(
+        let metrics = PiholeSystemMetrics(
             socTemperature: 52.3,
             uptime: uptimeSeconds,
             loadAverage: load,

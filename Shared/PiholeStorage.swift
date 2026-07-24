@@ -24,16 +24,12 @@ private struct LegacyPihole: Codable {
     let id: UUID
     let address: String
     let displayName: String?
-    let piMonitorPort: Int?
-    let hasPiMonitor: Bool
     let secure: Bool
 
     enum CodingKeys: String, CodingKey {
         case id
         case address
         case displayName
-        case piMonitorPort
-        case hasPiMonitor
         case secure
     }
 
@@ -42,18 +38,6 @@ private struct LegacyPihole: Codable {
         id = try container.decode(UUID.self, forKey: .id)
         address = try container.decode(String.self, forKey: .address)
         displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
-
-        do {
-            piMonitorPort = try container.decodeIfPresent(Int.self, forKey: .piMonitorPort)
-        } catch {
-            piMonitorPort = nil
-        }
-
-        do {
-            hasPiMonitor = try container.decode(Bool.self, forKey: .hasPiMonitor)
-        } catch {
-            hasPiMonitor = false
-        }
 
         do {
             secure = try container.decode(Bool.self, forKey: .secure)
@@ -78,9 +62,9 @@ private class UserPreferences {
     }
 }
 
-// MARK: - APIToken Helper
+// MARK: - Credential Helper
 
-private struct APIToken {
+private struct PiholeCredential {
     private static let serviceName = "PiHoleStatsService"
     let accountName: String
     private let passwordItem: KeychainPasswordItem
@@ -116,7 +100,7 @@ private struct APIToken {
         }
     }
 
-    var token: String {
+    var password: String {
         get {
             do {
                 return try passwordItem.readPassword()
@@ -142,24 +126,22 @@ final class DefaultPiholeStorage: PiholeStorage {
     private var hasMigrated = false
 
     func savePihole(_ pihole: Pihole) {
-        // Persist token/password to Keychain, and do not store it in UserDefaults
-        var keychain = APIToken(accountName: pihole.uuid.uuidString)
-        if let token = pihole.token, !token.isEmpty {
-            keychain.token = token
+        // Persist the password to Keychain, and do not store it in UserDefaults
+        var credential = PiholeCredential(accountName: pihole.uuid.uuidString)
+        if let password = pihole.password, !password.isEmpty {
+            credential.password = password
         } else {
-            keychain.delete()
+            credential.delete()
         }
 
-        // Store a representation without token
+        // Store a representation without the password
         let persistablePihole = Pihole(
             name: pihole.name,
             address: pihole.address,
-            version: pihole.version,
             port: pihole.port,
             secure: pihole.secure,
-            token: nil,
+            password: nil,
             systemMetricsEnabled: pihole.systemMetricsEnabled,
-            piMonitor: pihole.piMonitor,
             uuid: pihole.uuid
         )
 
@@ -179,20 +161,16 @@ final class DefaultPiholeStorage: PiholeStorage {
         piholeList.removeAll { $0.uuid == pihole.uuid }
         save(piholeList)
 
-        // Delete associated API token if it exists
-        if let legacyUUID = extractLegacyUUID(from: pihole) {
-            APIToken(accountName: legacyUUID.uuidString).delete()
-        }
+        // Delete the associated password if it exists
+        PiholeCredential(accountName: pihole.uuid.uuidString).delete()
     }
 
     func deleteAllPiholes() {
         let allPiholes = restoreAllPiholes()
 
-        // Delete all associated API tokens
+        // Delete all associated passwords
         for pihole in allPiholes {
-            if let legacyUUID = extractLegacyUUID(from: pihole) {
-                APIToken(accountName: legacyUUID.uuidString).delete()
-            }
+            PiholeCredential(accountName: pihole.uuid.uuidString).delete()
         }
 
         // Clear the stored pi-hole list
@@ -216,27 +194,25 @@ final class DefaultPiholeStorage: PiholeStorage {
             do {
                 let decoded = try decoder.decode([Pihole].self, from: newData)
 
-                // Rehydrate tokens from Keychain and migrate any embedded tokens to Keychain
+                // Rehydrate passwords from Keychain and migrate any embedded legacy values
                 let rehydrated: [Pihole] = decoded.map { stored in
-                    var apiToken = APIToken(accountName: stored.uuid.uuidString)
+                    var credential = PiholeCredential(accountName: stored.uuid.uuidString)
 
-                    // If a token was embedded in storage (legacy), migrate it to keychain
-                    if let embedded = stored.token, !embedded.isEmpty {
-                        apiToken.token = embedded
+                    // Older records could embed the credential in UserDefaults.
+                    if let embedded = stored.password, !embedded.isEmpty {
+                        credential.password = embedded
                     }
 
-                    let keychainValue = apiToken.token
-                    let finalToken: String? = keychainValue.isEmpty ? nil : keychainValue
+                    let keychainValue = credential.password
+                    let password: String? = keychainValue.isEmpty ? nil : keychainValue
 
                     return Pihole(
                         name: stored.name,
                         address: stored.address,
-                        version: stored.version,
                         port: stored.port,
                         secure: stored.secure,
-                        token: finalToken,
+                        password: password,
                         systemMetricsEnabled: stored.systemMetricsEnabled,
-                        piMonitor: stored.piMonitor,
                         uuid: stored.uuid
                     )
                 }
@@ -294,132 +270,22 @@ final class DefaultPiholeStorage: PiholeStorage {
         let host = components.first ?? legacy.address
         let port = components.count > 1 ? Int(components[1]) ?? 80 : 80
 
-        // Get API token from keychain using legacy UUID
-        let apiToken = APIToken(accountName: legacy.id.uuidString)
-        let token = apiToken.token.isEmpty ? nil : apiToken.token
+        // Get the credential from Keychain using the legacy UUID.
+        let credential = PiholeCredential(accountName: legacy.id.uuidString)
+        let password = credential.password.isEmpty ? nil : credential.password
 
         // Determine name - use displayName if available, otherwise use host
         let name = legacy.displayName?.isEmpty == false ? legacy.displayName! : host
 
-        // Set up PiMonitor if it was enabled
-        let piMonitor: PiMonitorEnvironment? = legacy.hasPiMonitor ?
-        PiMonitorEnvironment(
-            host: host,
-            port: legacy.piMonitorPort ?? 8088,
-            secure: legacy.secure
-        ) : nil
-
-        // Assume v5 for legacy pi-holes (v6 is newer)
-        let version: PiholeVersion = .v5
-
         return Pihole(
             name: name,
             address: host,
-            version: version,
             port: port,
             secure: legacy.secure,
-            token: token,
-            systemMetricsEnabled: legacy.hasPiMonitor,
-            piMonitor: piMonitor,
+            password: password,
             uuid: legacy.id
         )
     }
-
-    private func extractLegacyUUID(from pihole: Pihole) -> UUID? {
-        // Return the pihole's UUID - this works for both migrated legacy piholes
-        // (which preserve their original UUID) and new piholes (which have their own UUID)
-        return pihole.uuid
-    }
-}
-
-// MARK: - Make Pihole Codable
-
-extension Pihole: Codable {
-    enum CodingKeys: String, CodingKey {
-        case uuid
-        case name
-        case address
-        case token
-        case port
-        case secure
-        case version
-        case systemMetricsEnabled
-        case piMonitor
-    }
-
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let uuid = try container.decodeIfPresent(UUID.self, forKey: .uuid) ?? UUID()
-        let name = try container.decode(String.self, forKey: .name)
-        let address = try container.decode(String.self, forKey: .address)
-        let token = try container.decodeIfPresent(String.self, forKey: .token)
-        let port = try container.decode(Int.self, forKey: .port)
-        // Default to false for backwards compatibility with existing data
-        let secure = try container.decodeIfPresent(Bool.self, forKey: .secure) ?? false
-        let version = try container.decode(PiholeVersion.self, forKey: .version)
-        let piMonitor = try container.decodeIfPresent(PiMonitorEnvironment.self, forKey: .piMonitor)
-        // Existing records used the presence of a Pi Monitor configuration as
-        // the feature toggle. Preserve that choice during migration.
-        let systemMetricsEnabled = try container.decodeIfPresent(Bool.self, forKey: .systemMetricsEnabled)
-            ?? (piMonitor != nil)
-
-        self.init(
-            name: name,
-            address: address,
-            version: version,
-            port: port,
-            secure: secure,
-            token: token,
-            systemMetricsEnabled: systemMetricsEnabled,
-            piMonitor: piMonitor,
-            uuid: uuid
-        )
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(uuid, forKey: .uuid)
-        try container.encode(name, forKey: .name)
-        try container.encode(address, forKey: .address)
-        // Do not encode token/password; it is stored in Keychain
-        try container.encode(port, forKey: .port)
-        try container.encode(secure, forKey: .secure)
-        try container.encode(version, forKey: .version)
-        try container.encode(systemMetricsEnabled, forKey: .systemMetricsEnabled)
-        try container.encodeIfPresent(piMonitor, forKey: .piMonitor)
-    }
-}
-
-// MARK: - Make PiMonitorEnvironment Codable
-
-extension PiMonitorEnvironment: Codable {
-    enum CodingKeys: String, CodingKey {
-        case host
-        case port
-        case secure
-    }
-
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let host = try container.decode(String.self, forKey: .host)
-        let port = try container.decodeIfPresent(Int.self, forKey: .port)
-        let secure = try container.decode(Bool.self, forKey: .secure)
-
-        self.init(host: host, port: port, secure: secure)
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(host, forKey: .host)
-        try container.encodeIfPresent(port, forKey: .port)
-        try container.encode(secure, forKey: .secure)
-    }
-}
-
-// MARK: - Make PiholeVersion Codable
-
-extension PiholeVersion: Codable {
-    // Already conforms to Codable via String raw value
 }
 
 // MARK: - Global Storage Instance

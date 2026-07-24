@@ -63,7 +63,7 @@ internal final class PiholeV6Service: PiholeService {
         return status
     }
 
-    func fetchSystemMetrics() async throws -> PiMonitorMetrics {
+    func fetchSystemMetrics() async throws -> PiholeSystemMetrics {
         Log.network.info("🖥️ [V6] Fetching system metrics for \(self.pihole.name)")
 
         let authResponse = try await ensureAuthenticated(self.pihole)
@@ -102,12 +102,12 @@ internal final class PiholeV6Service: PiholeService {
         let usedMemory = Self.intValue(ram["used"])
         let percentageUsed = Self.doubleValue(ram["%used"])
 
-        let metrics = PiMonitorMetrics(
+        let metrics = PiholeSystemMetrics(
             socTemperature: temperature,
             uptime: uptime,
             loadAverage: loadAverage,
             kernelRelease: "",
-            memory: PiMonitorMetrics.Memory(
+            memory: PiholeSystemMetrics.Memory(
                 totalMemory: totalMemory,
                 freeMemory: freeMemory,
                 availableMemory: availableMemory,
@@ -478,16 +478,16 @@ extension PiholeV6Service {
     private func authenticate(_ pihole: Pihole) async throws -> PiholeV6AuthResponse {
         Log.network.info("🔐 [V6] Authenticating with \(self.pihole.name)")
         
-        guard let token = pihole.token else {
-            Log.network.error("❌ [V6] No token provided for \(self.pihole.name)")
-            throw PiholeServiceError.missingToken
+        guard let password = pihole.password else {
+            Log.network.error("❌ [V6] No password provided for \(self.pihole.name)")
+            throw PiholeServiceError.missingPassword
         }
 
         let url = try makeURL(for: self.pihole, endpoint: .auth)
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-        request.httpBody = try JSONEncoder().encode(["password": token])
+        request.httpBody = try JSONEncoder().encode(["password": password])
 
         Log.network.debug("📤 [V6] Sending authentication request to \(url.absoluteString)")
 

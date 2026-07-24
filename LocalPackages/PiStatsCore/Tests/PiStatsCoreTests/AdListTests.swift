@@ -79,26 +79,5 @@ struct AdListTests {
 
         MockURLProtocol.reset()
     }
-
-    @Test("v5 adlist operations are not supported")
-    func testV5AdlistsNotSupported() async throws {
-        let service = PiholeV5Service(MockData.testPiholeV5, urlSession: mockSession)
-
-        do {
-            _ = try await service.fetchAdlists()
-            Issue.record("Expected fetchAdlists to throw notSupported on v5")
-        } catch PiholeServiceError.notSupported {
-            // expected
-        }
-
-        do {
-            try await service.setAdlist(AdList(id: 0, address: "x", enabled: true, type: "block", comment: nil, groups: []), enabled: false)
-            Issue.record("Expected setAdlist to throw notSupported on v5")
-        } catch PiholeServiceError.notSupported {
-            // expected
-        }
-
-        MockURLProtocol.reset()
-    }
 }
 }

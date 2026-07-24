@@ -2,8 +2,7 @@
 //  DomainManagementTests.swift
 //  PiStatsCoreTests
 //
-//  Tests for generic allow/deny domain management (exact + regex). Pi-hole v6
-//  only; v5 throws .notSupported.
+//  Tests for generic allow/deny domain management (exact + regex).
 //
 
 import Testing
@@ -178,23 +177,6 @@ struct DomainManagementTests {
         try await service.setDomain(rule, enabled: false)
         #expect(putToPath)
         #expect(putEnabled == false)
-
-        MockURLProtocol.reset()
-    }
-
-    @Test("v5 domain management operations are not supported")
-    func testV5NotSupported() async throws {
-        let service = PiholeV5Service(MockData.testPiholeV5, urlSession: mockSession)
-        let rule = DomainRule(domain: "a.com", type: .allow, kind: .exact)
-
-        do { _ = try await service.fetchDomains(type: .allow, kind: .exact); Issue.record("expected notSupported") }
-        catch PiholeServiceError.notSupported {}
-        do { try await service.addDomains([rule]); Issue.record("expected notSupported") }
-        catch PiholeServiceError.notSupported {}
-        do { try await service.removeDomains([rule]); Issue.record("expected notSupported") }
-        catch PiholeServiceError.notSupported {}
-        do { try await service.setDomain(rule, enabled: true); Issue.record("expected notSupported") }
-        catch PiholeServiceError.notSupported {}
 
         MockURLProtocol.reset()
     }

@@ -43,7 +43,7 @@ struct PiholeErrorMapper {
     private static func determineErrorType(_ error: Error, context: ErrorContext) -> PiholeError.ErrorType {
         if let serviceError = error as? PiholeServiceError {
             switch serviceError {
-            case .missingToken, .invalidAuthenticationResponse, .apiSeatsExceeded:
+            case .missingPassword, .invalidAuthenticationResponse, .apiSeatsExceeded:
                 return .authenticationError
             case .badURL:
                 return .invalidConfiguration
@@ -55,17 +55,9 @@ struct PiholeErrorMapper {
                 return .networkError
             case .encodingError:
                 return .parsingError
-            case .piMonitorNotSet:
-                return .invalidConfiguration
-            case .piMonitorError:
-                return .systemMetricsError
-            case .unknownError, .notSupported:
+            case .unknownError:
                 return .unknown
             }
-        }
-        
-        if error is PiMonitorError {
-            return .systemMetricsError
         }
         
         // Check for common network errors
@@ -578,7 +570,7 @@ extension PiholeSummaryDataUpdater {
         withAnimation { summary.health = result }
     }
 
-    private func updateSystemMetrics(with metrics: PiMonitorMetrics) {
+    private func updateSystemMetrics(with metrics: PiholeSystemMetrics) {
         withAnimation { summary.systemMetrics = metrics }
     }
 

@@ -35,8 +35,8 @@ private enum Constants {
 
 // MARK: - System Metrics Widget
 
-struct PiMonitorWidget: Widget {
-    let kind: String = "PiMonitorWidget"
+struct PiholeSystemMetricsWidget: Widget {
+    let kind: String = "PiholeSystemMetricsWidget"
     
     var body: some WidgetConfiguration {
         AppIntentConfiguration(
@@ -44,7 +44,7 @@ struct PiMonitorWidget: Widget {
             intent: PiholeSelectionIntent.self,
             provider: WidgetDataProvider()
         ) { entry in
-            PiMonitorWidgetView(entry: entry)
+            PiholeSystemMetricsWidgetView(entry: entry)
         }
         .configurationDisplayName("System Metrics")
         .description("Monitor your Raspberry Pi's system metrics")
@@ -82,12 +82,12 @@ enum TemperatureScale: Int, CaseIterable {
 struct WidgetMetricItemViewModel {
     // MARK: Properties
     
-    private let metrics: PiMonitorMetrics
+    private let metrics: PiholeSystemMetrics
     private let temperatureScale: TemperatureScale
     
     // MARK: Initialization
     
-    init(metrics: PiMonitorMetrics, temperatureScale: TemperatureScale = .celsius) {
+    init(metrics: PiholeSystemMetrics, temperatureScale: TemperatureScale = .celsius) {
         self.metrics = metrics
         self.temperatureScale = temperatureScale
     }
@@ -132,7 +132,7 @@ struct WidgetMetricItemViewModel {
 
 // MARK: - System Metrics Widget View
 
-struct PiMonitorWidgetView: View {
+struct PiholeSystemMetricsWidgetView: View {
     let entry: PiStatsEntry
     
     var body: some View {
@@ -172,7 +172,7 @@ struct PiMonitorWidgetView: View {
         }
     }
     
-    private func metricsView(for metrics: PiMonitorMetrics) -> some View {
+    private func metricsView(for metrics: PiholeSystemMetrics) -> some View {
         let viewModel = WidgetMetricItemViewModel(
             metrics: metrics,
             temperatureScale: WidgetSettings.temperatureScale
@@ -280,7 +280,7 @@ struct MetricRow: View {
 // MARK: - Preview
 
 #Preview(as: .systemMedium) {
-    PiMonitorWidget()
+    PiholeSystemMetricsWidget()
 } timeline: {
     PiStatsEntry.placeholder()
 } 

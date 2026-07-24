@@ -24,58 +24,56 @@ struct macOSTests {
         // Start with an empty list
         storage.deleteAllPiholes()
 
-        // Act: save a new pihole with a token
+        // Act: save a new Pi-hole with a password
         let p = Pihole(
             name: "Test",
             address: "1.2.3.4",
-            version: .v6,
             port: 80,
-            token: "secret",
-            piMonitor: nil,
+            password: "secret",
             uuid: uuid
         )
         storage.savePihole(p)
 
-        // Assert: storage returns item and token is not persisted in defaults
+        // Assert: storage returns the item and the password is not persisted in defaults
         let restored = storage.restoreAllPiholes()
         #expect(restored.count == 1)
         #expect(restored.first?.uuid == uuid)
-        // token should be rehydrated from keychain
-        #expect(restored.first?.token == "secret")
+        // The password should be rehydrated from Keychain
+        #expect(restored.first?.password == "secret")
     }
 
-    @Test("Editing existing pihole updates keychain token and fields")
+    @Test("Editing existing Pi-hole updates Keychain password and fields")
     func editPihole() throws {
         let storage = DefaultPiholeStorage()
         let uuid = UUID()
 
         // Seed
         storage.deleteAllPiholes()
-        storage.savePihole(Pihole(name: "Test", address: "1.2.3.4", version: .v6, port: 80, token: "old", piMonitor: nil, uuid: uuid))
+        storage.savePihole(Pihole(name: "Test", address: "1.2.3.4", port: 80, password: "old", uuid: uuid))
 
-        // Edit: change name and token
-        storage.savePihole(Pihole(name: "New Name", address: "1.2.3.4", version: .v6, port: 53, token: "new", piMonitor: nil, uuid: uuid))
+        // Edit: change name and password
+        storage.savePihole(Pihole(name: "New Name", address: "1.2.3.4", port: 53, password: "new", uuid: uuid))
 
         let restored = storage.restoreAllPiholes()
         #expect(restored.count == 1)
         let r = try #require(restored.first)
         #expect(r.name == "New Name")
         #expect(r.port == 53)
-        #expect(r.token == "new")
+        #expect(r.password == "new")
 
-        // And keychain reflects the updated token
+        // And Keychain reflects the updated password
         let keychainItem = KeychainPasswordItem(service: "PiHoleStatsService", account: uuid.uuidString, accessGroup: nil)
-        let keychainToken = try? keychainItem.readPassword()
-        #expect(keychainToken == "new")
+        let keychainPassword = try? keychainItem.readPassword()
+        #expect(keychainPassword == "new")
     }
 
-    @Test("Deleting pihole removes it and its keychain token")
+    @Test("Deleting Pi-hole removes it and its Keychain password")
     func deletePihole() throws {
         let storage = DefaultPiholeStorage()
         let uuid = UUID()
 
         storage.deleteAllPiholes()
-        let p = Pihole(name: "ToDelete", address: "1.2.3.4", version: .v6, port: 80, token: "tok", piMonitor: nil, uuid: uuid)
+        let p = Pihole(name: "ToDelete", address: "1.2.3.4", port: 80, password: "secret", uuid: uuid)
         storage.savePihole(p)
 
         // Sanity
@@ -87,8 +85,8 @@ struct macOSTests {
         // Assert list empty and keychain cleared
         #expect(storage.restoreAllPiholes().isEmpty)
         let keychainItem = KeychainPasswordItem(service: "PiHoleStatsService", account: uuid.uuidString, accessGroup: nil)
-        let token = try? keychainItem.readPassword()
-        #expect(token == nil)
+        let password = try? keychainItem.readPassword()
+        #expect(password == nil)
     }
 
     @Test("System metrics errors do not replace the primary connection state")
@@ -96,12 +94,11 @@ struct macOSTests {
         let updater = PiholeSummaryDataUpdater(
             pihole: Pihole(
                 name: "Test",
-                address: "1.2.3.4",
-                piMonitor: PiMonitorEnvironment(host: "1.2.3.4", port: 8088)
+                address: "1.2.3.4"
             )
         )
 
-        updater.handleError(PiholeServiceError.piMonitorError(.invalidResponse), context: .fetchingSystemMetrics)
+        updater.handleError(PiholeServiceError.cannotParseResponse, context: .fetchingSystemMetrics)
 
         #expect(updater.summary.hasError == false)
         #expect(updater.summary.currentError == nil)

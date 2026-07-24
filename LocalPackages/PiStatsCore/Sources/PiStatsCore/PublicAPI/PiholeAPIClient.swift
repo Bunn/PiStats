@@ -19,15 +19,8 @@ public struct PiholeAPIClient: PiholeService {
 
     public init(_ pihole: Pihole, urlSession: URLSession) {
         self.pihole = pihole
-
-        switch pihole.version {
-        case .v5:
-            self.service = PiholeV5Service(pihole, urlSession: urlSession)
-            Log.network.info("🔧 [Client] Initialized V5 service for \(pihole.name)")
-        case .v6:
-            self.service = PiholeV6Service(pihole, urlSession: urlSession)
-            Log.network.info("🔧 [Client] Initialized V6 service for \(pihole.name)")
-        }
+        self.service = PiholeV6Service(pihole, urlSession: urlSession)
+        Log.network.info("🔧 [Client] Initialized service for \(pihole.name)")
     }
 
     private static let sharedURLSession: URLSession = {
@@ -44,13 +37,8 @@ public struct PiholeAPIClient: PiholeService {
         try await service.fetchSummary()
     }
 
-    public func fetchSystemMetrics() async throws -> PiMonitorMetrics {
+    public func fetchSystemMetrics() async throws -> PiholeSystemMetrics {
         try await service.fetchSystemMetrics()
-    }
-
-    @available(*, deprecated, renamed: "fetchSystemMetrics()")
-    public func fetchMonitorMetrics() async throws -> PiMonitorMetrics {
-        try await fetchSystemMetrics()
     }
 
     public func fetchStatus() async throws -> PiholeStatus {

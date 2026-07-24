@@ -10,7 +10,7 @@ Follow up and manage the status of your [Pi-hole(s)](https://github.com/pi-hole/
 
 Monitor your Pi-hole instances right from your iPhone, iPad, or Mac menu bar. Pi Stats provides a beautiful, modern interface to keep track of your network-wide ad blocking statistics.
 
-**Supports Pi-hole 5.x and 6.x versions**
+**Requires Pi-hole 6.x**
 
 ## Features
 
@@ -24,21 +24,11 @@ Monitor your Pi-hole instances right from your iPhone, iPad, or Mac menu bar. Pi
 
 ## System Metrics
 
-Pi Stats can show temperature, uptime, CPU load, and memory usage. With Pi-hole 6.x, these values come directly from Pi-hole's authenticated API, so no additional service or port is required.
+Pi Stats can show temperature, uptime, CPU load, and memory usage directly from Pi-hole's authenticated API, so no additional service or port is required.
 
-Pi-hole 5.x can continue to provide these values through the legacy [Pi Monitor](https://github.com/Bunn/pi_monitor) integration.
+## Authentication
 
-
-## Authentication Token
-In order to use the "enable/disable" button you need to add your Authentication Token in the Settings screen.
-
-**For Pi-hole 5.x**, there are two different ways to get your authentication token:
-
-- /etc/pihole/setupVars.conf under WEBPASSWORD
-- WebUI -> Settings -> API -> Show API Token
-
-**For Pi-hole 6.x**, use the same password you use to log into the web interface.
-
+Enter the same password you use to log into the Pi-hole web interface. Pi Stats stores it securely in Keychain.
 
 ## Troubleshooting
 
@@ -78,7 +68,7 @@ You can increase the API session limit by modifying the `webserver.api.max_sessi
 - **iOS**: iOS 26.0 or later (iPhone, iPad)
 - **macOS**: macOS Sequoia (15.2) or later
 
-Tested with Pi-hole 5.x and 6.x versions
+Tested with Pi-hole 6.x
 
 ## Download
 

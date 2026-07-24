@@ -12,7 +12,7 @@ import SwiftUI
 struct PiStatsWidgetBundle: WidgetBundle {
     var body: some Widget {
         PiStatsOverviewWidget()
-        PiMonitorWidget()
+        PiholeSystemMetricsWidget()
         PiTopDomainsWidget()
         PiTopClientsWidget()
         PiStatusControlWidget()
