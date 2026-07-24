@@ -154,6 +154,7 @@ final class DefaultPiholeStorage: PiholeStorage {
         piholeList.append(persistablePihole)
 
         save(piholeList)
+        NotificationCenter.default.post(name: .piholeConfigurationDidChange, object: nil)
     }
 
     func deletePihole(_ pihole: Pihole) {
@@ -163,6 +164,7 @@ final class DefaultPiholeStorage: PiholeStorage {
 
         // Delete the associated password if it exists
         PiholeCredential(accountName: pihole.uuid.uuidString).delete()
+        NotificationCenter.default.post(name: .piholeConfigurationDidChange, object: nil)
     }
 
     func deleteAllPiholes() {
@@ -175,6 +177,7 @@ final class DefaultPiholeStorage: PiholeStorage {
 
         // Clear the stored pi-hole list
         save([])
+        NotificationCenter.default.post(name: .piholeConfigurationDidChange, object: nil)
     }
 
     func restorePihole(_ id: UUID) -> Pihole? {
@@ -292,3 +295,7 @@ final class DefaultPiholeStorage: PiholeStorage {
 
 /// Global PiholeStorage instance for easy access throughout the app
 let piholeStorage: PiholeStorage = DefaultPiholeStorage()
+
+extension Notification.Name {
+    static let piholeConfigurationDidChange = Notification.Name("piholeConfigurationDidChange")
+}

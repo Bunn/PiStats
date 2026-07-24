@@ -10,6 +10,12 @@ import WidgetKit
 
 @main
 struct iOSApp: App {
+    private let watchSyncService = PiholeWatchSyncService.shared
+
+    init() {
+        watchSyncService.start()
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()
@@ -19,10 +25,12 @@ struct iOSApp: App {
                 .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
                     updateAllWidgets()
                     DisableActivityController().endExpired(asOf: Date())
+                    watchSyncService.syncConfigurations()
                 }
                 .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
                     updateAllWidgets()
                     DisableActivityController().endExpired(asOf: Date())
+                    watchSyncService.syncConfigurations()
                 }
         }
     }
