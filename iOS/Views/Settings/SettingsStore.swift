@@ -12,6 +12,7 @@ final class SettingsStore: ObservableObject {
     @Published var displayStatsAsList: Bool
     @Published var displayAllPiholes: Bool
     @Published var disablePermanently: Bool
+    @Published var syncConfigurationChanges: Bool
     @Published var temperatureScale: TemperatureScale
     @Published var customDisableTimes: [DisableTime]
     
@@ -25,6 +26,7 @@ final class SettingsStore: ObservableObject {
         self.displayStatsAsList = viewModel.displayStatsAsList
         self.displayAllPiholes = viewModel.displayAllPiholes
         self.disablePermanently = viewModel.disablePermanently
+        self.syncConfigurationChanges = viewModel.syncConfigurationChanges
         self.temperatureScale = viewModel.temperatureScale
         self.customDisableTimes = viewModel.customDisableTimes
         
@@ -52,6 +54,12 @@ final class SettingsStore: ObservableObject {
         viewModel.$disablePermanently
             .sink { [weak self] value in
                 self?.disablePermanently = value
+            }
+            .store(in: &cancellables)
+
+        viewModel.$syncConfigurationChanges
+            .sink { [weak self] value in
+                self?.syncConfigurationChanges = value
             }
             .store(in: &cancellables)
         

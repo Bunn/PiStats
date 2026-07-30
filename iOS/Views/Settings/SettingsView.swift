@@ -64,6 +64,21 @@ struct SettingsView: View {
                 }
             }
 
+            Section(header: Text(UserText.Settings.Sections.piholeConfiguration)) {
+                Toggle(isOn: $viewModel.syncConfigurationChanges) {
+                    Label {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(UserText.Settings.syncConfigurationChangesToggle)
+                            Text(UserText.Settings.syncConfigurationChangesDescription)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                    } icon: {
+                        Image(systemName: SystemImages.settingsConfigurationSync)
+                    }
+                }
+            }
+
             Section(header: Text(UserText.Settings.Sections.systemMetrics)) {
                 Label(UserText.Settings.temperatureScaleLabel, systemImage: SystemImages.settingsTemperature)
                 

@@ -18,6 +18,11 @@ final class MacPreferences: ObservableObject {
             saveDisablePermanently()
         }
     }
+    @Published var syncConfigurationChanges: Bool = false {
+        didSet {
+            saveSyncConfigurationChanges()
+        }
+    }
 
     private let defaults: UserDefaults
     init(defaults: UserDefaults = UserDefaults.shared()) {
@@ -28,6 +33,11 @@ final class MacPreferences: ObservableObject {
             from: defaults,
             key: PreferencesConstants.Keys.disablePermanently,
             defaultValue: true
+        )
+        self.syncConfigurationChanges = Self.loadBoolValue(
+            from: defaults,
+            key: PreferencesConstants.Keys.syncConfigurationChanges,
+            defaultValue: false
         )
     }
 
@@ -42,6 +52,10 @@ final class MacPreferences: ObservableObject {
     
     func saveDisablePermanently() {
         defaults.set(disablePermanently, forKey: PreferencesConstants.Keys.disablePermanently)
+    }
+
+    func saveSyncConfigurationChanges() {
+        defaults.set(syncConfigurationChanges, forKey: PreferencesConstants.Keys.syncConfigurationChanges)
     }
 
     private func updateLoginItem() {
@@ -98,4 +112,3 @@ private extension MacPreferences {
         return false
     }
 }
-

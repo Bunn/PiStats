@@ -17,14 +17,18 @@ struct PiholeDetailContentView: View {
     var showsStats: Bool = true
     var showsMetrics: Bool = true
     var displayStatsAsList: Bool = true
+    var configurationSyncOptions = PiholeConfigurationSyncOptions(
+        configuredPiholeCount: 1,
+        automaticallySyncsChanges: false
+    )
     var onClearMessages: (() async -> Void)? = nil
     /// Supplied only for Pi-hole v6 (where service blocking is supported).
     var onLoadDenyRules: (() async throws -> [String])? = nil
-    var onBlockRules: (([String]) async throws -> Void)? = nil
-    var onUnblockRules: (([String]) async throws -> Void)? = nil
+    var onBlockRules: (([String], PiholeConfigurationChangeScope) async throws -> Void)? = nil
+    var onUnblockRules: (([String], PiholeConfigurationChangeScope) async throws -> Void)? = nil
     /// Supplied only for Pi-hole v6: adds a domain to an allow/deny list from
     /// the Top Domains context menu.
-    var onQuickAddDomain: ((DomainRule) async -> Void)? = nil
+    var onQuickAddDomain: ((DomainRule, PiholeConfigurationChangeScope) async -> Void)? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -65,7 +69,11 @@ struct PiholeDetailContentView: View {
 
             if let topDomains = data.topDomains {
                 section(UserText.topDomainsSection) {
-                    TopDomainsView(topDomains: topDomains, onAddDomain: onQuickAddDomain)
+                    TopDomainsView(
+                        topDomains: topDomains,
+                        syncOptions: configurationSyncOptions,
+                        onAddDomain: onQuickAddDomain
+                    )
                 }
             }
 
@@ -77,7 +85,12 @@ struct PiholeDetailContentView: View {
 
             if let onLoadDenyRules, let onBlockRules, let onUnblockRules {
                 section(UserText.blockServicesSection) {
-                    BlockServicesView(loadRules: onLoadDenyRules, block: onBlockRules, unblock: onUnblockRules)
+                    BlockServicesView(
+                        syncOptions: configurationSyncOptions,
+                        loadRules: onLoadDenyRules,
+                        block: onBlockRules,
+                        unblock: onUnblockRules
+                    )
                 }
             }
 

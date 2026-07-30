@@ -12,14 +12,21 @@ import SwiftUI
 import PiStatsCore
 
 struct BlockServicesView: View {
+    let syncOptions: PiholeConfigurationSyncOptions
     let loadRules: () async throws -> [String]
-    let block: ([String]) async throws -> Void
-    let unblock: ([String]) async throws -> Void
+    let block: ([String], PiholeConfigurationChangeScope) async throws -> Void
+    let unblock: ([String], PiholeConfigurationChangeScope) async throws -> Void
 
     @State private var denyRules: Set<String> = []
     @State private var hasLoaded = false
     @State private var isLoading = false
     @State private var errorMessage: String?
+    @State private var pendingChange: PendingServiceChange?
+
+    private struct PendingServiceChange {
+        let service: BlockableService
+        let blocked: Bool
+    }
 
     var body: some View {
         Group {
@@ -54,14 +61,37 @@ struct BlockServicesView: View {
                 }
             }
         }
+        .piholeConfigurationSyncDialog(
+            pendingChange: $pendingChange,
+            options: syncOptions,
+            perform: perform
+        )
         .task { await reload() }
     }
 
     private func binding(for service: BlockableService) -> Binding<Bool> {
         Binding(
             get: { service.isBlocked(in: denyRules) },
-            set: { newValue in Task { await setBlocked(service, newValue) } }
+            set: { newValue in requestSetBlocked(service, newValue) }
         )
+    }
+
+    private func requestSetBlocked(_ service: BlockableService, _ blocked: Bool) {
+        let change = PendingServiceChange(service: service, blocked: blocked)
+        if syncOptions.requiresScopeConfirmation {
+            pendingChange = change
+        } else {
+            perform(change, scope: syncOptions.automaticScope)
+        }
+    }
+
+    private func perform(
+        _ change: PendingServiceChange,
+        scope: PiholeConfigurationChangeScope
+    ) {
+        Task {
+            await setBlocked(change.service, change.blocked, scope: scope)
+        }
     }
 
     private func reload() async {
@@ -77,7 +107,11 @@ struct BlockServicesView: View {
         }
     }
 
-    private func setBlocked(_ service: BlockableService, _ blocked: Bool) async {
+    private func setBlocked(
+        _ service: BlockableService,
+        _ blocked: Bool,
+        scope: PiholeConfigurationChangeScope
+    ) async {
         let previous = denyRules
         if blocked {
             denyRules.formUnion(service.rules)
@@ -86,12 +120,14 @@ struct BlockServicesView: View {
         }
         do {
             if blocked {
-                try await block(service.rules)
+                try await block(service.rules, scope)
             } else {
-                try await unblock(service.rules)
+                try await unblock(service.rules, scope)
             }
         } catch {
-            denyRules = previous // revert
+            if (error as? PiholeConfigurationSyncError)?.currentPiholeWasUpdated != true {
+                denyRules = previous // revert
+            }
             errorMessage = error.localizedDescription
         }
     }

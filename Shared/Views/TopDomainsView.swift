@@ -10,9 +10,14 @@ import PiStatsCore
 
 struct TopDomainsView: View {
     let topDomains: TopDomainsResult
+    var syncOptions = PiholeConfigurationSyncOptions(
+        configuredPiholeCount: 1,
+        automaticallySyncsChanges: false
+    )
     /// Supplied only for Pi-hole v6: adds the tapped domain to an allow/deny list.
-    var onAddDomain: ((DomainRule) async -> Void)? = nil
+    var onAddDomain: ((DomainRule, PiholeConfigurationChangeScope) async -> Void)? = nil
     @State private var selectedTab: DomainTab = .blocked
+    @State private var pendingRule: DomainRule?
 
     enum DomainTab: String, CaseIterable {
         case blocked = "Top Blocked"
@@ -43,21 +48,52 @@ struct TopDomainsView: View {
                 }
             }
         }
+        .piholeConfigurationSyncDialog(
+            pendingChange: $pendingRule,
+            options: syncOptions,
+            perform: perform
+        )
     }
 
     @ViewBuilder
     private func domainActions(for item: TopDomainItem) -> some View {
         if let onAddDomain {
             Button {
-                Task { await onAddDomain(DomainRule(domain: item.domain, type: .allow, kind: .exact)) }
+                request(
+                    DomainRule(domain: item.domain, type: .allow, kind: .exact),
+                    action: onAddDomain
+                )
             } label: {
                 Label(UserText.allowDomainAction, systemImage: SystemImages.allowDomain)
             }
             Button {
-                Task { await onAddDomain(DomainRule(domain: item.domain, type: .deny, kind: .exact)) }
+                request(
+                    DomainRule(domain: item.domain, type: .deny, kind: .exact),
+                    action: onAddDomain
+                )
             } label: {
                 Label(UserText.blockDomainAction, systemImage: SystemImages.blockDomain)
             }
+        }
+    }
+
+    private func request(
+        _ rule: DomainRule,
+        action: @escaping (DomainRule, PiholeConfigurationChangeScope) async -> Void
+    ) {
+        if syncOptions.requiresScopeConfirmation {
+            pendingRule = rule
+        } else {
+            Task {
+                await action(rule, syncOptions.automaticScope)
+            }
+        }
+    }
+
+    private func perform(_ rule: DomainRule, scope: PiholeConfigurationChangeScope) {
+        guard let onAddDomain else { return }
+        Task {
+            await onAddDomain(rule, scope)
         }
     }
 }

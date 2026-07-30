@@ -15,14 +15,16 @@ struct PiholeSummaryDataUpdaterTests {
         let service = ScriptedPiholeService(
             pihole: pihole,
             summaries: [.value(Self.summary)],
-            statuses: [.value(.enabled, delay: .milliseconds(250))]
+            statuses: [.value(.enabled, delay: .seconds(1))]
         )
         let updater = PiholeSummaryDataUpdater(pihole: pihole, service: service)
 
         let refresh = Task {
             await updater.refreshNow(includeSupplementaryData: false)
         }
-        try await Task.sleep(for: .milliseconds(50))
+        for _ in 0..<100 where !updater.summary.hasLoadedSummary {
+            await Task.yield()
+        }
 
         #expect(updater.summary.hasLoadedSummary)
         #expect(updater.summary.totalQueries == "1,234")
@@ -151,6 +153,100 @@ struct PiholeSummaryDataUpdaterTests {
         #expect(await service.statusRequestCount == 1)
     }
 
+    @Test("A current-only configuration change does not update other Pi-holes")
+    func currentOnlyConfigurationChange() async throws {
+        let setup = configurationSyncSetup()
+        let rule = DomainRule(domain: "ads.example.com", type: .deny, kind: .exact)
+
+        try await setup.listUpdater.addDomains(
+            [rule],
+            from: setup.currentUpdater,
+            scope: .currentPihole
+        )
+
+        #expect(await setup.currentService.addDomainsRequestCount == 1)
+        #expect(await setup.otherService.addDomainsRequestCount == 0)
+    }
+
+    @Test("Sync disabled asks for a scope when multiple Pi-holes are configured")
+    func disabledConfigurationSyncAsksForScope() {
+        let options = PiholeConfigurationSyncOptions(
+            configuredPiholeCount: 2,
+            automaticallySyncsChanges: false
+        )
+
+        #expect(options.requiresScopeConfirmation)
+        #expect(options.automaticScope == .currentPihole)
+    }
+
+    @Test("Sync enabled automatically targets all configured Pi-holes")
+    func enabledConfigurationSyncTargetsAllPiholes() {
+        let options = PiholeConfigurationSyncOptions(
+            configuredPiholeCount: 2,
+            automaticallySyncsChanges: true
+        )
+
+        #expect(!options.requiresScopeConfirmation)
+        #expect(options.automaticScope == .allPiholes)
+    }
+
+    @Test("An all-Pi-hole configuration change updates every Pi-hole")
+    func allPiholesConfigurationChange() async throws {
+        let setup = configurationSyncSetup()
+        let rule = DomainRule(domain: "ads.example.com", type: .deny, kind: .exact)
+
+        try await setup.listUpdater.addDomains(
+            [rule],
+            from: setup.currentUpdater,
+            scope: .allPiholes
+        )
+
+        #expect(await setup.currentService.addDomainsRequestCount == 1)
+        #expect(await setup.otherService.addDomainsRequestCount == 1)
+    }
+
+    @Test("A failed secondary sync reports a partial failure without undoing the current Pi-hole")
+    func secondaryConfigurationSyncFailure() async throws {
+        let setup = configurationSyncSetup(otherMutationShouldFail: true)
+        let rule = DomainRule(domain: "ads.example.com", type: .deny, kind: .exact)
+
+        do {
+            try await setup.listUpdater.addDomains(
+                [rule],
+                from: setup.currentUpdater,
+                scope: .allPiholes
+            )
+            Issue.record("Expected the secondary Pi-hole mutation to fail")
+        } catch let error as PiholeConfigurationSyncError {
+            #expect(error.currentPiholeWasUpdated)
+            #expect(error.failures.count == 1)
+            #expect(error.failures.first?.piholeName == setup.otherUpdater.pihole.name)
+        }
+
+        #expect(await setup.currentService.addDomainsRequestCount == 1)
+        #expect(await setup.otherService.addDomainsRequestCount == 1)
+    }
+
+    @Test("A failed current mutation stops before updating other Pi-holes")
+    func currentConfigurationSyncFailure() async throws {
+        let setup = configurationSyncSetup(currentMutationShouldFail: true)
+        let rule = DomainRule(domain: "ads.example.com", type: .deny, kind: .exact)
+
+        do {
+            try await setup.listUpdater.addDomains(
+                [rule],
+                from: setup.currentUpdater,
+                scope: .allPiholes
+            )
+            Issue.record("Expected the current Pi-hole mutation to fail")
+        } catch {
+            #expect(error is PiholeConfigurationSyncError == false)
+        }
+
+        #expect(await setup.currentService.addDomainsRequestCount == 1)
+        #expect(await setup.otherService.addDomainsRequestCount == 0)
+    }
+
     @Test("Restarting during an in-flight refresh keeps the new polling loop")
     func restartDuringRefreshKeepsNewPollingLoop() async throws {
         let service = ScriptedPiholeService(
@@ -208,4 +304,54 @@ struct PiholeSummaryDataUpdaterTests {
         uniqueDomains: 500,
         queriesForwarded: 800
     )
+
+    private func configurationSyncSetup(
+        currentMutationShouldFail: Bool = false,
+        otherMutationShouldFail: Bool = false
+    ) -> (
+        listUpdater: PiholeListUpdater,
+        currentUpdater: PiholeSummaryDataUpdater,
+        otherUpdater: PiholeSummaryDataUpdater,
+        currentService: ScriptedPiholeService,
+        otherService: ScriptedPiholeService
+    ) {
+        let currentPihole = Pihole(
+            name: "Primary",
+            address: "192.0.2.10",
+            password: "test"
+        )
+        let otherPihole = Pihole(
+            name: "Secondary",
+            address: "192.0.2.11",
+            password: "test"
+        )
+        let currentService = ScriptedPiholeService(
+            pihole: currentPihole,
+            summaries: [],
+            statuses: [],
+            mutationShouldFail: currentMutationShouldFail
+        )
+        let otherService = ScriptedPiholeService(
+            pihole: otherPihole,
+            summaries: [],
+            statuses: [],
+            mutationShouldFail: otherMutationShouldFail
+        )
+        let currentUpdater = PiholeSummaryDataUpdater(
+            pihole: currentPihole,
+            service: currentService
+        )
+        let otherUpdater = PiholeSummaryDataUpdater(
+            pihole: otherPihole,
+            service: otherService
+        )
+
+        return (
+            PiholeListUpdater(dataUpdaters: [currentUpdater, otherUpdater]),
+            currentUpdater,
+            otherUpdater,
+            currentService,
+            otherService
+        )
+    }
 }

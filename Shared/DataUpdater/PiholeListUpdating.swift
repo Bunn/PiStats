@@ -27,6 +27,11 @@ final class PiholeListUpdater: PiholeListUpdating, ObservableObject {
         self.dataUpdaters = piholes.map { .init(pihole: $0) }
         setupObservers()
     }
+
+    init(dataUpdaters: [PiholeSummaryDataUpdater]) {
+        self.dataUpdaters = dataUpdaters
+        setupObservers()
+    }
     
     private func setupObservers() {
         // Clear existing cancellables first
@@ -102,6 +107,79 @@ final class PiholeListUpdater: PiholeListUpdating, ObservableObject {
             if isUpdating {
                 newUpdater.startUpdating()
             }
+        }
+    }
+
+    func addDomains(
+        _ domains: [DomainRule],
+        from currentUpdater: PiholeSummaryDataUpdater,
+        scope: PiholeConfigurationChangeScope
+    ) async throws {
+        try await applyConfigurationChange(from: currentUpdater, scope: scope) {
+            try await $0.addDomains(domains)
+        }
+    }
+
+    func removeDomains(
+        _ domains: [DomainRule],
+        from currentUpdater: PiholeSummaryDataUpdater,
+        scope: PiholeConfigurationChangeScope
+    ) async throws {
+        try await applyConfigurationChange(from: currentUpdater, scope: scope) {
+            try await $0.removeDomains(domains)
+        }
+    }
+
+    func setDomain(
+        _ domain: DomainRule,
+        enabled: Bool,
+        from currentUpdater: PiholeSummaryDataUpdater,
+        scope: PiholeConfigurationChangeScope
+    ) async throws {
+        try await applyConfigurationChange(from: currentUpdater, scope: scope) {
+            try await $0.setDomain(domain, enabled: enabled)
+        }
+    }
+
+    func setAdlist(
+        _ adlist: AdList,
+        enabled: Bool,
+        from currentUpdater: PiholeSummaryDataUpdater,
+        scope: PiholeConfigurationChangeScope
+    ) async throws {
+        try await applyConfigurationChange(from: currentUpdater, scope: scope) {
+            try await $0.setAdlist(adlist, enabled: enabled)
+        }
+    }
+
+    private func applyConfigurationChange(
+        from currentUpdater: PiholeSummaryDataUpdater,
+        scope: PiholeConfigurationChangeScope,
+        change: (PiholeSummaryDataUpdater) async throws -> Void
+    ) async throws {
+        try await change(currentUpdater)
+
+        guard scope == .allPiholes else { return }
+
+        var failures: [PiholeConfigurationSyncError.Failure] = []
+        for updater in dataUpdaters where updater.pihole.uuid != currentUpdater.pihole.uuid {
+            do {
+                try await change(updater)
+            } catch {
+                failures.append(
+                    .init(
+                        piholeName: updater.pihole.name,
+                        errorDescription: error.localizedDescription
+                    )
+                )
+            }
+        }
+
+        guard failures.isEmpty else {
+            throw PiholeConfigurationSyncError(
+                currentPiholeName: currentUpdater.pihole.name,
+                failures: failures
+            )
         }
     }
 }

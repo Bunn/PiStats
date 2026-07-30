@@ -270,6 +270,26 @@
         }
       }
     },
+    "Apply change to all Pi-holes?" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aplicar a alteração a todos os Pi-holes?"
+          }
+        }
+      }
+    },
+    "Automatically applies future domain, blocklist, and other configuration changes to every configured Pi-hole. When off, Pi Stats asks each time." : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aplica automaticamente futuras alterações de domínio, lista de bloqueio e outras configurações a todos os Pi-holes configurados. Quando desativado, o Pi Stats pergunta todas as vezes."
+          }
+        }
+      }
+    },
     "Back online" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1167,6 +1187,16 @@
         }
       }
     },
+    "Only This Pi-hole" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Somente este Pi-hole"
+          }
+        }
+      }
+    },
     "Port" : {
       "localizations" : {
         "pt-BR" : {
@@ -1460,6 +1490,16 @@
         }
       }
     },
+    "Sync configuration changes" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sincronizar alterações de configuração"
+          }
+        }
+      }
+    },
     "System Metrics" : {
       "localizations" : {
         "pt-BR" : {
@@ -1506,6 +1546,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Escala de temperatura"
+          }
+        }
+      }
+    },
+    "The change was saved to %@, but couldn't be saved to %@." : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A alteração foi salva em %@, mas não pôde ser salva em %@."
+          }
+        }
+      }
+    },
+    "This change can also be applied to your other configured Pi-holes." : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta alteração também pode ser aplicada aos outros Pi-holes configurados."
           }
         }
       }

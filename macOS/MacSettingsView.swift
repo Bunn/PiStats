@@ -13,10 +13,11 @@ struct MacSettingsView: View {
             set: { alertSettings.setEnabled($0, for: kind) }
         ))
         .toggleStyle(.switch)
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     var body: some View {
-        VStack (alignment: .leading) {
+        VStack(alignment: .leading, spacing: 12) {
                 Picker("Temperature Scale", selection: $prefs.temperatureScale) {
                     ForEach(TemperatureScale.allCases, id: \.self) { scale in
                         Text(scale.displayName).tag(scale)
@@ -34,14 +35,29 @@ struct MacSettingsView: View {
                     }
                 }
                 .toggleStyle(.switch)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+                Toggle(isOn: $prefs.syncConfigurationChanges) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(UserText.Settings.syncConfigurationChangesToggle)
+                        Text(UserText.Settings.syncConfigurationChangesDescription)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .toggleStyle(.switch)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 
                 Toggle(UserText.Settings.startAtLoginToggle, isOn: $prefs.startAtLogin)
                     .toggleStyle(.switch)
+                    .frame(maxWidth: .infinity, alignment: .leading)
 
                 Divider()
 
                 Toggle("Enable notifications", isOn: $alertSettings.masterEnabled)
                     .toggleStyle(.switch)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 if alertSettings.masterEnabled {
                     notificationToggle("Pi-hole offline", kind: .unreachable)
                     notificationToggle("Back online", kind: .recovered)

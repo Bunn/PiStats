@@ -15,10 +15,11 @@ import PiStatsCore
 /// The four domain operations a manager surface needs, injected so the view
 /// stays decoupled from the data updater (mirrors AdListsView's closures).
 struct DomainManagementActions {
+    let syncOptions: PiholeConfigurationSyncOptions
     let loadAll: () async throws -> [DomainRule]
-    let add: ([DomainRule]) async throws -> Void
-    let remove: ([DomainRule]) async throws -> Void
-    let setEnabled: (DomainRule, Bool) async throws -> Void
+    let add: ([DomainRule], PiholeConfigurationChangeScope) async throws -> Void
+    let remove: ([DomainRule], PiholeConfigurationChangeScope) async throws -> Void
+    let setEnabled: (DomainRule, Bool, PiholeConfigurationChangeScope) async throws -> Void
 }
 
 struct DomainListView: View {
@@ -30,6 +31,13 @@ struct DomainListView: View {
     @State private var isLoading = false
     @State private var errorMessage: String?
     @State private var showingAdd = false
+    @State private var pendingChange: PendingDomainChange?
+
+    private enum PendingDomainChange {
+        case add(DomainRule)
+        case remove(DomainRule)
+        case setEnabled(DomainRule, Bool)
+    }
 
     private func rules(for kind: DomainListKind) -> [DomainRule] {
         rules.filter { $0.type == selectedType && $0.kind == kind }
@@ -78,9 +86,14 @@ struct DomainListView: View {
         }
         .sheet(isPresented: $showingAdd) {
             AddDomainSheet(defaultType: selectedType) { rule in
-                await add(rule)
+                request(.add(rule))
             }
         }
+        .piholeConfigurationSyncDialog(
+            pendingChange: $pendingChange,
+            options: actions.syncOptions,
+            perform: perform
+        )
         .task { await reload() }
         .refreshable { await reload() }
     }
@@ -111,7 +124,7 @@ struct DomainListView: View {
                     #endif
                     .swipeActions(edge: .trailing) {
                         Button(role: .destructive) {
-                            Task { await delete(rule) }
+                            request(.remove(rule))
                         } label: {
                             Label("Delete", systemImage: "trash")
                         }
@@ -126,8 +139,32 @@ struct DomainListView: View {
     private func binding(for rule: DomainRule) -> Binding<Bool> {
         Binding(
             get: { rules.first(where: { $0.id == rule.id })?.enabled ?? rule.enabled },
-            set: { newValue in Task { await setEnabled(rule, newValue) } }
+            set: { newValue in request(.setEnabled(rule, newValue)) }
         )
+    }
+
+    private func request(_ change: PendingDomainChange) {
+        if actions.syncOptions.requiresScopeConfirmation {
+            pendingChange = change
+        } else {
+            perform(change, scope: actions.syncOptions.automaticScope)
+        }
+    }
+
+    private func perform(
+        _ change: PendingDomainChange,
+        scope: PiholeConfigurationChangeScope
+    ) {
+        Task {
+            switch change {
+            case .add(let rule):
+                await add(rule, scope: scope)
+            case .remove(let rule):
+                await delete(rule, scope: scope)
+            case .setEnabled(let rule, let enabled):
+                await setEnabled(rule, enabled, scope: scope)
+            }
+        }
     }
 
     private func reload() async {
@@ -143,12 +180,18 @@ struct DomainListView: View {
         }
     }
 
-    private func setEnabled(_ rule: DomainRule, _ enabled: Bool) async {
+    private func setEnabled(
+        _ rule: DomainRule,
+        _ enabled: Bool,
+        scope: PiholeConfigurationChangeScope
+    ) async {
         applyLocal(rule, enabled: enabled) // optimistic
         do {
-            try await actions.setEnabled(rule, enabled)
+            try await actions.setEnabled(rule, enabled, scope)
         } catch {
-            applyLocal(rule, enabled: !enabled) // revert
+            if (error as? PiholeConfigurationSyncError)?.currentPiholeWasUpdated != true {
+                applyLocal(rule, enabled: !enabled) // revert
+            }
             errorMessage = error.localizedDescription
         }
     }
@@ -158,22 +201,27 @@ struct DomainListView: View {
         rules[index].enabled = enabled
     }
 
-    private func delete(_ rule: DomainRule) async {
+    private func delete(_ rule: DomainRule, scope: PiholeConfigurationChangeScope) async {
         let previous = rules
         rules.removeAll { $0.id == rule.id } // optimistic
         do {
-            try await actions.remove([rule])
+            try await actions.remove([rule], scope)
         } catch {
-            rules = previous // revert
+            if (error as? PiholeConfigurationSyncError)?.currentPiholeWasUpdated != true {
+                rules = previous // revert
+            }
             errorMessage = error.localizedDescription
         }
     }
 
-    private func add(_ rule: DomainRule) async {
+    private func add(_ rule: DomainRule, scope: PiholeConfigurationChangeScope) async {
         do {
-            try await actions.add([rule])
+            try await actions.add([rule], scope)
             await reload()
         } catch {
+            if (error as? PiholeConfigurationSyncError)?.currentPiholeWasUpdated == true {
+                await reload()
+            }
             errorMessage = error.localizedDescription
         }
     }
@@ -183,7 +231,7 @@ struct DomainListView: View {
 
 private struct AddDomainSheet: View {
     let defaultType: DomainListType
-    let onAdd: (DomainRule) async -> Void
+    let onAdd: (DomainRule) -> Void
 
     @Environment(\.dismiss) private var dismiss
     @State private var domain = ""
@@ -192,7 +240,7 @@ private struct AddDomainSheet: View {
     @State private var kind: DomainListKind = .exact
     @State private var isSubmitting = false
 
-    init(defaultType: DomainListType, onAdd: @escaping (DomainRule) async -> Void) {
+    init(defaultType: DomainListType, onAdd: @escaping (DomainRule) -> Void) {
         self.defaultType = defaultType
         self.onAdd = onAdd
         _type = State(initialValue: defaultType)
@@ -251,10 +299,8 @@ private struct AddDomainSheet: View {
             comment: comment.isEmpty ? nil : comment
         )
         isSubmitting = true
-        Task {
-            await onAdd(rule)
-            dismiss()
-        }
+        onAdd(rule)
+        dismiss()
     }
 }
 

@@ -12,8 +12,9 @@ import SwiftUI
 import PiStatsCore
 
 struct AdListsView: View {
+    let syncOptions: PiholeConfigurationSyncOptions
     let load: () async throws -> [AdList]
-    let toggle: (AdList, Bool) async throws -> Void
+    let toggle: (AdList, Bool, PiholeConfigurationChangeScope) async throws -> Void
     var updateGravity: (() async throws -> Void)? = nil
     var gravityLastUpdated: (() async throws -> Date?)? = nil
 
@@ -21,6 +22,12 @@ struct AdListsView: View {
     @State private var hasLoaded = false
     @State private var isLoading = false
     @State private var errorMessage: String?
+    @State private var pendingChange: PendingAdListChange?
+
+    private struct PendingAdListChange {
+        let list: AdList
+        let enabled: Bool
+    }
 
     private var blockLists: [AdList] {
         lists.filter { $0.isBlocklist }
@@ -79,6 +86,11 @@ struct AdListsView: View {
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
+        .piholeConfigurationSyncDialog(
+            pendingChange: $pendingChange,
+            options: syncOptions,
+            perform: perform
+        )
         .task { await reload() }
         .refreshable { await reload() }
     }
@@ -86,8 +98,26 @@ struct AdListsView: View {
     private func binding(for list: AdList) -> Binding<Bool> {
         Binding(
             get: { lists.first(where: { $0.id == list.id })?.enabled ?? list.enabled },
-            set: { newValue in Task { await setEnabled(list, newValue) } }
+            set: { newValue in requestSetEnabled(list, newValue) }
         )
+    }
+
+    private func requestSetEnabled(_ list: AdList, _ enabled: Bool) {
+        let change = PendingAdListChange(list: list, enabled: enabled)
+        if syncOptions.requiresScopeConfirmation {
+            pendingChange = change
+        } else {
+            perform(change, scope: syncOptions.automaticScope)
+        }
+    }
+
+    private func perform(
+        _ change: PendingAdListChange,
+        scope: PiholeConfigurationChangeScope
+    ) {
+        Task {
+            await setEnabled(change.list, change.enabled, scope: scope)
+        }
     }
 
     private func reload() async {
@@ -103,12 +133,18 @@ struct AdListsView: View {
         }
     }
 
-    private func setEnabled(_ list: AdList, _ enabled: Bool) async {
+    private func setEnabled(
+        _ list: AdList,
+        _ enabled: Bool,
+        scope: PiholeConfigurationChangeScope
+    ) async {
         applyLocal(list, enabled: enabled) // optimistic
         do {
-            try await toggle(list, enabled)
+            try await toggle(list, enabled, scope)
         } catch {
-            applyLocal(list, enabled: !enabled) // revert
+            if (error as? PiholeConfigurationSyncError)?.currentPiholeWasUpdated != true {
+                applyLocal(list, enabled: !enabled) // revert
+            }
             errorMessage = error.localizedDescription
         }
     }

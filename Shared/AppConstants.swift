@@ -73,6 +73,7 @@ public struct SystemImages {
     public static let settingsDisablePermanently = "xmark.shield"
     public static let customizeDisableTimes = "clock"
     public static let settingsLiveActivity = "timer"
+    public static let settingsConfigurationSync = "arrow.trianglehead.2.clockwise.rotate.90"
     public static let addNewCustomDisableTime = "plus"
     
     // System Metrics
@@ -163,6 +164,12 @@ public struct UserText {
     public static func domainAddedToAllow(_ domain: String) -> String { String(localized: "Allowed \(domain)") }
     public static func domainAddedToBlock(_ domain: String) -> String { String(localized: "Blocked \(domain)") }
 
+    // MARK: - Pi-hole Configuration Sync
+    public static let configurationSyncDialogTitle = String(localized: "Apply change to all Pi-holes?")
+    public static let configurationSyncDialogMessage = String(localized: "This change can also be applied to your other configured Pi-holes.")
+    public static let configurationSyncCurrentPihole = String(localized: "Only This Pi-hole")
+    public static let configurationSyncAllPiholes = String(localized: "All Pi-holes")
+
     // MARK: - Pi-hole Setup
     public static let piholeSetupTitle = String(localized: "Pi-hole Setup")
     public static let piholeSetupHostPlaceholder = String(localized: "Host")
@@ -187,6 +194,7 @@ public struct UserText {
         public struct Sections {
             public static let interface = String(localized: "Interface")
             public static let enableDisable = String(localized: "Enable / Disable")
+            public static let piholeConfiguration = String(localized: "Pi-hole Configuration")
             public static let systemMetrics = String(localized: "System Metrics")
             public static let about = String(localized: "About")
             public static let pihole = "Pi-hole"
@@ -200,6 +208,8 @@ public struct UserText {
         public static let alwaysDisablePermanentlyDescription = String(localized: "When on, disabling a Pi-hole turns it off indefinitely instead of for a set time.")
         public static let liveActivityToggle = String(localized: "Show Live Activity")
         public static let liveActivityDescription = String(localized: "Shows a Lock Screen and Dynamic Island countdown when you pause blocking for a set time.")
+        public static let syncConfigurationChangesToggle = String(localized: "Sync configuration changes")
+        public static let syncConfigurationChangesDescription = String(localized: "Automatically applies future domain, blocklist, and other configuration changes to every configured Pi-hole. When off, Pi Stats asks each time.")
         public static let temperatureScaleLabel = String(localized: "Temperature Scale")
         public static let startAtLoginToggle = String(localized: "Start Pi Stats when macOS begins")
         public static let versionLabel = String(localized: "Version")
@@ -420,6 +430,7 @@ public struct PreferencesConstants {
         public static let temperatureScale = "temperatureScale"
         public static let showTopDomains = "showTopDomains"
         public static let startAtLogin = "startAtLogin"
+        public static let syncConfigurationChanges = "syncConfigurationChanges"
     }
     
     public struct Defaults {

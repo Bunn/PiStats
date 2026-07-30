@@ -10,6 +10,7 @@ import PiStatsCore
 struct PiStatsCardView: View {
     @ObservedObject var data: PiholeSummaryData
     let updater: PiholeSummaryDataUpdater
+    @ObservedObject var listUpdater: PiholeListUpdater
     @ObservedObject var settingsStore: SettingsStore
     var onSettings: () -> Void = {}
     @State private var showingDisableActionSheet = false
@@ -53,8 +54,16 @@ struct PiStatsCardView: View {
 }
 
 #Preview {
+    let updater = PiholeSummaryDataUpdater(pihole: .init(name: "Test", address: "1234"))
+    let listUpdater = PiholeListUpdater(dataUpdaters: [updater])
+
     NavigationStack {
-        PiStatsCardView(data: .mockData, updater: .init(pihole: .init(name: "Test", address: "1234")), settingsStore: SettingsStore())
+        PiStatsCardView(
+            data: .mockData,
+            updater: updater,
+            listUpdater: listUpdater,
+            settingsStore: SettingsStore()
+        )
             .padding()
     }
 }
@@ -71,7 +80,12 @@ extension PiStatsCardView {
             .buttonStyle(.plain)
 
             NavigationLink {
-                PiholeDetailView(data: data, updater: updater, settingsStore: settingsStore)
+                PiholeDetailView(
+                    data: data,
+                    updater: updater,
+                    listUpdater: listUpdater,
+                    settingsStore: settingsStore
+                )
             } label: {
                 Label(UserText.moreDetails, systemImage: SystemImages.moreDetails)
                     .font(.headline)
@@ -161,6 +175,7 @@ extension PiStatsCardView {
 struct PiholeDetailView: View {
     @ObservedObject var data: PiholeSummaryData
     let updater: PiholeSummaryDataUpdater
+    @ObservedObject var listUpdater: PiholeListUpdater
     @ObservedObject var settingsStore: SettingsStore
     @State private var toast: String?
     @State private var actionError: String?
@@ -173,6 +188,13 @@ struct PiholeDetailView: View {
 #endif
     }
 
+    private var configurationSyncOptions: PiholeConfigurationSyncOptions {
+        PiholeConfigurationSyncOptions(
+            configuredPiholeCount: listUpdater.dataUpdaters.count,
+            automaticallySyncsChanges: settingsStore.syncConfigurationChanges
+        )
+    }
+
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
@@ -181,20 +203,40 @@ struct PiholeDetailView: View {
                     temperatureScale: settingsStore.temperatureScale,
                     showsStats: false,
                     showsMetrics: false,
+                    configurationSyncOptions: configurationSyncOptions,
                     onClearMessages: { await updater.clearMessages() },
                     onLoadDenyRules: {
                         if isAppStoreScreenshotMode { return [] }
                         return try await updater.fetchDomains(type: .deny, kind: .regex).map(\.domain)
                     },
-                    onBlockRules: { rules in
+                    onBlockRules: { rules, scope in
                         guard !isAppStoreScreenshotMode else { return }
-                        try await updater.addDomains(rules.map { DomainRule(domain: $0, type: .deny, kind: .regex, comment: "Blocked by PiStats") })
+                        try await listUpdater.addDomains(
+                            rules.map {
+                                DomainRule(
+                                    domain: $0,
+                                    type: .deny,
+                                    kind: .regex,
+                                    comment: "Blocked by PiStats"
+                                )
+                            },
+                            from: updater,
+                            scope: scope
+                        )
                     },
-                    onUnblockRules: { rules in
+                    onUnblockRules: { rules, scope in
                         guard !isAppStoreScreenshotMode else { return }
-                        try await updater.removeDomains(rules.map { DomainRule(domain: $0, type: .deny, kind: .regex) })
+                        try await listUpdater.removeDomains(
+                            rules.map {
+                                DomainRule(domain: $0, type: .deny, kind: .regex)
+                            },
+                            from: updater,
+                            scope: scope
+                        )
                     },
-                    onQuickAddDomain: { rule in await quickAdd(rule) }
+                    onQuickAddDomain: { rule, scope in
+                        await quickAdd(rule, scope: scope)
+                    }
                 )
                 blocklistsCard
                 domainsCard
@@ -213,27 +255,49 @@ struct PiholeDetailView: View {
         }
     }
 
-    private func quickAdd(_ rule: DomainRule) async {
+    private func quickAdd(
+        _ rule: DomainRule,
+        scope: PiholeConfigurationChangeScope
+    ) async {
         do {
-            try await updater.addDomains([rule])
+            try await listUpdater.addDomains([rule], from: updater, scope: scope)
             toast = rule.type == .allow ? UserText.domainAddedToAllow(rule.domain) : UserText.domainAddedToBlock(rule.domain)
         } catch {
+            if (error as? PiholeConfigurationSyncError)?.currentPiholeWasUpdated == true {
+                toast = rule.type == .allow ? UserText.domainAddedToAllow(rule.domain) : UserText.domainAddedToBlock(rule.domain)
+            }
             actionError = error.localizedDescription
         }
     }
 
     private var domainActions: DomainManagementActions {
         DomainManagementActions(
+            syncOptions: configurationSyncOptions,
             loadAll: { try await updater.fetchAllDomains() },
-            add: { try await updater.addDomains($0) },
-            remove: { try await updater.removeDomains($0) },
-            setEnabled: { rule, enabled in try await updater.setDomain(rule, enabled: enabled) }
+            add: { rules, scope in
+                try await listUpdater.addDomains(rules, from: updater, scope: scope)
+            },
+            remove: { rules, scope in
+                try await listUpdater.removeDomains(rules, from: updater, scope: scope)
+            },
+            setEnabled: { rule, enabled, scope in
+                try await listUpdater.setDomain(
+                    rule,
+                    enabled: enabled,
+                    from: updater,
+                    scope: scope
+                )
+            }
         )
     }
 
     private var queryLogCard: some View {
         NavigationLink {
-            QueryLogView(updater: updater)
+            QueryLogView(
+                updater: updater,
+                listUpdater: listUpdater,
+                syncOptions: configurationSyncOptions
+            )
         } label: {
             HStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 4) {
@@ -258,10 +322,20 @@ struct PiholeDetailView: View {
 
     private var blocklistsCard: some View {
         NavigationLink {
-            AdListsView(load: { try await updater.fetchAdlists() },
-                        toggle: { list, enabled in try await updater.setAdlist(list, enabled: enabled) },
-                        updateGravity: { try await updater.updateGravity() },
-                        gravityLastUpdated: { try await updater.fetchGravityLastUpdated() })
+            AdListsView(
+                syncOptions: configurationSyncOptions,
+                load: { try await updater.fetchAdlists() },
+                toggle: { list, enabled, scope in
+                    try await listUpdater.setAdlist(
+                        list,
+                        enabled: enabled,
+                        from: updater,
+                        scope: scope
+                    )
+                },
+                updateGravity: { try await updater.updateGravity() },
+                gravityLastUpdated: { try await updater.fetchGravityLastUpdated() }
+            )
         } label: {
             HStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 4) {
@@ -311,9 +385,13 @@ struct PiholeDetailView: View {
 }
 
 #Preview("Detail") {
+    let updater = PiholeSummaryDataUpdater(pihole: .init(name: "Test", address: "1234"))
+    let listUpdater = PiholeListUpdater(dataUpdaters: [updater])
+
     NavigationStack {
         PiholeDetailView(data: .mockData,
-                         updater: .init(pihole: .init(name: "Test", address: "1234")),
+                         updater: updater,
+                         listUpdater: listUpdater,
                          settingsStore: SettingsStore())
     }
 }

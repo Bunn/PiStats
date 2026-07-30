@@ -29,18 +29,22 @@ actor ScriptedPiholeService: PiholeService {
 
     private var summaryResponses: [ScriptedResponse<PiholeSummary>]
     private var statusResponses: [ScriptedResponse<PiholeStatus>]
+    private let mutationShouldFail: Bool
     private(set) var summaryRequestCount = 0
     private(set) var statusRequestCount = 0
     private(set) var supplementaryRequestCount = 0
+    private(set) var addDomainsRequestCount = 0
 
     init(
         pihole: Pihole,
         summaries: [ScriptedResponse<PiholeSummary>],
-        statuses: [ScriptedResponse<PiholeStatus>]
+        statuses: [ScriptedResponse<PiholeStatus>],
+        mutationShouldFail: Bool = false
     ) {
         self.pihole = pihole
         self.summaryResponses = summaries
         self.statusResponses = statuses
+        self.mutationShouldFail = mutationShouldFail
     }
 
     func fetchSummary() async throws -> PiholeSummary {
@@ -128,7 +132,12 @@ actor ScriptedPiholeService: PiholeService {
         []
     }
 
-    func addDomains(_ domains: [DomainRule]) async throws {}
+    func addDomains(_ domains: [DomainRule]) async throws {
+        addDomainsRequestCount += 1
+        if mutationShouldFail {
+            throw PiholeServiceError.networkError(URLError(.cannotConnectToHost))
+        }
+    }
 
     func removeDomains(_ domains: [DomainRule]) async throws {}
 

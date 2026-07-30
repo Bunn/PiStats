@@ -11,6 +11,8 @@ import PiStatsCore
 
 struct QueryLogView: View {
     let updater: PiholeSummaryDataUpdater
+    @ObservedObject var listUpdater: PiholeListUpdater
+    let syncOptions: PiholeConfigurationSyncOptions
 
     @State private var entries: [QueryLogEntry] = []
     @State private var isLoading = true
@@ -18,12 +20,18 @@ struct QueryLogView: View {
     @State private var searchText = ""
     @State private var toast: String?
     @State private var actionError: String?
+    @State private var pendingChange: PendingQueryChange?
+
+    private struct PendingQueryChange {
+        let domain: String
+        let type: DomainListType
+    }
 
     private var filteredEntries: [QueryLogEntry] {
         guard !searchText.isEmpty else { return entries }
         return entries.filter {
-            $0.domain.localizedCaseInsensitiveContains(searchText)
-                || $0.client.localizedCaseInsensitiveContains(searchText)
+            $0.domain.localizedStandardContains(searchText)
+                || $0.client.localizedStandardContains(searchText)
         }
     }
 
@@ -43,7 +51,7 @@ struct QueryLogView: View {
                 ForEach(filteredEntries) { entry in
                     QueryLogRow(
                         entry: entry,
-                        onAdd: { type in perform(domain: entry.domain, type: type) }
+                        onAdd: { type in request(domain: entry.domain, type: type) }
                     )
                 }
             }
@@ -54,6 +62,11 @@ struct QueryLogView: View {
         .searchable(text: $searchText, prompt: Text(UserText.queryLogSearchPrompt))
         .refreshable { await load() }
         .task { await load() }
+        .piholeConfigurationSyncDialog(
+            pendingChange: $pendingChange,
+            options: syncOptions,
+            perform: perform
+        )
         .domainActionToast($toast)
         .alert("Couldn't update list", isPresented: Binding(get: { actionError != nil }, set: { if !$0 { actionError = nil } })) {
             Button("OK", role: .cancel) { actionError = nil }
@@ -62,12 +75,41 @@ struct QueryLogView: View {
         }
     }
 
-    private func perform(domain: String, type: DomainListType) {
+    private func request(domain: String, type: DomainListType) {
+        let change = PendingQueryChange(domain: domain, type: type)
+        if syncOptions.requiresScopeConfirmation {
+            pendingChange = change
+        } else {
+            perform(change, scope: syncOptions.automaticScope)
+        }
+    }
+
+    private func perform(
+        _ change: PendingQueryChange,
+        scope: PiholeConfigurationChangeScope
+    ) {
         Task {
             do {
-                try await updater.addDomains([DomainRule(domain: domain, type: type, kind: .exact)])
-                toast = type == .allow ? UserText.domainAddedToAllow(domain) : UserText.domainAddedToBlock(domain)
+                try await listUpdater.addDomains(
+                    [
+                        DomainRule(
+                            domain: change.domain,
+                            type: change.type,
+                            kind: .exact
+                        )
+                    ],
+                    from: updater,
+                    scope: scope
+                )
+                toast = change.type == .allow
+                    ? UserText.domainAddedToAllow(change.domain)
+                    : UserText.domainAddedToBlock(change.domain)
             } catch {
+                if (error as? PiholeConfigurationSyncError)?.currentPiholeWasUpdated == true {
+                    toast = change.type == .allow
+                        ? UserText.domainAddedToAllow(change.domain)
+                        : UserText.domainAddedToBlock(change.domain)
+                }
                 actionError = error.localizedDescription
             }
         }

@@ -148,6 +148,7 @@ struct PiholeStatsList: View {
         PiStatsCardView(
             data: dataUpdater.summary,
             updater: dataUpdater,
+            listUpdater: listUpdater,
             settingsStore: settingsStore,
             onSettings: { editingPihole = dataUpdater.pihole }
         )

@@ -67,6 +67,12 @@ class SettingsViewModel: ObservableObject {
         }
     }
 
+    @Published var syncConfigurationChanges: Bool {
+        didSet {
+            userDefaults.set(syncConfigurationChanges, forKey: Keys.syncConfigurationChanges)
+        }
+    }
+
     @Published var temperatureScale: TemperatureScale {
         didSet {
             userDefaults.set(temperatureScale.rawValue, forKey: Keys.temperatureScale)
@@ -88,6 +94,7 @@ class SettingsViewModel: ObservableObject {
         static let temperatureScale = "temperatureScale"
         static let customDisableTimes = "customDisableTimes"
         static let liveActivityEnabled = UserDefaults.LiveActivity.enabledKey
+        static let syncConfigurationChanges = PreferencesConstants.Keys.syncConfigurationChanges
     }
 
     init(userDefaults: UserDefaultsProtocol = UserDefaults.standard) {
@@ -113,6 +120,8 @@ class SettingsViewModel: ObservableObject {
         } else {
             self.liveActivityEnabled = userDefaults.bool(forKey: Keys.liveActivityEnabled)
         }
+
+        self.syncConfigurationChanges = userDefaults.bool(forKey: Keys.syncConfigurationChanges)
         
         // For temperatureScale, use device's locale as default if never set
         if (userDefaults as? UserDefaults)?.object(forKey: Keys.temperatureScale) == nil {
